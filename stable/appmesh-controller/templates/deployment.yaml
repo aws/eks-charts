@@ -15,14 +15,25 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "appmesh-controller.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        prometheus.io/scrape: "true"
     spec:
       serviceAccountName: {{ template "appmesh-controller.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          # TODO: implement /healthz http endpoint in appmesh-controller
-          # TODO: add liveness probe
+          ports:
+            - name: http
+              containerPort: 10555
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /healthz
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /healthz
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
