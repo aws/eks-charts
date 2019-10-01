@@ -24,7 +24,12 @@ jobs:
       - run:
           name: Validate stable charts
           command: |
-            helm template ./stable/appmesh-controller/ --name appmesh-controller | kubeval --strict --ignore-missing-schemas
+            STABLE="$(git rev-parse --show-toplevel)/stable"
+            cd ${STABLE}
+            for d in */; do
+              echo "Validating chart ${d}"
+              helm template ${STABLE}/${d} | kubeval --strict --ignore-missing-schemas
+            done
       - run:
           name: Package stable charts
           command: |
