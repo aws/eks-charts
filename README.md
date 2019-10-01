@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/aws/eks-charts.svg?style=svg)](https://circleci.com/gh/aws/eks-charts)
+
 ## My Project
 
 TODO: Fill this README out!
