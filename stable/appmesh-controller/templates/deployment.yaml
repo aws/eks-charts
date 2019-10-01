@@ -27,13 +27,17 @@ spec:
             - name: http
               containerPort: 10555
           livenessProbe:
-            httpGet:
-              port: http
-              path: /healthz
+            exec:
+              command:
+                - curl
+                - -s
+                - http://localhost:10555/healthz
           readinessProbe:
-            httpGet:
-              port: http
-              path: /healthz
+            exec:
+              command:
+                - curl
+                - -s
+                - http://localhost:10555/healthz
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
