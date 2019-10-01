@@ -6,6 +6,7 @@ replicaCount: 1
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/app-mesh-controller
+  tag: v0.1.2
   pullPolicy: IfNotPresent
 
 nameOverride: ""

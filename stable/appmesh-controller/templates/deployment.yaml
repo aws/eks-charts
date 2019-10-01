@@ -19,7 +19,7 @@ spec:
       serviceAccountName: {{ template "appmesh-controller.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           # TODO: implement /healthz http endpoint in appmesh-controller
           # TODO: add liveness probe
