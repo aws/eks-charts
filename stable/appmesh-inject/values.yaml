@@ -1,0 +1,63 @@
+# Default values for appmesh-inject.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-app-mesh-inject
+  tag: v0.1.6
+  pullPolicy: IfNotPresent
+
+sidecar:
+  image:
+    repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
+    tag: v1.11.1.0-prod
+  # sidecar.logLevel: Envoy log level can be info, warn or error
+  logLevel: info
+  resources:
+    # sidecar.resources.requests: Envoy CPU and memory requests
+    requests:
+      cpu: 10m
+      memory: 32Mi
+init:
+  image:
+    repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
+    tag: v2
+
+nameOverride: ""
+fullnameOverride: ""
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 64Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serviceAccount:
+  # serviceAccount.create: Whether to create a service account or not
+  create: true
+  # serviceAccount.name: The name of the service account to create or use
+  name: ""
+
+rbac:
+  # rbac.create: `true` if rbac resources should be created
+  create: true
+  # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
+  pspEnabled: false
+
+mesh:
+  # mesh.create: `true` if mesh resource should be created
+  create: false
+  # mesh.name: The name of the mesh to use
+  name: "global"
+  # mesh.discovery: The service discovery type to use, can be dns or cloudmap
+  discovery: dns

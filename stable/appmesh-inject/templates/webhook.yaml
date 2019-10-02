@@ -1,0 +1,36 @@
+{{ $tls := fromYaml ( include "appmesh-inject.gen-certs" . ) }}
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ template "appmesh-inject.fullname" . }}
+  labels:
+{{ include "appmesh-inject.labels" . | indent 4 }}
+webhooks:
+  - name: aws-app-mesh-inject.aws.amazon.com
+    clientConfig:
+      service:
+        name: {{ include "appmesh-inject.name" . }}
+        namespace: {{ .Release.Namespace }}
+        path: "/"
+      caBundle: {{ $tls.caCert }}
+    rules:
+      - operations: ["CREATE","UPDATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+    failurePolicy: Ignore
+    namespaceSelector:
+      matchLabels:
+        appmesh.k8s.aws/sidecarInjectorWebhook: enabled
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "appmesh-inject.fullname" . }}
+  labels:
+{{ include "appmesh-inject.labels" . | indent 4 }}
+type: Opaque
+data:
+  cert.pem: {{ $tls.clientCert }}
+  key.pem: {{ $tls.clientKey }}

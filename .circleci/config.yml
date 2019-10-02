@@ -1,0 +1,56 @@
+version: 2.1
+jobs:
+  build-test-push:
+    docker:
+      - image: circleci/golang:1.13
+    steps:
+      - checkout
+      - run:
+          name: Install kubectl
+          command: sudo curl -L https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl && sudo chmod +x /usr/local/bin/kubectl
+      - run:
+          name: Install kubeval
+          command: curl -L https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz | tar xz && sudo mv kubeval /bin/kubeval
+      - run:
+          name: Install helm
+          command: curl -L https://storage.googleapis.com/kubernetes-helm/helm-v2.14.3-linux-amd64.tar.gz | tar xz && sudo mv linux-amd64/helm /bin/helm && sudo rm -rf linux-amd64
+      - run:
+          name: Initialize helm
+          command:  helm init --client-only --kubeconfig=$HOME/.kube/kubeconfig
+      - run:
+          name: Lint stable charts
+          command: |
+            helm lint ./stable/*
+      - run:
+          name: Validate stable charts
+          command: |
+            STABLE="$(git rev-parse --show-toplevel)/stable"
+            cd ${STABLE}
+            for d in */; do
+              echo "Validating chart ${d}"
+              helm template ${STABLE}/${d} | kubeval --strict --ignore-missing-schemas
+            done
+      - run:
+          name: Package stable charts
+          command: |
+            mkdir $HOME/stable
+            helm package ./stable/* --destination $HOME/stable
+      - run:
+          name: Publish stable charts
+          # TODO: push charts to gh-pages branch using the eks-bot account
+          command: |
+            if echo "${CIRCLE_TAG}" | grep -Eq "[0-9]+(\.[0-9]+)*(-[a-z]+)?$"; then
+              echo "Publish charts"
+            else
+              echo "Not a release! Skip charts publish"
+            fi
+
+workflows:
+  version: 2
+  stable:
+    jobs:
+      - build-test-push:
+          filters:
+            branches:
+              ignore:
+                - gh-pages

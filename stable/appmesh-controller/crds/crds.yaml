@@ -1,0 +1,382 @@
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: meshes.appmesh.k8s.aws
+spec:
+  group: appmesh.k8s.aws
+  versions:
+    - name: v1beta1
+      served: true
+      storage: true
+    - name: v1alpha1
+      served: true
+      storage: false
+  version: v1beta1
+  scope: Cluster
+  names:
+    plural: meshes
+    singular: mesh
+    kind: Mesh
+    categories:
+      - all
+      - appmesh
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      properties:
+        spec:
+          properties:
+            serviceDiscoveryType:
+              type: string
+              enum:
+                - dns
+        status:
+          properties:
+            meshArn:
+              type: string
+            conditions:
+              type: array
+              items:
+                type: object
+                required:
+                  - type
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - MeshActive
+                  status:
+                    type: string
+                    enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                  lastTransitionTime:
+                    type: string
+                  reason:
+                    type: string
+                  message:
+                    type: string
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: virtualnodes.appmesh.k8s.aws
+spec:
+  group: appmesh.k8s.aws
+  versions:
+    - name: v1beta1
+      served: true
+      storage: true
+    - name: v1alpha1
+      served: true
+      storage: false
+  version: v1beta1
+  scope: Namespaced
+  names:
+    plural: virtualnodes
+    singular: virtualnode
+    kind: VirtualNode
+    categories:
+      - all
+      - appmesh
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      required:
+        - spec
+      properties:
+        spec:
+          required:
+            - meshName
+          properties:
+            meshName:
+              type: string
+            listeners:
+              type: array
+              items:
+                type: object
+                properties:
+                  portMapping:
+                    properties:
+                      port:
+                        type: integer
+                      protocol:
+                        type: string
+                        enum:
+                          - tcp
+                          - http
+                          - grpc
+                          - http2
+                          - https
+                  healthCheck:
+                    properties:
+                      healthyThreshold:
+                        type: integer
+                      intervalMillis:
+                        type: integer
+                      path:
+                        type: string
+                      port:
+                        type: integer
+                      protocol:
+                        type: string
+                        enum:
+                          - tcp
+                          - http
+                      timeoutMillis:
+                        type: integer
+                      unhealthyThreshold:
+                        type: integer
+            serviceDiscovery:
+              type: object
+              properties:
+                cloudMap:
+                  type: object
+                  properties:
+                    serviceName:
+                      type: string
+                    namespaceName:
+                      type: string
+                dns:
+                  type: object
+                  properties:
+                    hostName:
+                      type: string
+            backends:
+              type: array
+              items:
+                oneOf:
+                  - type: object
+                    properties:
+                      backendService:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+            logging:
+              type: object
+              properties:
+                accessLog:
+                  type: object
+                  properties:
+                    file:
+                      type: object
+                      properties:
+                        path:
+                          type: string
+        status:
+          properties:
+            meshArn:
+              type: string
+            virtualNodeArn:
+              type: string
+            conditions:
+              type: array
+              items:
+                type: object
+                required:
+                  - type
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - VirtualNodeActive
+                      - MeshMarkedForDeletion
+                  status:
+                    type: string
+                    enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                  lastTransitionTime:
+                    type: string
+                  reason:
+                    type: string
+                  message:
+                    type: string
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: virtualservices.appmesh.k8s.aws
+spec:
+  group: appmesh.k8s.aws
+  versions:
+    - name: v1beta1
+      served: true
+      storage: true
+    - name: v1alpha1
+      served: true
+      storage: false
+  version: v1beta1
+  scope: Namespaced
+  names:
+    plural: virtualservices
+    singular: virtualservice
+    kind: VirtualService
+    categories:
+      - all
+      - appmesh
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      required:
+        - spec
+      properties:
+        spec:
+          properties:
+            meshName:
+              type: string
+            virtualRouter:
+              type: object
+              properties:
+                name:
+                  type: string
+                listeners:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      portMapping:
+                        properties:
+                          port:
+                            type: integer
+                          protocol:
+                            type: string
+                            enum:
+                              - tcp
+                              - http
+                              - grpc
+                              - http2
+                              - https
+            routes:
+              type: array
+              items:
+                type: object
+                properties:
+                  http:
+                    type: object
+                    properties:
+                      priority:
+                        type: integer
+                      match:
+                        type: object
+                        properties:
+                          prefix:
+                            type: string
+                          method:
+                            type: string
+                          scheme:
+                            type: string
+                          headers:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                invert:
+                                  type: boolean
+                                match:
+                                  type: object
+                                  properties:
+                                    exact:
+                                      type: string
+                                    prefix:
+                                      type: string
+                                    regex:
+                                      type: string
+                                    suffix:
+                                      type: string
+                                    range:
+                                      type: object
+                                      properties:
+                                        start:
+                                          type: integer
+                                        end:
+                                          type: integer
+                      action:
+                        type: object
+                        properties:
+                          weightedTargets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                virtualNodeName:
+                                  type: string
+                                weight:
+                                  type: integer
+                      retryPolicy:
+                        type: object
+                        properties:
+                          perRetryTimeoutMillis:
+                            type: integer
+                          maxRetries:
+                            type: integer
+                          httpRetryEvents:
+                            type: array
+                            items:
+                              type: string
+                          tcpRetryEvents:
+                            type: array
+                            items:
+                              type: string
+                              enum:
+                                - 'connection-error'
+                  tcp:
+                    type: object
+                    properties:
+                      action:
+                        type: object
+                        properties:
+                          weightedTargets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                virtualNodeName:
+                                  type: string
+                                weight:
+                                  type: integer
+        status:
+          properties:
+            virtualServiceArn:
+              type: string
+            virtualRouterArn:
+              type: string
+            routeArns:
+              type: array
+              items:
+                type: string
+            conditions:
+              type: array
+              items:
+                type: object
+                required:
+                  - type
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - VirtualServiceActive
+                      - VirtualRouterActive
+                      - RoutesActive
+                      - MeshMarkedForDeletion
+                  status:
+                    type: string
+                    enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                  lastTransitionTime:
+                    type: string
+                  reason:
+                    type: string
+                  message:
+                    type: string
