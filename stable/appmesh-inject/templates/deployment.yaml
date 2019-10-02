@@ -35,10 +35,12 @@ spec:
             - name: APPMESH_NAME
               value: {{ .Values.mesh.name }}
             - name: APPMESH_LOG_LEVEL
-              value: {{ .Values.logLevel }}
+              value: {{ .Values.sidecar.logLevel }}
           command:
             - ./appmeshinject
             - -sidecar-image={{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}
+            - -sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
+            - -sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
             - -init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
           ports:
             - name: https

@@ -13,7 +13,13 @@ sidecar:
   image:
     repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
     tag: v1.11.1.0-prod
-
+  # sidecar.logLevel: Envoy log level can be info, warn or error
+  logLevel: info
+  resources:
+    # sidecar.resources.requests: Envoy CPU and memory requests
+    requests:
+      cpu: 10m
+      memory: 32Mi
 init:
   image:
     repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
@@ -47,9 +53,6 @@ rbac:
   create: true
   # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
   pspEnabled: false
-
-# logLevel: Can be info, warn or error
-logLevel: info
 
 mesh:
   # mesh.create: `true` if mesh resource should be created
