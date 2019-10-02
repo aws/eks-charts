@@ -54,3 +54,11 @@ rbac:
 
 # logLevel: Can be info, warn or error
 logLevel: info
+
+mesh:
+  # mesh.create: `true` if mesh resource should be created
+  create: false
+  # mesh.name: The name of the mesh to use
+  name: "global"
+  # mesh.discovery: The service discovery type to use, can be dns or cloudmap
+  discovery: dns
