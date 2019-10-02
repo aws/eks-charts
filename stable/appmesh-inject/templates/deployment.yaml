@@ -15,6 +15,8 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "appmesh-inject.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        prometheus.io/scrape: "false"
     spec:
       serviceAccountName: {{ template "appmesh-inject.serviceAccountName" . }}
       volumes:
