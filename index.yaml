@@ -1,0 +1,23 @@
+apiVersion: v1
+entries:
+  appmesh-controller:
+  - apiVersion: v2
+    appVersion: 0.1.2
+    created: "2019-10-02T11:14:37.982999-07:00"
+    description: The AWS App Mesh controller Helm chart for Kubernetes
+    digest: 35323d37d47430bd22a0a4d3241eb599c552c4d1e91072874a180fe1b020c6d6
+    name: appmesh-controller
+    urls:
+    - https://aws.github.io/eks-charts/appmesh-controller-0.1.0.tgz
+    version: 0.1.0
+  appmesh-inject:
+  - apiVersion: v2
+    appVersion: 0.1.6
+    created: "2019-10-02T11:14:37.983705-07:00"
+    description: AWS App Mesh Inject Helm chart for Kubernetes
+    digest: be1853a168524a20a0b0308623d5e5f6cf2540b8c6c64fdf98bcd87a495f331d
+    name: appmesh-inject
+    urls:
+    - https://aws.github.io/eks-charts/appmesh-inject-0.1.0.tgz
+    version: 0.1.0
+generated: "2019-10-02T11:14:37.978714-07:00"
