@@ -5,7 +5,7 @@ metadata:
   labels:
 {{ include "appmesh-inject.labels" . | indent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
     - name: https
       port: 443
