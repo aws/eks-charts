@@ -37,6 +37,26 @@ helm upgrade -i appmesh-inject eks/appmesh-inject \
 --set mesh.name=global
 ```
 
+If you've installed the App Mesh controllers with scripts, you can switch to Helm by
+removing the controllers with:
+```sh
+# remove injector objects
+kubectl delete ns appmesh-inject
+kubectl delete ClusterRoleBinding aws-app-mesh-inject-binding
+kubectl delete ClusterRole aws-app-mesh-inject-cr
+kubectl delete  MutatingWebhookConfiguration aws-app-mesh-inject
+
+# remove controller objects
+kubectl delete ns appmesh-system
+kubectl delete ClusterRoleBinding app-mesh-controller-binding
+kubectl delete ClusterRole app-mesh-controller
+```
+
+**Note** that you shouldn't delete the App Mesh CRDs or the App Mesh custom resources
+(virtual nodes or services) in your cluster.
+Once you've removed the App Mesh controller and injector objects,
+you can proceed with the Helm installation as described above.
+
 ## License
 
 This project is licensed under the Apache-2.0 License.
