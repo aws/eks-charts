@@ -22,7 +22,12 @@ spec:
         configMap:
           name: {{ template "appmesh-prometheus.fullname" . }}
       - name: data-volume
+        {{- if .Values.persistentVolumeClaim.claimName }}
+        persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolumeClaim.claimName }}
+        {{- else }}
         emptyDir: {}
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
