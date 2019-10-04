@@ -57,6 +57,19 @@ kubectl delete ClusterRole app-mesh-controller
 Once you've removed the App Mesh controller and injector objects,
 you can proceed with the Helm installation as described above.
 
+### App Mesh add-ons
+
+Install App Mesh Prometheus:
+
+```sh
+helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
+--namespace appmesh-system \
+--set retention=6h
+```
+
+For Prometheus persistent storage you should create a [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
+and use `--set persistentVolumeClaim.claimName=<PVC-CLAIM-NAME>`.
+
 ## License
 
 This project is licensed under the Apache-2.0 License.

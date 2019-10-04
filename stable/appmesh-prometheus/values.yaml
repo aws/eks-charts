@@ -1,0 +1,50 @@
+# Default values for appmesh-prometheus.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+retention: 6h
+scrapeInterval: 5s
+
+replicaCount: 1
+
+image:
+  repository: prom/prometheus
+  tag: v2.12.0
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 9090
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 2Gi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serviceAccount:
+  # serviceAccount.create: Whether to create a service account or not
+  create: true
+  # serviceAccount.name: The name of the service account to create or use
+  name: ""
+
+rbac:
+  # rbac.create: `true` if rbac resources should be created
+  create: true
+  # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
+  pspEnabled: false
+
+persistentVolumeClaim:
+  # persistentVolumeClaim.claimName: Specify an existing volume claim to be used for Prometheus data
+  claimName: ""
