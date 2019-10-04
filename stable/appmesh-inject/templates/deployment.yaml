@@ -42,6 +42,11 @@ spec:
             - -sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
             - -sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
             - -init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
+            {{- if .Values.tracing.jaeger.enabled }}
+            - -enable-jaeger-tracing=true
+            - -jaeger-address={{ .Values.tracing.jaeger.address }}
+            - -jaeger-port={{ .Values.tracing.jaeger.port }}
+            {{- end }}
           ports:
             - name: https
               containerPort: 8080
