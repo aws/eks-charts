@@ -15,8 +15,10 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "appmesh-prometheus.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
         checksum/config: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum | quote }}
     spec:
+      serviceAccountName: {{ include "appmesh-prometheus.serviceAccountName" . }}
       volumes:
       - name: config-volume
         configMap:
