@@ -1,0 +1,3 @@
+AWS App Mesh Jaeger installed!
+Jaeger UI port: 16686
+Jaeger Zipkin port: 9411
