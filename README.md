@@ -25,7 +25,8 @@ kubectl apply -f https://raw.githubusercontent.com/aws/eks-charts/master/stable/
 Install the App Mesh CRD controller:
 
 ```sh
-helm upgrade -i appmesh-controller eks/appmesh-controller --namespace appmesh-system
+helm upgrade -i appmesh-controller eks/appmesh-controller \
+--namespace appmesh-system
 ```
 
 Install the App Mesh admission controller:
@@ -59,16 +60,77 @@ you can proceed with the Helm installation as described above.
 
 ### App Mesh add-ons
 
+#### Prometheus
+
 Install App Mesh Prometheus:
 
 ```sh
 helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
---namespace appmesh-system \
---set retention=6h
+--namespace appmesh-system
 ```
 
-For Prometheus persistent storage you should create a [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
+Access Prometheus UI on `localhost:9090` with:
+
+```sh
+kubectl -n appmesh-system port-forward svc/appmesh-prometheus 9090:9090
+```
+
+To retain the monitoring data between chart upgrades or node restarts, you can create a 
+[PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims):
+
+```yaml
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus
+  namespace: appmesh-system
+  labels:
+    app.kubernetes.io/name: appmesh-prometheus
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+EOF
+```
+
+Install Prometheus with persistent storage:
+
+```sh
+helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
+--namespace appmesh-system \
+--set retention=12h \
+--set persistentVolumeClaim.claimName=prometheus
+```
+
+#### Jaeger
+
+Install App Mesh Jaeger:
+
+```sh
+helm upgrade -i appmesh-jaeger eks/appmesh-jaeger \
+--namespace appmesh-system
+```
+
+For Jaeger persistent storage you can create a [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
 and use `--set persistentVolumeClaim.claimName=<PVC-CLAIM-NAME>`.
+
+Access Jaeger UI on `localhost:16686` with:
+
+```sh
+kubectl -n appmesh-system port-forward svc/appmesh-jaeger 16686:16686
+```
+
+Enable Jaeger tracing for the App Mesh data plane:
+
+```sh
+helm upgrade -i appmesh-inject eks/appmesh-inject \
+--namespace appmesh-system \
+--set tracing.jaeger.enabled=true
+```
 
 ## License
 
