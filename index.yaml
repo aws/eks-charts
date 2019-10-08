@@ -3,9 +3,9 @@ entries:
   appmesh-controller:
   - apiVersion: v2
     appVersion: 0.1.2
-    created: "2019-10-03T23:23:57.156009-07:00"
+    created: "2019-10-08T07:05:22.449268304Z"
     description: The AWS App Mesh controller Helm chart for Kubernetes
-    digest: 35323d37d47430bd22a0a4d3241eb599c552c4d1e91072874a180fe1b020c6d6
+    digest: 5f98e8c8c09562f1b7f9598d44429fd3d0b64f3b68602bac88bee54960f7a0ea
     name: appmesh-controller
     urls:
     - https://aws.github.io/eks-charts/appmesh-controller-0.1.0.tgz
@@ -13,9 +13,9 @@ entries:
   appmesh-inject:
   - apiVersion: v2
     appVersion: 0.1.6
-    created: "2019-10-03T23:23:57.156543-07:00"
+    created: "2019-10-08T07:05:22.449756942Z"
     description: AWS App Mesh Inject Helm chart for Kubernetes
-    digest: be1853a168524a20a0b0308623d5e5f6cf2540b8c6c64fdf98bcd87a495f331d
+    digest: 1d4f7bdfa4758a4a143acfd7b281a7b2f074f7aff09469e5fe4b3f10d32d9fa5
     name: appmesh-inject
     urls:
     - https://aws.github.io/eks-charts/appmesh-inject-0.1.0.tgz
@@ -23,11 +23,11 @@ entries:
   appmesh-prometheus:
   - apiVersion: v2
     appVersion: 2.12.0
-    created: "2019-10-03T23:23:57.157169-07:00"
+    created: "2019-10-08T07:05:22.450220113Z"
     description: AWS App Mesh Prometheus Helm chart for Kubernetes
-    digest: 2773bdce3a0f8980b16a1ab2dd9deed4321e0b8b01752e9b8b98f92329b113f4
+    digest: d4884ff798d12872b71cbe730bdd826d93aaa7937c3be4c497ad6760ddc4293e
     name: appmesh-prometheus
     urls:
     - https://aws.github.io/eks-charts/appmesh-prometheus-0.1.0.tgz
     version: 0.1.0
-generated: "2019-10-03T23:23:57.154053-07:00"
+generated: "2019-10-08T07:05:22.44860301Z"
