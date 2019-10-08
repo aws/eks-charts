@@ -63,3 +63,5 @@ workflows:
             branches:
               ignore:
                 - gh-pages
+            tags:
+              ignore: /^test.*/
