@@ -5,14 +5,14 @@
 replicaCount: 1
 
 image:
-  repository: stefanprodan/aws-app-mesh-inject
-  tag: jaeger.9
+  repository: 602401143452.dkr.ecr.REGION.amazonaws.com/amazon/aws-app-mesh-inject
+  tag: v0.1.7
   pullPolicy: IfNotPresent
 
 sidecar:
   image:
-    repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
-    tag: v1.11.1.0-prod
+    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
+    tag: v1.11.2.0-prod
   # sidecar.logLevel: Envoy log level can be info, warn or error
   logLevel: info
   resources:
