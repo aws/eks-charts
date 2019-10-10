@@ -63,10 +63,11 @@ mesh:
   discovery: dns
 
 tracing:
-  jaeger:
-    # tracing.jaeger.enabled: `true` if the Envoy sidecar should be configured with Jaeger tracing
-    enabled: false
-    # tracing.jaeger.address: Jaeger server address
-    address: appmesh-jaeger.appmesh-system
-    # tracing.jaeger.port: Jaeger Zipkin port
-    port: 9411
+  # tracing.enabled: `true` if Envoy should be configured tracing
+  enabled: false
+  # tracing.provider: can be x-ray or jaeger
+  provider: x-ray
+  # tracing.address: Jaeger server address (ignored for X-Ray)
+  address: appmesh-jaeger.appmesh-system
+  # tracing.address: Jaeger Zipkin port (ignored for X-Ray)
+  port: 9411

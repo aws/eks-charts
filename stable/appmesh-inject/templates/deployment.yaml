@@ -42,10 +42,13 @@ spec:
             - -sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
             - -sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
             - -init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
-            {{- if .Values.tracing.jaeger.enabled }}
+            {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
+            - -inject-xray-sidecar=true
+            {{- end }}
+            {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "jaeger" ) }}
             - -enable-jaeger-tracing=true
-            - -jaeger-address={{ .Values.tracing.jaeger.address }}
-            - -jaeger-port={{ .Values.tracing.jaeger.port }}
+            - -jaeger-address={{ .Values.tracing.address }}
+            - -jaeger-port={{ .Values.tracing.port }}
             {{- end }}
           ports:
             - name: https

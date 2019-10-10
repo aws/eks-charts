@@ -106,6 +106,20 @@ helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
 --set persistentVolumeClaim.claimName=prometheus
 ```
 
+#### AWS X-Ray 
+
+Enable X-Ray tracing for the App Mesh data plane:
+
+```sh
+helm upgrade -i appmesh-inject eks/appmesh-inject \
+--namespace appmesh-system \
+--set tracing.enabled=true \
+--set tracing.provider=x-ray
+```
+
+The above configuration will inject the AWS X-Ray daemon sidecar in each pod scheduled to run on the mesh.
+**Note** that you should restart all pods running inside the mesh after enabling tracing.
+
 #### Jaeger
 
 Install App Mesh Jaeger:
@@ -129,8 +143,13 @@ Enable Jaeger tracing for the App Mesh data plane:
 ```sh
 helm upgrade -i appmesh-inject eks/appmesh-inject \
 --namespace appmesh-system \
---set tracing.jaeger.enabled=true
+--set tracing.enabled=true \
+--set tracing.provider=jaeger \
+--set tracing.address=appmesh-jaeger.appmesh-system \
+--set tracing.port=9411
 ```
+
+**Note** that you should restart all pods running inside the mesh after enabling tracing.
 
 ## License
 
