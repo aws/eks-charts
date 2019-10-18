@@ -35,22 +35,28 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
+            # agent: accept zipkin.thrift over compact thrift protocol (deprecated, used by legacy clients only)
             - containerPort: 5775
               protocol: UDP
+            # agent: accept jaeger.thrift over compact thrift protocol
             - containerPort: 6831
               protocol: UDP
+            # agent: accept jaeger.thrift over binary thrift protocol
             - containerPort: 6832
               protocol: UDP
+            # collector: Zipkin compatible endpoint
             - containerPort: 9411
               protocol: TCP
+            # query: serve frontend
             - containerPort: 16686
               protocol: TCP
-            - containerPort: 14250
+            # agent: serve configs
+            - containerPort: 5778
               protocol: TCP
-            - containerPort: 14267
-              protocol: TCP
+            # collector: accept jaeger.thrift directly from clients
             - containerPort: 14268
               protocol: TCP
+            # collector: Health Check server
             - containerPort: 14269
               protocol: TCP
           env:
