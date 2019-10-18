@@ -60,7 +60,7 @@ you can proceed with the Helm installation as described above.
 
 ### App Mesh add-ons
 
-#### Prometheus
+#### Prometheus monitoring
 
 Install App Mesh Prometheus:
 
@@ -120,7 +120,7 @@ helm upgrade -i appmesh-inject eks/appmesh-inject \
 The above configuration will inject the AWS X-Ray daemon sidecar in each pod scheduled to run on the mesh.
 **Note** that you should restart all pods running inside the mesh after enabling tracing.
 
-#### Jaeger
+#### Jaeger tracing
 
 Install App Mesh Jaeger:
 
@@ -147,6 +147,21 @@ helm upgrade -i appmesh-inject eks/appmesh-inject \
 --set tracing.provider=jaeger \
 --set tracing.address=appmesh-jaeger.appmesh-system \
 --set tracing.port=9411
+```
+
+**Note** that you should restart all pods running inside the mesh after enabling tracing.
+
+#### Datadog tracing
+
+Install the Datadog agent in the `appmesh-system` namespace and enable tracing for the App Mesh data plane:
+
+```sh
+helm upgrade -i appmesh-inject eks/appmesh-inject \
+--namespace appmesh-system \
+--set tracing.enabled=true \
+--set tracing.provider=datadog \
+--set tracing.address=datadog.appmesh-system \
+--set tracing.port=8126
 ```
 
 **Note** that you should restart all pods running inside the mesh after enabling tracing.

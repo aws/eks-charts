@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: 602401143452.dkr.ecr.REGION.amazonaws.com/amazon/aws-app-mesh-inject
+  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-app-mesh-inject
   tag: v0.2.0
   pullPolicy: IfNotPresent
 
@@ -65,9 +65,9 @@ mesh:
 tracing:
   # tracing.enabled: `true` if Envoy should be configured tracing
   enabled: false
-  # tracing.provider: can be x-ray or jaeger
+  # tracing.provider: can be x-ray, jaeger or datadog
   provider: x-ray
-  # tracing.address: Jaeger server address (ignored for X-Ray)
+  # tracing.address: Jaeger or Datadog agent server address (ignored for X-Ray)
   address: appmesh-jaeger.appmesh-system
-  # tracing.address: Jaeger Zipkin port (ignored for X-Ray)
+  # tracing.address: Jaeger or Datadog agent server port (ignored for X-Ray)
   port: 9411

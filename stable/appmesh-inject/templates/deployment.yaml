@@ -50,6 +50,11 @@ spec:
             - -jaeger-address={{ .Values.tracing.address }}
             - -jaeger-port={{ .Values.tracing.port }}
             {{- end }}
+            {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "datadog" ) }}
+            - -enable-datadog-tracing=true
+            - -datadog-address={{ .Values.tracing.address }}
+            - -datadog-port={{ .Values.tracing.port }}
+            {{- end }}
           ports:
             - name: https
               containerPort: 8080
