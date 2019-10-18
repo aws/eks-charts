@@ -6,13 +6,13 @@ replicaCount: 1
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-app-mesh-inject
-  tag: v0.1.6
+  tag: v0.2.0
   pullPolicy: IfNotPresent
 
 sidecar:
   image:
-    repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
-    tag: v1.11.1.0-prod
+    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
+    tag: v1.11.2.0-prod
   # sidecar.logLevel: Envoy log level can be info, warn or error
   logLevel: info
   resources:
@@ -61,3 +61,13 @@ mesh:
   name: "global"
   # mesh.discovery: The service discovery type to use, can be dns or cloudmap
   discovery: dns
+
+tracing:
+  # tracing.enabled: `true` if Envoy should be configured tracing
+  enabled: false
+  # tracing.provider: can be x-ray, jaeger or datadog
+  provider: x-ray
+  # tracing.address: Jaeger or Datadog agent server address (ignored for X-Ray)
+  address: appmesh-jaeger.appmesh-system
+  # tracing.address: Jaeger or Datadog agent server port (ignored for X-Ray)
+  port: 9411

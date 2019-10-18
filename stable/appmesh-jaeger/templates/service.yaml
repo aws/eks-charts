@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "appmesh-jaeger.fullname" . }}
+  labels:
+{{ include "appmesh-jaeger.labels" . | indent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9411
+      targetPort: 9411
+      protocol: TCP
+      name: http-zipkin
+    - port: 16686
+      targetPort: 16686
+      protocol: TCP
+      name: http-ui
+  selector:
+    app.kubernetes.io/name: {{ include "appmesh-jaeger.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
