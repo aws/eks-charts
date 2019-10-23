@@ -1,6 +1,6 @@
 # App Mesh Jaeger
 
-App Mesh Jaeger Helm chart for Amazon EKS
+App Mesh Jaeger Helm chart for Kubernetes
 
 ## Prerequisites
 

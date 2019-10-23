@@ -1,6 +1,6 @@
 # App Mesh Inject
 
-App Mesh inject Helm chart for Amazon EKS
+App Mesh inject Helm chart for Kubernetes
 
 ## Prerequisites
 

@@ -1,6 +1,6 @@
 # App Mesh Controller
 
-App Mesh controller Helm chart for Amazon EKS
+App Mesh controller Helm chart for Kubernetes
 
 ## Prerequisites
 

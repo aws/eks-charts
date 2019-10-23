@@ -1,6 +1,6 @@
 # App Mesh Prometheus
 
-App Mesh Prometheus Helm chart for Amazon EKS
+App Mesh Prometheus Helm chart for Kubernetes
 
 ## Prerequisites
 
