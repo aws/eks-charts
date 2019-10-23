@@ -1,70 +1,99 @@
 apiVersion: v1
 entries:
   appmesh-controller:
-  - apiVersion: v2
+  - apiVersion: v1
     appVersion: 0.2.0
-    created: "2019-10-18T06:08:41.917721146Z"
-    description: The AWS App Mesh controller Helm chart for Kubernetes
-    digest: ba9770a8c949c87de81f2dbe4b32210e83373f8778b9502c22eb1521ba9c7fc3
+    created: "2019-10-23T20:17:58.202120691Z"
+    description: App Mesh controller Helm chart for Kubernetes
+    digest: ac94fb27f1c99ee693fb82861813a1777493c93d19d251d37539b7956e6fe5b0
+    home: https://github.com/aws/eks-charts
+    icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
+    keywords:
+    - eks
+    - appmesh
+    maintainers:
+    - email: nckturner@users.noreply.github.com
+      name: Nicholas Turner
+      url: https://github.com/nckturner
+    - email: stefanprodan@users.noreply.github.com
+      name: Stefan Prodan
+      url: https://github.com/stefanprodan
     name: appmesh-controller
+    sources:
+    - https://github.com/aws/eks-charts
     urls:
-    - https://aws.github.io/eks-charts/appmesh-controller-0.2.0.tgz
-    version: 0.2.0
-  - apiVersion: v2
-    appVersion: 0.1.2
-    created: "2019-10-18T06:08:41.917277887Z"
-    description: The AWS App Mesh controller Helm chart for Kubernetes
-    digest: 5f98e8c8c09562f1b7f9598d44429fd3d0b64f3b68602bac88bee54960f7a0ea
-    name: appmesh-controller
-    urls:
-    - https://aws.github.io/eks-charts/appmesh-controller-0.1.0.tgz
-    version: 0.1.0
+    - https://aws.github.io/eks-charts/appmesh-controller-0.3.0.tgz
+    version: 0.3.0
   appmesh-inject:
-  - apiVersion: v2
+  - apiVersion: v1
     appVersion: 0.2.0
-    created: "2019-10-18T06:08:41.918582029Z"
-    description: AWS App Mesh Inject Helm chart for Kubernetes
-    digest: 6c2aa674547eabd03e2395d5b4e47f861fe727fd0d4c1a03282f4a38bb075833
+    created: "2019-10-23T20:17:58.203301444Z"
+    description: App Mesh Inject Helm chart for Kubernetes
+    digest: 17c2fa2959f1785bd664a4bf9d556cc7c1ef5bcb414a5c47872a4d61d30354c2
+    home: https://github.com/aws/eks-charts
+    icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
+    keywords:
+    - eks
+    - appmesh
+    maintainers:
+    - email: nckturner@users.noreply.github.com
+      name: Nicholas Turner
+      url: https://github.com/nckturner
+    - email: stefanprodan@users.noreply.github.com
+      name: Stefan Prodan
+      url: https://github.com/stefanprodan
     name: appmesh-inject
+    sources:
+    - https://github.com/aws/eks-charts
     urls:
-    - https://aws.github.io/eks-charts/appmesh-inject-0.2.0.tgz
-    version: 0.2.0
-  - apiVersion: v2
-    appVersion: 0.1.6
-    created: "2019-10-18T06:08:41.918146188Z"
-    description: AWS App Mesh Inject Helm chart for Kubernetes
-    digest: 1d4f7bdfa4758a4a143acfd7b281a7b2f074f7aff09469e5fe4b3f10d32d9fa5
-    name: appmesh-inject
-    urls:
-    - https://aws.github.io/eks-charts/appmesh-inject-0.1.0.tgz
-    version: 0.1.0
+    - https://aws.github.io/eks-charts/appmesh-inject-0.3.0.tgz
+    version: 0.3.0
   appmesh-jaeger:
-  - apiVersion: v2
+  - apiVersion: v1
     appVersion: 1.14.0
-    created: "2019-10-18T06:08:41.918945341Z"
-    description: AWS App Mesh Jaeger Helm chart for Kubernetes
-    digest: ce00bdd468baf94146f49d9025e771eb3b92655bf877c49e3e8e2570ff950b49
+    created: "2019-10-23T20:17:58.20394051Z"
+    description: App Mesh Jaeger Helm chart for Kubernetes
+    digest: 62838e720c6192dafdf331e6ffe29d1827bbd978ef6459d899fe5d181e60fff9
+    home: https://github.com/aws/eks-charts
+    icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
+    keywords:
+    - eks
+    - appmesh
+    maintainers:
+    - email: nckturner@users.noreply.github.com
+      name: Nicholas Turner
+      url: https://github.com/nckturner
+    - email: stefanprodan@users.noreply.github.com
+      name: Stefan Prodan
+      url: https://github.com/stefanprodan
     name: appmesh-jaeger
+    sources:
+    - https://github.com/aws/eks-charts
     urls:
-    - https://aws.github.io/eks-charts/appmesh-jaeger-0.1.0.tgz
-    version: 0.1.0
-  appmesh-prometheus:
-  - apiVersion: v2
-    appVersion: 2.12.0
-    created: "2019-10-18T06:08:41.91987718Z"
-    description: AWS App Mesh Prometheus Helm chart for Kubernetes
-    digest: 0bf44cb20543ef9c4b502262e6038b02619c69a6c8d96e1775038ca464bc0261
-    name: appmesh-prometheus
-    urls:
-    - https://aws.github.io/eks-charts/appmesh-prometheus-0.2.0.tgz
+    - https://aws.github.io/eks-charts/appmesh-jaeger-0.2.0.tgz
     version: 0.2.0
-  - apiVersion: v2
-    appVersion: 2.12.0
-    created: "2019-10-18T06:08:41.919433741Z"
-    description: AWS App Mesh Prometheus Helm chart for Kubernetes
-    digest: d4884ff798d12872b71cbe730bdd826d93aaa7937c3be4c497ad6760ddc4293e
+  appmesh-prometheus:
+  - apiVersion: v1
+    appVersion: 2.13.1
+    created: "2019-10-23T20:17:58.205382545Z"
+    description: App Mesh Prometheus Helm chart for Kubernetes
+    digest: 634a9eae494fb6b1881611603d2b4266eca27654143e03fb6faaf607298c8581
+    home: https://github.com/aws/eks-charts
+    icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
+    keywords:
+    - eks
+    - appmesh
+    maintainers:
+    - email: nckturner@users.noreply.github.com
+      name: Nicholas Turner
+      url: https://github.com/nckturner
+    - email: stefanprodan@users.noreply.github.com
+      name: Stefan Prodan
+      url: https://github.com/stefanprodan
     name: appmesh-prometheus
+    sources:
+    - https://github.com/aws/eks-charts
     urls:
-    - https://aws.github.io/eks-charts/appmesh-prometheus-0.1.0.tgz
-    version: 0.1.0
-generated: "2019-10-18T06:08:41.916589384Z"
+    - https://aws.github.io/eks-charts/appmesh-prometheus-0.3.0.tgz
+    version: 0.3.0
+generated: "2019-10-23T20:17:58.200837188Z"
