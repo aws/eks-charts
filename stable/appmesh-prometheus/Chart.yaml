@@ -1,8 +1,8 @@
 apiVersion: v1
 name: appmesh-prometheus
 description: App Mesh Prometheus Helm chart for Amazon EKS
-version: 0.2.0
-appVersion: 2.12.0
+version: 0.3.0
+appVersion: 2.13.1
 home: https://github.com/aws/eks-charts
 icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/amazon-eks.png
 sources:
