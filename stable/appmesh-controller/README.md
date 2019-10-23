@@ -5,6 +5,32 @@ App Mesh controller Helm chart for Amazon EKS
 ## Prerequisites
 
 * Kubernetes >= 1.13
+* IAM policies
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "appmesh:*",
+                "servicediscovery:CreateService",
+                "servicediscovery:GetService",
+                "servicediscovery:RegisterInstance",
+                "servicediscovery:DeregisterInstance",
+                "servicediscovery:ListInstances",
+                "route53:GetHealthCheck",
+                "route53:CreateHealthCheck",
+                "route53:UpdateHealthCheck",
+                "route53:ChangeResourceRecordSets",
+                "route53:DeleteHealthCheck"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
 
 ## Installing the Chart
 
