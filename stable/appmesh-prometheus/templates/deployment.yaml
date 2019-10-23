@@ -32,6 +32,15 @@ spec:
         {{- else }}
         emptyDir: {}
         {{- end }}
+      initContainers:
+        - name: chown
+          image: alpine:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - chown 65534:65534 /mount;
+          volumeMounts:
+            - name: data-volume
+              mountPath: /mount
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -51,6 +60,10 @@ spec:
             httpGet:
               path: /-/ready
               port: http
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
           volumeMounts:
             - name: config-volume
               mountPath: /etc/prometheus
