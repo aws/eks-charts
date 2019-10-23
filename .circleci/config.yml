@@ -16,22 +16,34 @@ jobs:
             curl -L https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz | tar xz && sudo mv kubeval /bin/kubeval
       - run:
           name: Install helm
-          command: curl -L https://storage.googleapis.com/kubernetes-helm/helm-v2.14.3-linux-amd64.tar.gz | tar xz && sudo mv linux-amd64/helm /bin/helm && sudo rm -rf linux-amd64
+          command: curl -L https://storage.googleapis.com/kubernetes-helm/helm-v2.15.0-linux-amd64.tar.gz | tar xz && sudo mv linux-amd64/helm /bin/helm && sudo rm -rf linux-amd64
       - run:
           name: Initialize helm
           command:  helm init --client-only --kubeconfig=$HOME/.kube/kubeconfig
+      - run:
+          name: Install helmv3
+          command: curl -sSL https://get.helm.sh/helm-v3.0.0-beta.5-linux-amd64.tar.gz | tar xz && sudo mv linux-amd64/helm /bin/helmv3 && sudo rm -rf linux-amd64
       - run:
           name: Lint stable charts
           command: |
             helm lint ./stable/*
       - run:
-          name: Validate stable charts
+          name: Validate stable charts with Helm v2
           command: |
             STABLE="$(git rev-parse --show-toplevel)/stable"
             cd ${STABLE}
             for d in */; do
               echo "Validating chart ${d}"
               helm template ${STABLE}/${d} | kubeval --strict --ignore-missing-schemas
+            done
+      - run:
+          name: Validate stable charts with Helm v3
+          command: |
+            STABLE="$(git rev-parse --show-toplevel)/stable"
+            cd ${STABLE}
+            for d in */; do
+              echo "Validating chart ${d}"
+              helmv3 template ${STABLE}/${d} | kubeval --strict --ignore-missing-schemas
             done
       - run:
           name: Package stable charts
