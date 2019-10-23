@@ -1,0 +1,64 @@
+# App Mesh Controller
+
+App Mesh controller Helm chart for Amazon EKS
+
+## Prerequisites
+
+* Kubernetes >= 1.13
+
+## Installing the Chart
+
+Add the EKS repository to Helm:
+
+```sh
+helm repo add eks https://aws.github.io/eks-charts
+```
+
+Install the App Mesh CRDs:
+
+```sh
+kubectl apply -k github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=master
+```
+
+Install the App Mesh CRD controller:
+
+```sh
+helm upgrade -i appmesh-controller eks/appmesh-controller \
+--namespace appmesh-system
+```
+
+The [configuration](#configuration) section lists the parameters that can be configured during installation.
+
+## Uninstalling the Chart
+
+To uninstall/delete the `appmesh-controller` deployment:
+
+```console
+$ helm delete --purge appmesh-controller
+```
+
+The command removes all the Kubernetes components associated with the chart and deletes the release.
+
+## Configuration
+
+The following tables lists the configurable parameters of the chart and their default values.
+
+Parameter | Description | Default
+--- | --- | ---
+`image.repository` | image repository | ` 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/app-mesh-controller`
+`image.tag` | image tag | `<VERSION>`
+`image.pullPolicy` | image pull policy | `IfNotPresent`
+`resources.requests/cpu` | pod CPU request | `100m`
+`resources.requests/memory` | pod memory request | `64Mi`
+`resources.limits/cpu` | pod CPU limit | `2000m`
+`resources.limits/memory` | pod memory limit | `1Gi`
+`affinity` | node/pod affinities | None
+`nodeSelector` | node labels for pod assignment | `{}`
+`tolerations` | list of node taints to tolerate | `[]`
+`rbac.create` | if `true`, create and use RBAC resources | `true`
+`rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
+`serviceAccount.create` | If `true`, create a new service account | `true`
+`serviceAccount.name` | Service account to be used | None
+
+
+
