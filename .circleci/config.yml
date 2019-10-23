@@ -69,11 +69,25 @@ jobs:
               echo "Not a release! Skip charts publish"
             fi
 
+  e2e-appmesh:
+    machine: true
+    steps:
+      - checkout
+      - run: test/setup-kind.sh
+      - run: test/e2e-appmesh.sh
+
 workflows:
   version: 2
   stable:
     jobs:
       - build-test-push:
+          filters:
+            branches:
+              ignore:
+                - gh-pages
+            tags:
+              ignore: /^test.*/
+      -  e2e-appmesh:
           filters:
             branches:
               ignore:
