@@ -22,7 +22,7 @@ jobs:
           command:  helm init --client-only --kubeconfig=$HOME/.kube/kubeconfig
       - run:
           name: Install helmv3
-          command: curl -L curl -sSL https://get.helm.sh/helm-v3.0.0-beta.5-linux-amd64.tar.gz | tar xz && sudo mv linux-amd64/helm /bin/helmv3 && sudo rm -rf linux-amd64
+          command: curl -sSL https://get.helm.sh/helm-v3.0.0-beta.5-linux-amd64.tar.gz | tar xz && sudo mv linux-amd64/helm /bin/helmv3 && sudo rm -rf linux-amd64
       - run:
           name: Lint stable charts
           command: |
