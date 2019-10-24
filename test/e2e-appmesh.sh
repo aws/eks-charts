@@ -18,7 +18,7 @@ trap finish EXIT
 
 function prepare {
   kubectl create ns $1
-  kubectl apply -k ./stable/appmesh-controller/crds
+  kubectl apply -k ${REPO_ROOT}/stable/appmesh-controller/crds
 }
 
 function install {
@@ -33,12 +33,13 @@ function install {
 }
 
 function waitForDeploy {
-  echo ">>> Waiting for deployment $1 "
+  chartName=$(basename $1)
+  echo ">>> Waiting for deployment $chartName "
   retries=10
   count=0
   ok=false
   until ${ok}; do
-    kubectl -n $2 describe deployment/$1 && ok=true || ok=false
+    kubectl -n $2 describe deployment/$chartName && ok=true || ok=false
     echo -n '.'
     sleep 5
     count=$(($count + 1))
@@ -48,7 +49,7 @@ function waitForDeploy {
     fi
   done
   echo ""
-  kubectl -n $2 rollout status deployment/$1 --timeout=1m || true
+  kubectl -n $2 rollout status deployment/$chartName --timeout=30s || true
 }
 
 prepare $namespace
