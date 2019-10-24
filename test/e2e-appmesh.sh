@@ -22,7 +22,14 @@ function prepare {
 }
 
 function install {
-  helm upgrade -i $1 ./stable/$1 --namespace $2
+  chartName=$(basename $1)
+  testValues="$1/ci/values.yaml"
+
+  if test -f "$testValues"; then
+    helm upgrade -i $chartName $1 --namespace $2 -f $testValues
+  else
+    helm upgrade -i $chartName $1 --namespace $2
+  fi
 }
 
 function waitForDeploy {
@@ -37,7 +44,7 @@ function waitForDeploy {
     count=$(($count + 1))
     if [[ ${count} -eq ${retries} ]]; then
       echo ' No more retries left'
-      break
+      exit 1
     fi
   done
   echo ""
