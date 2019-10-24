@@ -73,8 +73,15 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: test/lib/kind.sh
-      - run: test/e2e/appmesh.sh
+      - run:
+          name: Install Kubernetes Kind
+          command: test/lib/kind.sh
+      - run:
+          name: Install BATS
+          command: test/lib/bats.sh
+      - run:
+          name: Run App Mesh tests
+          command: test/run.sh
 
 workflows:
   version: 2
