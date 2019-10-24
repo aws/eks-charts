@@ -73,8 +73,8 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: test/setup-kind.sh
-      - run: test/e2e-appmesh.sh
+      - run: test/lib/kind.sh
+      - run: test/e2e/appmesh.sh
 
 workflows:
   version: 2
