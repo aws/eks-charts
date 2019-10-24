@@ -1,3 +1,6 @@
+# CI testing values for appmesh-controller.
+
+region: us-west-2
 image:
   repository: stefanprodan/aws-app-mesh-controller-for-k8s
   tag: v0.2.0

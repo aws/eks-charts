@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+region: ""
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/app-mesh-controller

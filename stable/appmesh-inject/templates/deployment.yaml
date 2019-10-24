@@ -56,6 +56,9 @@ spec:
             - -datadog-address={{ .Values.tracing.address }}
             - -datadog-port={{ .Values.tracing.port }}
             {{- end }}
+            {{- if .Values.region }}
+            - -region={{ .Values.region }}
+            {{- end }}
           ports:
             - name: https
               containerPort: 8080
