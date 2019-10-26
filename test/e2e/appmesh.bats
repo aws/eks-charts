@@ -4,8 +4,11 @@
 
 set -o errexit
 
-export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
 export REPO_ROOT=$(git rev-parse --show-toplevel)
+
+if [[ "${KUBECONFIG}" == "" ]]; then
+  export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+fi
 
 namespace=appmesh-system
 charts=${REPO_ROOT}/stable
