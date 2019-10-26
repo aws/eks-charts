@@ -69,13 +69,27 @@ jobs:
               echo "Not a release! Skip charts publish"
             fi
 
-  e2e-appmesh:
+  e2e-helmv2:
     machine: true
     steps:
       - checkout
       - run:
-          name: Install Kubernetes Kind
-          command: test/lib/kind.sh
+          name: Install Kubernetes Kind and Helm v2
+          command: HELM_MODE=v2 test/lib/kind.sh
+      - run:
+          name: Install BATS
+          command: test/lib/bats.sh
+      - run:
+          name: Run App Mesh tests
+          command: test/run.sh
+
+  e2e-helmv3:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Install Kubernetes Kind and Helm v3
+          command: HELM_MODE=v3 test/lib/kind.sh
       - run:
           name: Install BATS
           command: test/lib/bats.sh
@@ -94,10 +108,17 @@ workflows:
                 - gh-pages
             tags:
               ignore: /^test.*/
-      -  e2e-appmesh:
+      -  e2e-helmv2:
+          requires:
+            - build-test-push
           filters:
             branches:
               ignore:
                 - gh-pages
-            tags:
-              ignore: /^test.*/
+      -  e2e-helmv3:
+           requires:
+             - build-test-push
+           filters:
+             branches:
+               ignore:
+                 - gh-pages
