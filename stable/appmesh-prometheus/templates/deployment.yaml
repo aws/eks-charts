@@ -17,6 +17,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "appmesh-prometheus.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/part-of: appmesh
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum | quote }}
     spec:

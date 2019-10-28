@@ -1,0 +1,8 @@
+# CI testing values for appmesh-inject.
+
+region: us-west-2
+image:
+  repository: stefanprodan/aws-app-mesh-inject
+  tag: v0.2.0
+  pullPolicy: IfNotPresent
+

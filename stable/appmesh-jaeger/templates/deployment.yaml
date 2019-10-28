@@ -17,6 +17,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "appmesh-jaeger.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/part-of: appmesh
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "14269"

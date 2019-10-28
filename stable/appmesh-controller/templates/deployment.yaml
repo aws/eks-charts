@@ -15,6 +15,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "appmesh-controller.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/part-of: appmesh
       annotations:
         prometheus.io/scrape: "true"
     spec:
@@ -26,6 +27,11 @@ spec:
           ports:
             - name: http
               containerPort: 10555
+          command:
+            - /bin/app-mesh-controller
+            {{- if .Values.region }}
+            - --aws-region={{ .Values.region }}
+            {{- end }}
           livenessProbe:
             exec:
               command:
