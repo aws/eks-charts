@@ -1,0 +1,115 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: {{ include "aws-vpc-cni.fullname" . }}
+  labels:
+{{ include "aws-vpc-cni.labels" . | indent 4 }}
+spec:
+  updateStrategy:
+{{ toYaml .Values.updateStrategy | indent 4 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "aws-vpc-cni.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      {{- if .Values.podAnnotations }}
+      annotations:
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ include "aws-vpc-cni.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        k8s-app: aws-node
+    spec:
+      priorityClassName: "{{ .Values.priorityClassName }}"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "beta.kubernetes.io/os"
+                    operator: In
+                    values:
+                      - linux
+                  - key: "beta.kubernetes.io/arch"
+                    operator: In
+                    values:
+                      - amd64
+      serviceAccountName: {{ template "aws-vpc-cni.serviceAccountName" . }}
+      hostNetwork: true
+      tolerations:
+        - operator: Exists
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: aws-node
+          image: "{{- if .Values.image.override }}{{- .Values.image.override }}{{- else }}602401143452.dkr.ecr.{{- .Values.image.region }}.amazonaws.com/amazon-k8s-cni:{{- .Values.image.tag }}{{- end}}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 61678
+              name: metrics
+{{- if .Values.probesEnabled }}
+          readinessProbe:
+            initialDelaySeconds: 25
+            exec:
+              command: ["/app/grpc_health_probe", "-addr=:50051"]
+          livenessProbe:
+            initialDelaySeconds: 25
+            exec:
+              command: ["/app/grpc_health_probe", "-addr=:50051"]
+{{- end }}
+          env:
+{{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+{{- end }}
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          volumeMounts:
+            - mountPath: /host/opt/cni/bin
+              name: cni-bin-dir
+            - mountPath: /host/etc/cni/net.d
+              name: cni-net-dir
+            - mountPath: /host/var/log
+              name: log-dir
+            - mountPath: /var/run/docker.sock
+              name: dockersock
+      volumes:
+        - name: cni-bin-dir
+          hostPath:
+            path: /opt/cni/bin
+        - name: cni-net-dir
+          hostPath:
+            path: /etc/cni/net.d
+        - name: log-dir
+          hostPath:
+            path: /var/log
+        - name: dockersock
+          hostPath:
+            path: /var/run/docker.sock
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
