@@ -24,6 +24,32 @@ helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
 For Prometheus persistent storage you can create a [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
 and use `--set persistentVolumeClaim.claimName=<PVC-CLAIM-NAME>`.
 
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus
+  namespace: appmesh-system
+  labels:
+    app.kubernetes.io/name: appmesh-prometheus
+spec:
+  storageClassName: gp2
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+EOF
+```
+
+```
+helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
+--namespace appmesh-system \
+--set retention=12h \
+--set persistentVolumeClaim.claimName=prometheus
+```
+
 The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 ## Uninstalling the Chart
@@ -56,4 +82,6 @@ Parameter | Description | Default
 `rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | None
+`retention` |  When to remove old data | `6h`
+`scrapeInterval` |  Interval between consecutive scrapes | `5s`
 `persistentVolumeClaim.claimName` |  Specify an existing volume claim to be used for Prometheus data | None
