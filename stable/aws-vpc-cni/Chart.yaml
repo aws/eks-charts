@@ -17,7 +17,7 @@ maintainers:
   - name: Nicholas Turner
     url: https://github.com/nckturner
     email: nckturner@users.noreply.github.com
-  - name: Stefan Prodan
-    url: https://github.com/stefanprodan
-    email: stefanprodan@users.noreply.github.com
+  - name: Claes Mogren
+    url: https://github.com/mogren
+    email: mogren@users.noreply.github.com
 engine: gotpl
