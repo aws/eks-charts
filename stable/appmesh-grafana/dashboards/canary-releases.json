@@ -19,7 +19,8 @@
   "links": [],
   "panels": [
     {
-      "content": "<div class=\"dashboard-header text-center\">\n<span>RED: $canary.$namespace</span>\n</div>",
+      "content": "<div class=\"dashboard-header text-center\">\n<span>RED: $workload.$namespace</span>\n</div>",
+      "datasource": null,
       "gridPos": {
         "h": 3,
         "w": 24,
@@ -29,6 +30,7 @@
       "id": 89,
       "links": [],
       "mode": "html",
+      "options": {},
       "title": "",
       "transparent": true,
       "type": "text"
@@ -74,6 +76,7 @@
       "maxDataPoints": 100,
       "nullPointMode": "connected",
       "nullText": null,
+      "options": {},
       "postfix": "",
       "postfixFontSize": "50%",
       "prefix": "",
@@ -94,7 +97,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "round(sum(rate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$primary\"}[30s])), 0.001)",
+          "expr": "round(sum(rate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$workload-primary\"}[30s])), 0.001)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -104,7 +107,6 @@
       ],
       "thresholds": "",
       "title": "Primary: Incoming Request Volume",
-      "transparent": false,
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -158,6 +160,7 @@
       "maxDataPoints": 100,
       "nullPointMode": "connected",
       "nullText": null,
+      "options": {},
       "postfix": "",
       "postfixFontSize": "50%",
       "prefix": "",
@@ -178,7 +181,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(irate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$primary\",envoy_response_code!~\"5.*\"}[30s])) / sum(irate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$primary\"}[30s]))",
+          "expr": "sum(irate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$workload-primary\",envoy_response_code!~\"5.*\"}[30s])) / sum(irate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$workload-primary\"}[30s]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -187,7 +190,6 @@
       ],
       "thresholds": "95, 99, 99.5",
       "title": "Incoming Success Rate",
-      "transparent": false,
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -240,6 +242,7 @@
       "maxDataPoints": 100,
       "nullPointMode": "connected",
       "nullText": null,
+      "options": {},
       "postfix": "",
       "postfixFontSize": "50%",
       "prefix": "",
@@ -260,7 +263,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "round(sum(rate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$canary\"}[30s])), 0.001)",
+          "expr": "round(sum(rate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$workload\"}[30s])), 0.001)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -270,7 +273,6 @@
       ],
       "thresholds": "",
       "title": "Canary: Incoming Request Volume",
-      "transparent": false,
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -324,6 +326,7 @@
       "maxDataPoints": 100,
       "nullPointMode": "connected",
       "nullText": null,
+      "options": {},
       "postfix": "",
       "postfixFontSize": "50%",
       "prefix": "",
@@ -344,7 +347,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(irate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$canary\",envoy_response_code!~\"5.*\"}[30s])) / sum(irate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$canary\"}[30s]))",
+          "expr": "sum(irate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$workload\",envoy_response_code!~\"5.*\"}[30s])) / sum(irate(envoy_cluster_upstream_rq{kubernetes_namespace=~\"$namespace\",app=~\"$workload\"}[30s]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -353,7 +356,6 @@
       ],
       "thresholds": "95, 99, 99.5",
       "title": "Incoming Success Rate",
-      "transparent": false,
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -372,6 +374,7 @@
       "dashes": false,
       "datasource": "prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 4,
         "w": 12,
@@ -396,6 +399,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -406,7 +412,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(sum(rate(envoy_cluster_upstream_cx_rx_bytes_total{kubernetes_namespace=~\"$namespace\",app=~\"$primary\"}[30s])))",
+          "expr": "(sum(rate(envoy_cluster_upstream_cx_rx_bytes_total{kubernetes_namespace=~\"$namespace\",app=~\"$workload-primary\"}[30s])))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -462,6 +468,7 @@
       "dashes": false,
       "datasource": "prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 4,
         "w": 12,
@@ -486,6 +493,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -496,7 +506,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(sum(rate(envoy_cluster_upstream_cx_rx_bytes_total{kubernetes_namespace=~\"$namespace\",app=~\"$canary\"}[30s])))",
+          "expr": "(sum(rate(envoy_cluster_upstream_cx_rx_bytes_total{kubernetes_namespace=~\"$namespace\",app=~\"$workload\"}[30s])))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -546,7 +556,8 @@
       }
     },
     {
-      "content": "<div class=\"dashboard-header text-center\">\n<span>USE: $canary.$namespace</span>\n</div>",
+      "content": "<div class=\"dashboard-header text-center\">\n<span>USE: $workload.$namespace</span>\n</div>",
+      "datasource": null,
       "gridPos": {
         "h": 3,
         "w": 24,
@@ -556,6 +567,7 @@
       "id": 101,
       "links": [],
       "mode": "html",
+      "options": {},
       "title": "",
       "transparent": true,
       "type": "text"
@@ -567,6 +579,7 @@
       "dashes": false,
       "datasource": "prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 6,
         "w": 12,
@@ -591,6 +604,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -601,7 +617,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_usage_seconds_total{cpu=\"total\",namespace=\"$namespace\",pod_name=~\"$primary.*\", container_name!~\"POD|istio-proxy\"}[1m])) by (pod_name)",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{cpu=\"total\",namespace=\"$namespace\",pod_name=~\"$workload-primary.*\", container_name!~\"POD|istio-proxy|envoy\"}[1m])) by (pod_name)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -657,6 +673,7 @@
       "dashes": false,
       "datasource": "prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 6,
         "w": 12,
@@ -681,6 +698,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -691,7 +711,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_usage_seconds_total{cpu=\"total\",namespace=\"$namespace\",pod_name=~\"$canary.*\", pod_name!~\"$primary.*\", container_name!~\"POD|istio-proxy\"}[1m])) by (pod_name)",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{cpu=\"total\",namespace=\"$namespace\",pod_name=~\"$workload.*\", pod_name!~\"$workload-primary.*\", container_name!~\"POD|istio-proxy|evnoy\"}[1m])) by (pod_name)",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 1,
@@ -747,6 +767,7 @@
       "dashes": false,
       "datasource": "prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 6,
         "w": 12,
@@ -771,6 +792,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -781,7 +805,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_memory_working_set_bytes{namespace=\"$namespace\",pod_name=~\"$primary.*\", container_name!~\"POD|istio-proxy\"}) by (pod_name)",
+          "expr": "sum(container_memory_working_set_bytes{namespace=\"$namespace\",pod_name=~\"$workload-primary.*\", container_name!~\"POD|istio-proxy|envoy\"}) by (pod_name)",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -839,6 +863,7 @@
       "dashes": false,
       "datasource": "prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 6,
         "w": 12,
@@ -863,6 +888,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -873,7 +901,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_memory_working_set_bytes{namespace=\"$namespace\",pod_name=~\"$canary.*\", pod_name!~\"$primary.*\", container_name!~\"POD|istio-proxy\"}) by (pod_name)",
+          "expr": "sum(container_memory_working_set_bytes{namespace=\"$namespace\",pod_name=~\"$workload.*\", pod_name!~\"$workload-primary.*\", container_name!~\"POD|istio-proxy|envoy\"}) by (pod_name)",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -931,6 +959,7 @@
       "dashes": false,
       "datasource": "prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 6,
         "w": 12,
@@ -955,6 +984,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -974,14 +1006,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate (container_network_receive_bytes_total{namespace=\"$namespace\",pod_name=~\"$primary.*\"}[1m])) ",
+          "expr": "sum(rate (container_network_receive_bytes_total{namespace=\"$namespace\",pod_name=~\"$workload-primary.*\"}[1m])) ",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "received",
           "refId": "A"
         },
         {
-          "expr": "-sum (rate (container_network_transmit_bytes_total{namespace=\"$namespace\",pod_name=~\"$primary.*\"}[1m]))",
+          "expr": "-sum (rate (container_network_transmit_bytes_total{namespace=\"$namespace\",pod_name=~\"$workload-primary.*\"}[1m]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "transmited",
@@ -1037,6 +1069,7 @@
       "dashes": false,
       "datasource": "prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 6,
         "w": 12,
@@ -1061,6 +1094,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -1080,14 +1116,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate (container_network_receive_bytes_total{namespace=\"$namespace\",pod_name=~\"$canary.*\",pod_name!~\"$primary.*\"}[1m])) ",
+          "expr": "sum(rate (container_network_receive_bytes_total{namespace=\"$namespace\",pod_name=~\"$workload.*\",pod_name!~\"$workload-primary.*\"}[1m])) ",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "received",
           "refId": "A"
         },
         {
-          "expr": "-sum (rate (container_network_transmit_bytes_total{namespace=\"$namespace\",pod_name=~\"$canary.*\",pod_name!~\"$primary.*\"}[1m]))",
+          "expr": "-sum (rate (container_network_transmit_bytes_total{namespace=\"$namespace\",pod_name=~\"$workload.*\",pod_name!~\"$workload-primary.*\"}[1m]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "transmited",
@@ -1138,27 +1174,31 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 16,
+  "schemaVersion": 20,
+  "style": "light",
   "style": "light",
   "tags": [
-    "appmesh"
-  ],
+    "flagger"
+  ]
   "templating": {
     "list": [
       {
         "allValue": null,
-        "current": null,
+        "current": {
+          "text": "demo",
+          "value": "demo"
+        },
         "datasource": "prometheus",
-        "definition": "query_result(sum(envoy_cluster_upstream_rq) by (kubernetes_namespace))",
+        "definition": "flagger_canary_status",
         "hide": 0,
         "includeAll": false,
         "label": "Namespace",
         "multi": false,
         "name": "namespace",
         "options": [],
-        "query": "query_result(sum(envoy_cluster_upstream_rq) by (kubernetes_namespace))",
+        "query": "flagger_canary_status",
         "refresh": 1,
-        "regex": "/.*_namespace=\"([^\"]*).*/",
+        "regex": "/.*namespace=\"([^\"]*).*/",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
@@ -1169,40 +1209,22 @@
       },
       {
         "allValue": null,
-        "current": null,
+        "current": {
+          "tags": [],
+          "text": "podinfo",
+          "value": "podinfo"
+        },
         "datasource": "prometheus",
-        "definition": "query_result(sum(envoy_cluster_upstream_rq{kubernetes_namespace=\"$namespace\",app=~\".*-primary\"}) by (app))",
+        "definition": "flagger_canary_status",
         "hide": 0,
         "includeAll": false,
-        "label": "Primary",
+        "label": "Workload",
         "multi": false,
-        "name": "primary",
+        "name": "workload",
         "options": [],
-        "query": "query_result(sum(envoy_cluster_upstream_rq{kubernetes_namespace=\"$namespace\",app=~\".*-primary\"}) by (app))",
+        "query": "flagger_canary_status",
         "refresh": 1,
-        "regex": "/.*app=\"([^\"]*).*/",
-        "skipUrlSync": false,
-        "sort": 1,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": null,
-        "datasource": "prometheus",
-        "definition": "query_result(sum(envoy_cluster_upstream_rq{kubernetes_namespace=\"$namespace\",app!~\".*-primary\"}) by (app))",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Canary",
-        "multi": false,
-        "name": "canary",
-        "options": [],
-        "query": "query_result(sum(envoy_cluster_upstream_rq{kubernetes_namespace=\"$namespace\",app!~\".*-primary\"}) by (app))",
-        "refresh": 1,
-        "regex": "/.*app=\"([^\"]*).*/",
+        "regex": "/.*name=\"([^\"]*).*/",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
@@ -1245,5 +1267,5 @@
   "timezone": "",
   "title": "AWS App Mesh: Canary Releases",
   "uid": "appmesh-flagger",
-  "version": 1
+  "version": 2
 }
