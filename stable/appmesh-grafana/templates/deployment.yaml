@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "appmesh-grafana.fullname" . }}
+  labels:
+{{ include "appmesh-grafana.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "appmesh-grafana.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "appmesh-grafana.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/part-of: appmesh
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      serviceAccountName: {{ include "appmesh-grafana.serviceAccountName" . }}
+      volumes:
+        - name: grafana
+          emptyDir: {}
+        - name: dashboards
+          configMap:
+            name: {{ template "appmesh-grafana.fullname" . }}-dashboards
+        - name: providers
+          configMap:
+            name: {{ template "appmesh-grafana.fullname" . }}-providers
+        - name: datasources
+          configMap:
+            name: {{ template "appmesh-grafana.fullname" . }}-datasources
+        - name: ini
+          configMap:
+            name: {{ template "appmesh-grafana.fullname" . }}-ini
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: GF_PATHS_PROVISIONING
+              value: /etc/grafana/provisioning/
+            - name: GF_AUTH_BASIC_ENABLED
+              value: "false"
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "true"
+            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+              value: Admin
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: http
+          readinessProbe:
+            tcpSocket:
+              port: http
+          volumeMounts:
+            - name: grafana
+              mountPath: /var/lib/grafana
+            - name: ini
+              mountPath: "/etc/grafana/grafana.ini"
+              subPath: grafana.ini
+            - name: dashboards
+              mountPath: /etc/grafana/dashboards
+            - name: datasources
+              mountPath: /etc/grafana/provisioning/datasources
+            - name: providers
+              mountPath: /etc/grafana/provisioning/dashboards
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
