@@ -14,19 +14,19 @@ First add the EKS repository to Helm:
 helm repo add eks https://aws.github.io/eks-charts
 ```
 
-To install the chart with the release name `aws-node` and default configuration:
+To install the chart with the release name `aws-vpc-cni` and default configuration:
 
 ```shell
-$ helm install --name aws-node --namespace kube-system stable/aws-vpc-cni
+$ helm install --name aws-vpc-cni --namespace kube-system stable/aws-vpc-cni
 ```
 
 To install into an EKS cluster where the CNI is already installed, you can run:
 
 ```shell
-helm upgrade --install --recreate-pods --force aws-node --namespace kube-system stable/aws-vpc-cni
+helm upgrade --install --recreate-pods --force aws-vpc-cni --namespace kube-system stable/aws-vpc-cni
 ```
 
-If you receive an error similar to `Error: release aws-node failed: <resource> "aws-node" already exists`, simply rerun the above command.
+If you receive an error similar to `Error: release aws-vpc-cni failed: <resource> "aws-node" already exists`, simply rerun the above command.
 
 ## Configuration
 
@@ -58,5 +58,5 @@ The following table lists the configurable parameters for this chart and their d
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 
 ```shell
-$ helm install --name aws-node --namespace kube-system stable/aws-vpc-cni --values values.yaml
+$ helm install --name aws-vpc-cni --namespace kube-system stable/aws-vpc-cni --values values.yaml
 ```
