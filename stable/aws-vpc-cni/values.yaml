@@ -1,0 +1,54 @@
+# Default values for aws-vpc-cni.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# This default name override is to maintain backwards compatability with
+# existing naming
+nameOverride: aws-node
+
+image:
+  region: us-west-2
+  tag: v1.5.3
+  pullPolicy: Always
+  # Set to use custom image
+  # override: "repo/org/image:tag"
+
+# The CNI supports a number of environment variable settings
+# See https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables
+env:
+  AWS_VPC_K8S_CNI_LOGLEVEL: DEBUG
+
+imagePullSecrets: []
+
+fullnameOverride: "aws-node"
+
+probesEnabled: false
+
+priorityClassName: system-node-critical
+
+podSecurityContext: {}
+
+podAnnotations: {}
+
+securityContext:
+  privileged: true
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+resources:
+  requests:
+    cpu: 10m
+
+updateStrategy:
+  type: RollingUpdate
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
