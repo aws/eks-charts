@@ -55,16 +55,6 @@ spec:
           ports:
             - containerPort: 61678
               name: metrics
-{{- if .Values.probesEnabled }}
-          readinessProbe:
-            initialDelaySeconds: 25
-            exec:
-              command: ["/app/grpc_health_probe", "-addr=:50051"]
-          livenessProbe:
-            initialDelaySeconds: 25
-            exec:
-              command: ["/app/grpc_health_probe", "-addr=:50051"]
-{{- end }}
           env:
 {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
