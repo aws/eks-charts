@@ -1,0 +1,24 @@
+# name is the main project keyword. All pods, cluster roles,
+# service accounts, etc. are created under this name.
+name: "node-termination-handler"
+
+namespace: "kube-system"
+
+# image values
+imageName: "amazon/aws-node-termination-handler"
+imageVersion: "v1.0.0"
+
+# deleteLocalData tells kubectl to continue even if there are pods using
+# emptyDir (local data that will be deleted when the node is drained).
+deleteLocalData: \"false\"
+
+# ignoreDaemonSets causes kubectl to skip Daemon Set managed pods.
+ignoreDaemonSets: \"true\"
+
+# gracePeriod is time in seconds given to each pod to terminate gracefully.
+# If negative, the default value specified in the pod will be used.
+gracePeriod: \"30\"
+
+# nodeSelector tells the daemonset where to place the node-termination-handler
+# pods. By default, this value is empty and every node will receive a pod.
+nodeSelector: {}
