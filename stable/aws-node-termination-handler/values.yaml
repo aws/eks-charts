@@ -1,0 +1,34 @@
+# Default values for aws-node-termination-handler.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: "node-termination-handler"
+fullnameOverride: "node-termination-handler"
+
+namespace: "kube-system"
+
+# image values
+imageName: "amazon/aws-node-termination-handler"
+imageVersion: "v1.0.0"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use. If namenot set and create is true,
+  # a name is generated using fullname template
+  name:
+
+# deleteLocalData tells kubectl to continue even if there are pods using
+# emptyDir (local data that will be deleted when the node is drained).
+deleteLocalData: false
+
+# ignoreDaemonSets causes kubectl to skip Daemon Set managed pods.
+ignoreDaemonSets: true
+
+# gracePeriod is time in seconds given to each pod to terminate gracefully.
+# If negative, the default value specified in the pod will be used.
+gracePeriod: 30
+
+# nodeSelector tells the daemonset where to place the node-termination-handler
+# pods. By default, this value is empty and every node will receive a pod.
+nodeSelector: {}

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "aws-node-termination-handler.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "aws-node-termination-handler.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "aws-node-termination-handler.name" . }}
+    spec:
+      serviceAccountName: {{ template "aws-node-termination-handler.serviceAccountName" . }}
+      containers:
+      - name: {{ include "aws-node-termination-handler.name" . }}
+        image: {{ .Values.imageName }}:{{ .Values.imageVersion }}
+        imagePullPolicy: Always
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: SPOT_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: DELETE_LOCAL_DATA
+          value: {{ .Values.deleteLocalData | quote }}
+        - name: IGNORE_DAEMON_SETS
+          value: {{ .Values.ignoreDaemonSets | quote }}
+        - name: GRACE_PERIOD
+          value: {{ .Values.gracePeriod | quote }}
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+{{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+{{- end }}
