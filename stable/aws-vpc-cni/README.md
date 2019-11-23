@@ -17,13 +17,13 @@ helm repo add eks https://aws.github.io/eks-charts
 To install the chart with the release name `aws-vpc-cni` and default configuration:
 
 ```shell
-$ helm install --name aws-vpc-cni --namespace kube-system stable/aws-vpc-cni
+$ helm install --name aws-vpc-cni --namespace kube-system eks/aws-vpc-cni
 ```
 
 To install into an EKS cluster where the CNI is already installed, you can run:
 
 ```shell
-helm upgrade --install --recreate-pods --force aws-vpc-cni --namespace kube-system stable/aws-vpc-cni
+helm upgrade --install --recreate-pods --force aws-vpc-cni --namespace kube-system eks/aws-vpc-cni
 ```
 
 If you receive an error similar to `Error: release aws-vpc-cni failed: <resource> "aws-node" already exists`, simply rerun the above command.
@@ -47,7 +47,6 @@ The following table lists the configurable parameters for this chart and their d
 | `podSecurityContext`    | Pod Security Context                                    | `{}`                                |
 | `podAnnotations`        | annotations to add to each pod                          | `{}`                                |
 | `priorityClassName`     | Name of the priorityClass                               | `system-node-critical`              |
-| `probesEnabled`         | Enable liveness and readiness probes                    | `false`                             |
 | `resources`             | Resources for the pods                                  | `requests.cpu: 10m`                 |
 | `securityContext`       | Container Security context                              | `privileged: true`                  |
 | `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                               |
@@ -58,5 +57,5 @@ The following table lists the configurable parameters for this chart and their d
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 
 ```shell
-$ helm install --name aws-vpc-cni --namespace kube-system stable/aws-vpc-cni --values values.yaml
+$ helm install --name aws-vpc-cni --namespace kube-system eks/aws-vpc-cni --values values.yaml
 ```
