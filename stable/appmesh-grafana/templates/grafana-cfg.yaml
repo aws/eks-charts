@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "appmesh-grafana.fullname" . }}-ini
+  labels:
+{{ include "appmesh-grafana.labels" . | indent 4 }}
+data:
+  grafana.ini: |
+    [users]
+    default_theme = light
+    [analytics]
+    reporting_enabled = false
+    check_for_updates = false

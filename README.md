@@ -106,6 +106,24 @@ helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
 --set persistentVolumeClaim.claimName=prometheus
 ```
 
+#### Grafana
+
+Install App Mesh Grafana:
+
+```sh
+helm upgrade -i appmesh-prometheus eks/appmesh-grafana \
+--namespace appmesh-system
+```
+
+Grafana uses Prometheus as data source and comes with dashboards for monitoring
+the App Mesh control plane, Envoy data plane and [Flagger](https://flagger.app) canary releases.
+
+Access Grafana on `localhost:3000` with:
+
+```sh
+kubectl -n appmesh-system port-forward svc/appmesh-grafana 3000:3000
+```
+
 #### AWS X-Ray 
 
 Enable X-Ray tracing for the App Mesh data plane:
