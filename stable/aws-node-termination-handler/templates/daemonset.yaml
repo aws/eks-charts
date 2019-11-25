@@ -43,8 +43,8 @@ spec:
       serviceAccountName: {{ template "aws-node-termination-handler.serviceAccountName" . }}
       containers:
         - name: {{ include "aws-node-termination-handler.name" . }}
-          image: {{ .Values.imageName }}:{{ .Values.imageVersion }}
-          imagePullPolicy: Always
+          image: {{ .Values.image.repository}}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: NODE_NAME
             valueFrom:
