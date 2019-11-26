@@ -72,3 +72,9 @@ tracing:
   address: appmesh-jaeger.appmesh-system
   # tracing.address: Jaeger or Datadog agent server port (ignored for X-Ray)
   port: 9411
+
+stats:
+  # stats.tagsEnabled: `true` if Envoy should include app-mesh tags
+  tagsEnabled: false
+  # stats.statsdEnabled: `true` if Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125
+  statsdEnabled: false

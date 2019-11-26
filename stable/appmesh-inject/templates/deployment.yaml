@@ -43,6 +43,8 @@ spec:
             - -sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
             - -sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
             - -init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
+            - -enable-stats-tags={{ .Values.stats.tagsEnabled }}
+            - -enable-statsd={{ .Values.stats.statsdEnabled }}
             {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
             - -inject-xray-sidecar=true
             {{- end }}
