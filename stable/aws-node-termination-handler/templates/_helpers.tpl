@@ -31,7 +31,7 @@ Common labels
 app.kubernetes.io/name: {{ include "aws-node-termination-handler.name" . }}
 helm.sh/chart: {{ include "aws-node-termination-handler.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-k8s-app: aws-node
+k8s-app: aws-node-termination-handler
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
