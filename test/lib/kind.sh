@@ -7,8 +7,8 @@ set -o errexit
 REPO_ROOT=$(git rev-parse --show-toplevel)
 KIND_VERSION=v0.5.1
 HELM_MODE="${HELM_MODE:-v2}"
-HELM2_VERSION=v2.16.0
-HELM3_VERSION=v3.0.0-rc.3
+HELM2_VERSION=v2.16.1
+HELM3_VERSION=v3.0.0
 
 function installKubernetes() {
   echo ">>> Installing kubectl"
