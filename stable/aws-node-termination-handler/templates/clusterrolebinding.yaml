@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: {{ template "aws-node-termination-handler.serviceAccountName" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: default
 roleRef:
   kind: ClusterRole
   name: {{ include "aws-node-termination-handler.fullname" . }}

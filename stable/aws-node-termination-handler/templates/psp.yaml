@@ -53,5 +53,5 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: {{ template "aws-node-termination-handler.serviceAccountName" . }}
-    namespace: {{ .Release.Namespace }}
+    namespace: default
 {{- end }}

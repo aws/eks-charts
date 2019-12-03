@@ -16,7 +16,7 @@ Install AWS Node Termination Handler:
 To install the chart with the release name aws-node-termination-handler and default configuration:
 
 ```sh
-helm install --name aws-node-termination-handler \
+helm install aws-node-termination-handler \
   --namespace kube-system eks/aws-node-termination-handler
 ```
 
