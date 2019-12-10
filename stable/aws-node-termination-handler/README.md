@@ -17,7 +17,7 @@ To install the chart with the release name aws-node-termination-handler and defa
 
 ```sh
 helm install --name aws-node-termination-handler \
-  --namespace kube-system eks/aws-node-termination-handler
+  --set namespace=kube-system eks/aws-node-termination-handler
 ```
 
 To install into an EKS cluster where the Node Termination Handler is already installed, you can run:
