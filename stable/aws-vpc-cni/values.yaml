@@ -28,6 +28,8 @@ podSecurityContext: {}
 
 podAnnotations: {}
 
+serviceAccountAnnotations: {}
+
 securityContext:
   privileged: true
 
