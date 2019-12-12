@@ -39,6 +39,7 @@ spec:
                     values:
                       - amd64
       serviceAccountName: {{ template "aws-vpc-cni.serviceAccountName" . }}
+      automountServiceAccountToken: true
       hostNetwork: true
       tolerations:
         - operator: Exists
