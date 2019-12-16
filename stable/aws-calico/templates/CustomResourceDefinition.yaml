@@ -1,5 +1,3 @@
----
-
 # Create all the CustomResourceDefinitions needed for
 # Calico policy-only mode.
 
