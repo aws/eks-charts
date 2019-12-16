@@ -1,6 +1,6 @@
-# Calico on Amazon EKS
+# Calico on AWS
 
-This chart installs Calico on Amazon EKS: https://docs.aws.amazon.com/eks/latest/userguide/calico.html
+This chart installs Calico on AWS: https://docs.aws.amazon.com/eks/latest/userguide/calico.html
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ To install into an EKS cluster where the CNI is already installed, you can run:
 helm upgrade --install --recreate-pods --force aws-calico --namespace kube-system eks/aws-calico
 ```
 
-If you receive an error similar to `Error: release aws-calico failed: <resource> "aws-node" already exists`, simply rerun the above command.
+If you receive an error similar to `Error: release aws-calico failed: <resource> "aws-calico" already exists`, simply rerun the above command.
 
 ## Configuration
 
@@ -34,8 +34,8 @@ The following table lists the configurable parameters for this chart and their d
 
 | Parameter               | Description                                             | Default            |
 | ------------------------|---------------------------------------------------------|--------------  ----|
-| `calico.typha.image`    | Calico Typha Image                                      | ``                 |
-| `calico.node.image`     | Calico Node Image                                       | ``                 |
+| `calico.typha.image`    | Calico Typha Image                                      | `quay.io/calico/typha:v3.8.1`                 |
+| `calico.node.image`     | Calico Node Image                                       | `quay.io/calico/node:v3.8.1`                 |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 

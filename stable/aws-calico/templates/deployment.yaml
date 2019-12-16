@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: calico-typha
-  namespace: kube-system
   labels:
     k8s-app: calico-typha
 {{ include "aws-calico.labels" . | indent 4 }}
@@ -80,7 +79,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: calico-typha-horizontal-autoscaler
-  namespace: kube-system
   labels:
     k8s-app: calico-typha-autoscaler
 {{ include "aws-calico.labels" . | indent 4 }}
@@ -102,7 +100,7 @@ spec:
           name: autoscaler
           command:
             - /cluster-proportional-autoscaler
-            - --namespace=kube-system
+            - --namespace={{ .Release.Namespace }}
             - --configmap=calico-typha-horizontal-autoscaler
             - --target=deployment/calico-typha
             - --logtostderr=true

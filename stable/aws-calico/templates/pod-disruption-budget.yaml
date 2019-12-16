@@ -3,7 +3,6 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: calico-typha
-  namespace: kube-system
   labels:
     k8s-app: calico-typha
 {{ include "aws-calico.labels" . | indent 4 }}

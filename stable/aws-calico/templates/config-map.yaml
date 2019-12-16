@@ -2,7 +2,6 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: calico-typha-horizontal-autoscaler
-  namespace: kube-system
   labels:
 {{ include "aws-calico.labels" . | indent 4 }}
 data:

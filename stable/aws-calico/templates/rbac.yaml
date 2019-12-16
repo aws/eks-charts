@@ -115,7 +115,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: calico-node
-    namespace: kube-system
+    namespace: {{ .Release.Namespace }}
 
 ---
 
@@ -132,7 +132,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: typha-cpha
-    namespace: kube-system
+    namespace: {{ .Release.Namespace }}
 
 ---
 
@@ -153,7 +153,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: typha-cpha
-  namespace: kube-system
   labels:
 {{ include "aws-calico.labels" . | indent 4 }}
 rules:
@@ -170,7 +169,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: typha-cpha
-  namespace: kube-system
   labels:
 {{ include "aws-calico.labels" . | indent 4 }}
 roleRef:
@@ -180,4 +178,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: typha-cpha
-    namespace: kube-system
+    namespace: {{ .Release.Namespace }}
