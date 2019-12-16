@@ -51,6 +51,7 @@ The following table lists the configurable parameters for this chart and their d
 | `securityContext`       | Container Security context                              | `privileged: true`                  |
 | `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                               |
 | `serviceAccount.create` | Specifies whether a ServiceAccount should be created    | `true`                              |
+| `serviceAccount.annotations` | Specifies the annotations for ServiceAccount       | `{}`                              |
 | `tolerations`           | Optional deployment tolerations                         | `[]`                                |
 | `updateStrategy`        | Optional update strategy                                | `type: RollingUpdate`               |
 
