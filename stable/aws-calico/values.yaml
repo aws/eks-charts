@@ -1,0 +1,7 @@
+
+calico:
+  typha:
+    image: quay.io/calico/typha:v3.8.1
+
+  node:
+    image: quay.io/calico/node:v3.8.1
