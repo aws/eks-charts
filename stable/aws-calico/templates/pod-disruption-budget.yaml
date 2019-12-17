@@ -2,12 +2,12 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: calico-typha
+  name: "{{ include "aws-calico.fullname" . }}-typha"
   labels:
-    k8s-app: calico-typha
+    app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha"
 {{ include "aws-calico.labels" . | indent 4 }}
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      k8s-app: calico-typha
+      app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha"

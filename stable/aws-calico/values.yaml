@@ -1,3 +1,7 @@
+fullnameOverride: calico
+
+serviceAccount:
+  create: true
 
 calico:
   typha:

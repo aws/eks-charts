@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: calico-typha
+  name: "{{ include "aws-calico.fullname" . }}-typha"
   labels:
-    k8s-app: calico-typha
+    app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha"
 {{ include "aws-calico.labels" . | indent 4 }}
 spec:
   ports:
     - port: 5473
       protocol: TCP
       targetPort: calico-typha
-      name: calico-typha
+      name: "{{ include "aws-calico.fullname" . }}-typha"
   selector:
-    k8s-app: calico-typha
+    app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha"

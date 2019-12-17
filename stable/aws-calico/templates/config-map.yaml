@@ -1,7 +1,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: calico-typha-horizontal-autoscaler
+  name: "{{ include "aws-calico.fullname" . }}-typha-horizontal-autoscaler"
   labels:
 {{ include "aws-calico.labels" . | indent 4 }}
 data:

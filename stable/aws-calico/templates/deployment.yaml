@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: calico-typha
+  name: "{{ include "aws-calico.fullname" . }}-typha"
   labels:
-    k8s-app: calico-typha
+    app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha"
 {{ include "aws-calico.labels" . | indent 4 }}
 spec:
   revisionHistoryLimit: 2
   selector:
     matchLabels:
-      k8s-app: calico-typha
+      app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha"
   template:
     metadata:
       labels:
-        k8s-app: calico-typha
+        app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha"
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
     spec:
@@ -25,9 +25,9 @@ spec:
         - key: CriticalAddonsOnly
           operator: Exists
       hostNetwork: true
-      serviceAccountName: calico-node
+      serviceAccountName: "{{ include "aws-calico.serviceAccountName" . }}-node"
       containers:
-        - image: {{ .Values.calico.typha.image }}
+        - image: "{{ .Values.calico.typha.image }}"
           name: calico-typha
           ports:
             - containerPort: 5473
@@ -78,19 +78,19 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: calico-typha-horizontal-autoscaler
+  name: "{{ include "aws-calico.fullname" . }}-typha-horizontal-autoscaler"
   labels:
-    k8s-app: calico-typha-autoscaler
+    app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha-autoscaler"
 {{ include "aws-calico.labels" . | indent 4 }}
 spec:
   selector:
     matchLabels:
-      k8s-app: calico-typha-autoscaler
+      app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha-autoscaler"
   replicas: 1
   template:
     metadata:
       labels:
-        k8s-app: calico-typha-autoscaler
+        app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha-autoscaler"
     spec:
       priorityClassName: system-cluster-critical
       nodeSelector:
@@ -101,8 +101,8 @@ spec:
           command:
             - /cluster-proportional-autoscaler
             - --namespace={{ .Release.Namespace }}
-            - --configmap=calico-typha-horizontal-autoscaler
-            - --target=deployment/calico-typha
+            - --configmap={{ include "aws-calico.fullname" . }}-typha-horizontal-autoscaler
+            - --target=deployment/{{ include "aws-calico.fullname" . }}-typha
             - --logtostderr=true
             - --v=2
           resources:
@@ -110,4 +110,4 @@ spec:
               cpu: 10m
             limits:
               cpu: 10m
-      serviceAccountName: typha-cpha
+      serviceAccountName: "{{ include "aws-calico.serviceAccountName" . }}-typha-cpha"
