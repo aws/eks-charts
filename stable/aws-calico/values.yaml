@@ -1,0 +1,11 @@
+fullnameOverride: calico
+
+serviceAccount:
+  create: true
+
+calico:
+  tag: v3.8.1
+  typha:
+    image: quay.io/calico/typha
+  node:
+    image: quay.io/calico/node
