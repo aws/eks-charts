@@ -40,8 +40,9 @@ The following table lists the configurable parameters for this chart and their d
 
 | Parameter               | Description                                             | Default                         |
 | ------------------------|---------------------------------------------------------|---------------------------------|
-| `calico.typha.image`    | Calico Typha Image                                      | `quay.io/calico/typha:v3.8.1`   |
-| `calico.node.image`     | Calico Node Image                                       | `quay.io/calico/node:v3.8.1`    |
+| `calico.typha.image`    | Calico Typha Image                                      | `quay.io/calico/typha`          |
+| `calico.node.image`     | Calico Node Image                                       | `quay.io/calico/node`           |
+| `calico.tag`            | Calico version                                          | `v3.8.1`                        |
 | `fullnameOverride`      | Override the fullname of the chart                      | `calico`                        |
 | `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                           |
 | `serviceAccount.create` | Specifies whether a ServiceAccount should be created    | `true`                          |

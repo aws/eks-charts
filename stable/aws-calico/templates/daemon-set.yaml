@@ -31,7 +31,7 @@ spec:
         # container programs network policy and routes on each
         # host.
         - name: calico-node
-          image: {{ .Values.calico.node.image }}
+          image: "{{ .Values.calico.node.image }}:{{ .Values.calico.tag }}"
           env:
             # Use Kubernetes API as the backing datastore.
             - name: DATASTORE_TYPE

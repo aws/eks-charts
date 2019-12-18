@@ -27,7 +27,7 @@ spec:
       hostNetwork: true
       serviceAccountName: "{{ include "aws-calico.serviceAccountName" . }}-node"
       containers:
-        - image: "{{ .Values.calico.typha.image }}"
+        - image: "{{ .Values.calico.typha.image }}:{{ .Values.calico.tag }}"
           name: calico-typha
           ports:
             - containerPort: 5473
