@@ -3,9 +3,9 @@ entries:
   appmesh-controller:
   - apiVersion: v1
     appVersion: 0.3.0
-    created: "2019-12-17T01:33:45.81354276Z"
+    created: "2019-12-18T22:30:51.341784698Z"
     description: App Mesh controller Helm chart for Kubernetes
-    digest: b384fbd383321a586cffbb3b7457f818533d157cacfa4f7c9365107fe3e4e853
+    digest: 06d7d66ad7a705ea5cb00954cd337237068d20459dfcc90c7bee685bc2c0f7ad
     home: https://github.com/aws/eks-charts
     icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
     keywords:
@@ -26,7 +26,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: 0.2.0
-    created: "2019-12-17T01:33:45.812926294Z"
+    created: "2019-12-18T22:30:51.341389948Z"
     description: App Mesh controller Helm chart for Kubernetes
     digest: 1200cf616241423c126228b469a89c176961622ad01d4af9c98341c84005bab4
     home: https://github.com/aws/eks-charts
@@ -50,9 +50,9 @@ entries:
   appmesh-grafana:
   - apiVersion: v1
     appVersion: 6.4.3
-    created: "2019-12-17T01:33:45.814576115Z"
+    created: "2019-12-18T22:30:51.342351242Z"
     description: App Mesh Grafana Helm chart for Kubernetes
-    digest: b23291d9d50ddcdbbe56557520920069c37e013eac023fb80836e278ef171d00
+    digest: 4d1a27119cdcd31d7813850f6099bd2904f7c7906f0fe897f15bafe46b441f13
     home: https://github.com/aws/eks-charts
     icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
     keywords:
@@ -75,9 +75,9 @@ entries:
   appmesh-inject:
   - apiVersion: v1
     appVersion: 0.3.1
-    created: "2019-12-17T01:33:45.817535096Z"
+    created: "2019-12-18T22:30:51.345364217Z"
     description: App Mesh Inject Helm chart for Kubernetes
-    digest: 31e414807a6b252637831292c38cb295761947e11ea3e9a976fcb7790b1a2bd4
+    digest: e3eaf5deb28f61bdad96684fcea300d924bb31c43b52da66f43ed54818c8aafe
     home: https://github.com/aws/eks-charts
     icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
     keywords:
@@ -98,7 +98,7 @@ entries:
     version: 0.9.0
   - apiVersion: v1
     appVersion: 0.3.1
-    created: "2019-12-17T01:33:45.817127652Z"
+    created: "2019-12-18T22:30:51.344926145Z"
     description: App Mesh Inject Helm chart for Kubernetes
     digest: 87f41cafc73e0505dc2cc8cf95c38ede90bb4bf3aa0dbf3983d7f3ed4c0e4de2
     home: https://github.com/aws/eks-charts
@@ -121,7 +121,7 @@ entries:
     version: 0.7.0
   - apiVersion: v1
     appVersion: 0.3.0
-    created: "2019-12-17T01:33:45.816732185Z"
+    created: "2019-12-18T22:30:51.344523103Z"
     description: App Mesh Inject Helm chart for Kubernetes
     digest: b7ba8bae213f1991e0f35890987669af84adaeb005039a969d4d8e37902fd6ce
     home: https://github.com/aws/eks-charts
@@ -144,7 +144,7 @@ entries:
     version: 0.6.0
   - apiVersion: v1
     appVersion: 0.2.0
-    created: "2019-12-17T01:33:45.816335403Z"
+    created: "2019-12-18T22:30:51.34409933Z"
     description: App Mesh Inject Helm chart for Kubernetes
     digest: 23840d69ff14d2699bab54eb8713346c4885d5129c38e02ecebdc75ba350e975
     home: https://github.com/aws/eks-charts
@@ -167,7 +167,7 @@ entries:
     version: 0.5.0
   - apiVersion: v1
     appVersion: 0.2.0
-    created: "2019-12-17T01:33:45.815900435Z"
+    created: "2019-12-18T22:30:51.343675991Z"
     description: App Mesh Inject Helm chart for Kubernetes
     digest: 631cbbe359be6378650999b408dc2b76ef7afd0b746295851f0c545b1018920a
     home: https://github.com/aws/eks-charts
@@ -190,7 +190,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: 0.2.0
-    created: "2019-12-17T01:33:45.815455918Z"
+    created: "2019-12-18T22:30:51.343269851Z"
     description: App Mesh Inject Helm chart for Kubernetes
     digest: 17c2fa2959f1785bd664a4bf9d556cc7c1ef5bcb414a5c47872a4d61d30354c2
     home: https://github.com/aws/eks-charts
@@ -214,9 +214,9 @@ entries:
   appmesh-jaeger:
   - apiVersion: v1
     appVersion: 1.14.0
-    created: "2019-12-17T01:33:45.818098099Z"
+    created: "2019-12-18T22:30:51.345925999Z"
     description: App Mesh Jaeger Helm chart for Kubernetes
-    digest: 8d389251eeafd14888c6b2a762659a0d99c4403be16b187571f22c1b66006ee0
+    digest: 0ab36263991a45dc71c4a2c89e72caf7abb27bdbd86291920c7a1b28b382584f
     home: https://github.com/aws/eks-charts
     icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
     keywords:
@@ -238,9 +238,9 @@ entries:
   appmesh-prometheus:
   - apiVersion: v1
     appVersion: 2.13.1
-    created: "2019-12-17T01:33:45.819044052Z"
+    created: "2019-12-18T22:30:51.346838249Z"
     description: App Mesh Prometheus Helm chart for Kubernetes
-    digest: 4b2ef23c6ff75a319c10270da06147c8ce38967aa36d1a732b49493464912eb5
+    digest: 1bbaa414c8c34886779eeba23baef5e934dcb8bb62e848b3e4e3c561e45aec8b
     home: https://github.com/aws/eks-charts
     icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
     keywords:
@@ -259,12 +259,23 @@ entries:
     urls:
     - https://aws.github.io/eks-charts/appmesh-prometheus-0.3.0.tgz
     version: 0.3.0
+  aws-calico:
+  - apiVersion: v1
+    appVersion: 3.8.1
+    created: "2019-12-18T22:30:51.347224483Z"
+    description: A Helm chart for installing Calico on AWS
+    digest: 32be130681ab904cb7ab9820b2df086038f7f48b1e7c56dfc86a98cade0213e1
+    icon: https://www.projectcalico.org/wp-content/uploads/2019/09/Calico_Logo_Large_Calico.png
+    name: aws-calico
+    urls:
+    - https://aws.github.io/eks-charts/aws-calico-0.1.0.tgz
+    version: 0.1.0
   aws-node-termination-handler:
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2019-12-17T01:33:45.820390521Z"
+    created: "2019-12-18T22:30:51.349124Z"
     description: A Helm chart for the AWS Node Termination Handler
-    digest: 357776bfe5c844806fb82ce0cb7be3d621fa961b18bb7cb621d87cd1aa470fcc
+    digest: 3256b286a9c502bc6ed69f1d4ce517899de46e19d38fe0a0097ac4c06663cac5
     home: https://github.com/aws/eks-charts
     icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
     keywords:
@@ -293,7 +304,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2019-12-17T01:33:45.819916726Z"
+    created: "2019-12-18T22:30:51.348718136Z"
     description: A Helm chart for the AWS Node Termination Handler
     digest: 804502f8fb7bf4a3647e9c2def9bf20bec03a74a9e09975661181fe05f14a864
     home: https://github.com/aws/eks-charts
@@ -324,7 +335,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2019-12-17T01:33:45.81945604Z"
+    created: "2019-12-18T22:30:51.348266342Z"
     description: A Helm chart for the AWS Node Termination Handler
     digest: e321e32785a69fe2569ce71532975cae0ff94e1fc1ea9509a98fe032f903bee0
     home: https://github.com/aws/eks-charts
@@ -356,10 +367,10 @@ entries:
   aws-vpc-cni:
   - apiVersion: v1
     appVersion: v1.5.5
-    created: "2019-12-17T01:33:45.821595168Z"
+    created: "2019-12-18T22:30:51.350185452Z"
     description: Networking plugin repository for pod networking in Kubernetes using
       Elastic Network Interfaces on AWS
-    digest: 7f5885c5d048ec03455be7c02b08d0534931bfd47d661858aa98da9a8069963c
+    digest: 8017326380b8f8fc2c8ff99c4149b5215faaf6c076f17c9943c0f06a4682a2ef
     engine: gotpl
     home: https://github.com/aws/amazon-vpc-cni-k8s
     icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
@@ -383,7 +394,7 @@ entries:
     version: 1.0.2
   - apiVersion: v1
     appVersion: v1.5.5
-    created: "2019-12-17T01:33:45.821208505Z"
+    created: "2019-12-18T22:30:51.349823075Z"
     description: Networking plugin repository for pod networking in Kubernetes using
       Elastic Network Interfaces on AWS
     digest: 4eaf4e9c7eca351ec0f9d69ef2d4db2458a3aeef2f23dfff08588890c5ba9428
@@ -410,7 +421,7 @@ entries:
     version: 1.0.1
   - apiVersion: v1
     appVersion: v1.5.3
-    created: "2019-12-17T01:33:45.820823341Z"
+    created: "2019-12-18T22:30:51.349477999Z"
     description: Networking plugin repository for pod networking in Kubernetes using
       Elastic Network Interfaces on AWS
     digest: b3ff9ee70092ac5370f49de7efee31c737f6fc092e41d83b03467646c7a3939e
@@ -435,4 +446,4 @@ entries:
     urls:
     - https://aws.github.io/eks-charts/aws-vpc-cni-1.0.0.tgz
     version: 1.0.0
-generated: "2019-12-17T01:33:45.811767665Z"
+generated: "2019-12-18T22:30:51.340135677Z"
