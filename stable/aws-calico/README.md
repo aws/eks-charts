@@ -38,10 +38,13 @@ If you receive an error similar to `Error: release aws-calico failed: <resource>
 
 The following table lists the configurable parameters for this chart and their default values.
 
-| Parameter               | Description                                             | Default            |
-| ------------------------|---------------------------------------------------------|--------------  ----|
-| `calico.typha.image`    | Calico Typha Image                                      | `quay.io/calico/typha:v3.8.1`                 |
-| `calico.node.image`     | Calico Node Image                                       | `quay.io/calico/node:v3.8.1`                 |
+| Parameter               | Description                                             | Default                         |
+| ------------------------|---------------------------------------------------------|---------------------------------|
+| `calico.typha.image`    | Calico Typha Image                                      | `quay.io/calico/typha:v3.8.1`   |
+| `calico.node.image`     | Calico Node Image                                       | `quay.io/calico/node:v3.8.1`    |
+| `fullnameOverride`      | Override the fullname of the chart                      | `calico`                        |
+| `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                           |
+| `serviceAccount.create` | Specifies whether a ServiceAccount should be created    | `true`                          |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 
