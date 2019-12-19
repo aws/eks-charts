@@ -111,7 +111,7 @@ helm upgrade -i appmesh-prometheus eks/appmesh-prometheus \
 Install App Mesh Grafana:
 
 ```sh
-helm upgrade -i appmesh-prometheus eks/appmesh-grafana \
+helm upgrade -i appmesh-grafana eks/appmesh-grafana \
 --namespace appmesh-system
 ```
 
