@@ -1,6 +1,6 @@
 # AWS Node Termination Handler
 
-AWS Node Termination Handler Helm chart for Kubernetes. For more information on this project see the project repo at https://github.com/aws/aws-node-termination-handler. 
+AWS Node Termination Handler Helm chart for Kubernetes. For more information on this project see the project repo at https://github.com/aws/aws-node-termination-handler.
 
 ## Prerequisites
 
@@ -67,3 +67,4 @@ Parameter | Description | Default
 `rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | None
+`serviceAccount.annotations` | Specifies the annotations for ServiceAccount       | `{}`

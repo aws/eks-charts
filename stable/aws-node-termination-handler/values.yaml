@@ -52,6 +52,8 @@ serviceAccount:
   # The name of the service account to use. If namenot set and create is true,
   # a name is generated using fullname template
   name:
+  annotations: {}
+    # eks.amazonaws.com/role-arn: arn:aws:iam::AWS_ACCOUNT_ID:role/IAM_ROLE_NAME
 
 rbac:
   # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
