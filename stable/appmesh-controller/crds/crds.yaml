@@ -127,6 +127,8 @@ spec:
                         enum:
                           - tcp
                           - http
+                          - http2
+                          - grpc
                       timeoutMillis:
                         type: integer
                       unhealthyThreshold:
@@ -323,6 +325,11 @@ spec:
                             type: array
                             items:
                               type: string
+                              enum:
+                                - 'server-error' # HTTP status codes 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, and 511
+                                - 'gateway-error' # HTTP status codes 502, 503, and 504
+                                - 'client-error' # HTTP status code 409
+                                - 'stream-error' # Retry on refused stream
                           tcpRetryEvents:
                             type: array
                             items:
@@ -344,6 +351,164 @@ spec:
                                   type: string
                                 weight:
                                   type: integer
+                  http2:
+                    type: object
+                    properties:
+                      priority:
+                        type: integer
+                      match:
+                        type: object
+                        properties:
+                          prefix:
+                            type: string
+                          method:
+                            type: string
+                          scheme:
+                            type: string
+                          headers:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                invert:
+                                  type: boolean
+                                match:
+                                  type: object
+                                  properties:
+                                    exact:
+                                      type: string
+                                    prefix:
+                                      type: string
+                                    regex:
+                                      type: string
+                                    suffix:
+                                      type: string
+                                    range:
+                                      type: object
+                                      properties:
+                                        start:
+                                          type: integer
+                                        end:
+                                          type: integer
+                      action:
+                        type: object
+                        properties:
+                          weightedTargets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                virtualNodeName:
+                                  type: string
+                                weight:
+                                  type: integer
+                      retryPolicy:
+                        type: object
+                        properties:
+                          perRetryTimeoutMillis:
+                            type: integer
+                          maxRetries:
+                            type: integer
+                          httpRetryEvents:
+                            type: array
+                            items:
+                              type: string
+                              enum:
+                                - 'server-error' # HTTP status codes 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, and 511
+                                - 'gateway-error' # HTTP status codes 502, 503, and 504
+                                - 'client-error' # HTTP status code 409
+                                - 'stream-error' # Retry on refused stream
+                          tcpRetryEvents:
+                            type: array
+                            items:
+                              type: string
+                              enum:
+                                - 'connection-error'
+                  grpc: 
+                    type: object
+                    properties:
+                      priority:
+                        type: integer
+                      match:
+                        type: object
+                        properties:
+                          serviceName:
+                            type: string
+                          methodName:
+                            type: string
+                          metadata:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                invert:
+                                  type: boolean
+                                match:
+                                  type: object
+                                  properties:
+                                    exact:
+                                      type: string
+                                    prefix:
+                                      type: string
+                                    regex:
+                                      type: string
+                                    suffix:
+                                      type: string
+                                    range:
+                                      type: object
+                                      properties:
+                                        start:
+                                          type: integer
+                                        end:
+                                          type: integer
+                      action:
+                        type: object
+                        properties:
+                          weightedTargets: 
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                virtualNodeName:
+                                  type: string
+                                weight:
+                                  type: integer 
+                      retryPolicy:
+                        type: object
+                        properties:
+                          perRetryTimeoutMillis:
+                            type: integer                        
+                          maxRetries:
+                            type: integer                         
+                          httpRetryEvents:
+                            type: array
+                            items:
+                              type: string   
+                              enum:
+                                - 'server-error' # HTTP status codes 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, and 511
+                                - 'gateway-error' # HTTP status codes 502, 503, and 504
+                                - 'client-error' # HTTP status code 409
+                                - 'stream-error' # Retry on refused stream
+                          tcpRetryEvents:
+                            type: array
+                            items:
+                              type: string
+                              enum:
+                                - 'connection-error'                          
+                          grpcRetryEvents:
+                            type: array
+                            items:
+                              type: string
+                              enum: 
+                                - 'cancelled'
+                                - 'deadline-exceeded'
+                                - 'internal'
+                                - 'resource-exhausted'
+                                - 'unavailable'
         status:
           properties:
             virtualServiceArn:
