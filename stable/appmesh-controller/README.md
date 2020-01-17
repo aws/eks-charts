@@ -20,6 +20,8 @@ App Mesh controller Helm chart for Kubernetes
                 "servicediscovery:RegisterInstance",
                 "servicediscovery:DeregisterInstance",
                 "servicediscovery:ListInstances",
+                "servicediscovery:ListNamespaces",
+                "servicediscovery:ListServices",
                 "route53:GetHealthCheck",
                 "route53:CreateHealthCheck",
                 "route53:UpdateHealthCheck",
@@ -55,6 +57,16 @@ helm upgrade -i appmesh-controller eks/appmesh-controller \
 
 The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
+## Use EKS IAM Roles for service account
+
+Find the service account used by appmesh-controller
+
+```sh
+kubectl get deployment -n appmesh-system appmesh-controller -o json | jq -r ".spec.template.spec.serviceAccount"
+```
+
+Setup IAM role for service account using the policy above. See https://docs.aws.amazon.com/eks/latest/userguide/create-service-account-iam-policy-and-role.html
+
 ## Uninstalling the Chart
 
 To uninstall/delete the `appmesh-controller` deployment:
@@ -85,6 +97,3 @@ Parameter | Description | Default
 `rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | None
-
-
-
