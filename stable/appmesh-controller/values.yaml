@@ -38,3 +38,6 @@ rbac:
   create: true
   # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
   pspEnabled: false
+
+# kiam-role name in case you want to annotate the pods to use kiam to get the AWS role
+kiam-role: ""

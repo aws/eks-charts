@@ -82,3 +82,4 @@ Parameter | Description | Default
 `tracing.provider` |  The tracing provider can be x-ray, jaeger or datadog | `x-ray`
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`
 `tracing.port` |  Jaeger or Datadog agent port (ignored for X-Ray) | `9411`
+`kiam-role` |  The role name in case your cluster set AWS permissions using kiam  |  `""`

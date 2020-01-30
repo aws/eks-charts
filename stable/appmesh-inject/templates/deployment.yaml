@@ -18,6 +18,9 @@ spec:
         app.kubernetes.io/part-of: appmesh
       annotations:
         prometheus.io/scrape: "false"
+        {{- if index .Values "kiam-role" }}
+        iam.amazonaws.com/role: {{ index .Values "kiam-role" }}
+        {{- end }}
     spec:
       serviceAccountName: {{ template "appmesh-inject.serviceAccountName" . }}
       volumes:
