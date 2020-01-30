@@ -64,6 +64,7 @@ Parameter | Description | Default
 `resources.limits/memory` | pod memory limit | `1Gi`
 `affinity` | node/pod affinities | None
 `nodeSelector` | node labels for pod assignment | `{}`
+`podAnnotations` | annotations to add to each pod | `{}`
 `tolerations` | list of node taints to tolerate | `[]`
 `rbac.create` | if `true`, create and use RBAC resources | `true`
 `rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`

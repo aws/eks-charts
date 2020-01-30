@@ -18,6 +18,11 @@ spec:
         app.kubernetes.io/part-of: appmesh
       annotations:
         prometheus.io/scrape: "false"
+        {{- if .Values.podAnnotations }}
+        {{- range $key, $value := .Values.podAnnotations }}
+          {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
     spec:
       serviceAccountName: {{ template "appmesh-inject.serviceAccountName" . }}
       volumes:
