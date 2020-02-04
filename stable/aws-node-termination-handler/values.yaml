@@ -27,12 +27,21 @@ resources:
     memory: "128Mi"
     cpu: "100m"
 
+## enableSpotInterruptionDraining If true, drain nodes when the spot interruption termination notice is receieved
+enableSpotInterruptionDraining: ""
+
+## enableScheduledEventDraining [EXPERIMENTAL] If true, drain nodes before the maintenance window starts for an EC2 instance scheduled event
+enableScheduledEventDraining: ""
+
+## dryRun tells node-termination-handler to only log calls to kubernetes control plane
+dryRun: false
+
 # deleteLocalData tells kubectl to continue even if there are pods using
 # emptyDir (local data that will be deleted when the node is drained).
-deleteLocalData: false
+deleteLocalData: ""
 
 # ignoreDaemonSets causes kubectl to skip Daemon Set managed pods.
-ignoreDaemonSets: true
+ignoreDaemonSets: ""
 
 # gracePeriod (DEPRECATED - use podTerminationGracePeriod instead) is time in seconds given to each pod to terminate gracefully.
 # If negative, the default value specified in the pod will be used.
@@ -42,8 +51,20 @@ podTerminationGracePeriod: ""
 # nodeTerminationGracePeriod specifies the period of time in seconds given to each NODE to terminate gracefully. Node draining will be scheduled based on this value to optimize the amount of compute time, but still safely drain the node before an event.
 nodeTerminationGracePeriod: ""
 
+# webhookURL if specified, posts event data to URL upon instance interruption action.
+webhookURL: ""
+
+# webhookHeaders if specified, replaces the default webhook headers.
+webhookHeaders: ""
+
+# webhookTemplate if specified, replaces the default webhook message template.
+webhookTemplate: ""
+
 # instanceMetadataURL is used to override the default metadata URL (default: http://169.254.169.254:80)
 instanceMetadataURL: ""
+
+# (TESTING USE): Mount path for uptime file
+procUptimeFile: "/proc/uptime"
 
 # nodeSelector tells the daemonset where to place the node-termination-handler
 # pods. By default, this value is empty and every node will receive a pod.
