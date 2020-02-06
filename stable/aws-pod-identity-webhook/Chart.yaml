@@ -16,4 +16,3 @@ maintainers:
 - name: Stefan Prodan
   url: https://github.com/stefanprodan
   email: stefanprodan@users.noreply.github.com
-engine: gotpl
