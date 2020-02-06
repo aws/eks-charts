@@ -20,4 +20,4 @@ rules:
   - update
   - patch
   resourceNames:
-  - "{{ .Values.tls_secret_name }}"
+  - "{{ .Values.tlsSecretName }}"

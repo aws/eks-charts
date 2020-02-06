@@ -39,9 +39,9 @@ spec:
         - --in-cluster
         - --namespace={{ .Release.Namespace }}
         - --service-name={{ include "aws-pod-identity-webhook.fullname" . }}
-        - --tls-secret={{ .Values.tls_secret_name }}
-        - --annotation-prefix={{ .Values.annotation_prefix }}
-        - --token-audience={{ .Values.token_audience }}
+        - --tls-secret={{ .Values.tlsSecretName }}
+        - --annotation-prefix={{ .Values.annotationPrefix }}
+        - --token-audience={{ .Values.tokenAudience }}
         - --logtostderr
         volumeMounts:
         - name: webhook-certs

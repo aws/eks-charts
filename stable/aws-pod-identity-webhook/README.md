@@ -50,9 +50,9 @@ The following table lists the configurable parameters for this chart and their d
 
 | Parameter                   | Description                           | Default                                                                 |
 | ----------------------------|---------------------------------------|-------------------------------------------------------------------------|
-| `tls_secret_name`           | Name of the secret containing the     | `pod-identity-webhook`                                                  |
-| `annotation_prefix`         | Prefix for annotation                 | `eks.amazonaws.com`                                                     |
-| `token_audience`            | Token audience                        | `sts.amazonaws.com`                                                     |
+| `tlsSecretName`             | Name of the secret containing the     | `pod-identity-webhook`                                                  |
+| `annotationPrefix`          | Prefix for annotation                 | `eks.amazonaws.com`                                                     |
+| `tokenAudience`             | Token audience                        | `sts.amazonaws.com`                                                     |
 | `caBundle`                  | CA cert bundle data                   | None. Must be provided on chart install                                 |
 | `image.repository`          | Image repository                      | `602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/pod-identity-webhook` |
 | `image.tag`                 | Image tag                             | `latest`                                                                |

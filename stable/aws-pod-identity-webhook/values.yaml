@@ -1,6 +1,6 @@
-tls_secret_name: pod-identity-webhook
-annotation_prefix: eks.amazonaws.com
-token_audience: sts.amazonaws.com
+tlsSecretName: pod-identity-webhook
+annotationPrefix: eks.amazonaws.com
+tokenAudience: sts.amazonaws.com
 
 replicas: 3
 
