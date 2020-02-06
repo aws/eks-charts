@@ -40,3 +40,7 @@ rbac:
   create: true
   # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
   pspEnabled: false
+
+logging:
+  #logging.verbosity: <=3 (INFO), >=4 (DEBUG)
+  verbosity: 0
