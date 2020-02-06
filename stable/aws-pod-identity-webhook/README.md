@@ -48,23 +48,26 @@ helm delete --purge pod-identity-webhook
 
 The following table lists the configurable parameters for this chart and their default values.
 
-| Parameter              | Description                           | Default                                                                 |
-| -----------------------|---------------------------------------|-------------------------------------------------------------------------|
-| `tls_secret_name`      | Name of the secret containing the     | `pod-identity-webhook`                                                  |
-| `annotation_prefix`    | Prefix for annotation                 | `eks.amazonaws.com`                                                     |
-| `token_audience`       | Token audience                        | `sts.amazonaws.com`                                                     |
-| `caBundle`             | CA cert bundle data                   | None. Must be provided on chart install                                 |
-| `image.repository`     | Image repository                      | `602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/pod-identity-webhook` |
-| `image.tag`            | Image tag                             | `latest`                                                                |
-| `image.pullPolicy`     | Container pull policy                 | `IfNotPresent`                                                          |
-| `replicas`             | Number of deployment replicas         | `3`                                                                     |
-| `fullnameOverride`     | Override the fullname of the chart    | `nil`                                                                   |
-| `nameOverride`         | Override the name of the chart        | `nil`                                                                   |
-| `priorityClassName`    | Set a priority class for pods         | `nil`                                                                   |
-| `resources`            | Pod resources                         | `{}`                                                                    |
-| `nodeSelector`         | Node labels for pod assignment        | `{}`                                                                    |
-| `tolerations`          | Optional deployment tolerations       | `[]`                                                                    |
-| `affinity`             | Map of node/pod affinities            | `{}`                                                                    |
+| Parameter                   | Description                           | Default                                                                 |
+| ----------------------------|---------------------------------------|-------------------------------------------------------------------------|
+| `tls_secret_name`           | Name of the secret containing the     | `pod-identity-webhook`                                                  |
+| `annotation_prefix`         | Prefix for annotation                 | `eks.amazonaws.com`                                                     |
+| `token_audience`            | Token audience                        | `sts.amazonaws.com`                                                     |
+| `caBundle`                  | CA cert bundle data                   | None. Must be provided on chart install                                 |
+| `image.repository`          | Image repository                      | `602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/pod-identity-webhook` |
+| `image.tag`                 | Image tag                             | `latest`                                                                |
+| `image.pullPolicy`          | Container pull policy                 | `IfNotPresent`                                                          |
+| `replicas`                  | Number of deployment replicas         | `3`                                                                     |
+| `fullnameOverride`          | Override the fullname of the chart    | `nil`                                                                   |
+| `nameOverride`              | Override the name of the chart        | `nil`                                                                   |
+| `priorityClassName`         | Set a priority class for pods         | `nil`                                                                   |
+| `resources.requests.cpu`    | pod CPU request                       | `100m`                                                                  |
+| `resources.requests.memory` | pod memory request                    | `64Mi`                                                                  |
+| `resources.limits.cpu`      | pod CPU limit                         | `2000m`                                                                 |
+| `resources.limits.memory`   | pod memory limit                      | `1Gi`                                                                   |
+| `nodeSelector`              | Node labels for pod assignment        | `{}`                                                                    |
+| `tolerations`               | Optional deployment tolerations       | `[]`                                                                    |
+| `affinity`                  | Map of node/pod affinities            | `{}`                                                                    |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 
