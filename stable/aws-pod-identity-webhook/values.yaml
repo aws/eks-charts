@@ -28,3 +28,9 @@ tolerations: []
 affinity: {}
 
 priorityClassName: ""
+
+serviceAccount:
+  # serviceAccount.create: Whether to create a service account or not
+  create: true
+  # serviceAccount.name: The name of the service account to create or use
+  name: ""
