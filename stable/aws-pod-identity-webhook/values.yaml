@@ -29,6 +29,8 @@ affinity: {}
 
 priorityClassName: ""
 
+podAnnotations: {}
+
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
   create: true
