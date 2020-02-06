@@ -14,27 +14,34 @@ For installation into a non-EKS cluster, see [Self-hosted Kubernetes setup](http
 
 You first need to retrieve `ca.crt` from your cluster as this is used as a value for the chart:
 
-```shell
+```sh
 secret_name=$(kubectl get sa default -o jsonpath='{.secrets[0].name}')
 export CA_BUNDLE=$(kubectl get secret/$secret_name -o jsonpath='{.data.ca\.crt}' | tr -d '\n')
 ```
 
+And add the EKS repository to Helm:
+
+```sh
+helm repo add eks https://aws.github.io/eks-charts
+```
+
 Then install the chart:
 
-```shell
-$ helm install --name my-release stable/aws-pod-identity-webhook --set caBundle="${CA_BUNDLE}"
+```sh
+helm upgrade -i pod-identity-webhook eks/aws-pod-identity-webhook \
+--namespace kube-system --set caBundle="${CA_BUNDLE}"
 ```
 
 After installation you need to approve the certificate. Follow the chart notes after installation for this step.
 
-The webhook will request a new CSR prior expiry in 1 year. This new CSR will also need to be manually approved.
+The webhook will request a new CSR prior to expiration. This new CSR will also need to be manually approved.
 
 ## Uninstalling the Chart
 
 To delete the chart:
 
-```shell
-$ helm delete my-release
+```sh
+helm delete --purge pod-identity-webhook
 ```
 
 ## Configuration
@@ -61,6 +68,6 @@ The following table lists the configurable parameters for this chart and their d
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 
-```shell
-$ helm install --name my-release stable/aws-pod-identity-webhook --values values.yaml
+```sh
+helm update -i pod-identity-webhook eks/aws-pod-identity-webhook --namespace kube-system --values values.yaml
 ```
