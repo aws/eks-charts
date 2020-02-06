@@ -13,7 +13,13 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-resources: {}
+resources:
+  limits:
+    cpu: 100m
+    memory: 64Mi
+  requests:
+    cpu: 2000m
+    memory: 1Gi
 
 nodeSelector: {}
 
