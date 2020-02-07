@@ -14,10 +14,10 @@ nameOverride: ""
 fullnameOverride: ""
 
 resources:
-  limits:
+  requests:
     cpu: 100m
     memory: 64Mi
-  requests:
+  limits:
     cpu: 2000m
     memory: 1Gi
 
