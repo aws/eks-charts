@@ -6,7 +6,7 @@ replicas: 3
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/pod-identity-webhook
-  tag: latest
+  tag: "0.2.0"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
