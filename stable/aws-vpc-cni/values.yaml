@@ -8,7 +8,7 @@ nameOverride: aws-node
 
 image:
   region: us-west-2
-  tag: v1.5.5
+  tag: v1.6.0
   pullPolicy: Always
   # Set to use custom image
   # override: "repo/org/image:tag"
