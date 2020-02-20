@@ -50,6 +50,15 @@ kubectl apply -k github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=m
 
 Install the App Mesh CRD controller:
 
+### Regular Kubernetes distribution
+
+```sh
+helm upgrade -i appmesh-controller eks/appmesh-controller \
+    --namespace appmesh-system
+```
+
+The [configuration](#configuration) section lists the parameters that can be configured during installation.
+
 ### EKS on Fargate
 
 ```
@@ -125,15 +134,6 @@ helm upgrade -i appmesh-controller eks/appmesh-controller \
     --set serviceAccount.create=false \
     --set serviceAccount.name=appmesh-controller
 ```
-
-### Regular Kubernetes distribution
-
-```sh
-helm upgrade -i appmesh-controller eks/appmesh-controller \
-    --namespace appmesh-system
-```
-
-The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 ## Uninstalling the Chart
 
