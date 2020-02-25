@@ -40,3 +40,7 @@ rbac:
   create: true
   # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
   pspEnabled: false
+
+log:
+  #log.level: info (default), debug
+  level: "info"

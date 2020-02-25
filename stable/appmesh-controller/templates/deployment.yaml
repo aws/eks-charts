@@ -37,6 +37,11 @@ spec:
             {{- if .Values.region }}
             - --aws-region={{ .Values.region }}
             {{- end }}
+            {{- if eq .Values.log.level "debug" }}
+            - --v=4
+            {{- else if eq .Values.log.level "info" }}
+            - --v=0
+            {{- end }}
           livenessProbe:
             exec:
               command:

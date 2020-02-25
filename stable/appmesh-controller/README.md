@@ -74,6 +74,7 @@ Parameter | Description | Default
 `image.repository` | image repository | ` 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/app-mesh-controller`
 `image.tag` | image tag | `<VERSION>`
 `image.pullPolicy` | image pull policy | `IfNotPresent`
+`log.level` | controller log level, possible values are `info` and `debug`  | `info`
 `resources.requests/cpu` | pod CPU request | `100m`
 `resources.requests/memory` | pod memory request | `64Mi`
 `resources.limits/cpu` | pod CPU limit | `2000m`
