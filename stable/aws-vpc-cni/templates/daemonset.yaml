@@ -38,6 +38,10 @@ spec:
                     operator: In
                     values:
                       - amd64
+                  - key: eks.amazonaws.com/compute-type
+                    operator: NotIn
+                    values:
+                      - fargate
       serviceAccountName: {{ template "aws-vpc-cni.serviceAccountName" . }}
       automountServiceAccountToken: true
       hostNetwork: true
@@ -56,6 +60,14 @@ spec:
           ports:
             - containerPort: 61678
               name: metrics
+          readinessProbe:
+            exec:
+              command: ["/app/grpc-health-probe", "-addr=:50051"]
+            initialDelaySeconds: 35
+          livenessProbe:
+            exec:
+              command: ["/app/grpc-health-probe", "-addr=:50051"]
+            initialDelaySeconds: 35
           env:
 {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
@@ -78,6 +90,8 @@ spec:
               name: log-dir
             - mountPath: /var/run/docker.sock
               name: dockersock
+            - mountPath: /var/run/dockershim.sock
+              name: dockershim
       volumes:
         - name: cni-bin-dir
           hostPath:
@@ -91,6 +105,9 @@ spec:
         - name: dockersock
           hostPath:
             path: /var/run/docker.sock
+        - name: dockershim
+          hostPath:
+            path: /var/run/dockershim.sock
 
       {{- with .Values.nodeSelector }}
       nodeSelector:
