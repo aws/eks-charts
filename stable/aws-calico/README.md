@@ -5,6 +5,7 @@ This chart installs Calico on AWS: https://docs.aws.amazon.com/eks/latest/usergu
 ## Prerequisites
 
 - Kubernetes 1.11+ running on AWS
+- Helm 3
 
 ## Installing the Chart
 
@@ -12,12 +13,6 @@ First add the EKS repository to Helm:
 
 ```shell
 helm repo add eks https://aws.github.io/eks-charts
-```
-
-Install the Calico CRDs:
-
-```shell
-kubectl apply -k github.com/aws/eks-charts/stable/aws-calico//crds?ref=master
 ```
 
 To install the chart with the release name `aws-calico` and default configuration:
