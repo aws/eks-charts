@@ -133,6 +133,38 @@ spec:
                         type: integer
                       unhealthyThreshold:
                         type: integer
+                  tls:
+                    type: object
+                    required:
+                      - mode
+                      - certificate
+                    properties:
+                      mode:
+                        type: string
+                        enum:
+                          - 'DISABLED'
+                          - 'PERMISSIVE'
+                          - 'STRICT'
+                      certificate:
+                        type: object
+                        properties:
+                          acm:
+                            type: object
+                            required:
+                              - certificateArn
+                            properties:
+                              certificateArn:
+                                type: string
+                          file:
+                            type: object
+                            required:
+                              - certificateChain
+                              - privateKey
+                            properties:
+                              certificateChain:
+                                type: string
+                              privateKey:
+                                type: string
             serviceDiscovery:
               type: object
               properties:
@@ -159,6 +191,85 @@ spec:
                         properties:
                           name:
                             type: string
+                          clientPolicy:
+                            type: object
+                            properties:
+                              tls:
+                                type: object
+                                required:
+                                  - validation
+                                properties:
+                                  enforce:
+                                    type: boolean
+                                  ports:
+                                    type: array
+                                    items:
+                                      type: integer
+                                  validation:
+                                    type: object
+                                    required:
+                                      - trust
+                                    properties:
+                                      trust:
+                                        type: object
+                                        properties:
+                                          acm:
+                                            type: object
+                                            required:
+                                              - certificateAuthorityArns
+                                            properties:
+                                              certificateAuthorityArns:
+                                                type: array
+                                                items:
+                                                  type: string
+                                          file:
+                                            type: object
+                                            required:
+                                              - certificateChain
+                                            properties:
+                                              certificateChain:
+                                                type: string
+            backendDefaults:
+              type: object
+              properties:
+                clientPolicy:
+                  type: object
+                  properties:
+                    tls:
+                      type: object
+                      required:
+                        - validation
+                      properties:
+                        enforce:
+                          type: boolean
+                        ports:
+                          type: array
+                          items:
+                            type: integer
+                        validation:
+                          type: object
+                          required:
+                            - trust
+                          properties:
+                            trust:
+                              type: object
+                              properties:
+                                acm:
+                                  type: object
+                                  required:
+                                    - certificateAuthorityArns
+                                  properties:
+                                    certificateAuthorityArns:
+                                      type: array
+                                      items:
+                                        type: string
+                                file:
+                                  type: object
+                                  required:
+                                    - certificateChain
+                                  properties:
+                                    certificateChain:
+                                      type: string
             logging:
               type: object
               properties:
