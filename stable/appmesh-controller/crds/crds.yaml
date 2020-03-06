@@ -28,6 +28,16 @@ spec:
       properties:
         spec:
           properties:
+            egressFilter:
+              type: object
+              required:
+                - type
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - ALLOW_ALL
+                    - DROP_ALL
             serviceDiscoveryType:
               type: string
               enum:
