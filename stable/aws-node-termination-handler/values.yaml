@@ -4,8 +4,9 @@
 
 image:
   repository: amazon/aws-node-termination-handler
-  tag: v1.2.0
+  tag: v1.3.0
   pullPolicy: IfNotPresent
+  pullSecrets: []
 
 nameOverride: ""
 fullnameOverride: ""
