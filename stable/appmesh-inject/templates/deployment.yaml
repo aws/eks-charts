@@ -18,10 +18,8 @@ spec:
         app.kubernetes.io/part-of: appmesh
       annotations:
         prometheus.io/scrape: "false"
-        {{- if .Values.podAnnotations }}
-        {{- range $key, $value := .Values.podAnnotations }}
-          {{ $key }}: {{ $value | quote }}
-        {{- end }}
+        {{- with .Values.podAnnotations }}
+{{ toYaml . | indent 8 }}
         {{- end }}
     spec:
       serviceAccountName: {{ template "appmesh-inject.serviceAccountName" . }}
