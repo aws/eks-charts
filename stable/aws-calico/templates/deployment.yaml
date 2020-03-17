@@ -72,6 +72,8 @@ spec:
               port: 9098
               host: localhost
             periodSeconds: 10
+          resources:
+            {{- toYaml .Values.calico.typha.resources | nindent 12 }}
 
 ---
 
@@ -106,8 +108,5 @@ spec:
             - --logtostderr=true
             - --v=2
           resources:
-            requests:
-              cpu: 10m
-            limits:
-              cpu: 10m
+            {{- toYaml .Values.calico.typha_autoscaler.resources | nindent 12 }}
       serviceAccountName: "{{ include "aws-calico.serviceAccountName" . }}-typha-cpha"

@@ -98,6 +98,8 @@ spec:
                 - /bin/calico-node
                 - -felix-ready
             periodSeconds: 10
+          resources:
+            {{- toYaml .Values.calico.node.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /lib/modules
               name: lib-modules
