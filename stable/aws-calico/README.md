@@ -46,6 +46,8 @@ The following table lists the configurable parameters for this chart and their d
 | `fullnameOverride`      | Override the fullname of the chart                      | `calico`                        |
 | `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                           |
 | `serviceAccount.create` | Specifies whether a ServiceAccount should be created    | `true`                          |
+| `autoscaler.image`      | Cluster Proportional Autoscaler Image                   | `k8s.gcr.io/cluster-proportional-autoscaler-amd64` |
+| `autoscaler.tag`        | Cluster Proportional Autoscaler version                 | `1.1.2`                                            |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 
