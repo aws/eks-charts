@@ -9,3 +9,7 @@ calico:
     image: quay.io/calico/typha
   node:
     image: quay.io/calico/node
+
+autoscaler:
+  tag: "1.1.2"
+  image: k8s.gcr.io/cluster-proportional-autoscaler-amd64
