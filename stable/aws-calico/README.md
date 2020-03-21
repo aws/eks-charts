@@ -41,11 +41,16 @@ The following table lists the configurable parameters for this chart and their d
 | Parameter               | Description                                             | Default                         |
 | ------------------------|---------------------------------------------------------|---------------------------------|
 | `calico.typha.image`    | Calico Typha Image                                      | `quay.io/calico/typha`          |
+| `calico.typha.resources`| Calico Typha Resources                                  | `requests.memory: 64Mi, requests.cpu: 50m, limits.memory: 96Mi, limits.cpu: 100m` |
 | `calico.node.image`     | Calico Node Image                                       | `quay.io/calico/node`           |
+| `calico.node.resources` | Calico Node Resources                                   | `requests.memory: 32Mi, requests.cpu: 20m, limits.memory: 64Mi, limits.cpu: 100m` |
+| `calico.typha_autoscaler.resources` | Calico Typha Autoscaler Resources           | `requests.memory: 16Mi, requests.cpu: 10m, limits.memory: 32Mi, limits.cpu: 10m` |
 | `calico.tag`            | Calico version                                          | `v3.8.1`                        |
 | `fullnameOverride`      | Override the fullname of the chart                      | `calico`                        |
 | `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                           |
 | `serviceAccount.create` | Specifies whether a ServiceAccount should be created    | `true`                          |
+| `autoscaler.image`      | Cluster Proportional Autoscaler Image                   | `k8s.gcr.io/cluster-proportional-autoscaler-amd64` |
+| `autoscaler.tag`        | Cluster Proportional Autoscaler version                 | `1.1.2`                                            |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 
