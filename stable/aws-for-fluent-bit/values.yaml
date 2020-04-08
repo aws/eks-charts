@@ -1,0 +1,82 @@
+global:
+## Override the deployment namespace
+#   namespaceOverride:
+
+image:
+  repository: amazon/aws-for-fluent-bit
+  tag: 2.2.0
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  parsersFile: "/fluent-bit/parsers/parsers.conf"
+
+input:
+  tag: "kube.*"
+  path: "/var/log/containers/*.log"
+  db: "/var/log/flb_kube.db"
+  parser: docker
+  dockerMode: "On"
+  memBufLimit: 5MB
+  skipLongLines: "On"
+  refreshInterval: 10
+
+filter:
+  match: "kube.*"
+  kubeURL: "https://kubernetes.default.svc.cluster.local:443"
+  mergeLog: "On"
+  mergeLogKey: "data"
+  k8sLoggingParser: "On"
+  k8sLoggingExclude: "On"
+
+cloudWatch:
+  enabled: true
+  match: "*"
+  region: "us-east-1"
+  logGroupName: "/aws/eks/fluentbit-cloudwatch/logs"
+  logStreamName:
+  logStreamPrefix: "fluentbit-"
+  logKey:
+  logFormat:
+  roleArn:
+  autoCreateGroup: true
+  endpoint:
+  credentialsEndpoint:  {}
+
+firehose:
+  enabled: true
+  match: "*"
+  region: "us-east-1"
+  deliveryStream: "my-stream"
+  dataKeys:
+  roleArn:
+  endpoint:
+  timeKey:
+
+kinesis:
+  enabled: true
+  match: "*"
+  region: "us-east-1"
+  stream: "my-kinesis-stream-name"
+  partitionKey: "container_id"
+  appendNewline:
+  dataKeys:
+  roleArn:
+  timeKey:
+  timeKeyFormat:
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name:
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 400Mi
+  requests:
+    cpu: 100m
+    memory: 200Mi

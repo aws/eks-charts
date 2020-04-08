@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "aws-for-fluent-bit.fullname" . }}
+  namespace: {{ include "aws-for-fluent-bit.namespace" . }}
+  labels:
+    {{- include "aws-for-fluent-bit.labels" . | nindent 4 }}
+data:
+  fluent-bit.conf: |
+    [SERVICE]
+        Parsers_File {{ .Values.service.parsersFile }}
+
+    [INPUT]
+        Name              tail
+        Tag               {{ .Values.input.tag }}
+        Path              {{ .Values.input.path }}
+        DB                {{ .Values.input.db }}
+        Parser            {{ .Values.input.parser }}
+        Docker_Mode       {{ .Values.input.dockerMode }}
+        Mem_Buf_Limit     {{ .Values.input.memBufLimit }}
+        Skip_Long_Lines   {{ .Values.input.skipLongLines }}
+        Refresh_Interval  {{ .Values.input.refreshInterval }}
+
+    [FILTER]
+        Name                kubernetes
+        Match               {{ .Values.filter.match }}
+        Kube_URL            {{ .Values.filter.kubeURL }}
+        Merge_Log           {{ .Values.filter.mergeLog }}
+        Merge_Log_Key       {{ .Values.filter.mergeLogKey }}
+        K8S-Logging.Parser  {{ .Values.filter.k8sLoggingParser }}
+        K8S-Logging.Exclude {{ .Values.filter.k8sLoggingExclude }}
+
+{{- if .Values.cloudWatch.enabled }}
+    [OUTPUT]
+        Name                  cloudwatch
+        Match                 {{ .Values.cloudWatch.match }}
+        region                {{ .Values.cloudWatch.region }}
+        log_group_name        {{ .Values.cloudWatch.logGroupName }}
+        {{- if .Values.cloudWatch.logStreamName }}
+        log_stream_name       {{ .Values.cloudWatch.logStreamName }}
+        {{- end }}
+        {{- if .Values.cloudWatch.logStreamPrefix }}
+        log_stream_prefix     {{ .Values.cloudWatch.logStreamPrefix }}
+        {{- end }}
+        {{- if .Values.cloudWatch.logKey }}
+        log_key               {{ .Values.cloudWatch.logKey }}
+        {{- end }}
+        {{- if .Values.cloudWatch.logFormat }}
+        log_format            {{ .Values.cloudWatch.logFormat }}
+        {{- end }}
+        {{- if .Values.cloudWatch.roleArn }}
+        role_arn              {{ .Values.cloudWatch.roleArn }}
+        {{- end }}
+        {{- if .Values.cloudWatch.autoCreateGroup }}
+        auto_create_group     {{ .Values.cloudWatch.autoCreateGroup }}
+        {{- end }}
+        {{- if .Values.cloudWatch.endpoint }}
+        endpoint              {{ .Values.cloudWatch.endpoint }}
+        {{- end }}
+        {{- if .Values.cloudWatch.credentialsEndpoint }}
+        credentials_endpoint  {{ toJson .Values.cloudWatch.credentialsEndpoint }}
+        {{- end }}
+{{- end }}
+
+{{- if .Values.firehose.enabled }}
+    [OUTPUT]
+        Name            firehose
+        Match           {{ .Values.firehose.match }}
+        region          {{ .Values.firehose.region }}
+        delivery_stream {{ .Values.firehose.deliveryStream }}
+        {{- if .Values.firehose.dataKeys }}
+        data_keys       {{ .Values.firehose.dataKeys }}
+        {{- end }}
+        {{- if .Values.firehose.roleArn }}
+        role_arn        {{ .Values.firehose.roleArn }}
+        {{- end }}
+        {{- if .Values.firehose.endpoint }}
+        endpoint        {{ .Values.firehose.endpoint }}
+        {{- end }}
+        {{- if .Values.firehose.timeKey }}
+        time_key        {{ .Values.firehose.timeKey }}
+        {{- end }}
+        {{- if .Values.firehose.timeKeyFormat }}
+        time_key_format {{ .Values.firehose.timeKeyFormat }}
+        {{- end }}
+{{- end }}
+
+{{- if .Values.kinesis.enabled }}
+    [OUTPUT]
+        Name            kinesis
+        Match           {{ .Values.kinesis.match }}
+        region          {{ .Values.kinesis.region }}
+        stream          {{ .Values.kinesis.stream }}
+        partition_key   {{ .Values.kinesis.partitionKey }}
+        {{- if .Values.kinesis.appendNewline }}
+        append_newline  {{ .Values.kinesis.appendNewline }}
+        {{- end }}
+        {{- if .Values.kinesis.dataKeys }}
+        data_keys       {{ .Values.kinesis.dataKeys }}
+        {{- end }}
+        {{- if .Values.kinesis.roleArn }}
+        role_arn        {{ .Values.kinesis.roleArn }}
+        {{- end }}
+        {{- if .Values.kinesis.endpoint }}
+        endpoint        {{ .Values.kinesis.endpoint }}
+        {{- end }}
+        {{- if .Values.kinesis.timeKey }}
+        time_key        {{ .Values.kinesis.timeKey }}
+        {{- end }}
+        {{- if .Values.kinesis.timeKeyFormat }}
+        time_key_format {{ .Values.kinesis.timeKeyFormat }}
+        {{- end }}
+{{- end }}
