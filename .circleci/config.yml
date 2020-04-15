@@ -61,6 +61,11 @@ jobs:
             echo "📝 Checking for updated Chart versions since the last eks-charts release $LAST_RELEASE_TAG"
             for d in */; do
               LAST_COMMIT_HASH=$(git --no-pager log --pretty=tformat:"%H" -- $d | awk 'FNR <= 1')
+              ## If LAST_RELEASE_HASH does not include the chart, then it's a new chart and does not need a version increment
+              if [[ -z $(git ls-tree -d $LAST_RELEASE_HASH $d) ]]; then
+                echo "✅ Chart $d is a new chart since the last release"
+                continue
+              fi
               ## If LAST_RELEASE_HASH is NOT an ancestor of LAST_COMMIT_HASH then it has not been modified 
               if [[ ! -z $LAST_COMMIT_HASH && -z $(git rev-list $LAST_COMMIT_HASH | grep $LAST_RELEASE_HASH) ]]; then
                 echo "✅ Chart $d had no changes since the last eks-charts release"
