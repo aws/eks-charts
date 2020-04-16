@@ -109,8 +109,13 @@ spec:
               type: array
               items:
                 type: object
+                required:
+                  - portMapping
                 properties:
                   portMapping:
+                    required:
+                      - port
+                      - protocol
                     properties:
                       port:
                         type: integer
