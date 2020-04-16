@@ -8,7 +8,12 @@ metadata:
 data:
   fluent-bit.conf: |
     [SERVICE]
-        Parsers_File {{ .Values.service.parsersFile }}
+{{- range .Values.service.parsersFiles }}
+        Parsers_File {{ . }}
+{{- end }}
+{{- if .Values.service.extraParserFile.enabled }}
+        Parsers_File /fluent-bit/etc/parser_extra.conf
+{{- end }}
 
     [INPUT]
         Name              tail
@@ -110,4 +115,9 @@ data:
         {{- if .Values.kinesis.timeKeyFormat }}
         time_key_format {{ .Values.kinesis.timeKeyFormat }}
         {{- end }}
+{{- end }}
+
+{{- if .Values.service.extraParserFile.enabled }}
+  parser_extra.conf: |-
+{{ .Values.service.extraParserFile.data | indent 4}}
 {{- end }}

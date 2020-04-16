@@ -12,8 +12,14 @@ nameOverride: ""
 fullnameOverride: ""
 
 service:
-  parsersFile: "/fluent-bit/parsers/parsers.conf"
-
+  parsersFiles:
+    - /fluent-bit/parsers/parsers.conf
+  extraParserFile:
+    enabled: false
+    data: |
+      [PARSER]
+          Name   logfmt
+          Format logfmt
 input:
   tag: "kube.*"
   path: "/var/log/containers/*.log"

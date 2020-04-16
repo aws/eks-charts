@@ -30,9 +30,12 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | Parameter | Description | Default |
 | - | - | - |
 | `global.namespaceOverride` | Override the deployment namespace	| Not set (`Release.Namespace`) |
-| `image.repository` | image to deploy | `amazon/aws-for-fluent-bit` |
-| `image.pullPolicy` | pull policy for the image | `IfNotPresent` |
+| `image.repository` | Image to deploy | `amazon/aws-for-fluent-bit` |
+| `image.pullPolicy` | Pull policy for the image | `IfNotPresent` |
 | `serviceAccount.create` | Whether a new service account should be created | `true`
+| `service.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
+| `service.extraParserFile.enabled` | Create a new parser file with data | `true` |
+| `service.extraParserFile.data` | Value for parser file config | `"logfmt parser"` |
 
 
 ## CloudWatch Plugin
