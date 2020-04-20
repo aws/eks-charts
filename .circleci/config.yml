@@ -67,7 +67,7 @@ jobs:
                 continue
               fi
               ## If LAST_RELEASE_HASH is NOT an ancestor of LAST_COMMIT_HASH then it has not been modified 
-              if [[ ! -z $LAST_COMMIT_HASH && -z $(git rev-list $LAST_COMMIT_HASH | grep $LAST_RELEASE_HASH) ]]; then
+              if [[ ! -z $LAST_COMMIT_HASH && -z $(git rev-list $LAST_COMMIT_HASH | grep $LAST_RELEASE_HASH) || $LAST_COMMIT_HASH == $LAST_RELEASE_HASH ]]; then
                 echo "✅ Chart $d had no changes since the last eks-charts release"
                 continue
               fi
