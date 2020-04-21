@@ -14,12 +14,11 @@ fullnameOverride: ""
 service:
   parsersFiles:
     - /fluent-bit/parsers/parsers.conf
-  extraParserFile:
-    enabled: false
-    data: |
-      [PARSER]
-          Name   logfmt
-          Format logfmt
+  # extraParsers: |
+  #   [PARSER]
+  #       Name   logfmt
+  #       Format logfmt
+
 input:
   tag: "kube.*"
   path: "/var/log/containers/*.log"
@@ -30,6 +29,14 @@ input:
   skipLongLines: "On"
   refreshInterval: 10
 
+# extraInputs: |
+#   [INPUT]
+#       Name         winlog
+#       Channels     Setup,Windows PowerShell
+#       Interval_Sec 1
+#       DB           winlog.sqlite
+
+
 filter:
   match: "kube.*"
   kubeURL: "https://kubernetes.default.svc.cluster.local:443"
@@ -37,6 +44,12 @@ filter:
   mergeLogKey: "data"
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
+
+# extraFilters: |
+#   [FILTER]
+#       Name   grep
+#       Match  *
+#       Exclude log lvl=debug*
 
 cloudWatch:
   enabled: true
@@ -73,6 +86,12 @@ kinesis:
   roleArn:
   timeKey:
   timeKeyFormat:
+
+# extraOutputs: |
+#   [OUTPUT]
+#     Name file
+#     Format template
+#     Template {time} used={Mem.used} free={Mem.free} total={Mem.total}
 
 serviceAccount:
   create: true
