@@ -1,0 +1,122 @@
+{{ $tls := fromYaml ( include "appmesh-controller.gen-certs" . ) }}
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+{{- if $.Values.enableCertManager }}
+  annotations:
+    cert-manager.io/inject-ca-from: appmesh-system/appmesh-serving-cert
+{{- end }}
+  name: appmesh-mutating-webhook-configuration
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+webhooks:
+{{- range $res := .Values.customResourceNames }}
+- clientConfig:
+    service:
+      name: appmesh-webhook-service
+      namespace: {{ $.Release.Namespace }}
+      path: /mutate-appmesh-k8s-aws-v1beta2-{{ $res.name }}
+    caBundle: {{ if not $.Values.enableCertManager -}}{{ $tls.caCert }}{{- else -}}Cg=={{ end }}
+  failurePolicy: Fail
+  name: m{{ $res.name }}.appmesh.k8s.aws
+  rules:
+  - apiGroups:
+    - appmesh.k8s.aws
+    apiVersions:
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - {{ $res.plural }}
+{{- end }}
+- clientConfig:
+    caBundle: {{ if not $.Values.enableCertManager -}}{{ $tls.caCert }}{{- else -}}Cg=={{ end }}
+    service:
+      name: appmesh-webhook-service
+      namespace: appmesh-system
+      path: /mutate-v1-pod
+  failurePolicy: Ignore
+  name: mpod.appmesh.k8s.aws
+  rules:
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    resources:
+    - pods
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+{{- if $.Values.enableCertManager }}
+  annotations:
+    cert-manager.io/inject-ca-from: appmesh-system/appmesh-serving-cert
+{{- end }}
+  name: appmesh-validating-webhook-configuration
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+webhooks:
+{{- range $res := .Values.customResourceNames }}
+- clientConfig:
+    service:
+      name: appmesh-webhook-service
+      namespace: {{ $.Release.Namespace }}
+      path: /validate-appmesh-k8s-aws-v1beta2-{{ $res.name }}
+    caBundle: {{ if not $.Values.enableCertManager -}}{{ $tls.caCert }}{{- else -}}Cg=={{ end }}
+  failurePolicy: Fail
+  name: v{{ $res.name }}.appmesh.k8s.aws
+  rules:
+  - apiGroups:
+    - appmesh.k8s.aws
+    apiVersions:
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - {{ $res.plural }}
+{{- end }}
+---
+{{- if not $.Values.enableCertManager }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: webhook-server-cert
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+type: kubernetes.io/tls
+data:
+  ca.crt: {{ $tls.caCert }}
+  tls.crt: {{ $tls.clientCert }}
+  tls.key: {{ $tls.clientKey }}
+{{- else }}
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: appmesh-serving-cert
+  namespace: appmesh-system
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+spec:
+  dnsNames:
+  - appmesh-webhook-service.appmesh-system.svc
+  - appmesh-webhook-service.appmesh-system.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: appmesh-selfsigned-issuer
+  secretName: webhook-server-cert
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: appmesh-selfsigned-issuer
+  namespace: appmesh-system
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+spec:
+  selfSigned: {}
+{{- end }}

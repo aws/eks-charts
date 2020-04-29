@@ -10,6 +10,22 @@ image:
   tag: v0.5.0
   pullPolicy: IfNotPresent
 
+sidecar:
+  image:
+    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
+    tag: v1.12.3.0-prod
+    # sidecar.logLevel: Envoy log level can be info, warn or error
+  logLevel: info
+  resources:
+    # sidecar.resources.requests: Envoy CPU and memory requests
+    requests:
+      cpu: 10m
+      memory: 32Mi
+init:
+  image:
+    repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
+    tag: v2
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -44,3 +60,33 @@ rbac:
 log:
   #log.level: info (default), debug
   level: "info"
+
+tracing:
+  # tracing.enabled: `true` if Envoy should be configured tracing
+  enabled: false
+  # tracing.provider: can be x-ray, jaeger or datadog
+  provider: x-ray
+  # tracing.address: Jaeger or Datadog agent server address (ignored for X-Ray)
+  address: appmesh-jaeger.appmesh-system
+  # tracing.address: Jaeger or Datadog agent server port (ignored for X-Ray)
+  port: 9411
+
+stats:
+  # stats.tagsEnabled: `true` if Envoy should include app-mesh tags
+  tagsEnabled: false
+  # stats.statsdEnabled: `true` if Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125
+  statsdEnabled: false
+
+# Enable cert-manager
+enableCertManager: false
+
+# Custom resource names for the webhooks
+customResourceNames:
+  - name: mesh
+    plural: meshes
+  - name: virtualnode
+    plural: virtualnodes
+  - name: virtualrouter
+    plural: virtualrouters
+  - name: virtualservice
+    plural: virtualservices

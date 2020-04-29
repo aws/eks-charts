@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: appmesh-controller-manager-metrics-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    control-plane: controller-manager
+{{ include "appmesh-controller.labels" . | indent 4 }}
+spec:
+  ports:
+   - name: https
+     port: 8443
+     targetPort: https
+  selector:
+    control-plane: controller-manager
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appmesh-webhook-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+spec:
+  ports:
+  - port: 443
+    targetPort: 9443
+  selector:
+    control-plane: controller-manager

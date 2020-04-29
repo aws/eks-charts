@@ -1,35 +1,106 @@
 {{- if .Values.rbac.create }}
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
 metadata:
-  name: {{ template "appmesh-controller.fullname" . }}
+  name: appmesh-leader-election-role
+  namespace: {{ .Release.Namespace }}
   labels:
 {{ include "appmesh-controller.labels" . | indent 4 }}
 rules:
-  - apiGroups: [""]
-    resources: ["pods"]
-    verbs: ["*"]
-  - apiGroups: [""]
-    resources: ["configmaps"]
-    verbs: ["create"]
-  - apiGroups: [""]
-    resources: ["configmaps"]
-    resourceNames: ["app-mesh-controller-leader"]
-    verbs: ["*"]
-  - apiGroups: ["appmesh.k8s.aws"]
-    resources: ["meshes", "virtualnodes", "virtualservices", "meshes/status", "virtualnodes/status", "virtualservices/status"]
-    verbs: ["*"]
+- apiGroups: [""]
+  resources: [configmaps]
+  verbs: [create, delete, get, list, patch, update, watch]
+- apiGroups: [""]
+  resources: [configmaps/status]
+  verbs: [get, update, patch]
+- apiGroups: [""]
+  resources: [events]
+  verbs: [create]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: appmesh-leader-election-rolebinding
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: appmesh-leader-election-role
+subjects:
+- kind: ServiceAccount
+  name: {{ template "appmesh-controller.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: appmesh-manager-role
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+rules:
+- apiGroups: [""]
+  resources: [namespaces]
+  verbs: [get, list, watch]
+- apiGroups: [appmesh.k8s.aws]
+  resources: [meshes, virtualgateways, virtualnodes, virtualrouters, virtualservices]
+  verbs: [create, delete, get, list, patch, update, watch]
+- apiGroups: [appmesh.k8s.aws]
+  resources: [meshes/status, virtualgateways/status, virtualnodes/status, virtualrouters/status, virtualservices/status]
+  verbs: [get, patch, update]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: appmesh-proxy-role
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+rules:
+- apiGroups: [authentication.k8s.io]
+  resources: [tokenreviews]
+  verbs: [create]
+- apiGroups: [authorization.k8s.io]
+  resources: [subjectaccessreviews]
+  verbs: [create]
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: appmesh-metrics-reader
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+rules:
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ template "appmesh-controller.fullname" . }}
+  name: appmesh-manager-rolebinding
   labels:
 {{ include "appmesh-controller.labels" . | indent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ template "appmesh-controller.fullname" . }}
+  name: appmesh-manager-role
+subjects:
+- name: {{ template "appmesh-controller.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+  kind: ServiceAccount
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: appmesh-proxy-rolebinding
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: appmesh-proxy-role
 subjects:
 - name: {{ template "appmesh-controller.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
