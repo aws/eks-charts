@@ -5,7 +5,9 @@ serviceAccount:
 
 calico:
   tag: v3.8.1
+
   typha:
+    logseverity: Info #Debug, Info, Warning, Error, Fatal
     image: quay.io/calico/typha
     resources:
       requests:
@@ -15,6 +17,7 @@ calico:
         memory: "96Mi"
         cpu: "100m"
   node:
+    logseverity: Info #Debug, Info, Warning, Error, Fatal
     image: quay.io/calico/node
     resources:
       requests:

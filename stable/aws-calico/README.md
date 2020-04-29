@@ -42,8 +42,10 @@ The following table lists the configurable parameters for this chart and their d
 | ------------------------|---------------------------------------------------------|---------------------------------|
 | `calico.typha.image`    | Calico Typha Image                                      | `quay.io/calico/typha`          |
 | `calico.typha.resources`| Calico Typha Resources                                  | `requests.memory: 64Mi, requests.cpu: 50m, limits.memory: 96Mi, limits.cpu: 100m` |
+| `calico.typha.logseverity` | Calico Typha Log Severity                            | `Info`                          |
 | `calico.node.image`     | Calico Node Image                                       | `quay.io/calico/node`           |
 | `calico.node.resources` | Calico Node Resources                                   | `requests.memory: 32Mi, requests.cpu: 20m, limits.memory: 64Mi, limits.cpu: 100m` |
+| `calico.node.logseverity` | Calico Node Log Severity                              | `Info`                          |
 | `calico.typha_autoscaler.resources` | Calico Typha Autoscaler Resources           | `requests.memory: 16Mi, requests.cpu: 10m, limits.memory: 32Mi, limits.cpu: 10m` |
 | `calico.tag`            | Calico version                                          | `v3.8.1`                        |
 | `fullnameOverride`      | Override the fullname of the chart                      | `calico`                        |
