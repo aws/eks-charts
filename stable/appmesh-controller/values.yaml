@@ -34,6 +34,9 @@ serviceAccount:
   create: true
   # serviceAccount.name: The name of the service account to create or use
   name: ""
+  # serviceAccount.annotations: Annotations to be added to ServiceAccount
+  annotations: {}
+    # eks.amazonaws.com/role-arn: arn:aws:iam::AWS_ACCOUNT_ID:role/IAM_ROLE_NAME
 
 rbac:
   # rbac.create: `true` if rbac resources should be created

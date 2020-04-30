@@ -5,4 +5,8 @@ metadata:
   name: {{ template "appmesh-controller.serviceAccountName" . }}
   labels:
 {{ include "appmesh-controller.labels" . | indent 4 }}
+  {{- if .Values.serviceAccount.annotations }}
+  annotations:
+{{ toYaml .Values.serviceAccount.annotations | indent 4 }}
+  {{- end }}
 {{- end }}
