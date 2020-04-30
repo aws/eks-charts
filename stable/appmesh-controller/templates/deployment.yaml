@@ -19,9 +19,7 @@ spec:
       annotations:
         prometheus.io/scrape: "true"
         {{- if .Values.podAnnotations }}
-        {{- range $key, $value := .Values.podAnnotations }}
-          {{ $key }}: {{ $value | quote }}
-        {{- end }}
+{{ toYaml .Values.podAnnotations | indent 8 }}
         {{- end }}
     spec:
       serviceAccountName: {{ template "appmesh-controller.serviceAccountName" . }}
