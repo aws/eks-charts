@@ -35,10 +35,10 @@ The following table lists the configurable parameters for this chart and their d
 | Parameter               | Description                                             | Default                             |
 | ------------------------|---------------------------------------------------------|-------------------------------------|
 | `affinity`              | Map of node/pod affinities                              | `{}`                                |
-|  `env`                  | List of environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options     | `[AWS_VPC_K8S_CNI_LOGLEVEL: DEBUG, AWS_VPC_K8S_CNI_VETHPREFIX: eni, AWS_VPC_ENI_MTU: "9001"]` |
+| `env`                   | List of environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options     | `[AWS_VPC_K8S_CNI_LOGLEVEL: DEBUG, AWS_VPC_K8S_CNI_VETHPREFIX: eni, AWS_VPC_ENI_MTU: "9001"]` |
 | `fullnameOverride`      | Override the fullname of the chart                      | `aws-node`                          |
 | `image.region`          | ECR repository region to use. Should match your cluster | `us-west-2`                         |
-| `image.tag`             | Image tag                                               | `v1.6.0`                            |
+| `image.tag`             | Image tag                                               | `v1.6.1`                            |
 | `image.pullPolicy`      | Container pull policy                                   | `IfNotPresent`                      |
 | `image.override`        | A custom docker image to use                            | `nil`                               |
 | `imagePullSecrets`      | Docker registry pull secret                             | `[]`                                |
@@ -51,7 +51,7 @@ The following table lists the configurable parameters for this chart and their d
 | `securityContext`       | Container Security context                              | `privileged: true`                  |
 | `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                               |
 | `serviceAccount.create` | Specifies whether a ServiceAccount should be created    | `true`                              |
-| `serviceAccount.annotations` | Specifies the annotations for ServiceAccount       | `{}`                              |
+| `serviceAccount.annotations` | Specifies the annotations for ServiceAccount       | `{}`                                |
 | `tolerations`           | Optional deployment tolerations                         | `[]`                                |
 | `updateStrategy`        | Optional update strategy                                | `type: RollingUpdate`               |
 
