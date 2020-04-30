@@ -16,3 +16,4 @@ bin/
 _tmp/
 
 .idea
+*.iml
