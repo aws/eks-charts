@@ -1176,10 +1176,9 @@
   "refresh": "10s",
   "schemaVersion": 20,
   "style": "light",
-  "style": "light",
   "tags": [
     "flagger"
-  ]
+  ],
   "templating": {
     "list": [
       {
