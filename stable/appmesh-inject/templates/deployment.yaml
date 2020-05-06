@@ -64,6 +64,11 @@ spec:
             {{- if .Values.region }}
             - -region={{ .Values.region }}
             {{- end }}
+          {{- if .Values.stsRegional }}
+          env:
+            - name: AWS_STS_REGIONAL_ENDPOINTS
+              value: regional
+          {{- end }}              
           ports:
             - name: https
               containerPort: 8080
