@@ -60,6 +60,7 @@ Parameter | Description | Default
 `ignoreDaemonsSets` | Causes kubectl to skip daemon set managed pods | `true`
 `instanceMetadataURL` | The URL of EC2 instance metadata. This shouldn't need to be changed unless you are testing. | `http://169.254.169.254:80`
 `webhookURL` | Posts event data to URL upon instance interruption action | ``
+`webhookProxy` | Uses the specified HTTP(S) proxy for sending webhooks | `` 
 `webhookHeaders` | Replaces the default webhook headers. | `{"Content-type":"application/json"}`
 `webhookTemplate` | Replaces the default webhook message template. | `{"text":"[NTH][Instance Interruption] EventID: {{ .EventID }} - Kind: {{ .Kind }} - Description: {{ .Description }} - State: {{ .State }} - Start Time: {{ .StartTime }}"}`
 `dryRun` | If true, only log if a node would be drained | `false`
@@ -67,6 +68,7 @@ Parameter | Description | Default
 `enableSpotInterruptionDraining` | If true, drain nodes when the spot interruption termination notice is received | `true`
 `metadataTries` | The number of times to try requesting metadata. If you would like 2 retries, set metadata-tries to 3. | `3`
 `cordonOnly` | If true, nodes will be cordoned but not drained when an interruption event occurs. | `false`
+`jsonLogging` | If true, use JSON-formatted logs instead of human readable logs. | `false`
 `affinity` | node/pod affinities | None
 `podAnnotations` | annotations to add to each pod | `{}`
 `priorityClassName` | Name of the priorityClass | `system-node-critical`
@@ -82,4 +84,5 @@ Parameter | Description | Default
 `procUptimeFile` | (Used for Testing) Specify the uptime file | `/proc/uptime`
 `securityContext.runAsUserID` | User ID to run the container | `1000`
 `securityContext.runAsGroupID` | Group ID to run the container | `1000` 
-
+`nodeSelectorTermsOs` | Operating System Node Selector Key | `beta.kubernetes.io/os`
+`nodeSelectorTermsArch` | CPU Architecture Node Selector Key | `beta.kubernetes.io/arch`
