@@ -64,6 +64,8 @@ mesh:
   name: "global"
   # mesh.discovery: The service discovery type to use, can be dns or cloudmap
   discovery: dns
+  # mesh.egressFilter: The mesh Egress Filter, can be ALLOW_ALL or DROP_ALL
+  egressFilter: DROP_ALL
 
 tracing:
   # tracing.enabled: `true` if Envoy should be configured tracing

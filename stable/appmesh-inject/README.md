@@ -79,6 +79,7 @@ Parameter | Description | Default
 `mesh.create` | If `true`, create mesh custom resource | `false`
 `mesh.name` | The name of the mesh to use | `global`
 `mesh.discovery` | The service discovery type to use, can be dns or cloudmap | `dns`
+`mesh.egressFilter` | The egress filter used by Mesh, can be DROP_ALL or ALLOW_ALL | `DROP_ALL`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`
 `tracing.provider` |  The tracing provider can be x-ray, jaeger or datadog | `x-ray`
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`

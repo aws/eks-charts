@@ -9,4 +9,6 @@ metadata:
 {{ include "appmesh-inject.labels" . | indent 4 }}
 spec:
     serviceDiscoveryType: {{ .Values.mesh.discovery }}
+    egressFilter:
+        type: {{ .Values.mesh.egressFilter }}
 {{- end }}
