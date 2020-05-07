@@ -41,7 +41,7 @@ spec:
               value: "eni"
             # Enable felix info logging.
             - name: FELIX_LOGSEVERITYSCREEN
-              value: "info"
+              value: "{{ .Values.calico.node.logseverity }}"
             # Don't enable BGP.
             - name: CALICO_NETWORKING_BACKEND
               value: "none"
