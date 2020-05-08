@@ -1,0 +1,2348 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: gatewayroutes.appmesh.k8s.aws
+spec:
+  group: appmesh.k8s.aws
+  names:
+    kind: GatewayRoute
+    listKind: GatewayRouteList
+    plural: gatewayroutes
+    singular: gatewayroute
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: GatewayRoute is the Schema for the gatewayroutes API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: GatewayRouteSpec defines the desired state of GatewayRoute
+            refers to https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html
+          properties:
+            awsName:
+              description: AWSName is the AppMesh GatewayRoute object's name. If unspecified
+                or empty, it defaults to be "${name}_${namespace}" of k8s GatewayRoute
+              type: string
+            grpcRoute:
+              description: An object that represents the specification of a gRPC gatewayRoute.
+              properties:
+                action:
+                  description: An object that represents the action to take if a match
+                    is determined.
+                  properties:
+                    target:
+                      description: An object that represents the target that traffic
+                        is routed to when a request matches the route.
+                      properties:
+                        virtualService:
+                          description: The virtual service to associate with the gateway
+                            route target.
+                          properties:
+                            virtualServiceRef:
+                              description: The virtual service reference to associate
+                                with the gateway route virtual service target.
+                              properties:
+                                name:
+                                  description: Name is the name of VirtualService
+                                    CR
+                                  type: string
+                                namespace:
+                                  description: Namespace is the namespace of VirtualService
+                                    CR. If unspecified, defaults to the referencing
+                                    object's namespace
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                          required:
+                          - virtualServiceRef
+                          type: object
+                      required:
+                      - virtualService
+                      type: object
+                  required:
+                  - target
+                  type: object
+                match:
+                  description: An object that represents the criteria for determining
+                    a request match.
+                  properties:
+                    serviceName:
+                      description: The fully qualified domain name for the service
+                        to match from the request.
+                      type: string
+                  type: object
+              required:
+              - action
+              - match
+              type: object
+            http2Route:
+              description: An object that represents the specification of an HTTP/2
+                gatewayRoute.
+              properties:
+                action:
+                  description: An object that represents the action to take if a match
+                    is determined.
+                  properties:
+                    target:
+                      description: An object that represents the target that traffic
+                        is routed to when a request matches the route.
+                      properties:
+                        virtualService:
+                          description: The virtual service to associate with the gateway
+                            route target.
+                          properties:
+                            virtualServiceRef:
+                              description: The virtual service reference to associate
+                                with the gateway route virtual service target.
+                              properties:
+                                name:
+                                  description: Name is the name of VirtualService
+                                    CR
+                                  type: string
+                                namespace:
+                                  description: Namespace is the namespace of VirtualService
+                                    CR. If unspecified, defaults to the referencing
+                                    object's namespace
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                          required:
+                          - virtualServiceRef
+                          type: object
+                      required:
+                      - virtualService
+                      type: object
+                  required:
+                  - target
+                  type: object
+                match:
+                  description: An object that represents the criteria for determining
+                    a request match.
+                  properties:
+                    prefix:
+                      description: Specifies the path to match requests with
+                      type: string
+                  required:
+                  - prefix
+                  type: object
+              required:
+              - action
+              - match
+              type: object
+            httpRoute:
+              description: An object that represents the specification of an HTTP
+                gatewayRoute.
+              properties:
+                action:
+                  description: An object that represents the action to take if a match
+                    is determined.
+                  properties:
+                    target:
+                      description: An object that represents the target that traffic
+                        is routed to when a request matches the route.
+                      properties:
+                        virtualService:
+                          description: The virtual service to associate with the gateway
+                            route target.
+                          properties:
+                            virtualServiceRef:
+                              description: The virtual service reference to associate
+                                with the gateway route virtual service target.
+                              properties:
+                                name:
+                                  description: Name is the name of VirtualService
+                                    CR
+                                  type: string
+                                namespace:
+                                  description: Namespace is the namespace of VirtualService
+                                    CR. If unspecified, defaults to the referencing
+                                    object's namespace
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                          required:
+                          - virtualServiceRef
+                          type: object
+                      required:
+                      - virtualService
+                      type: object
+                  required:
+                  - target
+                  type: object
+                match:
+                  description: An object that represents the criteria for determining
+                    a request match.
+                  properties:
+                    prefix:
+                      description: Specifies the path to match requests with
+                      type: string
+                  required:
+                  - prefix
+                  type: object
+              required:
+              - action
+              - match
+              type: object
+            meshRef:
+              description: "A reference to k8s Mesh CR that this GatewayRoute belongs
+                to. The admission controller populates it using Meshes's selector,
+                and prevents users from setting this field. \n Populated by the system.
+                Read-only."
+              properties:
+                name:
+                  description: Name is the name of Mesh CR
+                  type: string
+                uid:
+                  description: UID is the UID of Mesh CR
+                  type: string
+              required:
+              - name
+              - uid
+              type: object
+            virtualGatewayRef:
+              description: "A reference to k8s VirtualGateway CR that this GatewayRoute
+                belongs to. The admission controller populates it using VirtualGateway's
+                selector, and prevents users from setting this field. \n Populated
+                by the system. Read-only."
+              properties:
+                name:
+                  description: Name is the name of VirtualGateway CR
+                  type: string
+                namespace:
+                  description: Namespace is the namespace of VirtualGateway CR. If
+                    unspecified, defaults to the referencing object's namespace
+                  type: string
+                uid:
+                  description: UID is the UID of VirtualGateway CR
+                  type: string
+              required:
+              - name
+              - uid
+              type: object
+          type: object
+        status:
+          description: GatewayRouteStatus defines the observed state of GatewayRoute
+          properties:
+            conditions:
+              description: The current GatewayRoute status.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    format: date-time
+                    type: string
+                  message:
+                    description: A human readable message indicating details about
+                      the transition.
+                    type: string
+                  reason:
+                    description: The reason for the condition's last transition.
+                    type: string
+                  status:
+                    description: Status of the condition, one of True, False, Unknown.
+                    type: string
+                  type:
+                    description: Type of GatewayRoute condition.
+                    type: string
+                required:
+                - status
+                - type
+                type: object
+              type: array
+            gatewayRouteARN:
+              description: GatewayRouteARNs is a map of AppMesh GatewayRoute objects'
+                Amazon Resource Names, indexed by gatewayRoute name.
+              type: string
+          type: object
+      type: object
+  version: v1beta2
+  versions:
+  - name: v1beta2
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: meshes.appmesh.k8s.aws
+spec:
+  group: appmesh.k8s.aws
+  names:
+    kind: Mesh
+    listKind: MeshList
+    plural: meshes
+    singular: mesh
+  scope: Cluster
+  validation:
+    openAPIV3Schema:
+      description: Mesh is the Schema for the meshes API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: MeshSpec defines the desired state of Mesh refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_MeshSpec.html
+          properties:
+            awsName:
+              description: AWSName is the AppMesh Mesh object's name. If unspecified
+                or empty, it defaults to be "${name}" of k8s Mesh
+              type: string
+            egressFilter:
+              description: The egress filter rules for the service mesh. If unspecified,
+                default settings from AWS API will be applied. Refer to AWS Docs for
+                default settings.
+              properties:
+                type:
+                  description: The egress filter type.
+                  enum:
+                  - ALLOW_ALL
+                  - DROP_ALL
+                  type: string
+              required:
+              - type
+              type: object
+            meshOwner:
+              description: The AWS IAM account ID of the service mesh owner. Required
+                if the account ID is not your own.
+              type: string
+            namespaceSelector:
+              description: NamespaceSelector selects Namespaces using labels to designate
+                mesh membership. This field follows standard label selector semantics;
+                if present but empty, it selects all namespaces.
+              properties:
+                matchExpressions:
+                  description: matchExpressions is a list of label selector requirements.
+                    The requirements are ANDed.
+                  items:
+                    description: A label selector requirement is a selector that contains
+                      values, a key, and an operator that relates the key and values.
+                    properties:
+                      key:
+                        description: key is the label key that the selector applies
+                          to.
+                        type: string
+                      operator:
+                        description: operator represents a key's relationship to a
+                          set of values. Valid operators are In, NotIn, Exists and
+                          DoesNotExist.
+                        type: string
+                      values:
+                        description: values is an array of string values. If the operator
+                          is In or NotIn, the values array must be non-empty. If the
+                          operator is Exists or DoesNotExist, the values array must
+                          be empty. This array is replaced during a strategic merge
+                          patch.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - key
+                    - operator
+                    type: object
+                  type: array
+                matchLabels:
+                  additionalProperties:
+                    type: string
+                  description: matchLabels is a map of {key,value} pairs. A single
+                    {key,value} in the matchLabels map is equivalent to an element
+                    of matchExpressions, whose key field is "key", the operator is
+                    "In", and the values array contains only "value". The requirements
+                    are ANDed.
+                  type: object
+              type: object
+          type: object
+        status:
+          description: MeshStatus defines the observed state of Mesh
+          properties:
+            conditions:
+              description: The current Mesh status.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    format: date-time
+                    type: string
+                  message:
+                    description: A human readable message indicating details about
+                      the transition.
+                    type: string
+                  reason:
+                    description: The reason for the condition's last transition.
+                    type: string
+                  status:
+                    description: Status of the condition, one of True, False, Unknown.
+                    type: string
+                  type:
+                    description: Type of mesh condition.
+                    type: string
+                required:
+                - status
+                - type
+                type: object
+              type: array
+            meshARN:
+              description: MeshARN is the AppMesh Mesh object's Amazon Resource Name
+              type: string
+          type: object
+      type: object
+  version: v1beta2
+  versions:
+  - name: v1beta2
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: virtualgateways.appmesh.k8s.aws
+spec:
+  group: appmesh.k8s.aws
+  names:
+    kind: VirtualGateway
+    listKind: VirtualGatewayList
+    plural: virtualgateways
+    singular: virtualgateway
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: VirtualGateway is the Schema for the virtualgateways API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: VirtualGatewaySpec defines the desired state of VirtualGateway
+            refers to https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html
+          properties:
+            awsName:
+              description: AWSName is the AppMesh VirtualGateway object's name. If
+                unspecified or empty, it defaults to be "${name}_${namespace}" of
+                k8s VirtualGateway
+              type: string
+            backendDefaults:
+              description: A reference to an object that represents the defaults for
+                backend GatewayRoutes.
+              properties:
+                clientPolicy:
+                  description: A reference to an object that represents a client policy.
+                  properties:
+                    tls:
+                      description: A reference to an object that represents a Transport
+                        Layer Security (TLS) client policy.
+                      properties:
+                        enforce:
+                          description: Whether the policy is enforced. If unspecified,
+                            default settings from AWS API will be applied. Refer to
+                            AWS Docs for default settings.
+                          type: boolean
+                        ports:
+                          description: The range of ports that the policy is enforced
+                            for.
+                          items:
+                            format: int64
+                            maximum: 65535
+                            minimum: 1
+                            type: integer
+                          type: array
+                        validation:
+                          description: A reference to an object that represents a
+                            TLS validation context.
+                          properties:
+                            trust:
+                              description: A reference to an object that represents
+                                a TLS validation context trust
+                              properties:
+                                acm:
+                                  description: A reference to an object that represents
+                                    a TLS validation context trust for an AWS Certicate
+                                    Manager (ACM) certificate.
+                                  properties:
+                                    certificateAuthorityARNs:
+                                      description: One or more ACM Amazon Resource
+                                        Name (ARN)s.
+                                      items:
+                                        type: string
+                                      maxItems: 3
+                                      minItems: 1
+                                      type: array
+                                  required:
+                                  - certificateAuthorityARNs
+                                  type: object
+                                file:
+                                  description: An object that represents a TLS validation
+                                    context trust for a local file.
+                                  properties:
+                                    certificateChain:
+                                      description: The certificate trust chain for
+                                        a certificate stored on the file system of
+                                        the virtual Gateway.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                  required:
+                                  - certificateChain
+                                  type: object
+                              type: object
+                          required:
+                          - trust
+                          type: object
+                      required:
+                      - validation
+                      type: object
+                  type: object
+              type: object
+            listeners:
+              description: The listener that the virtual gateway is expected to receive
+                inbound traffic from
+              items:
+                description: VirtualGatewayListener refers to https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html
+                properties:
+                  healthCheck:
+                    description: The health check information for the listener.
+                    properties:
+                      healthyThreshold:
+                        description: The number of consecutive successful health checks
+                          that must occur before declaring listener healthy. If unspecified,
+                          defaults to be 10
+                        format: int64
+                        maximum: 10
+                        minimum: 2
+                        type: integer
+                      intervalMillis:
+                        description: The time period in milliseconds between each
+                          health check execution. If unspecified, defaults to be 30000
+                        format: int64
+                        maximum: 300000
+                        minimum: 5000
+                        type: integer
+                      path:
+                        description: The destination path for the health check request.
+                          This value is only used if the specified protocol is http
+                          or http2. For any other protocol, this value is ignored.
+                        type: string
+                      port:
+                        description: The destination port for the health check request.
+                          If unspecified, defaults to be same as port defined in the
+                          PortMapping for the listener.
+                        format: int64
+                        maximum: 65535
+                        minimum: 1
+                        type: integer
+                      protocol:
+                        description: The protocol for the health check request If
+                          unspecified, defaults to be same as protocol defined in
+                          the PortMapping for the listener.
+                        enum:
+                        - grpc
+                        - http
+                        - http2
+                        type: string
+                      timeoutMillis:
+                        description: The amount of time to wait when receiving a response
+                          from the health check, in milliseconds. If unspecified,
+                          defaults to be 5000
+                        format: int64
+                        maximum: 60000
+                        minimum: 2000
+                        type: integer
+                      unhealthyThreshold:
+                        description: The number of consecutive failed health checks
+                          that must occur before declaring a virtual Gateway unhealthy.
+                          If unspecified, defaults to be 2
+                        format: int64
+                        maximum: 10
+                        minimum: 2
+                        type: integer
+                    type: object
+                  logging:
+                    description: The inbound and outbound access logging information
+                      for the virtual gateway.
+                    properties:
+                      accessLog:
+                        description: The access log configuration for a virtual Gateway.
+                        properties:
+                          file:
+                            description: The file object to send virtual gateway access
+                              logs to.
+                            properties:
+                              path:
+                                description: The file path to write access logs to.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            required:
+                            - path
+                            type: object
+                        type: object
+                    type: object
+                  portMapping:
+                    description: The port mapping information for the listener.
+                    properties:
+                      port:
+                        description: The port used for the port mapping.
+                        format: int64
+                        maximum: 65535
+                        minimum: 1
+                        type: integer
+                      protocol:
+                        description: The protocol used for the port mapping.
+                        enum:
+                        - grpc
+                        - http
+                        - http2
+                        type: string
+                    required:
+                    - port
+                    - protocol
+                    type: object
+                  tls:
+                    description: A reference to an object that represents the Transport
+                      Layer Security (TLS) properties for a listener.
+                    properties:
+                      certificate:
+                        description: A reference to an object that represents a listener's
+                          TLS certificate.
+                        properties:
+                          acm:
+                            description: A reference to an object that represents
+                              an AWS Certificate Manager (ACM) certificate.
+                            properties:
+                              certificateARN:
+                                description: The Amazon Resource Name (ARN) for the
+                                  certificate.
+                                type: string
+                            required:
+                            - certificateARN
+                            type: object
+                          file:
+                            description: A reference to an object that represents
+                              a local file certificate.
+                            properties:
+                              certificateChain:
+                                description: The certificate chain for the certificate.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              privateKey:
+                                description: The private key for a certificate stored
+                                  on the file system of the virtual Gateway.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            required:
+                            - certificateChain
+                            - privateKey
+                            type: object
+                        type: object
+                      mode:
+                        description: ListenerTLS mode
+                        enum:
+                        - DISABLED
+                        - PERMISSIVE
+                        - STRICT
+                        type: string
+                    required:
+                    - certificate
+                    - mode
+                    type: object
+                required:
+                - portMapping
+                type: object
+              maxItems: 1
+              minItems: 0
+              type: array
+            meshRef:
+              description: "A reference to k8s Mesh CR that this VirtualGateway belongs
+                to. The admission controller populates it using Meshes's selector,
+                and prevents users from setting this field. \n Populated by the system.
+                Read-only."
+              properties:
+                name:
+                  description: Name is the name of Mesh CR
+                  type: string
+                uid:
+                  description: UID is the UID of Mesh CR
+                  type: string
+              required:
+              - name
+              - uid
+              type: object
+            namespaceSelector:
+              description: NamespaceSelector selects Namespaces using labels to designate
+                GatewayRoute membership. This field follows standard label selector
+                semantics; if present but empty, it selects all namespaces.
+              properties:
+                matchExpressions:
+                  description: matchExpressions is a list of label selector requirements.
+                    The requirements are ANDed.
+                  items:
+                    description: A label selector requirement is a selector that contains
+                      values, a key, and an operator that relates the key and values.
+                    properties:
+                      key:
+                        description: key is the label key that the selector applies
+                          to.
+                        type: string
+                      operator:
+                        description: operator represents a key's relationship to a
+                          set of values. Valid operators are In, NotIn, Exists and
+                          DoesNotExist.
+                        type: string
+                      values:
+                        description: values is an array of string values. If the operator
+                          is In or NotIn, the values array must be non-empty. If the
+                          operator is Exists or DoesNotExist, the values array must
+                          be empty. This array is replaced during a strategic merge
+                          patch.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - key
+                    - operator
+                    type: object
+                  type: array
+                matchLabels:
+                  additionalProperties:
+                    type: string
+                  description: matchLabels is a map of {key,value} pairs. A single
+                    {key,value} in the matchLabels map is equivalent to an element
+                    of matchExpressions, whose key field is "key", the operator is
+                    "In", and the values array contains only "value". The requirements
+                    are ANDed.
+                  type: object
+              type: object
+            podSelector:
+              description: PodSelector selects Pods using labels to designate VirtualGateway
+                membership. if unspecified or empty, it selects no pods.
+              properties:
+                matchExpressions:
+                  description: matchExpressions is a list of label selector requirements.
+                    The requirements are ANDed.
+                  items:
+                    description: A label selector requirement is a selector that contains
+                      values, a key, and an operator that relates the key and values.
+                    properties:
+                      key:
+                        description: key is the label key that the selector applies
+                          to.
+                        type: string
+                      operator:
+                        description: operator represents a key's relationship to a
+                          set of values. Valid operators are In, NotIn, Exists and
+                          DoesNotExist.
+                        type: string
+                      values:
+                        description: values is an array of string values. If the operator
+                          is In or NotIn, the values array must be non-empty. If the
+                          operator is Exists or DoesNotExist, the values array must
+                          be empty. This array is replaced during a strategic merge
+                          patch.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - key
+                    - operator
+                    type: object
+                  type: array
+                matchLabels:
+                  additionalProperties:
+                    type: string
+                  description: matchLabels is a map of {key,value} pairs. A single
+                    {key,value} in the matchLabels map is equivalent to an element
+                    of matchExpressions, whose key field is "key", the operator is
+                    "In", and the values array contains only "value". The requirements
+                    are ANDed.
+                  type: object
+              type: object
+          type: object
+        status:
+          description: VirtualGatewayStatus defines the observed state of VirtualGateway
+          properties:
+            conditions:
+              description: The current VirtualGateway status.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    format: date-time
+                    type: string
+                  message:
+                    description: A human readable message indicating details about
+                      the transition.
+                    type: string
+                  reason:
+                    description: The reason for the condition's last transition.
+                    type: string
+                  status:
+                    description: Status of the condition, one of True, False, Unknown.
+                    type: string
+                  type:
+                    description: Type of VirtualGateway condition.
+                    type: string
+                required:
+                - status
+                - type
+                type: object
+              type: array
+            virtualGatewayARN:
+              description: VirtualGatewayARN is the AppMesh VirtualGateway object's
+                Amazon Resource Name
+              type: string
+          type: object
+      type: object
+  version: v1beta2
+  versions:
+  - name: v1beta2
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: virtualnodes.appmesh.k8s.aws
+spec:
+  group: appmesh.k8s.aws
+  names:
+    kind: VirtualNode
+    listKind: VirtualNodeList
+    plural: virtualnodes
+    singular: virtualnode
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: VirtualNode is the Schema for the virtualnodes API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: VirtualNodeSpec defines the desired state of VirtualNode refers
+            to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_VirtualServiceSpec.html
+          properties:
+            awsName:
+              description: AWSName is the AppMesh VirtualNode object's name. If unspecified
+                or empty, it defaults to be "${name}_${namespace}" of k8s VirtualNode
+              type: string
+            backendDefaults:
+              description: A reference to an object that represents the defaults for
+                backends.
+              properties:
+                clientPolicy:
+                  description: A reference to an object that represents a client policy.
+                  properties:
+                    tls:
+                      description: A reference to an object that represents a Transport
+                        Layer Security (TLS) client policy.
+                      properties:
+                        enforce:
+                          description: Whether the policy is enforced. If unspecified,
+                            default settings from AWS API will be applied. Refer to
+                            AWS Docs for default settings.
+                          type: boolean
+                        ports:
+                          description: The range of ports that the policy is enforced
+                            for.
+                          items:
+                            format: int64
+                            maximum: 65535
+                            minimum: 1
+                            type: integer
+                          type: array
+                        validation:
+                          description: A reference to an object that represents a
+                            TLS validation context.
+                          properties:
+                            trust:
+                              description: A reference to an object that represents
+                                a TLS validation context trust
+                              properties:
+                                acm:
+                                  description: A reference to an object that represents
+                                    a TLS validation context trust for an AWS Certicate
+                                    Manager (ACM) certificate.
+                                  properties:
+                                    certificateAuthorityARNs:
+                                      description: One or more ACM Amazon Resource
+                                        Name (ARN)s.
+                                      items:
+                                        type: string
+                                      maxItems: 3
+                                      minItems: 1
+                                      type: array
+                                  required:
+                                  - certificateAuthorityARNs
+                                  type: object
+                                file:
+                                  description: An object that represents a TLS validation
+                                    context trust for a local file.
+                                  properties:
+                                    certificateChain:
+                                      description: The certificate trust chain for
+                                        a certificate stored on the file system of
+                                        the virtual node that the proxy is running
+                                        on.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                  required:
+                                  - certificateChain
+                                  type: object
+                              type: object
+                          required:
+                          - trust
+                          type: object
+                      required:
+                      - validation
+                      type: object
+                  type: object
+              type: object
+            backends:
+              description: The backends that the virtual node is expected to send
+                outbound traffic to.
+              items:
+                description: Backend refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_Backend.html
+                properties:
+                  virtualService:
+                    description: Specifies a virtual service to use as a backend for
+                      a virtual node.
+                    properties:
+                      clientPolicy:
+                        description: A reference to an object that represents the
+                          client policy for a backend.
+                        properties:
+                          tls:
+                            description: A reference to an object that represents
+                              a Transport Layer Security (TLS) client policy.
+                            properties:
+                              enforce:
+                                description: Whether the policy is enforced. If unspecified,
+                                  default settings from AWS API will be applied. Refer
+                                  to AWS Docs for default settings.
+                                type: boolean
+                              ports:
+                                description: The range of ports that the policy is
+                                  enforced for.
+                                items:
+                                  format: int64
+                                  maximum: 65535
+                                  minimum: 1
+                                  type: integer
+                                type: array
+                              validation:
+                                description: A reference to an object that represents
+                                  a TLS validation context.
+                                properties:
+                                  trust:
+                                    description: A reference to an object that represents
+                                      a TLS validation context trust
+                                    properties:
+                                      acm:
+                                        description: A reference to an object that
+                                          represents a TLS validation context trust
+                                          for an AWS Certicate Manager (ACM) certificate.
+                                        properties:
+                                          certificateAuthorityARNs:
+                                            description: One or more ACM Amazon Resource
+                                              Name (ARN)s.
+                                            items:
+                                              type: string
+                                            maxItems: 3
+                                            minItems: 1
+                                            type: array
+                                        required:
+                                        - certificateAuthorityARNs
+                                        type: object
+                                      file:
+                                        description: An object that represents a TLS
+                                          validation context trust for a local file.
+                                        properties:
+                                          certificateChain:
+                                            description: The certificate trust chain
+                                              for a certificate stored on the file
+                                              system of the virtual node that the
+                                              proxy is running on.
+                                            maxLength: 255
+                                            minLength: 1
+                                            type: string
+                                        required:
+                                        - certificateChain
+                                        type: object
+                                    type: object
+                                required:
+                                - trust
+                                type: object
+                            required:
+                            - validation
+                            type: object
+                        type: object
+                      virtualServiceRef:
+                        description: The VirtualService that is acting as a virtual
+                          node backend.
+                        properties:
+                          name:
+                            description: Name is the name of VirtualService CR
+                            type: string
+                          namespace:
+                            description: Namespace is the namespace of VirtualService
+                              CR. If unspecified, defaults to the referencing object's
+                              namespace
+                            type: string
+                        required:
+                        - name
+                        type: object
+                    required:
+                    - virtualServiceRef
+                    type: object
+                required:
+                - virtualService
+                type: object
+              type: array
+            listeners:
+              description: The listener that the virtual node is expected to receive
+                inbound traffic from
+              items:
+                description: Listener refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_Listener.html
+                properties:
+                  healthCheck:
+                    description: The health check information for the listener.
+                    properties:
+                      healthyThreshold:
+                        description: The number of consecutive successful health checks
+                          that must occur before declaring listener healthy. If unspecified,
+                          defaults to be 10
+                        format: int64
+                        maximum: 10
+                        minimum: 2
+                        type: integer
+                      intervalMillis:
+                        description: The time period in milliseconds between each
+                          health check execution. If unspecified, defaults to be 30000
+                        format: int64
+                        maximum: 300000
+                        minimum: 5000
+                        type: integer
+                      path:
+                        description: The destination path for the health check request.
+                          This value is only used if the specified protocol is http
+                          or http2. For any other protocol, this value is ignored.
+                        type: string
+                      port:
+                        description: The destination port for the health check request.
+                          If unspecified, defaults to be same as port defined in the
+                          PortMapping for the listener.
+                        format: int64
+                        maximum: 65535
+                        minimum: 1
+                        type: integer
+                      protocol:
+                        description: The protocol for the health check request If
+                          unspecified, defaults to be same as protocol defined in
+                          the PortMapping for the listener.
+                        enum:
+                        - grpc
+                        - http
+                        - http2
+                        - tcp
+                        type: string
+                      timeoutMillis:
+                        description: The amount of time to wait when receiving a response
+                          from the health check, in milliseconds. If unspecified,
+                          defaults to be 5000
+                        format: int64
+                        maximum: 60000
+                        minimum: 2000
+                        type: integer
+                      unhealthyThreshold:
+                        description: The number of consecutive failed health checks
+                          that must occur before declaring a virtual node unhealthy.
+                          If unspecified, defaults to be 2
+                        format: int64
+                        maximum: 10
+                        minimum: 2
+                        type: integer
+                    type: object
+                  portMapping:
+                    description: The port mapping information for the listener.
+                    properties:
+                      port:
+                        description: The port used for the port mapping.
+                        format: int64
+                        maximum: 65535
+                        minimum: 1
+                        type: integer
+                      protocol:
+                        description: The protocol used for the port mapping.
+                        enum:
+                        - grpc
+                        - http
+                        - http2
+                        - tcp
+                        type: string
+                    required:
+                    - port
+                    - protocol
+                    type: object
+                  tls:
+                    description: A reference to an object that represents the Transport
+                      Layer Security (TLS) properties for a listener.
+                    properties:
+                      certificate:
+                        description: A reference to an object that represents a listener's
+                          TLS certificate.
+                        properties:
+                          acm:
+                            description: A reference to an object that represents
+                              an AWS Certificate Manager (ACM) certificate.
+                            properties:
+                              certificateARN:
+                                description: The Amazon Resource Name (ARN) for the
+                                  certificate.
+                                type: string
+                            required:
+                            - certificateARN
+                            type: object
+                          file:
+                            description: A reference to an object that represents
+                              a local file certificate.
+                            properties:
+                              certificateChain:
+                                description: The certificate chain for the certificate.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              privateKey:
+                                description: The private key for a certificate stored
+                                  on the file system of the virtual node that the
+                                  proxy is running on.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            required:
+                            - certificateChain
+                            - privateKey
+                            type: object
+                        type: object
+                      mode:
+                        description: ListenerTLS mode
+                        enum:
+                        - DISABLED
+                        - PERMISSIVE
+                        - STRICT
+                        type: string
+                    required:
+                    - certificate
+                    - mode
+                    type: object
+                required:
+                - portMapping
+                type: object
+              maxItems: 1
+              minItems: 0
+              type: array
+            logging:
+              description: The inbound and outbound access logging information for
+                the virtual node.
+              properties:
+                accessLog:
+                  description: The access log configuration for a virtual node.
+                  properties:
+                    file:
+                      description: The file object to send virtual node access logs
+                        to.
+                      properties:
+                        path:
+                          description: The file path to write access logs to.
+                          maxLength: 255
+                          minLength: 1
+                          type: string
+                      required:
+                      - path
+                      type: object
+                  type: object
+              type: object
+            meshRef:
+              description: "A reference to k8s Mesh CR that this VirtualNode belongs
+                to. The admission controller populates it using Meshes's selector,
+                and prevents users from setting this field. \n Populated by the system.
+                Read-only."
+              properties:
+                name:
+                  description: Name is the name of Mesh CR
+                  type: string
+                uid:
+                  description: UID is the UID of Mesh CR
+                  type: string
+              required:
+              - name
+              - uid
+              type: object
+            podSelector:
+              description: PodSelector selects Pods using labels to designate VirtualNode
+                membership. if unspecified or empty, it selects no pods.
+              properties:
+                matchExpressions:
+                  description: matchExpressions is a list of label selector requirements.
+                    The requirements are ANDed.
+                  items:
+                    description: A label selector requirement is a selector that contains
+                      values, a key, and an operator that relates the key and values.
+                    properties:
+                      key:
+                        description: key is the label key that the selector applies
+                          to.
+                        type: string
+                      operator:
+                        description: operator represents a key's relationship to a
+                          set of values. Valid operators are In, NotIn, Exists and
+                          DoesNotExist.
+                        type: string
+                      values:
+                        description: values is an array of string values. If the operator
+                          is In or NotIn, the values array must be non-empty. If the
+                          operator is Exists or DoesNotExist, the values array must
+                          be empty. This array is replaced during a strategic merge
+                          patch.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - key
+                    - operator
+                    type: object
+                  type: array
+                matchLabels:
+                  additionalProperties:
+                    type: string
+                  description: matchLabels is a map of {key,value} pairs. A single
+                    {key,value} in the matchLabels map is equivalent to an element
+                    of matchExpressions, whose key field is "key", the operator is
+                    "In", and the values array contains only "value". The requirements
+                    are ANDed.
+                  type: object
+              type: object
+            serviceDiscovery:
+              description: The service discovery information for the virtual node.
+              properties:
+                awsCloudMap:
+                  description: Specifies any AWS Cloud Map information for the virtual
+                    node.
+                  properties:
+                    attributes:
+                      description: A string map that contains attributes with values
+                        that you can use to filter instances by any custom attribute
+                        that you specified when you registered the instance
+                      items:
+                        description: AWSCloudMapInstanceAttribute refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_AwsCloudMapInstanceAttribute.html
+                        properties:
+                          key:
+                            description: The name of an AWS Cloud Map service instance
+                              attribute key.
+                            maxLength: 255
+                            minLength: 1
+                            type: string
+                          value:
+                            description: The value of an AWS Cloud Map service instance
+                              attribute key.
+                            maxLength: 1024
+                            minLength: 1
+                            type: string
+                        required:
+                        - key
+                        - value
+                        type: object
+                      type: array
+                    namespaceName:
+                      description: The name of the AWS Cloud Map namespace to use.
+                      maxLength: 1024
+                      minLength: 1
+                      type: string
+                    serviceName:
+                      description: The name of the AWS Cloud Map service to use.
+                      maxLength: 1024
+                      minLength: 1
+                      type: string
+                  required:
+                  - namespaceName
+                  - serviceName
+                  type: object
+                dns:
+                  description: Specifies the DNS information for the virtual node.
+                  properties:
+                    hostname:
+                      description: Specifies the DNS service discovery hostname for
+                        the virtual node.
+                      type: string
+                  required:
+                  - hostname
+                  type: object
+              type: object
+          type: object
+        status:
+          description: VirtualNodeStatus defines the observed state of VirtualNode
+          properties:
+            awsCloudMapServiceStatus:
+              description: AWSCloudMapServiceStatus is AWS CloudMap Service object's
+                info
+              properties:
+                namespaceID:
+                  description: NamespaceID is AWS CloudMap Service object's namespace
+                    Id
+                  type: string
+                serviceID:
+                  description: ServiceID is AWS CloudMap Service object's Id
+                  type: string
+              type: object
+            conditions:
+              description: The current VirtualNode status.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    format: date-time
+                    type: string
+                  message:
+                    description: A human readable message indicating details about
+                      the transition.
+                    type: string
+                  reason:
+                    description: The reason for the condition's last transition.
+                    type: string
+                  status:
+                    description: Status of the condition, one of True, False, Unknown.
+                    type: string
+                  type:
+                    description: Type of VirtualNode condition.
+                    type: string
+                required:
+                - status
+                - type
+                type: object
+              type: array
+            virtualNodeARN:
+              description: VirtualNodeARN is the AppMesh VirtualNode object's Amazon
+                Resource Name
+              type: string
+          type: object
+      type: object
+  version: v1beta2
+  versions:
+  - name: v1beta2
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: virtualrouters.appmesh.k8s.aws
+spec:
+  group: appmesh.k8s.aws
+  names:
+    kind: VirtualRouter
+    listKind: VirtualRouterList
+    plural: virtualrouters
+    singular: virtualrouter
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: VirtualRouter is the Schema for the virtualrouters API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: VirtualRouterSpec defines the desired state of VirtualRouter
+            refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_VirtualRouterSpec.html
+          properties:
+            awsName:
+              description: AWSName is the AppMesh VirtualRouter object's name. If
+                unspecified or empty, it defaults to be "${name}_${namespace}" of
+                k8s VirtualRouter
+              type: string
+            listeners:
+              description: The listeners that the virtual router is expected to receive
+                inbound traffic from
+              items:
+                description: VirtualRouterListener refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_VirtualRouterListener.html
+                properties:
+                  portMapping:
+                    description: The port mapping information for the listener.
+                    properties:
+                      port:
+                        description: The port used for the port mapping.
+                        format: int64
+                        maximum: 65535
+                        minimum: 1
+                        type: integer
+                      protocol:
+                        description: The protocol used for the port mapping.
+                        enum:
+                        - grpc
+                        - http
+                        - http2
+                        - tcp
+                        type: string
+                    required:
+                    - port
+                    - protocol
+                    type: object
+                required:
+                - portMapping
+                type: object
+              maxItems: 1
+              minItems: 1
+              type: array
+            meshRef:
+              description: "A reference to k8s Mesh CR that this VirtualRouter belongs
+                to. The admission controller populates it using Meshes's selector,
+                and prevents users from setting this field. \n Populated by the system.
+                Read-only."
+              properties:
+                name:
+                  description: Name is the name of Mesh CR
+                  type: string
+                uid:
+                  description: UID is the UID of Mesh CR
+                  type: string
+              required:
+              - name
+              - uid
+              type: object
+            routes:
+              description: The routes associated with VirtualRouter
+              items:
+                description: Route refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_RouteSpec.html
+                properties:
+                  grpcRoute:
+                    description: An object that represents the specification of a
+                      gRPC route.
+                    properties:
+                      action:
+                        description: An object that represents the action to take
+                          if a match is determined.
+                        properties:
+                          weightedTargets:
+                            description: An object that represents the targets that
+                              traffic is routed to when a request matches the route.
+                            items:
+                              description: WeightedTarget refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_WeightedTarget.html
+                              properties:
+                                virtualNodeRef:
+                                  description: The virtual node to associate with
+                                    the weighted target.
+                                  properties:
+                                    name:
+                                      description: Name is the name of VirtualNode
+                                        CR
+                                      type: string
+                                    namespace:
+                                      description: Namespace is the namespace of VirtualNode
+                                        CR. If unspecified, defaults to the referencing
+                                        object's namespace
+                                      type: string
+                                  required:
+                                  - name
+                                  type: object
+                                weight:
+                                  description: The relative weight of the weighted
+                                    target.
+                                  format: int64
+                                  maximum: 100
+                                  minimum: 0
+                                  type: integer
+                              required:
+                              - virtualNodeRef
+                              - weight
+                              type: object
+                            maxItems: 10
+                            minItems: 1
+                            type: array
+                        required:
+                        - weightedTargets
+                        type: object
+                      match:
+                        description: An object that represents the criteria for determining
+                          a request match.
+                        properties:
+                          metadata:
+                            description: An object that represents the data to match
+                              from the request.
+                            items:
+                              description: GRPCRouteMetadata refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_GrpcRouteMetadata.html
+                              properties:
+                                invert:
+                                  description: Specify True to match anything except
+                                    the match criteria. The default value is False.
+                                  type: boolean
+                                match:
+                                  description: An object that represents the data
+                                    to match from the request.
+                                  properties:
+                                    exact:
+                                      description: The value sent by the client must
+                                        match the specified value exactly.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                    prefix:
+                                      description: The value sent by the client must
+                                        begin with the specified characters.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                    range:
+                                      description: An object that represents the range
+                                        of values to match on
+                                      properties:
+                                        end:
+                                          description: The end of the range.
+                                          format: int64
+                                          type: integer
+                                        start:
+                                          description: The start of the range.
+                                          format: int64
+                                          type: integer
+                                      type: object
+                                    regex:
+                                      description: The value sent by the client must
+                                        include the specified characters.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                    suffix:
+                                      description: The value sent by the client must
+                                        end with the specified characters.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                  type: object
+                                name:
+                                  description: The name of the route.
+                                  maxLength: 50
+                                  minLength: 1
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                            maxItems: 10
+                            minItems: 1
+                            type: array
+                          methodName:
+                            description: The method name to match from the request.
+                              If you specify a name, you must also specify a serviceName.
+                            maxLength: 50
+                            minLength: 1
+                            type: string
+                          serviceName:
+                            description: The fully qualified domain name for the service
+                              to match from the request.
+                            type: string
+                        type: object
+                      retryPolicy:
+                        description: An object that represents a retry policy.
+                        properties:
+                          grpcRetryEvents:
+                            items:
+                              enum:
+                              - cancelled
+                              - deadline-exceeded
+                              - internal
+                              - resource-exhausted
+                              - unavailable
+                              type: string
+                            maxItems: 5
+                            minItems: 1
+                            type: array
+                          httpRetryEvents:
+                            items:
+                              enum:
+                              - server-error
+                              - gateway-error
+                              - client-error
+                              - stream-error
+                              type: string
+                            maxItems: 25
+                            minItems: 1
+                            type: array
+                          maxRetries:
+                            description: The maximum number of retry attempts.
+                            format: int64
+                            minimum: 0
+                            type: integer
+                          perRetryTimeout:
+                            description: An object that represents a duration of time.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                          tcpRetryEvents:
+                            items:
+                              enum:
+                              - connection-error
+                              type: string
+                            maxItems: 1
+                            minItems: 1
+                            type: array
+                        required:
+                        - maxRetries
+                        - perRetryTimeout
+                        type: object
+                    required:
+                    - action
+                    - match
+                    type: object
+                  http2Route:
+                    description: An object that represents the specification of an
+                      HTTP/2 route.
+                    properties:
+                      action:
+                        description: An object that represents the action to take
+                          if a match is determined.
+                        properties:
+                          weightedTargets:
+                            description: An object that represents the targets that
+                              traffic is routed to when a request matches the route.
+                            items:
+                              description: WeightedTarget refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_WeightedTarget.html
+                              properties:
+                                virtualNodeRef:
+                                  description: The virtual node to associate with
+                                    the weighted target.
+                                  properties:
+                                    name:
+                                      description: Name is the name of VirtualNode
+                                        CR
+                                      type: string
+                                    namespace:
+                                      description: Namespace is the namespace of VirtualNode
+                                        CR. If unspecified, defaults to the referencing
+                                        object's namespace
+                                      type: string
+                                  required:
+                                  - name
+                                  type: object
+                                weight:
+                                  description: The relative weight of the weighted
+                                    target.
+                                  format: int64
+                                  maximum: 100
+                                  minimum: 0
+                                  type: integer
+                              required:
+                              - virtualNodeRef
+                              - weight
+                              type: object
+                            maxItems: 10
+                            minItems: 1
+                            type: array
+                        required:
+                        - weightedTargets
+                        type: object
+                      match:
+                        description: An object that represents the criteria for determining
+                          a request match.
+                        properties:
+                          headers:
+                            description: An object that represents the client request
+                              headers to match on.
+                            items:
+                              description: HTTPRouteHeader refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_HttpRouteHeader.html
+                              properties:
+                                invert:
+                                  description: Specify True to match anything except
+                                    the match criteria. The default value is False.
+                                  type: boolean
+                                match:
+                                  description: The HeaderMatchMethod object.
+                                  properties:
+                                    exact:
+                                      description: The value sent by the client must
+                                        match the specified value exactly.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                    prefix:
+                                      description: The value sent by the client must
+                                        begin with the specified characters.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                    range:
+                                      description: An object that represents the range
+                                        of values to match on.
+                                      properties:
+                                        end:
+                                          description: The end of the range.
+                                          format: int64
+                                          type: integer
+                                        start:
+                                          description: The start of the range.
+                                          format: int64
+                                          type: integer
+                                      type: object
+                                    regex:
+                                      description: The value sent by the client must
+                                        include the specified characters.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                    suffix:
+                                      description: The value sent by the client must
+                                        end with the specified characters.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                  type: object
+                                name:
+                                  description: A name for the HTTP header in the client
+                                    request that will be matched on.
+                                  maxLength: 50
+                                  minLength: 1
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                            maxItems: 10
+                            minItems: 1
+                            type: array
+                          method:
+                            description: The client request method to match on.
+                            enum:
+                            - CONNECT
+                            - DELETE
+                            - GET
+                            - HEAD
+                            - OPTIONS
+                            - PATCH
+                            - POST
+                            - PUT
+                            - TRACE
+                            type: string
+                          prefix:
+                            description: Specifies the path to match requests with
+                            type: string
+                          scheme:
+                            description: The client request scheme to match on
+                            enum:
+                            - http
+                            - https
+                            type: string
+                        required:
+                        - prefix
+                        type: object
+                      retryPolicy:
+                        description: An object that represents a retry policy.
+                        properties:
+                          httpRetryEvents:
+                            items:
+                              enum:
+                              - server-error
+                              - gateway-error
+                              - client-error
+                              - stream-error
+                              type: string
+                            maxItems: 25
+                            minItems: 1
+                            type: array
+                          maxRetries:
+                            description: The maximum number of retry attempts.
+                            format: int64
+                            minimum: 0
+                            type: integer
+                          perRetryTimeout:
+                            description: An object that represents a duration of time
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                          tcpRetryEvents:
+                            items:
+                              enum:
+                              - connection-error
+                              type: string
+                            maxItems: 1
+                            minItems: 1
+                            type: array
+                        required:
+                        - maxRetries
+                        - perRetryTimeout
+                        type: object
+                    required:
+                    - action
+                    - match
+                    type: object
+                  httpRoute:
+                    description: An object that represents the specification of an
+                      HTTP route.
+                    properties:
+                      action:
+                        description: An object that represents the action to take
+                          if a match is determined.
+                        properties:
+                          weightedTargets:
+                            description: An object that represents the targets that
+                              traffic is routed to when a request matches the route.
+                            items:
+                              description: WeightedTarget refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_WeightedTarget.html
+                              properties:
+                                virtualNodeRef:
+                                  description: The virtual node to associate with
+                                    the weighted target.
+                                  properties:
+                                    name:
+                                      description: Name is the name of VirtualNode
+                                        CR
+                                      type: string
+                                    namespace:
+                                      description: Namespace is the namespace of VirtualNode
+                                        CR. If unspecified, defaults to the referencing
+                                        object's namespace
+                                      type: string
+                                  required:
+                                  - name
+                                  type: object
+                                weight:
+                                  description: The relative weight of the weighted
+                                    target.
+                                  format: int64
+                                  maximum: 100
+                                  minimum: 0
+                                  type: integer
+                              required:
+                              - virtualNodeRef
+                              - weight
+                              type: object
+                            maxItems: 10
+                            minItems: 1
+                            type: array
+                        required:
+                        - weightedTargets
+                        type: object
+                      match:
+                        description: An object that represents the criteria for determining
+                          a request match.
+                        properties:
+                          headers:
+                            description: An object that represents the client request
+                              headers to match on.
+                            items:
+                              description: HTTPRouteHeader refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_HttpRouteHeader.html
+                              properties:
+                                invert:
+                                  description: Specify True to match anything except
+                                    the match criteria. The default value is False.
+                                  type: boolean
+                                match:
+                                  description: The HeaderMatchMethod object.
+                                  properties:
+                                    exact:
+                                      description: The value sent by the client must
+                                        match the specified value exactly.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                    prefix:
+                                      description: The value sent by the client must
+                                        begin with the specified characters.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                    range:
+                                      description: An object that represents the range
+                                        of values to match on.
+                                      properties:
+                                        end:
+                                          description: The end of the range.
+                                          format: int64
+                                          type: integer
+                                        start:
+                                          description: The start of the range.
+                                          format: int64
+                                          type: integer
+                                      type: object
+                                    regex:
+                                      description: The value sent by the client must
+                                        include the specified characters.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                    suffix:
+                                      description: The value sent by the client must
+                                        end with the specified characters.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                  type: object
+                                name:
+                                  description: A name for the HTTP header in the client
+                                    request that will be matched on.
+                                  maxLength: 50
+                                  minLength: 1
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                            maxItems: 10
+                            minItems: 1
+                            type: array
+                          method:
+                            description: The client request method to match on.
+                            enum:
+                            - CONNECT
+                            - DELETE
+                            - GET
+                            - HEAD
+                            - OPTIONS
+                            - PATCH
+                            - POST
+                            - PUT
+                            - TRACE
+                            type: string
+                          prefix:
+                            description: Specifies the path to match requests with
+                            type: string
+                          scheme:
+                            description: The client request scheme to match on
+                            enum:
+                            - http
+                            - https
+                            type: string
+                        required:
+                        - prefix
+                        type: object
+                      retryPolicy:
+                        description: An object that represents a retry policy.
+                        properties:
+                          httpRetryEvents:
+                            items:
+                              enum:
+                              - server-error
+                              - gateway-error
+                              - client-error
+                              - stream-error
+                              type: string
+                            maxItems: 25
+                            minItems: 1
+                            type: array
+                          maxRetries:
+                            description: The maximum number of retry attempts.
+                            format: int64
+                            minimum: 0
+                            type: integer
+                          perRetryTimeout:
+                            description: An object that represents a duration of time
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                          tcpRetryEvents:
+                            items:
+                              enum:
+                              - connection-error
+                              type: string
+                            maxItems: 1
+                            minItems: 1
+                            type: array
+                        required:
+                        - maxRetries
+                        - perRetryTimeout
+                        type: object
+                    required:
+                    - action
+                    - match
+                    type: object
+                  name:
+                    description: Route's name
+                    type: string
+                  priority:
+                    description: The priority for the route.
+                    format: int64
+                    maximum: 1000
+                    minimum: 0
+                    type: integer
+                  tcpRoute:
+                    description: An object that represents the specification of a
+                      TCP route.
+                    properties:
+                      action:
+                        description: The action to take if a match is determined.
+                        properties:
+                          weightedTargets:
+                            description: An object that represents the targets that
+                              traffic is routed to when a request matches the route.
+                            items:
+                              description: WeightedTarget refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_WeightedTarget.html
+                              properties:
+                                virtualNodeRef:
+                                  description: The virtual node to associate with
+                                    the weighted target.
+                                  properties:
+                                    name:
+                                      description: Name is the name of VirtualNode
+                                        CR
+                                      type: string
+                                    namespace:
+                                      description: Namespace is the namespace of VirtualNode
+                                        CR. If unspecified, defaults to the referencing
+                                        object's namespace
+                                      type: string
+                                  required:
+                                  - name
+                                  type: object
+                                weight:
+                                  description: The relative weight of the weighted
+                                    target.
+                                  format: int64
+                                  maximum: 100
+                                  minimum: 0
+                                  type: integer
+                              required:
+                              - virtualNodeRef
+                              - weight
+                              type: object
+                            maxItems: 10
+                            minItems: 1
+                            type: array
+                        required:
+                        - weightedTargets
+                        type: object
+                    required:
+                    - action
+                    type: object
+                required:
+                - name
+                type: object
+              type: array
+          type: object
+        status:
+          description: VirtualRouterStatus defines the observed state of VirtualRouter
+          properties:
+            conditions:
+              description: The current VirtualRouter status.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    format: date-time
+                    type: string
+                  message:
+                    description: A human readable message indicating details about
+                      the transition.
+                    type: string
+                  reason:
+                    description: The reason for the condition's last transition.
+                    type: string
+                  status:
+                    description: Status of the condition, one of True, False, Unknown.
+                    type: string
+                  type:
+                    description: Type of VirtualRouter condition.
+                    type: string
+                required:
+                - status
+                - type
+                type: object
+              type: array
+            routeARNs:
+              additionalProperties:
+                type: string
+              description: RouteARNs is a map of AppMesh Route objects' Amazon Resource
+                Names, indexed by route name.
+              type: object
+            virtualRouterARN:
+              description: VirtualRouterARN is the AppMesh VirtualRouter object's
+                Amazon Resource Name.
+              type: string
+          type: object
+      type: object
+  version: v1beta2
+  versions:
+  - name: v1beta2
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: virtualservices.appmesh.k8s.aws
+spec:
+  group: appmesh.k8s.aws
+  names:
+    kind: VirtualService
+    listKind: VirtualServiceList
+    plural: virtualservices
+    singular: virtualservice
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: VirtualService is the Schema for the virtualservices API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: VirtualServiceSpec defines the desired state of VirtualService
+          properties:
+            awsName:
+              description: AWSName is the AppMesh VirtualService object's name. If
+                unspecified or empty, it defaults to be "${name}.${namespace}" of
+                k8s VirtualService
+              type: string
+            meshRef:
+              description: "A reference to k8s Mesh CR that this VirtualService belongs
+                to. The admission controller populates it using Meshes's selector,
+                and prevents users from setting this field. \n Populated by the system.
+                Read-only."
+              properties:
+                name:
+                  description: Name is the name of Mesh CR
+                  type: string
+                uid:
+                  description: UID is the UID of Mesh CR
+                  type: string
+              required:
+              - name
+              - uid
+              type: object
+            provider:
+              description: The provider for virtual services. You can specify a single
+                virtual node or virtual router.
+              properties:
+                virtualNode:
+                  description: The virtual node associated with a virtual service.
+                  properties:
+                    virtualNodeRef:
+                      description: The virtual node that is acting as a service provider.
+                      properties:
+                        name:
+                          description: Name is the name of VirtualNode CR
+                          type: string
+                        namespace:
+                          description: Namespace is the namespace of VirtualNode CR.
+                            If unspecified, defaults to the referencing object's namespace
+                          type: string
+                      required:
+                      - name
+                      type: object
+                  required:
+                  - virtualNodeRef
+                  type: object
+                virtualRouter:
+                  description: The virtual router associated with a virtual service.
+                  properties:
+                    virtualRouterRef:
+                      description: The virtual router that is acting as a service
+                        provider.
+                      properties:
+                        name:
+                          description: Name is the name of VirtualRouter CR
+                          type: string
+                        namespace:
+                          description: Namespace is the namespace of VirtualRouter
+                            CR. If unspecified, defaults to the referencing object's
+                            namespace
+                          type: string
+                      required:
+                      - name
+                      type: object
+                  required:
+                  - virtualRouterRef
+                  type: object
+              type: object
+          type: object
+        status:
+          description: VirtualServiceStatus defines the observed state of VirtualService
+          properties:
+            conditions:
+              description: The current VirtualService status.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    format: date-time
+                    type: string
+                  message:
+                    description: A human readable message indicating details about
+                      the transition.
+                    type: string
+                  reason:
+                    description: The reason for the condition's last transition.
+                    type: string
+                  status:
+                    description: Status of the condition, one of True, False, Unknown.
+                    type: string
+                  type:
+                    description: Type of VirtualService condition.
+                    type: string
+                required:
+                - status
+                - type
+                type: object
+              type: array
+            virtualServiceARN:
+              description: VirtualServiceARN is the AppMesh VirtualService object's
+                Amazon Resource Name.
+              type: string
+          type: object
+      type: object
+  version: v1beta2
+  versions:
+  - name: v1beta2
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

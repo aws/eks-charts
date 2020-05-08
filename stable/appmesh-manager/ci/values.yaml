@@ -1,0 +1,7 @@
+# CI testing values for appmesh-manager
+
+region: us-west-2
+image:
+  repository: stefanprodan/aws-app-mesh-controller-for-k8s
+  tag: v1.0.0
+  pullPolicy: IfNotPresent
