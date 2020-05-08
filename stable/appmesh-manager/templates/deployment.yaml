@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "appmesh-manager.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    control-plane: controller-manager
+{{ include "appmesh-manager.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      control-plane: controller-manager
+  template:
+    metadata:
+      labels:
+        control-plane: controller-manager
+      annotations:
+        prometheus.io/scrape: "true"
+        {{- if .Values.podAnnotations }}
+{{ toYaml .Values.podAnnotations | indent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "appmesh-manager.serviceAccountName" . }}
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: {{ template "appmesh-manager.fullname" . }}-webhook-server-cert
+      containers:
+      - name: manager
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 9443
+          name: webhook-server
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: cert
+          readOnly: true
+        command:
+        - /manager
+        args:
+        - --enable-leader-election
+        - --sidecar-image={{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}
+        - --sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
+        - --sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
+        - --init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
+        - --enable-stats-tags={{ .Values.stats.tagsEnabled }}
+        - --enable-statsd={{ .Values.stats.statsdEnabled }}
+        {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
+        - --enable-xray-tracing=true
+        {{- end }}
+        {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "jaeger" ) }}
+        - --enable-jaeger-tracing=true
+        - --jaeger-address={{ .Values.tracing.address }}
+        - --jaeger-port={{ .Values.tracing.port }}
+        {{- end }}
+        {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "datadog" ) }}
+        - --enable-datadog-tracing=true
+        - --datadog-address={{ .Values.tracing.address }}
+        - --datadog-port={{ .Values.tracing.port }}
+        {{- end }}
+        {{- if .Values.region }}
+        - --aws-region={{ .Values.region }}
+        {{- end }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 6 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 6 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 6 }}
+    {{- end }}
