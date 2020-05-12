@@ -43,6 +43,7 @@ The following table lists the configurable parameters for this chart and their d
 | `calico.typha.image`    | Calico Typha Image                                      | `quay.io/calico/typha`          |
 | `calico.typha.resources`| Calico Typha Resources                                  | `requests.memory: 64Mi, requests.cpu: 50m, limits.memory: 96Mi, limits.cpu: 100m` |
 | `calico.typha.logseverity` | Calico Typha Log Severity                            | `Info`                          |
+| `calico.node.extraEnv`  | Calico Node extra ENV vars                              | `[]`                            |
 | `calico.node.image`     | Calico Node Image                                       | `quay.io/calico/node`           |
 | `calico.node.resources` | Calico Node Resources                                   | `requests.memory: 32Mi, requests.cpu: 20m, limits.memory: 64Mi, limits.cpu: 100m` |
 | `calico.node.logseverity` | Calico Node Log Severity                              | `Info`                          |
