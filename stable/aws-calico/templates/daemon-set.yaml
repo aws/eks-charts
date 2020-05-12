@@ -82,6 +82,9 @@ spec:
               value: ""
             - name: FELIX_HEALTHENABLED
               value: "true"
+          {{- if .Values.calico.node.extraEnv }}
+            {{- toYaml .Values.calico.node.extraEnv | nindent 12 }}
+          {{- end }}
           securityContext:
             privileged: true
           livenessProbe:
