@@ -143,7 +143,7 @@ helm upgrade -i appmesh-manager eks/appmesh-manager \
 To uninstall/delete the `appmesh-manager` deployment:
 
 ```console
-$ helm delete --purge appmesh-manager
+$ helm delete appmesh-manager
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.

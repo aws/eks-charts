@@ -57,32 +57,6 @@ rules:
   verbs: [get, patch, update]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ template "appmesh-manager.fullname" . }}-proxy-role
-  labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
-rules:
-- apiGroups: [authentication.k8s.io]
-  resources: [tokenreviews]
-  verbs: [create]
-- apiGroups: [authorization.k8s.io]
-  resources: [subjectaccessreviews]
-  verbs: [create]
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
-metadata:
-  name: {{ template "appmesh-manager.fullname" . }}-metrics-reader
-  labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
-rules:
-- nonResourceURLs:
-  - /metrics
-  verbs:
-  - get
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ template "appmesh-manager.fullname" . }}-rolebinding
@@ -92,21 +66,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: {{ template "appmesh-manager.fullname" . }}-role
-subjects:
-- name: {{ template "appmesh-manager.serviceAccountName" . }}
-  namespace: {{ .Release.Namespace }}
-  kind: ServiceAccount
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: {{ template "appmesh-manager.fullname" . }}-proxy-rolebinding
-  labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: {{ template "appmesh-manager.fullname" . }}-proxy-role
 subjects:
 - name: {{ template "appmesh-manager.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}

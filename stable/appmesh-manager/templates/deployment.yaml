@@ -4,19 +4,20 @@ metadata:
   name: {{ template "appmesh-manager.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    control-plane: controller-manager
+    control-plane: {{ template "appmesh-manager.fullname" . }}
 {{ include "appmesh-manager.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      control-plane: controller-manager
+      control-plane: {{ template "appmesh-manager.fullname" . }}
   template:
     metadata:
       labels:
-        control-plane: controller-manager
+        control-plane: {{ template "appmesh-manager.fullname" . }}
       annotations:
         prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
         {{- if .Values.podAnnotations }}
 {{ toYaml .Values.podAnnotations | indent 8 }}
         {{- end }}
@@ -43,6 +44,7 @@ spec:
         - /manager
         args:
         - --enable-leader-election
+        - --log-level={{ .Values.log.level }}
         - --sidecar-image={{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}
         - --sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
         - --sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
@@ -65,6 +67,7 @@ spec:
         {{- if .Values.region }}
         - --aws-region={{ .Values.region }}
         {{- end }}
+        - --sidecar-log-level={{ .Values.sidecar.logLevel }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
     {{- with .Values.nodeSelector }}
