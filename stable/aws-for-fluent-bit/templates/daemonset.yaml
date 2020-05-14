@@ -15,6 +15,9 @@ spec:
         {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "aws-for-fluent-bit.serviceAccountName" . }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}

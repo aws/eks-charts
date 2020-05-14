@@ -104,3 +104,6 @@ resources:
   requests:
     cpu: 500m
     memory: 500Mi
+
+## Assign a PriorityClassName to pods if set
+# priorityClassName: system-node-critical
