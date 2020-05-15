@@ -24,65 +24,70 @@ kubectl apply -f https://raw.githubusercontent.com/aws/eks-charts/master/stable/
 
 Install the App Mesh controller:
 
+**Note** The new App Mesh controller v1.0.0 is backwards-incompatible with older App Mesh controllers(<v1.0.0) and v1beta1
+App Mesh CRDs. If you have an old App Mesh controller/injector or v1beta1 App Mesh CRDs installed in your cluster, please
+follow the steps in the relevant upgrade sections below
+
 ```sh
 helm upgrade -i appmesh-manager eks/appmesh-manager \
 --namespace appmesh-system
 ```
 
-The new AppMesh controller v1.0.0 is backwards-incompatible with older AppMesh controllers(<v1.0.0) and v1beta1
-AppMesh CRDs. If you have an old AppMesh controller/injector or v1beta1 AppMesh CRDs installed in your cluster, please
-follow the steps in the relevant upgrade sections below
-
-#### Upgrade without preserving old AppMesh resources
+#### Upgrade without preserving old App Mesh resources
 
 ```sh
-# Keep old AppMesh controller running, it is responsible to cleanup AppMesh resources in AWS
-# Delete all existing AppMesh CRs
+# Keep old App Mesh controller running, it is responsible to cleanup App Mesh resources in AWS
+# Delete all existing App Mesh custom resources (CRs)
 kubectl delete virtualservices --all --all-namespaces
 kubectl delete virtualnodes --all --all-namespaces
 kubectl delete meshes --all --all-namespaces
 
-# Delete all existing AppMesh CRDs
+# Delete all existing App Mesh CRDs
 kubectl delete customresourcedefinition/virtualservices.appmesh.k8s.aws
 kubectl delete customresourcedefinition/virtualnodes.appmesh.k8s.aws
 kubectl delete customresourcedefinition/meshes.appmesh.k8s.aws
-# Note: If a CRD stuck in deletion, it means there still exists some AppMesh CRs, please check and delete them.
+# Note: If a CRD stuck in deletion, it means there still exists some App Mesh custom resources, please check and delete them.
 
-# Delete AppMesh controller
+# Delete App Mesh controller
 helm delete appmesh-controller -n appmesh-system
 
-# Delete AppMesh injector
+# Delete App Mesh injector
 helm delete appmesh-inject -n appmesh-system
 ```
 After cleanup, you can proceed with the installation steps described above
 
-#### Upgrade preserving old AppMesh resources
+#### Upgrade preserving old App Mesh resources
 
 ```sh
-# Save manifests of all existing AppMesh CRs:
+# Save manifests of all existing App Mesh custom resources
 kubectl get virtualservices --all-namespaces -o yaml > virtualservices.yaml
 kubectl get virtualnodes --all-namespaces -o yaml > virtualnodes.yaml
 kubectl get meshes --all-namespaces -o yaml > meshes.yaml
 
-# Delete AppMesh controller, so it won’t clean up AppMesh resources in AWS while we deleting AppMesh CRs later.
+# Delete App Mesh controller, so it won’t clean up App Mesh resources in AWS while we deleting App Mesh CRs later.
 helm delete appmesh-controller -n appmesh-system
 
-# Delete AppMesh injector.
+# Delete App Mesh injector.
 helm delete appmesh-inject -n appmesh-system
 
-# Remove finalizers from all existing AppMesh CRs.  (Otherwise, you won’t be able to delete them)
-# Delete all existing AppMesh CRs:
+# Remove finalizers from all existing App Mesh CRs. Otherwise, you won’t be able to delete them.
+# To remove the finalizers, you could kubectl edit resource, and delete the finalizers attribute from the spec
+# Delete all existing App Mesh CRs:
 kubectl delete virtualservices --all --all-namespaces
 kubectl delete virtualnodes --all --all-namespaces
 kubectl delete meshes --all --all-namespaces
 
-# Delete all existing AppMesh CRDs.
+# Delete all existing App Mesh CRDs.
 kubectl delete customresourcedefinition/virtualservices.appmesh.k8s.aws
 kubectl delete customresourcedefinition/virtualnodes.appmesh.k8s.aws
 kubectl delete customresourcedefinition/meshes.appmesh.k8s.aws
-# Note: If CRDs are stuck in deletion, it means there still exists some AppMesh CRs, please check and delete them.
+# Note: If CRDs are stuck in deletion, it means there still exists some App Mesh CRs, please check and delete them.
 ```
-Translate the saved old YAML manifests using v1beta1 AppMesh CRD into v1beta2 AppMesh CRD format.
+Translate the saved old YAML manifests using v1beta1 App Mesh CRD into v1beta2 App Mesh CRD format. Please refer to CRD types (
+https://github.com/aws/aws-app-mesh-controller-for-k8s/tree/master/config/crd/bases) and Go types
+(https://github.com/aws/aws-app-mesh-controller-for-k8s/tree/master/apis/appmesh/v1beta2) for the CRD Documentation.
+Samples applications are in the repo https://github.com/aws/aws-app-mesh-examples for reference.
+
 Install the appmesh-manager, and apply the translated manifest
 
 #### Upgrade from prior script installation
@@ -100,7 +105,7 @@ kubectl delete ns appmesh-system
 kubectl delete ClusterRoleBinding app-mesh-controller-binding
 kubectl delete ClusterRole app-mesh-controller
 ```
-For handling the custom resources and the CRDs please refer to either of the previous upgrade sections as relevant.
+For handling the existing custom resources and the CRDs please refer to either of the previous upgrade sections as relevant.
 
 ### App Mesh add-ons
 
