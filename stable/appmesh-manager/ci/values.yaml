@@ -3,5 +3,5 @@
 region: us-west-2
 image:
   repository: kishorj/aws-app-mesh-controller-for-k8s
-  tag: v1.0.0
+  tag: v1.0.0-rc1
   pullPolicy: IfNotPresent
