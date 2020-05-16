@@ -1,0 +1,81 @@
+# Default values for appmesh-manager.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+region: ""
+
+image:
+  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-manager
+  tag: v1.0.0-rc1
+  pullPolicy: IfNotPresent
+
+sidecar:
+  image:
+    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
+    tag: v1.12.3.0-prod
+    # sidecar.logLevel: Envoy log level can be info, warn or error
+  logLevel: info
+  resources:
+    # sidecar.resources.requests: Envoy CPU and memory requests
+    requests:
+      cpu: 10m
+      memory: 32Mi
+init:
+  image:
+    repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
+    tag: v2
+
+nameOverride: ""
+fullnameOverride: ""
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 200Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podAnnotations: {}
+
+serviceAccount:
+  # serviceAccount.create: Whether to create a service account or not
+  create: true
+  # serviceAccount.name: The name of the service account to create or use
+  name: ""
+
+rbac:
+  # rbac.create: `true` if rbac resources should be created
+  create: true
+  # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
+  pspEnabled: false
+
+log:
+  #log.level: info (default), debug
+  level: "info"
+
+tracing:
+  # tracing.enabled: `true` if Envoy should be configured tracing
+  enabled: false
+  # tracing.provider: can be x-ray, jaeger or datadog
+  provider: x-ray
+  # tracing.address: Jaeger or Datadog agent server address (ignored for X-Ray)
+  address: appmesh-jaeger.appmesh-system
+  # tracing.address: Jaeger or Datadog agent server port (ignored for X-Ray)
+  port: 9411
+
+stats:
+  # stats.tagsEnabled: `true` if Envoy should include app-mesh tags
+  tagsEnabled: false
+  # stats.statsdEnabled: `true` if Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125
+  statsdEnabled: false
+
+# Enable cert-manager
+enableCertManager: false
