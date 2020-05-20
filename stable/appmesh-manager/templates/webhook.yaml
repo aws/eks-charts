@@ -39,8 +39,11 @@ webhooks:
       name: {{ $fullName }}-webhook-service
       namespace: {{ $.Release.Namespace }}
       path: /mutate-v1-pod
-  failurePolicy: Ignore
+  failurePolicy: Fail
   name: mpod.appmesh.k8s.aws
+  namespaceSelector:
+    matchLabels:
+      appmesh.k8s.aws/sidecarInjectorWebhook: enabled
   rules:
   - apiGroups:
     - ""
