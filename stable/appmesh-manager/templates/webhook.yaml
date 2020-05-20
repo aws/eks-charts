@@ -9,7 +9,7 @@ metadata:
   annotations:
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ template "appmesh-manager.fullname" . }}-serving-cert
 {{- end }}
-  name:   {{ template "appmesh-manager.fullname" . }}-mutating-webhook-configuration
+  name: {{ template "appmesh-manager.fullname" . }}-mutating-webhook-configuration
   labels:
 {{ include "appmesh-manager.labels" . | indent 4 }}
 webhooks:
