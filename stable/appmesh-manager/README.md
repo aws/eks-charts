@@ -16,7 +16,9 @@ App Mesh manager Helm chart for Kubernetes
             "Action": [
                 "appmesh:*",
                 "servicediscovery:CreateService",
+                "servicediscovery:DeleteService",
                 "servicediscovery:GetService",
+                "servicediscovery:GetInstance",
                 "servicediscovery:RegisterInstance",
                 "servicediscovery:DeregisterInstance",
                 "servicediscovery:ListInstances",
