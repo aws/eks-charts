@@ -7,7 +7,7 @@ region: ""
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-manager
-  tag: v1.0.0-rc1
+  tag: v1.0.0-rc2
   pullPolicy: IfNotPresent
 
 sidecar:
