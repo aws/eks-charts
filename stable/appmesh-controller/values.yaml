@@ -13,6 +13,10 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
+## Additional command line arguments to pass to appmesh-controller
+##
+extraArgs: []
+
 resources:
   limits:
     cpu: 2000m
