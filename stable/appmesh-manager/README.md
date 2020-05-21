@@ -57,6 +57,12 @@ Install the App Mesh CRD controller:
 
 ### Regular Kubernetes distribution
 
+Create namespace
+```sh
+kubectl create ns appmesh-system
+```
+
+Deploy appmesh-manager
 ```sh
 helm upgrade -i appmesh-manager eks/appmesh-manager \
     --namespace appmesh-system
