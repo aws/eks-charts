@@ -106,4 +106,25 @@ resources:
     memory: 500Mi
 
 ## Assign a PriorityClassName to pods if set
-# priorityClassName: system-node-critical
+# priorityClassName: "critical"
+
+## Assign a group of affinity scheduling rules
+##
+affinity: {}
+#  nodeAffinity:
+#   requiredDuringSchedulingIgnoredDuringExecution:
+#     nodeSelectorTerms:
+#       - matchFields:
+#           - key: metadata.name
+#             operator: In
+#             values:
+#               - target-host-name
+
+## Assign a nodeSelector
+##
+nodeSelector: {}
+#  label: value
+
+tolerations: {}
+#  - effect: NoSchedule
+#    operator: Exists

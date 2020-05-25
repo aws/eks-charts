@@ -72,4 +72,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `kinesis.timeKey` | Add the timestamp to the record under this key. By default the timestamp from Fluent Bit will not be added to records sent to Kinesis. | |
 | `kinesis.timeKeyFormat` |  strftime compliant format string for the timestamp; for example, `%Y-%m-%dT%H:%M:%S%z`. This option is used with `time_key`. | |
 | `extraOutputs` | Adding more outputs with value | `""` |
-| `priorityClassName` | Name of Priority Class to assign pods | |
+| `priorityClassName` | Name of Priority Class to assign pods | `""` |
+| `affinity` | A group of affinity scheduling rules for pod assignment | `{}` |
+| `nodeSelector` | Node labels for pod assignment | `{}` |
+| `tolerations` | List of node taints to tolerate | `{}` |

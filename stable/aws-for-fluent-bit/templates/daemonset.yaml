@@ -32,6 +32,18 @@ spec:
               mountPath: /fluent-bit/etc/
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
         - name: varlog
           hostPath:
@@ -42,4 +54,3 @@ spec:
         - name: fluentbit-config
           configMap:
             name: {{ include "aws-for-fluent-bit.fullname" . }}
-
