@@ -16,7 +16,9 @@ App Mesh manager Helm chart for Kubernetes
             "Action": [
                 "appmesh:*",
                 "servicediscovery:CreateService",
+                "servicediscovery:DeleteService",
                 "servicediscovery:GetService",
+                "servicediscovery:GetInstance",
                 "servicediscovery:RegisterInstance",
                 "servicediscovery:DeregisterInstance",
                 "servicediscovery:ListInstances",
@@ -55,6 +57,12 @@ Install the App Mesh CRD controller:
 
 ### Regular Kubernetes distribution
 
+Create namespace
+```sh
+kubectl create ns appmesh-system
+```
+
+Deploy appmesh-manager
 ```sh
 helm upgrade -i appmesh-manager eks/appmesh-manager \
     --namespace appmesh-system
@@ -143,7 +151,7 @@ helm upgrade -i appmesh-manager eks/appmesh-manager \
 To uninstall/delete the `appmesh-manager` deployment:
 
 ```console
-$ helm delete appmesh-manager
+$ helm delete appmesh-manager -n appmesh-system
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
