@@ -42,7 +42,7 @@ spec:
             - name: TYPHA_LOGSEVERITYSYS
               value: "none"
             - name: TYPHA_LOGSEVERITYSCREEN
-              value: "info"
+              value: "{{ .Values.calico.typha.logseverity }}"
             - name: TYPHA_PROMETHEUSMETRICSENABLED
               value: "true"
             - name: TYPHA_CONNECTIONREBALANCINGMODE

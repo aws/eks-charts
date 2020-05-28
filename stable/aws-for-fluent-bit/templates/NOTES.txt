@@ -1,0 +1,5 @@
+{{ .Release.Name }} has been installed or updated. To check the status of pods, run:
+
+kubectl get pods -n {{ include "aws-for-fluent-bit.namespace" . }}
+
+

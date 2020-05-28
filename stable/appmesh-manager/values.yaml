@@ -1,21 +1,20 @@
-# Default values for appmesh-inject.
+# Default values for appmesh-manager.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 region: ""
-stsRegional: false
 
 image:
-  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-app-mesh-inject
-  tag: v0.5.0
+  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-manager
+  tag: v1.0.0-rc2
   pullPolicy: IfNotPresent
 
 sidecar:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
     tag: v1.12.3.0-prod
-  # sidecar.logLevel: Envoy log level can be info, warn or error
+    # sidecar.logLevel: Envoy log level can be info, warn or error
   logLevel: info
   resources:
     # sidecar.resources.requests: Envoy CPU and memory requests
@@ -32,11 +31,11 @@ fullnameOverride: ""
 
 resources:
   limits:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 2000m
+    memory: 1Gi
   requests:
     cpu: 100m
-    memory: 64Mi
+    memory: 200Mi
 
 nodeSelector: {}
 
@@ -58,15 +57,9 @@ rbac:
   # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
   pspEnabled: false
 
-mesh:
-  # mesh.create: `true` if mesh resource should be created
-  create: false
-  # mesh.name: The name of the mesh to use
-  name: "global"
-  # mesh.discovery: The service discovery type to use, can be dns or cloudmap
-  discovery: dns
-  # mesh.egressFilter: The mesh Egress Filter, can be ALLOW_ALL or DROP_ALL
-  egressFilter: DROP_ALL
+log:
+  #log.level: info (default), debug
+  level: "info"
 
 tracing:
   # tracing.enabled: `true` if Envoy should be configured tracing
@@ -83,3 +76,6 @@ stats:
   tagsEnabled: false
   # stats.statsdEnabled: `true` if Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125
   statsdEnabled: false
+
+# Enable cert-manager
+enableCertManager: false

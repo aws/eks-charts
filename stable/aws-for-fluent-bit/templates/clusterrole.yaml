@@ -1,0 +1,12 @@
+{{- if .Values.serviceAccount.create -}}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: {{ include "aws-for-fluent-bit.fullname" . }}
+rules:
+  - apiGroups: [""]
+    resources:
+      - namespaces
+      - pods
+    verbs: ["get", "list", "watch"]
+{{- end -}}
