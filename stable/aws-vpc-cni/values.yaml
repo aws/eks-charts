@@ -33,6 +33,9 @@ podAnnotations: {}
 securityContext:
   privileged: true
 
+crd:
+  create: true
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
