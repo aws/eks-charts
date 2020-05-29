@@ -6,6 +6,8 @@ metadata:
   labels:
     {{- include "aws-for-fluent-bit.labels" . | nindent 4 }}
 spec:
+  updateStrategy:
+{{ toYaml .Values.updateStrategy | indent 4 }}
   selector:
     matchLabels:
       {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 6 }}
