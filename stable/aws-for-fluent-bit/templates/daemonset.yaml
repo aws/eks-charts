@@ -14,6 +14,14 @@ spec:
       labels:
         {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 8 }}
     spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
       serviceAccountName: {{ include "aws-for-fluent-bit.serviceAccountName" . }}
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName }}

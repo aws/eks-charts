@@ -73,3 +73,5 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `kinesis.timeKeyFormat` |  strftime compliant format string for the timestamp; for example, `%Y-%m-%dT%H:%M:%S%z`. This option is used with `time_key`. | |
 | `extraOutputs` | Adding more outputs with value | `""` |
 | `priorityClassName` | Name of Priority Class to assign pods | |
+| `tolerations` | pods tolerations | `[]` |
+| `nodeSelector` | pods node selector | `{}` |
