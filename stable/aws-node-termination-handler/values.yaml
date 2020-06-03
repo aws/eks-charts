@@ -63,6 +63,12 @@ webhookHeaders: ""
 # webhookTemplate if specified, replaces the default webhook message template.
 webhookTemplate: ""
 
+# kubernetesServiceHost if specified, overrides the k8s service host to send api calls to
+kubernetesServiceHost: ""
+
+# kubernetesServiceHost if specified, overrides the k8s service port to send api calls to
+kubernetesServicePort: ""
+
 # instanceMetadataURL is used to override the default metadata URL (default: http://169.254.169.254:80)
 instanceMetadataURL: ""
 
