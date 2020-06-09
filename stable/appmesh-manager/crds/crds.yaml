@@ -4,6 +4,309 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.2.5
   creationTimestamp: null
+  name: gatewayroutes.appmesh.k8s.aws
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.gatewayRouteARN
+    description: The AppMesh GatewayRoute object's Amazon Resource Name
+    name: ARN
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: appmesh.k8s.aws
+  names:
+    categories:
+    - all
+    kind: GatewayRoute
+    listKind: GatewayRouteList
+    plural: gatewayroutes
+    singular: gatewayroute
+  scope: Namespaced
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      description: GatewayRoute is the Schema for the gatewayroutes API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: GatewayRouteSpec defines the desired state of GatewayRoute
+            refers to https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html
+          properties:
+            awsName:
+              description: AWSName is the AppMesh GatewayRoute object's name. If unspecified
+                or empty, it defaults to be "${name}_${namespace}" of k8s GatewayRoute
+              type: string
+            grpcRoute:
+              description: An object that represents the specification of a gRPC gatewayRoute.
+              properties:
+                action:
+                  description: An object that represents the action to take if a match
+                    is determined.
+                  properties:
+                    target:
+                      description: An object that represents the target that traffic
+                        is routed to when a request matches the route.
+                      properties:
+                        virtualService:
+                          description: The virtual service to associate with the gateway
+                            route target.
+                          properties:
+                            virtualServiceRef:
+                              description: The virtual service reference to associate
+                                with the gateway route virtual service target.
+                              properties:
+                                name:
+                                  description: Name is the name of VirtualService
+                                    CR
+                                  type: string
+                                namespace:
+                                  description: Namespace is the namespace of VirtualService
+                                    CR. If unspecified, defaults to the referencing
+                                    object's namespace
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                          required:
+                          - virtualServiceRef
+                          type: object
+                      required:
+                      - virtualService
+                      type: object
+                  required:
+                  - target
+                  type: object
+                match:
+                  description: An object that represents the criteria for determining
+                    a request match.
+                  properties:
+                    serviceName:
+                      description: The fully qualified domain name for the service
+                        to match from the request.
+                      type: string
+                  type: object
+              required:
+              - action
+              - match
+              type: object
+            http2Route:
+              description: An object that represents the specification of an HTTP/2
+                gatewayRoute.
+              properties:
+                action:
+                  description: An object that represents the action to take if a match
+                    is determined.
+                  properties:
+                    target:
+                      description: An object that represents the target that traffic
+                        is routed to when a request matches the route.
+                      properties:
+                        virtualService:
+                          description: The virtual service to associate with the gateway
+                            route target.
+                          properties:
+                            virtualServiceRef:
+                              description: The virtual service reference to associate
+                                with the gateway route virtual service target.
+                              properties:
+                                name:
+                                  description: Name is the name of VirtualService
+                                    CR
+                                  type: string
+                                namespace:
+                                  description: Namespace is the namespace of VirtualService
+                                    CR. If unspecified, defaults to the referencing
+                                    object's namespace
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                          required:
+                          - virtualServiceRef
+                          type: object
+                      required:
+                      - virtualService
+                      type: object
+                  required:
+                  - target
+                  type: object
+                match:
+                  description: An object that represents the criteria for determining
+                    a request match.
+                  properties:
+                    prefix:
+                      description: Specifies the path to match requests with
+                      type: string
+                  required:
+                  - prefix
+                  type: object
+              required:
+              - action
+              - match
+              type: object
+            httpRoute:
+              description: An object that represents the specification of an HTTP
+                gatewayRoute.
+              properties:
+                action:
+                  description: An object that represents the action to take if a match
+                    is determined.
+                  properties:
+                    target:
+                      description: An object that represents the target that traffic
+                        is routed to when a request matches the route.
+                      properties:
+                        virtualService:
+                          description: The virtual service to associate with the gateway
+                            route target.
+                          properties:
+                            virtualServiceRef:
+                              description: The virtual service reference to associate
+                                with the gateway route virtual service target.
+                              properties:
+                                name:
+                                  description: Name is the name of VirtualService
+                                    CR
+                                  type: string
+                                namespace:
+                                  description: Namespace is the namespace of VirtualService
+                                    CR. If unspecified, defaults to the referencing
+                                    object's namespace
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                          required:
+                          - virtualServiceRef
+                          type: object
+                      required:
+                      - virtualService
+                      type: object
+                  required:
+                  - target
+                  type: object
+                match:
+                  description: An object that represents the criteria for determining
+                    a request match.
+                  properties:
+                    prefix:
+                      description: Specifies the path to match requests with
+                      type: string
+                  required:
+                  - prefix
+                  type: object
+              required:
+              - action
+              - match
+              type: object
+            meshRef:
+              description: "A reference to k8s Mesh CR that this GatewayRoute belongs
+                to. The admission controller populates it using Meshes's selector,
+                and prevents users from setting this field. \n Populated by the system.
+                Read-only."
+              properties:
+                name:
+                  description: Name is the name of Mesh CR
+                  type: string
+                uid:
+                  description: UID is the UID of Mesh CR
+                  type: string
+              required:
+              - name
+              - uid
+              type: object
+            virtualGatewayRef:
+              description: "A reference to k8s VirtualGateway CR that this GatewayRoute
+                belongs to. The admission controller populates it using VirtualGateway's
+                selector, and prevents users from setting this field. \n Populated
+                by the system. Read-only."
+              properties:
+                name:
+                  description: Name is the name of VirtualGateway CR
+                  type: string
+                namespace:
+                  description: Namespace is the namespace of VirtualGateway CR. If
+                    unspecified, defaults to the referencing object's namespace
+                  type: string
+                uid:
+                  description: UID is the UID of VirtualGateway CR
+                  type: string
+              required:
+              - name
+              - uid
+              type: object
+          type: object
+        status:
+          description: GatewayRouteStatus defines the observed state of GatewayRoute
+          properties:
+            conditions:
+              description: The current GatewayRoute status.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    format: date-time
+                    type: string
+                  message:
+                    description: A human readable message indicating details about
+                      the transition.
+                    type: string
+                  reason:
+                    description: The reason for the condition's last transition.
+                    type: string
+                  status:
+                    description: Status of the condition, one of True, False, Unknown.
+                    type: string
+                  type:
+                    description: Type of GatewayRoute condition.
+                    type: string
+                required:
+                - status
+                - type
+                type: object
+              type: array
+            gatewayRouteARN:
+              description: GatewayRouteARN is the AppMesh GatewayRoute object's Amazon
+                Resource Name
+              type: string
+            observedGeneration:
+              description: The generation observed by the GatewayRoute controller.
+              format: int64
+              type: integer
+          type: object
+      type: object
+  version: v1beta2
+  versions:
+  - name: v1beta2
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
   name: meshes.appmesh.k8s.aws
 spec:
   additionalPrinterColumns:
@@ -148,6 +451,402 @@ spec:
               description: The generation observed by the Mesh controller.
               format: int64
               type: integer
+          type: object
+      type: object
+  version: v1beta2
+  versions:
+  - name: v1beta2
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: virtualgateways.appmesh.k8s.aws
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.virtualGatewayARN
+    description: The AppMesh VirtualGateway object's Amazon Resource Name
+    name: ARN
+    type: string
+  - JSONPath: .metadata.creationTimestamp
+    name: AGE
+    type: date
+  group: appmesh.k8s.aws
+  names:
+    categories:
+    - all
+    kind: VirtualGateway
+    listKind: VirtualGatewayList
+    plural: virtualgateways
+    singular: virtualgateway
+  scope: Namespaced
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      description: VirtualGateway is the Schema for the virtualgateways API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: VirtualGatewaySpec defines the desired state of VirtualGateway
+            refers to https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html
+          properties:
+            awsName:
+              description: AWSName is the AppMesh VirtualGateway object's name. If
+                unspecified or empty, it defaults to be "${name}_${namespace}" of
+                k8s VirtualGateway
+              type: string
+            backendDefaults:
+              description: A reference to an object that represents the defaults for
+                backend GatewayRoutes.
+              properties:
+                clientPolicy:
+                  description: A reference to an object that represents a client policy.
+                  properties:
+                    tls:
+                      description: A reference to an object that represents a Transport
+                        Layer Security (TLS) client policy.
+                      properties:
+                        enforce:
+                          description: Whether the policy is enforced. If unspecified,
+                            default settings from AWS API will be applied. Refer to
+                            AWS Docs for default settings.
+                          type: boolean
+                        ports:
+                          description: The range of ports that the policy is enforced
+                            for.
+                          items:
+                            format: int64
+                            maximum: 65535
+                            minimum: 1
+                            type: integer
+                          type: array
+                        validation:
+                          description: A reference to an object that represents a
+                            TLS validation context.
+                          properties:
+                            trust:
+                              description: A reference to an object that represents
+                                a TLS validation context trust
+                              properties:
+                                acm:
+                                  description: A reference to an object that represents
+                                    a TLS validation context trust for an AWS Certicate
+                                    Manager (ACM) certificate.
+                                  properties:
+                                    certificateAuthorityARNs:
+                                      description: One or more ACM Amazon Resource
+                                        Name (ARN)s.
+                                      items:
+                                        type: string
+                                      maxItems: 3
+                                      minItems: 1
+                                      type: array
+                                  required:
+                                  - certificateAuthorityARNs
+                                  type: object
+                                file:
+                                  description: An object that represents a TLS validation
+                                    context trust for a local file.
+                                  properties:
+                                    certificateChain:
+                                      description: The certificate trust chain for
+                                        a certificate stored on the file system of
+                                        the virtual Gateway.
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                  required:
+                                  - certificateChain
+                                  type: object
+                              type: object
+                          required:
+                          - trust
+                          type: object
+                      required:
+                      - validation
+                      type: object
+                  type: object
+              type: object
+            listeners:
+              description: The listener that the virtual gateway is expected to receive
+                inbound traffic from
+              items:
+                description: VirtualGatewayListener refers to https://docs.aws.amazon.com/app-mesh/latest/userguide/virtual_gateways.html
+                properties:
+                  healthCheck:
+                    description: The health check information for the listener.
+                    properties:
+                      healthyThreshold:
+                        description: The number of consecutive successful health checks
+                          that must occur before declaring listener healthy.
+                        format: int64
+                        maximum: 10
+                        minimum: 2
+                        type: integer
+                      intervalMillis:
+                        description: The time period in milliseconds between each
+                          health check execution.
+                        format: int64
+                        maximum: 300000
+                        minimum: 5000
+                        type: integer
+                      path:
+                        description: The destination path for the health check request.
+                          This value is only used if the specified protocol is http
+                          or http2. For any other protocol, this value is ignored.
+                        type: string
+                      port:
+                        description: The destination port for the health check request.
+                        format: int64
+                        maximum: 65535
+                        minimum: 1
+                        type: integer
+                      protocol:
+                        description: The protocol for the health check request
+                        enum:
+                        - grpc
+                        - http
+                        - http2
+                        type: string
+                      timeoutMillis:
+                        description: The amount of time to wait when receiving a response
+                          from the health check, in milliseconds.
+                        format: int64
+                        maximum: 60000
+                        minimum: 2000
+                        type: integer
+                      unhealthyThreshold:
+                        description: The number of consecutive failed health checks
+                          that must occur before declaring a virtual Gateway unhealthy.
+                        format: int64
+                        maximum: 10
+                        minimum: 2
+                        type: integer
+                    required:
+                    - intervalMillis
+                    - protocol
+                    - timeoutMillis
+                    - unhealthyThreshold
+                    type: object
+                  logging:
+                    description: The inbound and outbound access logging information
+                      for the virtual gateway.
+                    properties:
+                      accessLog:
+                        description: The access log configuration for a virtual Gateway.
+                        properties:
+                          file:
+                            description: The file object to send virtual gateway access
+                              logs to.
+                            properties:
+                              path:
+                                description: The file path to write access logs to.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            required:
+                            - path
+                            type: object
+                        type: object
+                    type: object
+                  portMapping:
+                    description: The port mapping information for the listener.
+                    properties:
+                      port:
+                        description: The port used for the port mapping.
+                        format: int64
+                        maximum: 65535
+                        minimum: 1
+                        type: integer
+                      protocol:
+                        description: The protocol used for the port mapping.
+                        enum:
+                        - grpc
+                        - http
+                        - http2
+                        type: string
+                    required:
+                    - port
+                    - protocol
+                    type: object
+                  tls:
+                    description: A reference to an object that represents the Transport
+                      Layer Security (TLS) properties for a listener.
+                    properties:
+                      certificate:
+                        description: A reference to an object that represents a listener's
+                          TLS certificate.
+                        properties:
+                          acm:
+                            description: A reference to an object that represents
+                              an AWS Certificate Manager (ACM) certificate.
+                            properties:
+                              certificateARN:
+                                description: The Amazon Resource Name (ARN) for the
+                                  certificate.
+                                type: string
+                            required:
+                            - certificateARN
+                            type: object
+                          file:
+                            description: A reference to an object that represents
+                              a local file certificate.
+                            properties:
+                              certificateChain:
+                                description: The certificate chain for the certificate.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              privateKey:
+                                description: The private key for a certificate stored
+                                  on the file system of the virtual Gateway.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            required:
+                            - certificateChain
+                            - privateKey
+                            type: object
+                        type: object
+                      mode:
+                        description: ListenerTLS mode
+                        enum:
+                        - DISABLED
+                        - PERMISSIVE
+                        - STRICT
+                        type: string
+                    required:
+                    - certificate
+                    - mode
+                    type: object
+                required:
+                - portMapping
+                type: object
+              maxItems: 1
+              minItems: 0
+              type: array
+            meshRef:
+              description: "A reference to k8s Mesh CR that this VirtualGateway belongs
+                to. The admission controller populates it using Meshes's selector,
+                and prevents users from setting this field. \n Populated by the system.
+                Read-only."
+              properties:
+                name:
+                  description: Name is the name of Mesh CR
+                  type: string
+                uid:
+                  description: UID is the UID of Mesh CR
+                  type: string
+              required:
+              - name
+              - uid
+              type: object
+            namespaceSelector:
+              description: NamespaceSelector selects Namespaces using labels to designate
+                GatewayRoute membership. This field follows standard label selector
+                semantics; if present but empty, it selects all namespaces.
+              properties:
+                matchExpressions:
+                  description: matchExpressions is a list of label selector requirements.
+                    The requirements are ANDed.
+                  items:
+                    description: A label selector requirement is a selector that contains
+                      values, a key, and an operator that relates the key and values.
+                    properties:
+                      key:
+                        description: key is the label key that the selector applies
+                          to.
+                        type: string
+                      operator:
+                        description: operator represents a key's relationship to a
+                          set of values. Valid operators are In, NotIn, Exists and
+                          DoesNotExist.
+                        type: string
+                      values:
+                        description: values is an array of string values. If the operator
+                          is In or NotIn, the values array must be non-empty. If the
+                          operator is Exists or DoesNotExist, the values array must
+                          be empty. This array is replaced during a strategic merge
+                          patch.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - key
+                    - operator
+                    type: object
+                  type: array
+                matchLabels:
+                  additionalProperties:
+                    type: string
+                  description: matchLabels is a map of {key,value} pairs. A single
+                    {key,value} in the matchLabels map is equivalent to an element
+                    of matchExpressions, whose key field is "key", the operator is
+                    "In", and the values array contains only "value". The requirements
+                    are ANDed.
+                  type: object
+              type: object
+          type: object
+        status:
+          description: VirtualGatewayStatus defines the observed state of VirtualGateway
+          properties:
+            conditions:
+              description: The current VirtualGateway status.
+              items:
+                properties:
+                  lastTransitionTime:
+                    description: Last time the condition transitioned from one status
+                      to another.
+                    format: date-time
+                    type: string
+                  message:
+                    description: A human readable message indicating details about
+                      the transition.
+                    type: string
+                  reason:
+                    description: The reason for the condition's last transition.
+                    type: string
+                  status:
+                    description: Status of the condition, one of True, False, Unknown.
+                    type: string
+                  type:
+                    description: Type of VirtualGateway condition.
+                    type: string
+                required:
+                - status
+                - type
+                type: object
+              type: array
+            observedGeneration:
+              description: The generation observed by the VirtualGateway controller.
+              format: int64
+              type: integer
+            virtualGatewayARN:
+              description: VirtualGatewayARN is the AppMesh VirtualGateway object's
+                Amazon Resource Name
+              type: string
           type: object
       type: object
   version: v1beta2
@@ -470,6 +1169,158 @@ spec:
                     required:
                     - port
                     - protocol
+                    type: object
+                  timeout:
+                    description: A reference to an object that represents
+                    properties:
+                      grpc:
+                        description: Specifies grpc timeout information for the virtual
+                          node.
+                        properties:
+                          idle:
+                            description: An object that represents idle timeout duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                          perRequest:
+                            description: An object that represents per request timeout
+                              duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                        type: object
+                      http:
+                        description: Specifies http timeout information for the virtual
+                          node.
+                        properties:
+                          idle:
+                            description: An object that represents idle timeout duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                          perRequest:
+                            description: An object that represents per request timeout
+                              duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                        type: object
+                      http2:
+                        description: Specifies http2 information for the virtual node.
+                        properties:
+                          idle:
+                            description: An object that represents idle timeout duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                          perRequest:
+                            description: An object that represents per request timeout
+                              duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                        type: object
+                      tcp:
+                        description: Specifies tcp timeout information for the virtual
+                          node.
+                        properties:
+                          idle:
+                            description: An object that represents idle timeout duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                        type: object
                     type: object
                   tls:
                     description: A reference to an object that represents the Transport
@@ -1012,6 +1863,47 @@ spec:
                         - maxRetries
                         - perRetryTimeout
                         type: object
+                      timeout:
+                        description: An object that represents a grpc timeout.
+                        properties:
+                          idle:
+                            description: An object that represents idle timeout duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                          perRequest:
+                            description: An object that represents per request timeout
+                              duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                        type: object
                     required:
                     - action
                     - match
@@ -1203,6 +2095,47 @@ spec:
                         required:
                         - maxRetries
                         - perRetryTimeout
+                        type: object
+                      timeout:
+                        description: An object that represents a http timeout.
+                        properties:
+                          idle:
+                            description: An object that represents idle timeout duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                          perRequest:
+                            description: An object that represents per request timeout
+                              duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
                         type: object
                     required:
                     - action
@@ -1396,6 +2329,47 @@ spec:
                         - maxRetries
                         - perRetryTimeout
                         type: object
+                      timeout:
+                        description: An object that represents a http timeout.
+                        properties:
+                          idle:
+                            description: An object that represents idle timeout duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                          perRequest:
+                            description: An object that represents per request timeout
+                              duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
+                        type: object
                     required:
                     - action
                     - match
@@ -1454,6 +2428,28 @@ spec:
                             type: array
                         required:
                         - weightedTargets
+                        type: object
+                      timeout:
+                        description: An object that represents a tcp timeout.
+                        properties:
+                          idle:
+                            description: An object that represents idle timeout duration.
+                            properties:
+                              unit:
+                                description: A unit of time.
+                                enum:
+                                - s
+                                - ms
+                                type: string
+                              value:
+                                description: A number of time units.
+                                format: int64
+                                minimum: 0
+                                type: integer
+                            required:
+                            - unit
+                            - value
+                            type: object
                         type: object
                     required:
                     - action
