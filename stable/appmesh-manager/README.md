@@ -14,7 +14,7 @@ App Mesh manager Helm chart for Kubernetes
         {
             "Effect": "Allow",
             "Action": [
-                "appmesh:*",
+                "appmesh-preview:*",
                 "servicediscovery:CreateService",
                 "servicediscovery:DeleteService",
                 "servicediscovery:GetService",
