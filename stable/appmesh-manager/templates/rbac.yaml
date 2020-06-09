@@ -50,10 +50,10 @@ rules:
   resources: [pods/status]
   verbs: [get, patch, update]
 - apiGroups: [appmesh.k8s.aws]
-  resources: [meshes, virtualnodes, virtualrouters, virtualservices]
+  resources: [gatewayroutes, meshes, virtualgateways, virtualnodes, virtualrouters, virtualservices]
   verbs: [create, delete, get, list, patch, update, watch]
 - apiGroups: [appmesh.k8s.aws]
-  resources: [meshes/status, virtualnodes/status, virtualrouters/status, virtualservices/status]
+  resources: [gatewayroutes/status, meshes/status, virtualgateways/status, virtualnodes/status, virtualrouters/status, virtualservices/status]
   verbs: [get, patch, update]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
