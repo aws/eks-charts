@@ -22,6 +22,7 @@ service:
 input:
   tag: "kube.*"
   path: "/var/log/containers/*.log"
+  pathKey:
   db: "/var/log/flb_kube.db"
   parser: docker
   dockerMode: "On"
