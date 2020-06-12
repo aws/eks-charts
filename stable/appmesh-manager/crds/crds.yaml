@@ -64,9 +64,17 @@ spec:
                           description: The virtual service to associate with the gateway
                             route target.
                           properties:
+                            virtualServiceARN:
+                              description: Amazon Resource Name to AppMesh VirtualService
+                                object to associate with the gateway route virtual
+                                service target. Exactly one of 'virtualServiceRef'
+                                or 'virtualServiceARN' must be specified.
+                              type: string
                             virtualServiceRef:
-                              description: The virtual service reference to associate
-                                with the gateway route virtual service target.
+                              description: Reference to Kubernetes VirtualService
+                                CR in cluster to associate with the gateway route
+                                virtual service target. Exactly one of 'virtualServiceRef'
+                                or 'virtualServiceARN' must be specified.
                               properties:
                                 name:
                                   description: Name is the name of VirtualService
@@ -80,8 +88,6 @@ spec:
                               required:
                               - name
                               type: object
-                          required:
-                          - virtualServiceRef
                           type: object
                       required:
                       - virtualService
@@ -118,9 +124,17 @@ spec:
                           description: The virtual service to associate with the gateway
                             route target.
                           properties:
+                            virtualServiceARN:
+                              description: Amazon Resource Name to AppMesh VirtualService
+                                object to associate with the gateway route virtual
+                                service target. Exactly one of 'virtualServiceRef'
+                                or 'virtualServiceARN' must be specified.
+                              type: string
                             virtualServiceRef:
-                              description: The virtual service reference to associate
-                                with the gateway route virtual service target.
+                              description: Reference to Kubernetes VirtualService
+                                CR in cluster to associate with the gateway route
+                                virtual service target. Exactly one of 'virtualServiceRef'
+                                or 'virtualServiceARN' must be specified.
                               properties:
                                 name:
                                   description: Name is the name of VirtualService
@@ -134,8 +148,6 @@ spec:
                               required:
                               - name
                               type: object
-                          required:
-                          - virtualServiceRef
                           type: object
                       required:
                       - virtualService
@@ -173,9 +185,17 @@ spec:
                           description: The virtual service to associate with the gateway
                             route target.
                           properties:
+                            virtualServiceARN:
+                              description: Amazon Resource Name to AppMesh VirtualService
+                                object to associate with the gateway route virtual
+                                service target. Exactly one of 'virtualServiceRef'
+                                or 'virtualServiceARN' must be specified.
+                              type: string
                             virtualServiceRef:
-                              description: The virtual service reference to associate
-                                with the gateway route virtual service target.
+                              description: Reference to Kubernetes VirtualService
+                                CR in cluster to associate with the gateway route
+                                virtual service target. Exactly one of 'virtualServiceRef'
+                                or 'virtualServiceARN' must be specified.
                               properties:
                                 name:
                                   description: Name is the name of VirtualService
@@ -189,8 +209,6 @@ spec:
                               required:
                               - name
                               type: object
-                          required:
-                          - virtualServiceRef
                           type: object
                       required:
                       - virtualService
@@ -1110,9 +1128,17 @@ spec:
                             - validation
                             type: object
                         type: object
+                      virtualServiceARN:
+                        description: Amazon Resource Name to AppMesh VirtualService
+                          object that is acting as a virtual node backend. Exactly
+                          one of 'virtualServiceRef' or 'virtualServiceARN' must be
+                          specified.
+                        type: string
                       virtualServiceRef:
-                        description: The VirtualService that is acting as a virtual
-                          node backend.
+                        description: Reference to Kubernetes VirtualService CR in
+                          cluster that is acting as a virtual node backend. Exactly
+                          one of 'virtualServiceRef' or 'virtualServiceARN' must be
+                          specified.
                         properties:
                           name:
                             description: Name is the name of VirtualService CR
@@ -1125,8 +1151,6 @@ spec:
                         required:
                         - name
                         type: object
-                    required:
-                    - virtualServiceRef
                     type: object
                 required:
                 - virtualService
@@ -1737,9 +1761,17 @@ spec:
                             items:
                               description: WeightedTarget refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_WeightedTarget.html
                               properties:
+                                virtualNodeARN:
+                                  description: Amazon Resource Name to AppMesh VirtualNode
+                                    object to associate with the weighted target.
+                                    Exactly one of 'virtualNodeRef' or 'virtualNodeARN'
+                                    must be specified.
+                                  type: string
                                 virtualNodeRef:
-                                  description: The virtual node to associate with
-                                    the weighted target.
+                                  description: Reference to Kubernetes VirtualNode
+                                    CR in cluster to associate with the weighted target.
+                                    Exactly one of 'virtualNodeRef' or 'virtualNodeARN'
+                                    must be specified.
                                   properties:
                                     name:
                                       description: Name is the name of VirtualNode
@@ -1761,7 +1793,6 @@ spec:
                                   minimum: 0
                                   type: integer
                               required:
-                              - virtualNodeRef
                               - weight
                               type: object
                             maxItems: 10
@@ -1968,9 +1999,17 @@ spec:
                             items:
                               description: WeightedTarget refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_WeightedTarget.html
                               properties:
+                                virtualNodeARN:
+                                  description: Amazon Resource Name to AppMesh VirtualNode
+                                    object to associate with the weighted target.
+                                    Exactly one of 'virtualNodeRef' or 'virtualNodeARN'
+                                    must be specified.
+                                  type: string
                                 virtualNodeRef:
-                                  description: The virtual node to associate with
-                                    the weighted target.
+                                  description: Reference to Kubernetes VirtualNode
+                                    CR in cluster to associate with the weighted target.
+                                    Exactly one of 'virtualNodeRef' or 'virtualNodeARN'
+                                    must be specified.
                                   properties:
                                     name:
                                       description: Name is the name of VirtualNode
@@ -1992,7 +2031,6 @@ spec:
                                   minimum: 0
                                   type: integer
                               required:
-                              - virtualNodeRef
                               - weight
                               type: object
                             maxItems: 10
@@ -2201,9 +2239,17 @@ spec:
                             items:
                               description: WeightedTarget refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_WeightedTarget.html
                               properties:
+                                virtualNodeARN:
+                                  description: Amazon Resource Name to AppMesh VirtualNode
+                                    object to associate with the weighted target.
+                                    Exactly one of 'virtualNodeRef' or 'virtualNodeARN'
+                                    must be specified.
+                                  type: string
                                 virtualNodeRef:
-                                  description: The virtual node to associate with
-                                    the weighted target.
+                                  description: Reference to Kubernetes VirtualNode
+                                    CR in cluster to associate with the weighted target.
+                                    Exactly one of 'virtualNodeRef' or 'virtualNodeARN'
+                                    must be specified.
                                   properties:
                                     name:
                                       description: Name is the name of VirtualNode
@@ -2225,7 +2271,6 @@ spec:
                                   minimum: 0
                                   type: integer
                               required:
-                              - virtualNodeRef
                               - weight
                               type: object
                             maxItems: 10
@@ -2442,9 +2487,17 @@ spec:
                             items:
                               description: WeightedTarget refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_WeightedTarget.html
                               properties:
+                                virtualNodeARN:
+                                  description: Amazon Resource Name to AppMesh VirtualNode
+                                    object to associate with the weighted target.
+                                    Exactly one of 'virtualNodeRef' or 'virtualNodeARN'
+                                    must be specified.
+                                  type: string
                                 virtualNodeRef:
-                                  description: The virtual node to associate with
-                                    the weighted target.
+                                  description: Reference to Kubernetes VirtualNode
+                                    CR in cluster to associate with the weighted target.
+                                    Exactly one of 'virtualNodeRef' or 'virtualNodeARN'
+                                    must be specified.
                                   properties:
                                     name:
                                       description: Name is the name of VirtualNode
@@ -2466,7 +2519,6 @@ spec:
                                   minimum: 0
                                   type: integer
                               required:
-                              - virtualNodeRef
                               - weight
                               type: object
                             maxItems: 10
@@ -2637,8 +2689,15 @@ spec:
                 virtualNode:
                   description: The virtual node associated with a virtual service.
                   properties:
+                    virtualNodeARN:
+                      description: Amazon Resource Name to AppMesh VirtualNode object
+                        that is acting as a service provider. Exactly one of 'virtualNodeRef'
+                        or 'virtualNodeARN' must be specified.
+                      type: string
                     virtualNodeRef:
-                      description: The virtual node that is acting as a service provider.
+                      description: Reference to Kubernetes VirtualNode CR in cluster
+                        that is acting as a service provider. Exactly one of 'virtualNodeRef'
+                        or 'virtualNodeARN' must be specified.
                       properties:
                         name:
                           description: Name is the name of VirtualNode CR
@@ -2650,15 +2709,19 @@ spec:
                       required:
                       - name
                       type: object
-                  required:
-                  - virtualNodeRef
                   type: object
                 virtualRouter:
                   description: The virtual router associated with a virtual service.
                   properties:
+                    virtualRouterARN:
+                      description: Amazon Resource Name to AppMesh VirtualRouter object
+                        that is acting as a service provider. Exactly one of 'virtualRouterRef'
+                        or 'virtualRouterARN' must be specified.
+                      type: string
                     virtualRouterRef:
-                      description: The virtual router that is acting as a service
-                        provider.
+                      description: Reference to Kubernetes VirtualRouter CR in cluster
+                        that is acting as a service provider. Exactly one of 'virtualRouterRef'
+                        or 'virtualRouterARN' must be specified.
                       properties:
                         name:
                           description: Name is the name of VirtualRouter CR
@@ -2671,8 +2734,6 @@ spec:
                       required:
                       - name
                       type: object
-                  required:
-                  - virtualRouterRef
                   type: object
               type: object
           type: object
