@@ -40,6 +40,11 @@ spec:
             {{- else if eq .Values.log.level "info" }}
             - --v=0
             {{- end }}
+          {{- if .Values.stsRegional }}
+          env:
+            - name: AWS_STS_REGIONAL_ENDPOINTS
+              value: regional
+          {{- end }}            
           livenessProbe:
             exec:
               command:
