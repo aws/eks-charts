@@ -17,6 +17,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: {{ template "appmesh-gateway.fullname" . }}
+        app.kubernetes.io/component: "appmesh-gateway"
       annotations:
         {{- if .Values.appmesh.preview }}
         appmesh.k8s.aws/preview: "enabled"
