@@ -34,6 +34,14 @@ resources:
     cpu: 100m
     memory: 64Mi
 
+# hpa: CPU based auto-scaling
+hpa:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  # CPU average utilization percentage
+  averageUtilization: 90
+
 # podAnnotations: Prometheus scraping is enabled by default
 podAnnotations:
   prometheus.io/scrape: "true"

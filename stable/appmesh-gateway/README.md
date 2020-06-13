@@ -37,6 +37,28 @@ kubectl get svc appmesh-gateway -n appmesh-ingress
 
 The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
+## Configure auto-scaling
+
+Install the Horizontal Pod Autoscaler (HPA) metrics server:
+
+```sh
+helm upgrade -i metrics-server stable/metrics-server \
+--namespace kube-system \
+--set args[0]=--kubelet-preferred-address-types=InternalIP
+```
+
+Configure CPU requests for the gateway pods and enable HPA by setting an average CPU utilization per pod:
+
+```sh
+helm upgrade -i appmesh-gateway eks/appmesh-gateway \
+--namespace appmesh-ingress \
+--set hpa.enabled=true \
+--set hap.minReplicas=2 \
+--set hap.maxReplicas=5 \
+--set hap.averageUtilization=90 \
+--set resources.requests.cpu=1000m
+```
+
 ## Uninstalling the Chart
 
 To uninstall/delete the `appmesh-gateway` deployment:
@@ -64,9 +86,14 @@ Parameter | Description | Default
 `appmesh.preview` | enable App Mesh Preview (us-west-2 only)  | `false`
 `resources.requests/cpu` | pod CPU request | `100m`
 `resources.requests/memory` | pod memory request | `64Mi`
+`hpa.enabled` | enabled CPU based auto-scaling | `false`
+`hpa.minReplicas` | minimum number of replicas | `2`
+`hpa.maxReplicas` | maximum number of replicas | `5`
+`hpa.averageUtilization` | CPU average utilization percentage | `90`
+`hpa.enabled` | enabled CPU based auto-scaling | `false`
 `podAntiAffinity` | soft pod anti-affinity, one replica per node | `true`
-`nodeSelector` | node labels for pod assignment | `{}`
 `podAnnotations` | annotations to add to each pod | `{}`
+`nodeSelector` | node labels for pod assignment | `{}`
 `tolerations` | list of node taints to tolerate | `[]`
 `rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
 `serviceAccount.create` | If `true`, create a new service account | `true`
