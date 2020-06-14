@@ -17,4 +17,8 @@ spec:
     - portMapping:
         port: 8088
         protocol: http
+      logging:
+        accessLog:
+          file:
+            path: "/dev/stdout"
 {{- end }}
