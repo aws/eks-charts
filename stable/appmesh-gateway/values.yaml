@@ -42,12 +42,6 @@ hpa:
   # CPU average utilization percentage
   averageUtilization: 90
 
-# podAnnotations: Prometheus scraping is enabled by default
-podAnnotations:
-  prometheus.io/scrape: "true"
-  prometheus.io/port: "9901"
-  prometheus.io/path: "/stats/prometheus"
-
 # podAntiAffinity: the scheduler should prefer to not schedule
 # two replica pods onto the same node but no guarantee is provided.
 podAntiAffinity:
@@ -59,6 +53,8 @@ affinity: {}
 nodeSelector: {}
 
 tolerations: []
+
+podAnnotations: {}
 
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
