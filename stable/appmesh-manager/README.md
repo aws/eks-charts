@@ -131,7 +131,14 @@ helm delete appmesh-controller -n appmesh-system
 helm delete appmesh-inject -n appmesh-system
 
 # Remove finalizers from all existing App Mesh CRs. Otherwise, you won’t be able to delete them.
-# To remove the finalizers, you could kubectl edit resource, and delete the finalizers attribute from the spec
+# To remove the finalizers, you could kubectl edit resource, and delete the finalizers attribute from the spec or run the following command to override finalizers:
+```
+kubectl get <RESOURCE_TYPE> <RESOURCE_NAME> -n <NAMESPACE> -o=json | jq '.metadata.finalizers = null' | kubectl apply -f -
+
+#For example the following command will remove the finalizers for RESOURCE_TYPE=virtualservice, RESOURCE_NAME=color.color-ns.svc.cluster.local and NAMESPACE=color-ns
+kubectl get virtualservices color.color-ns.svc.cluster.local -n color-ns -o=json | jq '.metadata.finalizers = null' | kubectl apply -f -
+```
+
 # Delete all existing App Mesh CRs:
 kubectl delete virtualservices --all --all-namespaces
 kubectl delete virtualnodes --all --all-namespaces
