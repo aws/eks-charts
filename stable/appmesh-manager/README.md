@@ -4,9 +4,9 @@ App Mesh manager Helm chart for Kubernetes
 
 ## Prerequisites
 
-Note: App Mesh manager is a release candidate. Please use it for testing purpose only as it has backward incompatible changes with v0.5.0. Upgrade instructions will be provided before the final release.
+**Note** App Mesh manager is a release candidate. Please use it for testing purpose only as it has backward incompatible changes with v0.5.0. Upgrade instructions will be provided before the final release.
 
-Note: If you wish to use App Mesh preview features, you can add `-preview` to the published imge. e.g. `v1.0.0-rc4-preview`
+**Note** If you wish to use App Mesh preview features, you can add `-preview` to the published imge. e.g. `v1.0.0-rc4-preview`
 Two important things when using App Mesh preview:
 1. When configuring IAM policies, use `appmesh-preview` as the service name instead of `appmesh`. See the example JSON below.
 2. When configuring pods, add the following annotation so Envoy sidecars point to the preview as well:
@@ -55,6 +55,8 @@ More information on App Mesh preview can be found [here](https://docs.aws.amazon
 
 ## Installing the Chart
 
+**Note** If you're running an older version of App Mesh controller, please go to the [upgrade](#upgrade) section below before you proceed. You can ignore this note otherwise.
+
 Add the EKS repository to Helm:
 
 ```sh
@@ -83,6 +85,92 @@ helm upgrade -i appmesh-manager eks/appmesh-manager \
 ```
 
 The [configuration](#configuration) section lists the parameters that can be configured during installation.
+
+
+## Upgrade
+
+
+### Upgrade without preserving old App Mesh resources
+
+```sh
+# Keep old App Mesh controller running, it is responsible to cleanup App Mesh resources in AWS
+# Delete all existing App Mesh custom resources (CRs)
+kubectl delete virtualservices --all --all-namespaces
+kubectl delete virtualnodes --all --all-namespaces
+kubectl delete meshes --all --all-namespaces
+
+# Delete all existing App Mesh CRDs
+kubectl delete customresourcedefinition/virtualservices.appmesh.k8s.aws
+kubectl delete customresourcedefinition/virtualnodes.appmesh.k8s.aws
+kubectl delete customresourcedefinition/meshes.appmesh.k8s.aws
+# Note: If a CRD stuck in deletion, it means there still exists some App Mesh custom resources, please check and delete them.
+
+# Delete App Mesh controller
+helm delete appmesh-controller -n appmesh-system
+
+# Delete App Mesh injector
+helm delete appmesh-inject -n appmesh-system
+```
+
+Run the `appmesh-manager/upgrade/pre_upgrade_check.sh` script and make sure it passes before you proceed
+
+Now you can proceed with the installation steps described above
+
+### Upgrade preserving old App Mesh resources
+
+```sh
+# Save manifests of all existing App Mesh custom resources
+kubectl get virtualservices --all-namespaces -o yaml > virtualservices.yaml
+kubectl get virtualnodes --all-namespaces -o yaml > virtualnodes.yaml
+kubectl get meshes --all-namespaces -o yaml > meshes.yaml
+
+# Delete App Mesh controller, so it won’t clean up App Mesh resources in AWS while we deleting App Mesh CRs later.
+helm delete appmesh-controller -n appmesh-system
+
+# Delete App Mesh injector.
+helm delete appmesh-inject -n appmesh-system
+
+# Remove finalizers from all existing App Mesh CRs. Otherwise, you won’t be able to delete them.
+# To remove the finalizers, you could kubectl edit resource, and delete the finalizers attribute from the spec
+# Delete all existing App Mesh CRs:
+kubectl delete virtualservices --all --all-namespaces
+kubectl delete virtualnodes --all --all-namespaces
+kubectl delete meshes --all --all-namespaces
+
+# Delete all existing App Mesh CRDs.
+kubectl delete customresourcedefinition/virtualservices.appmesh.k8s.aws
+kubectl delete customresourcedefinition/virtualnodes.appmesh.k8s.aws
+kubectl delete customresourcedefinition/meshes.appmesh.k8s.aws
+# Note: If CRDs are stuck in deletion, it means there still exists some App Mesh CRs, please check and delete them.
+```
+
+Run the `appmesh-manager/upgrade/pre_upgrade_check.sh` script and make sure it passes before you proceed
+
+Translate the saved old YAML manifests using v1beta1 App Mesh CRD into v1beta2 App Mesh CRD format. Please refer to CRD types (
+https://github.com/aws/aws-app-mesh-controller-for-k8s/tree/master/config/crd/bases) and Go types
+(https://github.com/aws/aws-app-mesh-controller-for-k8s/tree/master/apis/appmesh/v1beta2) for the CRD Documentation.
+Samples applications are in the repo https://github.com/aws/aws-app-mesh-examples for reference.
+
+Install the appmesh-manager, and apply the translated manifest
+
+### Upgrade from prior script installation
+
+If you've installed the App Mesh controllers with scripts, you can remove the controllers with the steps below.
+```sh
+# remove injector objects
+kubectl delete ns appmesh-inject
+kubectl delete ClusterRoleBinding aws-app-mesh-inject-binding
+kubectl delete ClusterRole aws-app-mesh-inject-cr
+kubectl delete  MutatingWebhookConfiguration aws-app-mesh-inject
+
+# remove controller objects
+kubectl delete ns appmesh-system
+kubectl delete ClusterRoleBinding app-mesh-controller-binding
+kubectl delete ClusterRole app-mesh-controller
+```
+Run the `appmesh-manager/upgrade/pre_upgrade_check.sh` script and make sure it passes before you proceed
+
+For handling the existing custom resources and the CRDs please refer to either of the previous upgrade sections as relevant.
 
 ### EKS on Fargate
 
