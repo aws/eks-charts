@@ -24,7 +24,7 @@ check_controller_version() {
         echo "Controller version check: PASSED!"
         return 0
     else
-        echo "Controller version check: FAILED -- old appmesh-controller controller ($currentver) is still running"
+        echo "Controller version check: FAILED -- old appmesh-controller ($currentver) is still running"
         return 1
     
     fi

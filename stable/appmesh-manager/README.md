@@ -6,7 +6,7 @@ App Mesh manager Helm chart for Kubernetes
 
 **Note** App Mesh manager is a release candidate. Please use it for testing purpose only as it has backward incompatible changes with v0.5.0. Upgrade instructions will be provided before the final release.
 
-**Note** If you wish to use App Mesh preview features, you can add `-preview` to the published imge. e.g. `v1.0.0-rc4-preview`
+**Note** If you wish to use App Mesh preview features, you can add `-preview` to the published image. e.g. `v1.0.0-rc4-preview`
 Two important things when using App Mesh preview:
 1. When configuring IAM policies, use `appmesh-preview` as the service name instead of `appmesh`. See the example JSON below.
 2. When configuring pods, add the following annotation so Envoy sidecars point to the preview as well:
