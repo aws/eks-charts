@@ -55,7 +55,7 @@ More information on App Mesh preview can be found [here](https://docs.aws.amazon
 
 ## Installing the Chart
 
-**Note** If you're running an older version of App Mesh controller, please go to the [upgrade](#upgrade) section below before you proceed. You can ignore this note otherwise.
+**Note** If you're running an older version of App Mesh controller, please go to the [upgrade](#upgrade) section below before you proceed. If you are unsure, please run the `appmesh-manager/upgrade/pre_upgrade_check.sh` script to check if your cluster can be upgraded
 
 Add the EKS repository to Helm:
 
