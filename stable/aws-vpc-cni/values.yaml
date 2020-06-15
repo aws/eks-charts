@@ -49,6 +49,8 @@ resources:
 updateStrategy:
   type: RollingUpdate
 
+enableMetricsHelper: false
+
 nodeSelector: {}
 
 tolerations: []
