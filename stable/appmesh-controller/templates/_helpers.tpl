@@ -54,3 +54,16 @@ Create the name of the service account to use
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Generate certificates for webhook
+*/}}
+{{- define "appmesh-controller.gen-certs" -}}
+{{- $fullName := ( include "appmesh-controller.fullname" . ) -}}
+{{- $altNames := list ( printf "%s-%s.%s" $fullName "webhook-service" .Release.Namespace ) ( printf "%s-%s.%s.svc" $fullName "webhook-service" .Release.Namespace ) -}}
+{{- $ca := genCA "appmesh-controller-ca" 3650 -}}
+{{- $cert := genSignedCert ( include "appmesh-controller.fullname" . ) nil $altNames 3650 $ca -}}
+caCert: {{ $ca.Cert | b64enc }}
+clientCert: {{ $cert.Cert | b64enc }}
+clientKey: {{ $cert.Key | b64enc }}
+{{- end -}}

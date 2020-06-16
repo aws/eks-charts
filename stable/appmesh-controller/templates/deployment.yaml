@@ -2,67 +2,83 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "appmesh-controller.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
+    control-plane: {{ template "appmesh-controller.fullname" . }}
 {{ include "appmesh-controller.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "appmesh-controller.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      control-plane: {{ template "appmesh-controller.fullname" . }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "appmesh-controller.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/part-of: appmesh
+        control-plane: {{ template "appmesh-controller.fullname" . }}
       annotations:
         prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
         {{- if .Values.podAnnotations }}
 {{ toYaml .Values.podAnnotations | indent 8 }}
         {{- end }}
     spec:
       serviceAccountName: {{ template "appmesh-controller.serviceAccountName" . }}
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: {{ template "appmesh-controller.fullname" . }}-webhook-server-cert
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 10555
-          command:
-            - /bin/app-mesh-controller
-            {{- if .Values.region }}
-            - --aws-region={{ .Values.region }}
-            {{- end }}
-            {{- if eq .Values.log.level "debug" }}
-            - --v=4
-            {{- else if eq .Values.log.level "info" }}
-            - --v=0
-            {{- end }}
-          livenessProbe:
-            exec:
-              command:
-                - curl
-                - -s
-                - http://localhost:10555/healthz
-          readinessProbe:
-            exec:
-              command:
-                - curl
-                - -s
-                - http://localhost:10555/healthz
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
+      - name: controller
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 9443
+          name: webhook-server
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: cert
+          readOnly: true
+        command:
+        - /controller
+        args:
+        - --enable-leader-election
+        - --log-level={{ .Values.log.level }}
+        - --sidecar-image={{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}
+        - --sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
+        - --sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
+        - --init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
+        - --enable-stats-tags={{ .Values.stats.tagsEnabled }}
+        - --enable-statsd={{ .Values.stats.statsdEnabled }}
+        {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
+        - --enable-xray-tracing=true
+        {{- end }}
+        {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "jaeger" ) }}
+        - --enable-jaeger-tracing=true
+        - --jaeger-address={{ .Values.tracing.address }}
+        - --jaeger-port={{ .Values.tracing.port }}
+        {{- end }}
+        {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "datadog" ) }}
+        - --enable-datadog-tracing=true
+        - --datadog-address={{ .Values.tracing.address }}
+        - --datadog-port={{ .Values.tracing.port }}
+        {{- end }}
+        {{- if .Values.region }}
+        - --aws-region={{ .Values.region }}
+        {{- end }}
+        - --sidecar-log-level={{ .Values.sidecar.logLevel }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml . | indent 8 }}
+{{ toYaml . | indent 6 }}
     {{- end }}
     {{- with .Values.affinity }}
       affinity:
-{{ toYaml . | indent 8 }}
+{{ toYaml . | indent 6 }}
     {{- end }}
     {{- with .Values.tolerations }}
       tolerations:
-{{ toYaml . | indent 8 }}
+{{ toYaml . | indent 6 }}
     {{- end }}
