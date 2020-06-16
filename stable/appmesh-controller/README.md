@@ -12,7 +12,7 @@ Two important things when using App Mesh preview:
 2. When configuring pods, add the following annotation so Envoy sidecars point to the preview as well:
 ```
 annotations:
-  appmesh.k8s.aws/preview: "true"
+  appmesh.k8s.aws/preview: enabled
 ```
 
 More information on App Mesh preview can be found [here](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html)
