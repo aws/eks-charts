@@ -54,8 +54,12 @@ spec:
           name: http-admin
           protocol: TCP
         livenessProbe:
-          tcpSocket:
-            port: http-admin
+          exec:
+            command:
+              - sh
+              - -c
+              - >-
+                curl -s http://localhost:9901/server_info | grep state | grep -q LIVE
         readinessProbe:
           initialDelaySeconds: 5
           tcpSocket:
