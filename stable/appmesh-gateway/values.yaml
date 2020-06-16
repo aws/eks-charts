@@ -9,6 +9,8 @@ image:
   repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
   tag: v1.12.3.0-prod
   pullPolicy: IfNotPresent
+  # skipImageOverride: when enabled the App Mesh injector will not override the Envoy image
+  skipImageOverride: false
 
 service:
   type: LoadBalancer

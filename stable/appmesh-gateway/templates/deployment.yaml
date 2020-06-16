@@ -22,8 +22,11 @@ spec:
         {{- if .Values.appmesh.preview }}
         appmesh.k8s.aws/preview: "enabled"
         {{- end }}
-        {{- if .Values.podAnnotations }}
-{{ toYaml .Values.podAnnotations | indent 8 }}
+        {{- if .Values.image.skipImageOverride }}
+        appmesh.k8s.aws/virtualGatewaySkipImageOverride: "enabled"
+        {{- end }}
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
         {{- end }}
     spec:
       serviceAccountName: {{ template "appmesh-gateway.serviceAccountName" . }}
@@ -48,15 +51,15 @@ spec:
           name: http
           protocol: TCP
         - containerPort: 9901
-          name: http-prom
+          name: http-admin
           protocol: TCP
         livenessProbe:
           tcpSocket:
-            port: http-prom
+            port: http-admin
         readinessProbe:
           initialDelaySeconds: 5
           tcpSocket:
-            port: http-prom
+            port: http-admin
         resources:
 {{ toYaml .Values.resources | indent 10 }}
     {{- with .Values.nodeSelector }}

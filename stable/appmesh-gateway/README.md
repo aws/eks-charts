@@ -78,6 +78,7 @@ Parameter | Description | Default
 `image.repository` | image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`
 `image.tag` | image tag | `<VERSION>`
 `image.pullPolicy` | image pull policy | `IfNotPresent`
+`skipImageOverride` | when enabled the App Mesh injector will not override the Envoy image | `false`
 `service.type` | service type  | `LoadBalancer`
 `service.port` | service port  | `80`
 `service.annotations` | service annotations | NLB load balancer type
