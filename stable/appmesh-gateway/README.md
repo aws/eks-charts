@@ -1,11 +1,28 @@
 # App Mesh Gateway
 
-App Mesh Gateway Helm chart for Kubernetes
+App Mesh Gateway Helm chart for Kubernetes. 
 
 ## Prerequisites
 
 * App Mesh CRDs
 * App Mesh Manager >= 1.0.0
+
+**Note** App Mesh Gateway is a release candidate and can be used by
+enabling App Mesh preview features (available only in us-west-2 region).
+
+To enable the preview features:
+
+* When configuring IAM policies, use `appmesh-preview` as the service name instead of `appmesh`
+* Install the App Mesh CRDs with:
+```sh
+kubectl apply -k github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=preview
+```
+* Install the App Mesh Controller chart from the preview branch
+* When configuring pods, add the following annotation so Envoy sidecars point to the preview as well:
+```yaml
+annotations:
+  appmesh.k8s.aws/preview: enabled
+```
 
 ## Installing the Chart
 
