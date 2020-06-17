@@ -25,7 +25,7 @@ appmesh:
   # appmesh.gateway: Whether to create a VirtualGateway or not
   gateway: true
   # appmesh.preview: Whether to enable App Mesh Preview (us-west-2 only) or not
-  preview: false
+  preview: true
 
 # resources: requests are set by default to enable HPA
 resources:
