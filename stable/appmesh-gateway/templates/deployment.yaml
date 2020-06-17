@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "appmesh-gateway.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "appmesh-gateway.labels" . | indent 4 }}
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 10%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ template "appmesh-gateway.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ template "appmesh-gateway.fullname" . }}
+        app.kubernetes.io/component: "appmesh-gateway"
+      annotations:
+        {{- if .Values.appmesh.preview }}
+        appmesh.k8s.aws/preview: "enabled"
+        {{- end }}
+        {{- if .Values.image.skipImageOverride }}
+        appmesh.k8s.aws/virtualGatewaySkipImageOverride: "enabled"
+        {{- end }}
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "appmesh-gateway.serviceAccountName" . }}
+      terminationGracePeriodSeconds: 30
+      {{- if .Values.podAntiAffinity }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: {{ include "appmesh-gateway.name" . }}
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      {{- end }}
+      containers:
+      - name: envoy
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8088
+          name: http
+          protocol: TCP
+        - containerPort: 9901
+          name: http-admin
+          protocol: TCP
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - -c
+              - >-
+                curl -s http://localhost:9901/server_info | grep state | grep -q LIVE
+        readinessProbe:
+          initialDelaySeconds: 5
+          tcpSocket:
+            port: http-admin
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 6 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 6 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 6 }}
+    {{- end }}
