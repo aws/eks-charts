@@ -159,7 +159,7 @@ Samples applications are in the repo https://github.com/aws/aws-app-mesh-example
 
 Note: Please specify the current appmesh resource names in the awsName field of the translated specs.
 
-Install the appmesh-controller, label the namespace with values that mesh is selcting on and apply the translated manifest
+Install the appmesh-controller, label the namespace with values that mesh is selecting on and apply the translated manifest
 
 ### Upgrade from prior script installation
 
