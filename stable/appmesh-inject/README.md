@@ -2,6 +2,8 @@
 
 App Mesh inject Helm chart for Kubernetes
 
+**Note**: Users of AppMesh controller v1.0.0+ **shouldn't** install this inject chart. The sidecar injection functionality is already included in the controller itself.
+
 ## Prerequisites
 
 * Kubernetes >= 1.13
