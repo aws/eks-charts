@@ -36,6 +36,9 @@ spec:
         - containerPort: 9443
           name: webhook-server
           protocol: TCP
+        - containerPort: 8080
+          name: metrics-server
+          protocol: TCP
         volumeMounts:
         - mountPath: /tmp/k8s-webhook-server/serving-certs
           name: cert
@@ -43,7 +46,7 @@ spec:
         command:
         - /controller
         args:
-        - --enable-leader-election
+        - --enable-leader-election=true
         - --log-level={{ .Values.log.level }}
         - --sidecar-image={{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}
         - --sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}

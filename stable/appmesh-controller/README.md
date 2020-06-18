@@ -2,60 +2,48 @@
 
 App Mesh controller Helm chart for Kubernetes
 
+**Note**: If you wish to use [App Mesh preview](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) features, please refer to our [preview version](https://github.com/aws/eks-charts/blob/preview/stable/appmesh-controller/README.md) instructions.
+
 ## Prerequisites
-
-**Note** App Mesh controller is a release candidate. Please use it for testing purpose only as it has backward incompatible changes with v0.5.0. Upgrade instructions will be provided before the final release.
-
-**Note** If you wish to use App Mesh preview features, you can add `-preview` to the published image. e.g. `v1.0.0-rc4-preview`
-Two important things when using App Mesh preview:
-1. When configuring IAM policies, use `appmesh-preview` as the service name instead of `appmesh`. See the example JSON below.
-2. When configuring pods, add the following annotation so Envoy sidecars point to the preview as well:
-```
-annotations:
-  appmesh.k8s.aws/preview: enabled
-```
-
-More information on App Mesh preview can be found [here](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html)
-
 
 * Kubernetes >= 1.13
 * IAM policies
-
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "appmesh:*",
-                "servicediscovery:CreateService",
-                "servicediscovery:DeleteService",
-                "servicediscovery:GetService",
-                "servicediscovery:GetInstance",
-                "servicediscovery:RegisterInstance",
-                "servicediscovery:DeregisterInstance",
-                "servicediscovery:ListInstances",
-                "servicediscovery:ListNamespaces",
-                "servicediscovery:ListServices",
-                "servicediscovery:GetOperation",
-                "servicediscovery:GetInstancesHealthStatus",
-                "servicediscovery:UpdateInstanceCustomHealthStatus",
-                "route53:GetHealthCheck",
-                "route53:CreateHealthCheck",
-                "route53:UpdateHealthCheck",
-                "route53:ChangeResourceRecordSets",
-                "route53:DeleteHealthCheck"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-```
+    ```json
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "appmesh:*",
+                    "servicediscovery:CreateService",
+                    "servicediscovery:DeleteService",
+                    "servicediscovery:GetService",
+                    "servicediscovery:GetInstance",
+                    "servicediscovery:RegisterInstance",
+                    "servicediscovery:DeregisterInstance",
+                    "servicediscovery:ListInstances",
+                    "servicediscovery:ListNamespaces",
+                    "servicediscovery:ListServices",
+                    "servicediscovery:GetOperation",
+                    "servicediscovery:GetInstancesHealthStatus",
+                    "servicediscovery:UpdateInstanceCustomHealthStatus",
+                    "route53:GetHealthCheck",
+                    "route53:CreateHealthCheck",
+                    "route53:UpdateHealthCheck",
+                    "route53:ChangeResourceRecordSets",
+                    "route53:DeleteHealthCheck"
+                ],
+                "Resource": "*"
+            }
+        ]
+    }
+    ```
 
 ## Installing the Chart
 
-**Note** If you're running an older version of App Mesh controller, please go to the [upgrade](#upgrade) section below before you proceed. If you are unsure, please run the `appmesh-controller/upgrade/pre_upgrade_check.sh` script to check if your cluster can be upgraded
+**Note**: AppMesh controller v1.0.0+ is **backwards incompatible** with old versions(e.g. v0.5.0).
+If you're running an older version of App Mesh controller, please go to the [upgrade](#upgrade) section below before you proceed. If you are unsure, please run the `appmesh-controller/upgrade/pre_upgrade_check.sh` script to check if your cluster can be upgraded
 
 Add the EKS repository to Helm:
 
