@@ -145,7 +145,9 @@ https://github.com/aws/aws-app-mesh-controller-for-k8s/tree/master/config/crd/ba
 (https://github.com/aws/aws-app-mesh-controller-for-k8s/tree/master/apis/appmesh/v1beta2) for the CRD Documentation.
 Samples applications are in the repo https://github.com/aws/aws-app-mesh-examples for reference.
 
-Install the appmesh-controller, and apply the translated manifest
+Note: Please specify the current appmesh resource names in the awsName field of the translated specs.
+
+Install the appmesh-controller, label the namespace with values that mesh is selecting on and apply the translated manifest
 
 ### Upgrade from prior script installation
 
