@@ -51,6 +51,7 @@ The following table lists the configurable parameters for this chart and their d
 | `fullnameOverride`      | Override the fullname of the chart                      | `calico`                        |
 | `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                           |
 | `serviceAccount.create` | Specifies whether a ServiceAccount should be created    | `true`                          |
+| `podSecurityPolicy.create` | Specifies whether podSecurityPolicy and related rbac objects should be created    | `false`                          |
 | `autoscaler.image`      | Cluster Proportional Autoscaler Image                   | `k8s.gcr.io/cluster-proportional-autoscaler-amd64` |
 | `autoscaler.tag`        | Cluster Proportional Autoscaler version                 | `1.1.2`                                            |
 
