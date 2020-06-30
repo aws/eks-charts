@@ -4,6 +4,8 @@
 # controller. This file is referenced in the templates for
 # generating the admission webhooks for the resources
 customResources:
+  - name: gatewayroute
+    resource: gatewayroutes
   - name: mesh
     resource: meshes
   - name: virtualnode
@@ -12,3 +14,5 @@ customResources:
     resource: virtualrouters
   - name: virtualservice
     resource: virtualservices
+  - name: virtualgateway
+    resource: virtualgateways
