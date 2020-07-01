@@ -17,7 +17,7 @@ helm repo add eks https://aws.github.io/eks-charts
 Install the Calico CRDs:
 
 ```shell
-kubectl apply -k github.com/aws/eks-charts/stable/aws-calico//crds?ref=master
+kubectl apply -k github.com/aws/eks-charts/tree/master/stable/aws-calico/crds
 ```
 
 To install the chart with the release name `aws-calico` and default configuration:
