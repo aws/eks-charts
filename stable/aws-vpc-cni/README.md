@@ -42,6 +42,7 @@ The following table lists the configurable parameters for this chart and their d
 | `image.pullPolicy`      | Container pull policy                                   | `IfNotPresent`                      |
 | `image.override`        | A custom docker image to use                            | `nil`                               |
 | `imagePullSecrets`      | Docker registry pull secret                             | `[]`                                |
+| `originalMatchLabels`   | Use the original daemonset matchLabels                  | `false`                             |
 | `nameOverride`          | Override the name of the chart                          | `aws-node`                          |
 | `nodeSelector`          | Node labels for pod assignment                          | `{}`                                |
 | `podSecurityContext`    | Pod Security Context                                    | `{}`                                |
@@ -61,3 +62,7 @@ Specify each parameter using the `--set key=value[,key=value]` argument to `helm
 ```shell
 $ helm install --name aws-vpc-cni --namespace kube-system eks/aws-vpc-cni --values values.yaml
 ```
+
+## Adopting the existing aws-node resources in an EKS cluster
+
+If you do not want to delete the existing aws-node resources in your cluster that run the aws-vpc-cni and then install this helm chart, you can adopt the resources into a release instead. This process is highlighted in this [PR comment](https://github.com/aws/eks-charts/issues/57#issuecomment-628403245). Once you have annotated and labeled all the resources this chart specifies, enable the `originalMatchLabels` flag on the helm release and run an update. If you have been careful this should not diff and leave all the resources unmodified and now under management of helm.
