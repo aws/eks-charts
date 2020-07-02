@@ -20,13 +20,7 @@ To install the chart with the release name `aws-vpc-cni` and default configurati
 $ helm install --name aws-vpc-cni --namespace kube-system eks/aws-vpc-cni
 ```
 
-To install into an EKS cluster where the CNI is already installed, you can run:
-
-```shell
-helm upgrade --install --recreate-pods --force aws-vpc-cni --namespace kube-system eks/aws-vpc-cni
-```
-
-If you receive an error similar to `Error: release aws-vpc-cni failed: <resource> "aws-node" already exists`, simply rerun the above command.
+To install into an EKS cluster where the CNI is already installed, see [this section below](##-Adopting-the-existing-aws-node-resources-in-an-EKS-cluster)
 
 ## Configuration
 
@@ -66,3 +60,18 @@ $ helm install --name aws-vpc-cni --namespace kube-system eks/aws-vpc-cni --valu
 ## Adopting the existing aws-node resources in an EKS cluster
 
 If you do not want to delete the existing aws-node resources in your cluster that run the aws-vpc-cni and then install this helm chart, you can adopt the resources into a release instead. This process is highlighted in this [PR comment](https://github.com/aws/eks-charts/issues/57#issuecomment-628403245). Once you have annotated and labeled all the resources this chart specifies, enable the `originalMatchLabels` flag on the helm release and run an update. If you have been careful this should not diff and leave all the resources unmodified and now under management of helm.
+
+Here is an example script to modify the existing resources:
+WARNING: Substitute YOUR_HELM_RELEASE_NAME_HERE with the name of your helm release.
+```
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+for kind in ds clusterRole clusterRoleBinding serviceAccount; do
+  echo "setting annotations and labels on $kind"
+  kubectl -n kube-system annotate --overwrite $kind aws-node meta.helm.sh/release-name=YOUR_HELM_RELEASE_NAME_HERE
+  kubectl -n kube-system annotate --overwrite $kind aws-node meta.helm.sh/release-namespace=kube-system
+  kubectl -n kube-system label --overwrite $kind aws-node app.kubernetes.io/managed-by=Helm
+done
+```
