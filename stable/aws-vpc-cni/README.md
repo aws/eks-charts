@@ -20,7 +20,7 @@ To install the chart with the release name `aws-vpc-cni` and default configurati
 $ helm install --name aws-vpc-cni --namespace kube-system eks/aws-vpc-cni
 ```
 
-To install into an EKS cluster where the CNI is already installed, see [this section below](##-Adopting-the-existing-aws-node-resources-in-an-EKS-cluster)
+To install into an EKS cluster where the CNI is already installed, see [this section below](#adopting-the-existing-aws-node-resources-in-an-eks-cluster)
 
 ## Configuration
 
@@ -68,7 +68,8 @@ WARNING: Substitute YOUR_HELM_RELEASE_NAME_HERE with the name of your helm relea
 
 set -euo pipefail
 
-for kind in ds clusterRole clusterRoleBinding serviceAccount; do
+# don't import the crd. Helm cant manage the lifecycle of it anyway.
+for kind in daemonSet clusterRole clusterRoleBinding serviceAccount; do
   echo "setting annotations and labels on $kind"
   kubectl -n kube-system annotate --overwrite $kind aws-node meta.helm.sh/release-name=YOUR_HELM_RELEASE_NAME_HERE
   kubectl -n kube-system annotate --overwrite $kind aws-node meta.helm.sh/release-namespace=kube-system
