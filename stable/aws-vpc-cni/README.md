@@ -62,6 +62,7 @@ $ helm install --name aws-vpc-cni --namespace kube-system eks/aws-vpc-cni --valu
 If you do not want to delete the existing aws-node resources in your cluster that run the aws-vpc-cni and then install this helm chart, you can adopt the resources into a release instead. This process is highlighted in this [PR comment](https://github.com/aws/eks-charts/issues/57#issuecomment-628403245). Once you have annotated and labeled all the resources this chart specifies, enable the `originalMatchLabels` flag on the helm release and run an update. If you have been careful this should not diff and leave all the resources unmodified and now under management of helm.
 
 Here is an example script to modify the existing resources:
+
 WARNING: Substitute YOUR_HELM_RELEASE_NAME_HERE with the name of your helm release.
 ```
 #!/usr/bin/env bash
