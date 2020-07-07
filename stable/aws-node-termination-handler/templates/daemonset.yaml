@@ -47,6 +47,10 @@ spec:
                       - amd64
                       - arm
                       - arm64
+                  - key: "eks.amazonaws.com/compute-type"
+                    operator: NotIn
+                    values:
+                      - fargate
       serviceAccountName: {{ template "aws-node-termination-handler.serviceAccountName" . }}
       hostNetwork: true
       dnsPolicy: {{ .Values.dnsPolicy }}
