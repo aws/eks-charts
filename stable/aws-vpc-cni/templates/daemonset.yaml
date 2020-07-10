@@ -103,6 +103,13 @@ spec:
               name: cni-bin-dir
             - mountPath: /host/etc/cni/net.d
               name: cni-net-dir
+{{- if .Values.cniConfig.enabled }}
+              # the dockerfile copies the baked in config to this location, lets overwrite it with ours
+              # the entrypoint.sh script will then copy our config to /host/etc/cni/net.d on boot
+            - name: cni-config
+              mountPath: /app/10-aws.conflist
+              subPath: 10-aws.conflist
+{{- end }}
             - mountPath: /host/var/log
               name: log-dir
             - mountPath: /var/run/docker.sock
@@ -116,6 +123,11 @@ spec:
         - name: cni-net-dir
           hostPath:
             path: /etc/cni/net.d
+{{- if .Values.cniConfig.enabled }}
+        - name: cni-config
+          configMap:
+            name: {{ include "aws-vpc-cni.fullname" . }}
+{{- end }}
         - name: log-dir
           hostPath:
             path: /var/log

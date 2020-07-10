@@ -24,6 +24,10 @@ env:
 # You can then annotate and label the original aws-node resources and 'adopt' them into a helm release
 originalMatchLabels: false
 
+cniConfig: 
+  enabled: false
+  fileContents: ""
+
 imagePullSecrets: []
 
 fullnameOverride: "aws-node"
