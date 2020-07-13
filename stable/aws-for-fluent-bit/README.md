@@ -2,17 +2,17 @@
 
 A helm chart for [AWS-for-fluent-bit](https://github.com/aws/aws-for-fluent-bit)
 
-# Installing the Chart
+## Installing the Chart
 
 Add the EKS repository to Helm:
 
-```
+```bash
 helm repo add eks https://aws.github.io/eks-charts
 ```
 
 Install or upgrading the AWS for fluent bit chart with default configuration:
 
-```
+```bash
 helm upgrade --install aws-for-fluent-bit --namespace kube-system eks/aws-for-fluent-bit
 ```
 
@@ -20,26 +20,26 @@ helm upgrade --install aws-for-fluent-bit --namespace kube-system eks/aws-for-fl
 
 To uninstall/delete the `aws-for-fluent-bit` release:
 
-```
+```bash
 helm delete aws-for-fluent-bit --namespace kube-system
 ```
-
 
 ## Configuration
 
 | Parameter | Description | Default | Required |
 | - | - | - | -
-| `global.namespaceOverride` | Override the deployment namespace	| Not set (`Release.Namespace`) |
+| `global.namespaceOverride` | Override the deployment namespace | Not set (`Release.Namespace`) |
 | `image.repository` | Image to deploy | `amazon/aws-for-fluent-bit` | ✔
 | `image.tag` | Image tag to deploy | `2.2.0`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
-| `serviceAccount.create` | Whether a new service account should be created | `true` | 
+| `serviceAccount.create` | Whether a new service account should be created | `true` |
+| `serviceAccount.name` | Name of the service account | `aws-for-fluent-bit` |
 | `service.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
 | `service.extraParsers` | Adding more parsers with this value | `""` |
 | `input.*` | Values for Kubernetes input | |
 | `extraInputs` | Adding more inputs with this value | `""` |
 | `filter.*` | Values for kubernetes filter | |
-| `extraFilters` | Adding more filters with value | 
+| `extraFilters` | Adding more filters with value |
 | `cloudWatch.enabled` | Whether this plugin should be enabled or not [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit) | `true` | ✔
 | `cloudWatch.match` | The log filter | `*` | ✔
 | `cloudWatch.region` | The AWS region for CloudWatch.  | `us-east-1` | ✔
