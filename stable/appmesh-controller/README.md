@@ -288,3 +288,5 @@ Parameter | Description | Default
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`
 `tracing.port` |  Jaeger or Datadog agent port (ignored for X-Ray) | `9411`
 `enableCertManager` |  Enable Cert-Manager | `false`
+`xray.image.repository` | X-Ray image repository | `amazon/aws-xray-daemon`
+`xray.image.tag` | X-Ray image tag | `latest`

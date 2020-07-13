@@ -26,6 +26,11 @@ init:
     repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
     tag: v2
 
+xray:
+  image:
+    repository: amazon/aws-xray-daemon
+    tag: latest
+
 nameOverride: ""
 fullnameOverride: ""
 
