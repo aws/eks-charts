@@ -58,7 +58,7 @@ Create the name of the service account to use
 {{- if .Values.serviceAccount.create -}}
     {{ default (include "aws-for-fluent-bit.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
-    {{ default "default" .Values.serviceAccount.name }}
+    {{ default "aws-for-fluent-bit" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
 
