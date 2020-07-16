@@ -119,11 +119,11 @@ rbac:
 dnsPolicy: ""
 
 podMonitor:
-   # Specifies whether PodMonitor should be created
-   create: false
+  # Specifies whether PodMonitor should be created
+  create: false
    # The Prometheus scrape interval
-   interval: 30s
-   # The number of scraped samples that will be accepted
-   sampleLimit: 5000
+  interval: 30s
+  # The number of scraped samples that will be accepted
+  sampleLimit: 5000
    # Additional labels to add to the metadata
-   labels: {}
+  labels: {}
