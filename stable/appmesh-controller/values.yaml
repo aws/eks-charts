@@ -81,3 +81,12 @@ stats:
 
 # Enable cert-manager
 enableCertManager: false
+
+# Environment variables to set in appmesh-controller pod
+env: {}
+
+#Example
+#env:
+#    http_proxy: http://proxyserver:3128
+#    https_proxy: http://proxyserver:3128
+#    no_proxy: "localhost,127.0.0.1,.cluster.local"
