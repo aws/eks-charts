@@ -23,8 +23,8 @@ sidecar:
       memory: 32Mi
 init:
   image:
-    repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
-    tag: v2
+    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
+    tag: v3-prod
 
 nameOverride: ""
 fullnameOverride: ""
