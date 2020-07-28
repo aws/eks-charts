@@ -7,38 +7,7 @@ App Mesh controller Helm chart for Kubernetes
 ## Prerequisites
 
 * Kubernetes >= 1.13
-* IAM policies
-    ```json
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "appmesh:*",
-                    "servicediscovery:CreateService",
-                    "servicediscovery:DeleteService",
-                    "servicediscovery:GetService",
-                    "servicediscovery:GetInstance",
-                    "servicediscovery:RegisterInstance",
-                    "servicediscovery:DeregisterInstance",
-                    "servicediscovery:ListInstances",
-                    "servicediscovery:ListNamespaces",
-                    "servicediscovery:ListServices",
-                    "servicediscovery:GetOperation",
-                    "servicediscovery:GetInstancesHealthStatus",
-                    "servicediscovery:UpdateInstanceCustomHealthStatus",
-                    "route53:GetHealthCheck",
-                    "route53:CreateHealthCheck",
-                    "route53:UpdateHealthCheck",
-                    "route53:ChangeResourceRecordSets",
-                    "route53:DeleteHealthCheck"
-                ],
-                "Resource": "*"
-            }
-        ]
-    }
-    ```
+* EKS nodes should have the IAM permissions from the following policies: `AWSAppMeshFullAccess`, `AWSCloudMapFullAccess`
 
 ## Installing the Chart
 
