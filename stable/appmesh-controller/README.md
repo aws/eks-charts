@@ -7,38 +7,7 @@ App Mesh controller Helm chart for Kubernetes
 ## Prerequisites
 
 * Kubernetes >= 1.13
-* IAM policies
-    ```json
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "appmesh:*",
-                    "servicediscovery:CreateService",
-                    "servicediscovery:DeleteService",
-                    "servicediscovery:GetService",
-                    "servicediscovery:GetInstance",
-                    "servicediscovery:RegisterInstance",
-                    "servicediscovery:DeregisterInstance",
-                    "servicediscovery:ListInstances",
-                    "servicediscovery:ListNamespaces",
-                    "servicediscovery:ListServices",
-                    "servicediscovery:GetOperation",
-                    "servicediscovery:GetInstancesHealthStatus",
-                    "servicediscovery:UpdateInstanceCustomHealthStatus",
-                    "route53:GetHealthCheck",
-                    "route53:CreateHealthCheck",
-                    "route53:UpdateHealthCheck",
-                    "route53:ChangeResourceRecordSets",
-                    "route53:DeleteHealthCheck"
-                ],
-                "Resource": "*"
-            }
-        ]
-    }
-    ```
+* EKS nodes should have the IAM permissions from the following policies: `AWSAppMeshFullAccess`, `AWSCloudMapFullAccess`
 
 ## Installing the Chart
 
@@ -281,7 +250,7 @@ Parameter | Description | Default
 `sidecar.image.tag` | Envoy image tag | `<VERSION>`
 `sidecar.logLevel` | Envoy log level | `info`
 `sidecar.resources` | Envoy container resources | `requests: cpu 10m memory 32Mi`
-`init.image.repository` | Route manager image repository | `111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
+`init.image.repository` | Route manager image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
 `init.image.tag` | Route manager image tag | `<VERSION>`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`
 `tracing.provider` |  The tracing provider can be x-ray, jaeger or datadog | `x-ray`
