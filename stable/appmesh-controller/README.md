@@ -252,6 +252,8 @@ Parameter | Description | Default
 `sidecar.resources` | Envoy container resources | `requests: cpu 10m memory 32Mi`
 `init.image.repository` | Route manager image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
 `init.image.tag` | Route manager image tag | `<VERSION>`
+`stats.tagsEnabled` |  If `true`, Envoy should include app-mesh tags | `false`
+`stats.statsdEnabled` |  If `true`, Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125 | `false`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`
 `tracing.provider` |  The tracing provider can be x-ray, jaeger or datadog | `x-ray`
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`
