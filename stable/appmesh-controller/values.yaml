@@ -67,6 +67,8 @@ cloudMapCustomHealthCheck:
   # cloudMapCustomHealthCheck.enabled: `true` if CustomHealthCheck needs to be enabled in CloudMap
   enabled: false
 
+podLabels: {}
+
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
   create: true
