@@ -45,6 +45,8 @@ affinity: {}
 
 podAnnotations: {}
 
+podLabels: {}
+
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
   create: true
