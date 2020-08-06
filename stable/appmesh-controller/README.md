@@ -259,3 +259,4 @@ Parameter | Description | Default
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`
 `tracing.port` |  Jaeger or Datadog agent port (ignored for X-Ray) | `9411`
 `enableCertManager` |  Enable Cert-Manager | `false`
+`env` |  environment variables to be injected into the appmesh-controller pod | `{}`

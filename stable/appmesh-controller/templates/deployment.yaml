@@ -71,6 +71,13 @@ spec:
         - --aws-region={{ .Values.region }}
         {{- end }}
         - --sidecar-log-level={{ .Values.sidecar.logLevel }}
+        {{- if .Values.env }}
+        env:
+          {{- range $key, $value := .Values.env }}
+          - name: {{ $key }}
+            value: {{ $value }}
+          {{- end }}
+        {{- end}}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
     {{- with .Values.nodeSelector }}
