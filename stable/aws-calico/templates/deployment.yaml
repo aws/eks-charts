@@ -24,8 +24,14 @@ spec:
         # Mark the pod as a critical add-on for rescheduling.
         - key: CriticalAddonsOnly
           operator: Exists
+      {{- if .Values.calico.typha.tolerations }}
+{{ toYaml .Values.calico.typha.tolerations | indent 10 }}
+      {{- end }}
       hostNetwork: true
       serviceAccountName: "{{ include "aws-calico.serviceAccountName" . }}-node"
+      # fsGroup allows using projected serviceaccount tokens as described here kubernetes/kubernetes#82573
+      securityContext:
+        fsGroup: 65534
       containers:
         - image: "{{ .Values.calico.typha.image }}:{{ .Values.calico.tag }}"
           name: calico-typha
@@ -66,6 +72,9 @@ spec:
               host: localhost
             periodSeconds: 30
             initialDelaySeconds: 30
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
           readinessProbe:
             httpGet:
               path: /readiness
@@ -97,6 +106,13 @@ spec:
       priorityClassName: system-cluster-critical
       nodeSelector:
         beta.kubernetes.io/os: linux
+      tolerations:
+        # Mark the pod as a critical add-on for rescheduling.
+        - key: CriticalAddonsOnly
+          operator: Exists
+      {{- if .Values.calico.typha_autoscaler.tolerations }}
+{{ toYaml .Values.calico.typha_autoscaler.tolerations | indent 10 }}
+      {{- end }}
       containers:
         - image: "{{ .Values.autoscaler.image }}:{{ .Values.autoscaler.tag }}"
           name: autoscaler

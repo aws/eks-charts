@@ -10,10 +10,10 @@ spec:
   {{- if (or .Values.updateStrategy .Values.windowsUpdateStrategy) }}
   updateStrategy:
     {{- with .Values.updateStrategy }}
-      {{- toYaml . | indent 4 }}
+      {{- toYaml . | nindent 4 }}
     {{- end }}
     {{- with .Values.windowsUpdateStrategy }}
-      {{- toYaml . | indent 4 }}
+      {{- toYaml . | nindent 4 }}
     {{- end }}
   {{- end }}
   selector:
@@ -123,13 +123,20 @@ spec:
             value: {{ .Values.prometheusServerPort | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.enablePrometheusServer }}
+          ports:
+          - containerPort: {{ .Values.prometheusServerPort  }}
+            hostPort: {{ .Values.prometheusServerPort }}
+            name: http-metrics
+            protocol: TCP
+          {{- end }}
       nodeSelector:
         {{ include "aws-node-termination-handler.nodeSelectorTermsOs" . }}: windows
         {{- with .Values.nodeSelector }}
-          {{- . | nindent 8 }}
+          {{- toYaml . | nindent 8 }}
         {{- end }}
         {{- with .Values.windowsNodeSelector }}
-          {{- . | nindent 8 }}
+          {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- if .Values.image.pullSecrets }}
       imagePullSecrets:

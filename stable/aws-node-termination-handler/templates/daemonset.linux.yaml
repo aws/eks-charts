@@ -10,10 +10,10 @@ spec:
   {{- if (or .Values.updateStrategy .Values.linuxUpdateStrategy) }}
   updateStrategy:
     {{- with .Values.updateStrategy }}
-      {{- toYaml . | indent 4 }}
+      {{- toYaml . | nindent 4 }}
     {{- end }}
     {{- with .Values.linuxUpdateStrategy }}
-      {{- toYaml . | indent 4 }}
+      {{- toYaml . | nindent 4 }}
     {{- end }}
   {{- end }}
   selector:
@@ -58,6 +58,10 @@ spec:
                     - amd64
                     - arm64
                     - arm
+                - key: "eks.amazonaws.com/compute-type"
+                  operator: NotIn
+                  values:
+                    - fargate
         {{- with .Values.affinity }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -147,13 +151,20 @@ spec:
             value: {{ .Values.prometheusServerPort | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.enablePrometheusServer }}
+          ports:
+          - containerPort: {{ .Values.prometheusServerPort }}
+            hostPort: {{ .Values.prometheusServerPort }}
+            name: http-metrics
+            protocol: TCP
+          {{- end }}
       nodeSelector:
         {{ include "aws-node-termination-handler.nodeSelectorTermsOs" . }}: linux
         {{- with .Values.nodeSelector }}
-          {{- . | nindent 8 }}
+          {{- toYaml . | nindent 8 }}
         {{- end }}
         {{- with .Values.linuxNodeSelector }}
-          {{- . | nindent 8 }}
+          {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- if .Values.image.pullSecrets }}
       imagePullSecrets:

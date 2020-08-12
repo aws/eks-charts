@@ -13,7 +13,7 @@ image:
 sidecar:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
-    tag: v1.12.4.0-prod
+    tag: v1.15.0.0-prod
     # sidecar.logLevel: Envoy log level can be info, warn or error
   logLevel: info
   resources:
@@ -21,10 +21,21 @@ sidecar:
     requests:
       cpu: 10m
       memory: 32Mi
+    # sidecar.resources/limits: Envoy CPU and memory limits
+    limits:
+      cpu: ""
+      memory: ""
+  lifecycleHooks:
+    # sidecar.lifecycleHooks: Envoy PreStop Hook Delay
+    preStopDelay: 20
+  probes:
+    # sidecar.probes: Envoy Readiness Probe
+    readinessProbeInitialDelay: 1
+    readinessProbePeriod: 10
 init:
   image:
-    repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
-    tag: v2
+    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
+    tag: v3-prod
 
 xray:
   image:
@@ -49,6 +60,10 @@ tolerations: []
 affinity: {}
 
 podAnnotations: {}
+
+cloudMapCustomHealthCheck:
+  # cloudMapCustomHealthCheck.enabled: `true` if CustomHealthCheck needs to be enabled in CloudMap
+  enabled: false
 
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
@@ -86,3 +101,12 @@ stats:
 
 # Enable cert-manager
 enableCertManager: false
+
+# Environment variables to set in appmesh-controller pod
+env: {}
+
+#Example
+#env:
+#    http_proxy: http://proxyserver:3128
+#    https_proxy: http://proxyserver:3128
+#    no_proxy: "localhost,127.0.0.1,.cluster.local"
