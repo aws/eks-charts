@@ -64,6 +64,7 @@ spec:
         {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
         - --enable-xray-tracing=true
+        - --xray-image={{ .Values.xray.image.repository}}:{{ .Values.xray.image.tag }}
         {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "jaeger" ) }}
         - --enable-jaeger-tracing=true
