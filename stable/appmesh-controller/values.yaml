@@ -21,6 +21,17 @@ sidecar:
     requests:
       cpu: 10m
       memory: 32Mi
+    # sidecar.resources/limits: Envoy CPU and memory limits
+    limits:
+      cpu: ""
+      memory: ""
+  lifecycleHooks:
+    # sidecar.lifecycleHooks: Envoy PreStop Hook Delay
+    preStopDelay: 20
+  probes:
+    # sidecar.probes: Envoy Readiness Probe
+    readinessProbeInitialDelay: 1
+    readinessProbePeriod: 10
 init:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
@@ -44,6 +55,10 @@ tolerations: []
 affinity: {}
 
 podAnnotations: {}
+
+cloudMapCustomHealthCheck:
+  # cloudMapCustomHealthCheck.enabled: `true` if CustomHealthCheck needs to be enabled in CloudMap
+  enabled: false
 
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
