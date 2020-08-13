@@ -7,7 +7,7 @@ region: ""
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
-  tag: v1.1.1-rc2
+  tag: v1.1.1-linux_amd64
   pullPolicy: IfNotPresent
 
 sidecar:
