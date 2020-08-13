@@ -61,6 +61,8 @@ affinity: {}
 
 podAnnotations: {}
 
+podLabels: {}
+
 cloudMapCustomHealthCheck:
   # cloudMapCustomHealthCheck.enabled: `true` if CustomHealthCheck needs to be enabled in CloudMap
   enabled: false

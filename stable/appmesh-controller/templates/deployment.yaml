@@ -11,10 +11,16 @@ spec:
   selector:
     matchLabels:
       control-plane: {{ template "appmesh-controller.fullname" . }}
+      {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 6 }}
+      {{- end }}
   template:
     metadata:
       labels:
         control-plane: {{ template "appmesh-controller.fullname" . }}
+        {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+        {{- end }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
