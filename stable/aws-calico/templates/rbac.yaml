@@ -6,12 +6,13 @@ metadata:
     app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-node"
 {{ include "aws-calico.labels" . | indent 4 }}
 rules:
-  # The CNI plugin needs to get pods, nodes, and namespaces.
+  # The CNI plugin needs to get pods, nodes, namespaces, and configmaps.
   - apiGroups: [""]
     resources:
       - pods
       - nodes
       - namespaces
+      - configmaps
     verbs:
       - get
   - apiGroups: [""]
