@@ -17,6 +17,8 @@ calico:
         memory: "96Mi"
         cpu: "100m"
     tolerations: []
+    nodeSelector:
+      beta.kubernetes.io/os: linux
   node:
     logseverity: Info #Debug, Info, Warning, Error, Fatal
     image: quay.io/calico/node
@@ -30,6 +32,8 @@ calico:
     extraEnv: []
     # - name: SOME_VAR
     #   value: 'some value'
+    nodeSelector:
+      beta.kubernetes.io/os: linux
   typha_autoscaler:
     resources:
       requests:
@@ -39,6 +43,8 @@ calico:
         memory: "32Mi"
         cpu: "10m"
     tolerations: []
+    nodeSelector:
+      beta.kubernetes.io/os: linux
 
 autoscaler:
   tag: "1.7.1"

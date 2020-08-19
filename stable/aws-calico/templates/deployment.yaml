@@ -19,7 +19,7 @@ spec:
     spec:
       priorityClassName: system-cluster-critical
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        {{- toYaml .Values.calico.typha.nodeSelector | nindent 8 }}
       tolerations:
         # Mark the pod as a critical add-on for rescheduling.
         - key: CriticalAddonsOnly
@@ -105,7 +105,7 @@ spec:
     spec:
       priorityClassName: system-cluster-critical
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        {{- toYaml .Values.calico.typha_autoscaler.nodeSelector | nindent 8 }}
       tolerations:
         # Mark the pod as a critical add-on for rescheduling.
         - key: CriticalAddonsOnly
