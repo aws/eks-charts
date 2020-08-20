@@ -33,6 +33,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `image.repository` | Image to deploy | `amazon/aws-for-fluent-bit` | ✔
 | `image.tag` | Image tag to deploy | `2.2.0`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
+| `imagePullSecrets` | Docker registry pull secret | `[]` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` | 
 | `service.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
 | `service.extraParsers` | Adding more parsers with this value | `""` |

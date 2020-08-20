@@ -16,6 +16,10 @@ spec:
       labels:
         {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 8 }}
     spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      {{- end }}
       serviceAccountName: {{ include "aws-for-fluent-bit.serviceAccountName" . }}
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName }}
