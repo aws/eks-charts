@@ -7,38 +7,7 @@ App Mesh controller Helm chart for Kubernetes
 ## Prerequisites
 
 * Kubernetes >= 1.13
-* IAM policies
-    ```json
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "appmesh:*",
-                    "servicediscovery:CreateService",
-                    "servicediscovery:DeleteService",
-                    "servicediscovery:GetService",
-                    "servicediscovery:GetInstance",
-                    "servicediscovery:RegisterInstance",
-                    "servicediscovery:DeregisterInstance",
-                    "servicediscovery:ListInstances",
-                    "servicediscovery:ListNamespaces",
-                    "servicediscovery:ListServices",
-                    "servicediscovery:GetOperation",
-                    "servicediscovery:GetInstancesHealthStatus",
-                    "servicediscovery:UpdateInstanceCustomHealthStatus",
-                    "route53:GetHealthCheck",
-                    "route53:CreateHealthCheck",
-                    "route53:UpdateHealthCheck",
-                    "route53:ChangeResourceRecordSets",
-                    "route53:DeleteHealthCheck"
-                ],
-                "Resource": "*"
-            }
-        ]
-    }
-    ```
+* EKS nodes should have the IAM permissions from the following policies: `AWSAppMeshFullAccess`, `AWSCloudMapFullAccess`
 
 ## Installing the Chart
 
@@ -271,19 +240,31 @@ Parameter | Description | Default
 `affinity` | node/pod affinities | None
 `nodeSelector` | node labels for pod assignment | `{}`
 `podAnnotations` | annotations to add to each pod | `{}`
+`podLabels` | labels to add to each pod | `{}`
 `tolerations` | list of node taints to tolerate | `[]`
 `rbac.create` | if `true`, create and use RBAC resources | `true`
 `rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
+`serviceAccount.annotations` | optional annotations to add to service account | None
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | None
 `sidecar.image.repository` | Envoy image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`
 `sidecar.image.tag` | Envoy image tag | `<VERSION>`
 `sidecar.logLevel` | Envoy log level | `info`
-`sidecar.resources` | Envoy container resources | `requests: cpu 10m memory 32Mi`
-`init.image.repository` | Route manager image repository | `111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
+`sidecar.resources.requests` | Envoy container resource requests | `requests: cpu 10m memory 32Mi`
+`sidecar.resources.limits` | Envoy container resource limits | `limits: cpu "" memory ""`
+`sidecar.lifecycleHooks.preStopDelay` | Envoy container PreStop Hook Delay Value | `20s`
+`sidecar.probes.readinessProbeInitialDelay` | Envoy container Readiness Probe Initial Delay | `1s`
+`sidecar.probes.readinessProbePeriod` | Envoy container Readiness Probe Period | `10s`
+`init.image.repository` | Route manager image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
 `init.image.tag` | Route manager image tag | `<VERSION>`
+`stats.tagsEnabled` |  If `true`, Envoy should include app-mesh tags | `false`
+`stats.statsdEnabled` |  If `true`, Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125 | `false`
+`cloudMapCustomHealthCheck.enabled` |  If `true`, CustomHealthCheck will be enabled for CloudMap Services | `false`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`
 `tracing.provider` |  The tracing provider can be x-ray, jaeger or datadog | `x-ray`
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`
 `tracing.port` |  Jaeger or Datadog agent port (ignored for X-Ray) | `9411`
 `enableCertManager` |  Enable Cert-Manager | `false`
+`xray.image.repository` | X-Ray image repository | `amazon/aws-xray-daemon`
+`xray.image.tag` | X-Ray image tag | `latest`
+`env` |  environment variables to be injected into the appmesh-controller pod | `{}`

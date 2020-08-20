@@ -9,8 +9,12 @@ spec:
 {{ toYaml .Values.updateStrategy | indent 4 }}
   selector:
     matchLabels:
+{{- if .Values.originalMatchLabels }}
+      k8s-app: aws-node
+{{- else }}
       app.kubernetes.io/name: {{ include "aws-vpc-cni.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
   template:
     metadata:
       {{- if .Values.podAnnotations }}

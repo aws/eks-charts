@@ -7,7 +7,7 @@ podSecurityPolicy:
   create: false
 
 calico:
-  tag: v3.8.1
+  tag: v3.13.4
 
   typha:
     logseverity: Info #Debug, Info, Warning, Error, Fatal
@@ -19,6 +19,7 @@ calico:
       limits:
         memory: "96Mi"
         cpu: "100m"
+    tolerations: []
   node:
     logseverity: Info #Debug, Info, Warning, Error, Fatal
     image: quay.io/calico/node
@@ -29,6 +30,9 @@ calico:
       limits:
         memory: "64Mi"
         cpu: "100m"
+    extraEnv: []
+    # - name: SOME_VAR
+    #   value: 'some value'
   typha_autoscaler:
     resources:
       requests:
@@ -37,7 +41,8 @@ calico:
       limits:
         memory: "32Mi"
         cpu: "10m"
+    tolerations: []
 
 autoscaler:
-  tag: "1.1.2"
+  tag: "1.7.1"
   image: k8s.gcr.io/cluster-proportional-autoscaler-amd64

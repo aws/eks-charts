@@ -11,10 +11,16 @@ spec:
   selector:
     matchLabels:
       control-plane: {{ template "appmesh-controller.fullname" . }}
+      {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 6 }}
+      {{- end }}
   template:
     metadata:
       labels:
         control-plane: {{ template "appmesh-controller.fullname" . }}
+        {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+        {{- end }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
@@ -51,11 +57,20 @@ spec:
         - --sidecar-image={{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}
         - --sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
         - --sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
+        - --sidecar-cpu-limits={{ .Values.sidecar.resources.limits.cpu }}
+        - --sidecar-memory-limits={{ .Values.sidecar.resources.limits.memory }}
         - --init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
         - --enable-stats-tags={{ .Values.stats.tagsEnabled }}
         - --enable-statsd={{ .Values.stats.statsdEnabled }}
+        - --prestop-delay={{ .Values.sidecar.lifecycleHooks.preStopDelay }}
+        - --readiness-probe-initial-delay={{ .Values.sidecar.probes.readinessProbeInitialDelay }}
+        - --readiness-probe-period={{ .Values.sidecar.probes.readinessProbePeriod }}
+        {{- if .Values.cloudMapCustomHealthCheck.enabled }}
+        - --enable-custom-health-check=true
+        {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
         - --enable-xray-tracing=true
+        - --xray-image={{ .Values.xray.image.repository}}:{{ .Values.xray.image.tag }}
         {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "jaeger" ) }}
         - --enable-jaeger-tracing=true
@@ -71,17 +86,24 @@ spec:
         - --aws-region={{ .Values.region }}
         {{- end }}
         - --sidecar-log-level={{ .Values.sidecar.logLevel }}
+        {{- if .Values.env }}
+        env:
+          {{- range $key, $value := .Values.env }}
+          - name: {{ $key }}
+            value: {{ $value }}
+          {{- end }}
+        {{- end}}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml . | indent 6 }}
+{{ toYaml . | indent 8 }}
     {{- end }}
     {{- with .Values.affinity }}
       affinity:
-{{ toYaml . | indent 6 }}
+{{ toYaml . | indent 8 }}
     {{- end }}
     {{- with .Values.tolerations }}
       tolerations:
-{{ toYaml . | indent 6 }}
+{{ toYaml . | indent 8 }}
     {{- end }}

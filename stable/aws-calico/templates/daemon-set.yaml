@@ -82,13 +82,16 @@ spec:
               value: ""
             - name: FELIX_HEALTHENABLED
               value: "true"
+          {{- if .Values.calico.node.extraEnv }}
+            {{- toYaml .Values.calico.node.extraEnv | nindent 12 }}
+          {{- end }}
           securityContext:
             privileged: true
           livenessProbe:
-            httpGet:
-              path: /liveness
-              port: 9099
-              host: localhost
+            exec:
+              command:
+              - /bin/calico-node
+              - -felix-live
             periodSeconds: 10
             initialDelaySeconds: 10
             failureThreshold: 6

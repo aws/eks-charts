@@ -107,3 +107,6 @@ resources:
 
 ## Assign a PriorityClassName to pods if set
 # priorityClassName: system-node-critical
+
+updateStrategy:
+  type: RollingUpdate

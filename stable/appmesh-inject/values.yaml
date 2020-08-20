@@ -13,7 +13,7 @@ image:
 sidecar:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
-    tag: v1.12.3.0-prod
+    tag: v1.15.0.0-prod
   # sidecar.logLevel: Envoy log level can be info, warn or error
   logLevel: info
   resources:
@@ -23,8 +23,8 @@ sidecar:
       memory: 32Mi
 init:
   image:
-    repository: 111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
-    tag: v2
+    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
+    tag: v3-prod
 
 nameOverride: ""
 fullnameOverride: ""
