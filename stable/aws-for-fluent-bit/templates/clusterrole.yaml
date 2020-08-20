@@ -9,4 +9,9 @@ rules:
       - namespaces
       - pods
     verbs: ["get", "list", "watch"]
+  - apiGroups: ["policy"]
+    resources: ["podsecuritypolicies"]
+    verbs: ["use"]
+    resourceNames:
+      - {{ include "aws-for-fluent-bit.fullname" . }}
 {{- end -}}
