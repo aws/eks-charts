@@ -53,6 +53,7 @@ The following table lists the configurable parameters for this chart and their d
 | `calico.typha_autoscaler.nodeSelector` | Calico Typha Autoscaler Node Selector                   | `{ beta.kubernetes.io/os: linux }` |
 | `calico.tag`                           | Calico version                                          | `v3.8.1`                        |
 | `fullnameOverride`                     | Override the fullname of the chart                      | `calico`                        |
+| `podSecurityPolicy.create`             | Specifies whether podSecurityPolicy and related rbac objects should be created    | `false`                          |
 | `serviceAccount.name`                  | The name of the ServiceAccount to use                   | `nil`                           |
 | `serviceAccount.create`                | Specifies whether a ServiceAccount should be created    | `true`                          |
 | `autoscaler.image`                     | Cluster Proportional Autoscaler Image                   | `k8s.gcr.io/cluster-proportional-autoscaler-amd64` |

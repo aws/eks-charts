@@ -3,6 +3,9 @@ fullnameOverride: calico
 serviceAccount:
   create: true
 
+podSecurityPolicy:
+  create: false
+
 calico:
   tag: v3.13.4
 
