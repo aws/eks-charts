@@ -20,7 +20,7 @@ spec:
     spec:
       priorityClassName: system-node-critical
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        {{- toYaml .Values.calico.node.nodeSelector | nindent 8 }}
       hostNetwork: true
       serviceAccountName: "{{ include "aws-calico.serviceAccountName" . }}-node"
       # Minimize downtime during a rolling upgrade or deletion; tell Kubernetes to do a "force
