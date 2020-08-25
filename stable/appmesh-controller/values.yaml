@@ -4,6 +4,7 @@
 
 replicaCount: 1
 region: ""
+aws-account-id: ""
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller

@@ -85,6 +85,9 @@ spec:
         {{- if .Values.region }}
         - --aws-region={{ .Values.region }}
         {{- end }}
+        {{- if .Values.aws-account-id }}
+        - --aws-account-id={{ .Values.aws-account-id }}
+        {{- end }}
         - --sidecar-log-level={{ .Values.sidecar.logLevel }}
         {{- if .Values.env }}
         env:
