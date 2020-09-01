@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 8,
   "links": [],
   "panels": [
     {
@@ -43,7 +43,7 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 6,
+        "w": 7,
         "x": 0,
         "y": 0
       },
@@ -65,6 +65,7 @@
       "nullPointMode": "connected",
       "nullText": null,
       "options": {},
+      "pluginVersion": "6.4.3",
       "postfix": "",
       "postfixFontSize": "100%",
       "prefix": "",
@@ -88,6 +89,9 @@
       "targets": [
         {
           "expr": "sum(envoy_server_live{job=\"appmesh-envoy\"})",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Total Envoy sidecars",
           "refId": "A"
         }
       ],
@@ -130,7 +134,7 @@
       "gridPos": {
         "h": 5,
         "w": 6,
-        "x": 6,
+        "x": 7,
         "y": 0
       },
       "id": 7,
@@ -176,6 +180,7 @@
           "expr": "(sum(envoy_cluster_membership_healthy{job=\"appmesh-envoy\"})  - sum(envoy_cluster_membership_total{job=\"appmesh-envoy\"}))",
           "format": "time_series",
           "instant": false,
+          "legendFormat": "Unhealthy sidecars",
           "refId": "A"
         }
       ],
@@ -196,180 +201,96 @@
       "valueName": "current"
     },
     {
+      "aliasColors": {},
+      "bars": false,
       "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": true,
-      "colors": [
-        "#3274D9",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "prometheus",
-      "decimals": 0,
       "description": "App Mesh sidecars total inbound connections",
-      "format": "short",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 12,
+        "w": 11,
+        "x": 13,
         "y": 0
       },
       "id": 6,
-      "interval": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "options": {},
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "100%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "#96D98D",
-        "full": false,
-        "lineColor": "#56A64B",
-        "show": false,
-        "ymax": null,
-        "ymin": null
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
       },
-      "tableColumn": "",
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
           "expr": "sum(envoy_http_downstream_cx_active{job=\"appmesh-envoy\"})",
           "format": "time_series",
           "instant": false,
+          "legendFormat": "Total connections",
           "refId": "A"
         }
       ],
-      "thresholds": "",
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Connections",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
       "transparent": true,
-      "type": "singlestat",
-      "valueFontSize": "150%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "current"
-    },
-    {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": true,
-      "colors": [
-        "#E02F44",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
-      "datasource": "prometheus",
-      "decimals": 0,
-      "description": "App Mesh sidecars connection timeouts per second",
-      "format": "short",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
       },
-      "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 18,
-        "y": 0
-      },
-      "id": 5,
-      "interval": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
+      "yaxes": [
         {
-          "name": "value to text",
-          "value": 1
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
         },
         {
-          "name": "range to text",
-          "value": 2
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
         }
       ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "options": {},
-      "postfix": "",
-      "postfixFontSize": "100%",
-      "prefix": "",
-      "prefixFontSize": "100%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false,
-        "ymax": null,
-        "ymin": null
-      },
-      "tableColumn": "",
-      "targets": [
-        {
-          "expr": "sum(rate(envoy_cluster_upstream_cx_connect_timeout{job=\"appmesh-envoy\"}[1m]))",
-          "format": "time_series",
-          "instant": false,
-          "refId": "A"
-        }
-      ],
-      "thresholds": "",
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Connection Timeouts",
-      "transparent": true,
-      "type": "singlestat",
-      "valueFontSize": "150%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "0",
-          "value": "null"
-        }
-      ],
-      "valueName": "current"
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -477,7 +398,7 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 7,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 13
       },
@@ -567,15 +488,104 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "prometheus",
+      "description": "App Mesh Envoy success HTTP requests per second",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 20
+      },
+      "id": 20,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(envoy_cluster_upstream_rq{job=\"appmesh-envoy\",envoy_response_code=~\"2.*\"}[1m])) by (kubernetes_namespace)",
+          "legendFormat": "{{kubernetes_namespace}} 5xx",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Envoy 2xx Requests by Namespace",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "reqps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
       "decimals": 2,
       "description": "App Mesh Envoy failed HTTP requests per second",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 12,
         "x": 12,
-        "y": 13
+        "y": 20
       },
       "id": 14,
       "interval": "",
@@ -676,7 +686,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 20
+        "y": 28
       },
       "id": 11,
       "interval": "",
@@ -709,7 +719,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_memory_working_set_bytes{container_name=\"envoy\"}) by (namespace)",
+          "expr": "sum(container_memory_working_set_bytes{container=\"envoy\"}) by (namespace)",
           "hide": false,
           "legendFormat": "{{namespace}}",
           "refId": "A"
@@ -770,7 +780,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 20
+        "y": 28
       },
       "id": 12,
       "interval": "",
@@ -803,7 +813,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum (rate(container_cpu_usage_seconds_total{container_name=\"envoy\"}[1m])) by (namespace)",
+          "expr": "sum (rate(container_cpu_usage_seconds_total{container=\"envoy\"}[1m])) by (namespace)",
           "hide": false,
           "legendFormat": "{{namespace}}",
           "refId": "A"
@@ -841,6 +851,182 @@
           "decimals": null,
           "format": "short",
           "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "description": "Total connection connect timeouts",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 35
+      },
+      "id": 16,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(envoy_cluster_upstream_cx_connect_timeout[1m])) by (kubernetes_namespace)",
+          "intervalFactor": 2,
+          "legendFormat": "{{kubernetes_namespace}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Connection Timeout by Namespace",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "description": "Total requests that timed out waiting for a response",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 35
+      },
+      "id": 18,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(envoy_cluster_upstream_rq_timeout[1m])) by (kubernetes_namespace)",
+          "intervalFactor": 2,
+          "legendFormat": "{{kubernetes_namespace}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Request Timeout by Namespace",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": null,

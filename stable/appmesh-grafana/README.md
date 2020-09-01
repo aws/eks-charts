@@ -4,7 +4,7 @@ App Mesh Grafana Helm chart for Kubernetes
 
 ## Prerequisites
 
-* Kubernetes >= 1.13
+* Kubernetes >= 1.16
 * AWS App Mesh [Prometheus](https://github.com/aws/eks-charts/tree/master/stable/appmesh-prometheus) >= 0.3.0
 
 ## Installing the Chart
