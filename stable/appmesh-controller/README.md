@@ -267,4 +267,5 @@ Parameter | Description | Default
 `enableCertManager` |  Enable Cert-Manager | `false`
 `xray.image.repository` | X-Ray image repository | `amazon/aws-xray-daemon`
 `xray.image.tag` | X-Ray image tag | `latest`
+`accountId` | AWS Account ID must be provided for a VPC without internet access | None
 `env` |  environment variables to be injected into the appmesh-controller pod | `{}`
