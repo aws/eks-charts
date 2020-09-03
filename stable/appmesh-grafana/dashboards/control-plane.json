@@ -24,7 +24,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
-      "description": "Total number of SDK API calls from the customer's code to AWS services",
+      "description": "Total number of SDK API calls from App Mesh controller to AWS",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -112,7 +112,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
-      "description": "",
+      "description": "Successful AWS API calls with 2xx response ",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -200,6 +200,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "description": "Failed AWS API calls with 4xx/5xx response",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -286,8 +287,8 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
-      "description": "",
+      "datasource": null,
+      "description": "Number of goroutines for the App Mesh controller",
       "fill": 3,
       "fillGradient": 0,
       "gridPos": {
@@ -374,7 +375,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": null,
       "description": "How many seconds of work has been done that is in progress and hasn't been observed by work_duration. Large values indicate stuck threads. One can deduce the number of stuck threads by observing the rate at which this increases",
       "fill": 1,
       "fillGradient": 0,
@@ -463,7 +464,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
-      "description": "appmesh-system containers memory working set",
+      "description": "appmesh-system namespace containers memory working set",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -555,9 +556,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": null,
       "decimals": 2,
-      "description": "appmesh-system containers CPU usage seconds total",
+      "description": "appmesh-system namespace containers CPU usage seconds total",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {

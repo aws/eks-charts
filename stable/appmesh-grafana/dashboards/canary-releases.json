@@ -44,7 +44,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": "prometheus",
+      "datasource": null,
       "format": "ops",
       "gauge": {
         "maxValue": 100,
@@ -127,7 +127,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "prometheus",
+      "datasource": null,
       "decimals": null,
       "format": "percentunit",
       "gauge": {
@@ -210,7 +210,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": "prometheus",
+      "datasource": null,
       "format": "ops",
       "gauge": {
         "maxValue": 100,
@@ -293,7 +293,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "prometheus",
+      "datasource": null,
       "decimals": null,
       "format": "percentunit",
       "gauge": {
@@ -372,7 +372,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": null,
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -466,7 +466,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": null,
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -577,7 +577,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": null,
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -671,7 +671,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": null,
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -765,7 +765,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": null,
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -861,7 +861,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": null,
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -957,7 +957,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": null,
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1067,7 +1067,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "prometheus",
+      "datasource": null,
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1187,7 +1187,7 @@
           "text": "demo",
           "value": "demo"
         },
-        "datasource": "prometheus",
+        "datasource": null,
         "definition": "flagger_canary_status",
         "hide": 0,
         "includeAll": false,
@@ -1213,7 +1213,7 @@
           "text": "podinfo",
           "value": "podinfo"
         },
-        "datasource": "prometheus",
+        "datasource": null,
         "definition": "flagger_canary_status",
         "hide": 0,
         "includeAll": false,
