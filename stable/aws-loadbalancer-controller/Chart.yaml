@@ -1,0 +1,22 @@
+apiVersion: v2
+name: aws-loadbalancer-controller
+description: AWS Loadbalancer Controller chart for Kubernetes
+type: application
+version: 0.1.0
+appVersion: v2.0.0
+home: https://github.com/aws/eks-charts
+icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
+sources:
+  - https://github.com/aws/eks-charts
+maintainers:
+  - name: kishorj
+    url: https://github.com/kishorj
+    email: kishorj@users.noreply.github.com
+  - name: m00nf1sh
+    url: https://github.com/m00nf1sh
+    email: m00nf1sh@users.noreply.github.com
+keywords:
+  - eks
+  - alb
+  - loadbalancer
+  - nlb
