@@ -11,6 +11,7 @@ spec:
   privileged: false
   hostIPC: false
   hostNetwork: true
+  hostNetwork: {{ .Values.useHostNetwork }}
   hostPID: false
   readOnlyRootFilesystem: false
   allowPrivilegeEscalation: false
