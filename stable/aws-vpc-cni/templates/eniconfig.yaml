@@ -1,0 +1,13 @@
+{{- if .Values.crd.create -}}
+{{- range .Values.eni_configs -}}
+apiVersion: crd.k8s.amazonaws.com/v1alpha1
+kind: ENIConfig
+metadata:
+  name: {{ .az }}
+spec:
+  subnet: {{ .subnet }}
+  securityGroups:
+  {{ toYaml .security_groups | indent 2 }}
+---
+{{- end -}}
+{{- end -}}

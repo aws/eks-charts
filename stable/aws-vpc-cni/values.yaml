@@ -61,3 +61,11 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+eni_configs: []
+# eni_configs:
+# - az: eu-west-1a
+#   subnet: subnet-0bfb6d177a5fce771
+#   security_groups:
+#   - sg-023feb92f68dc6918
+
