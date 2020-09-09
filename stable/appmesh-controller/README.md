@@ -6,7 +6,7 @@ App Mesh controller Helm chart for Kubernetes
 
 ## Prerequisites
 
-* Kubernetes >= 1.13
+* Kubernetes >= 1.14
 * EKS nodes should have the IAM permissions from the following policies: `AWSAppMeshFullAccess`, `AWSCloudMapFullAccess`
 
 ## Installing the Chart
