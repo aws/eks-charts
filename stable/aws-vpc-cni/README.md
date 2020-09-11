@@ -47,6 +47,8 @@ The following table lists the configurable parameters for this chart and their d
 | `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                               |
 | `serviceAccount.create` | Specifies whether a ServiceAccount should be created    | `true`                              |
 | `serviceAccount.annotations` | Specifies the annotations for ServiceAccount       | `{}`                                |
+| `livenessProbe`         | Livenness probe settings for daemonset                  | (see `values.yaml`)                 |
+| `readinessProbe`        | Readiness probe settings for daemonset                  | (see `values.yaml`)                 |
 | `crd.create`            | Specifies whether to create the VPC-CNI CRD             | `true`                              |
 | `tolerations`           | Optional deployment tolerations                         | `[]`                                |
 | `updateStrategy`        | Optional update strategy                                | `type: RollingUpdate`               |

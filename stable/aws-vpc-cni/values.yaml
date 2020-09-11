@@ -49,6 +49,28 @@ serviceAccount:
   annotations: {}
     # eks.amazonaws.com/role-arn: arn:aws:iam::AWS_ACCOUNT_ID:role/IAM_ROLE_NAME
 
+livenessProbe:
+  exec:
+    command:
+      - /app/grpc-health-probe
+      - '-addr=:50051'
+    initialDelaySeconds: 35 # 35 1.6, 60 1.7
+#    failureThreshold: 3
+#    periodSeconds: 10
+#    successThreshold: 1
+#    timeoutSeconds: 1
+
+readinessProbe:
+  exec:
+    command:
+      - /app/grpc-health-probe
+      - '-addr=:50051'
+  initialDelaySeconds: 35 # 35 1.6, 60 1.7
+#  failureThreshold: 3
+#  periodSeconds: 10
+#  successThreshold: 1
+#  timeoutSeconds: 1
+
 resources:
   requests:
     cpu: 10m
