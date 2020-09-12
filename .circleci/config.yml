@@ -55,7 +55,7 @@ jobs:
                 EXTRA_ARGS=$(cat ${STABLE}/${d}/ci/extra_args)
               fi
               echo "Validating chart ${d}"
-              helmv3 template ${STABLE}/${d} | kubeval --strict --ignore-missing-schemas
+              helmv3 template ${STABLE}/${d} ${EXTRA_ARGS}| kubeval --strict --ignore-missing-schemas
             done
       - run:
           name: Validate stable charts versions
