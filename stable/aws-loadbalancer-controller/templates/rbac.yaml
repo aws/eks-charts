@@ -38,7 +38,7 @@ metadata:
     {{- include "aws-loadbalancer-controller.labels" . | nindent 4 }}
 rules:
 - apiGroups: ["elbv2.k8s.aws", "", "networking.k8s.io"]
-  resources: [targetgroupbindings, configmaps, endpoints, events, ingresses, ingresses/status, services, pods/status]
+  resources: [targetgroupbindings, configmaps, endpoints, events, ingresses, ingresses/status, services, services/status, pods/status]
   verbs: [create, delete, get, list, patch, update, watch]
 - apiGroups: ["elbv2.k8s.aws"]
   resources: [targetgroupbindings/status]
