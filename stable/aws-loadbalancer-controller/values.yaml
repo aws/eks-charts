@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: kishorj/aws-loadbalancer-controller
-  tag: "v2.0.0-beta1"
+  repository: amazon/aws-alb-ingress-controller
+  tag: v2.0.0-rc0
   pullPolicy: Always
 
 imagePullSecrets: []
