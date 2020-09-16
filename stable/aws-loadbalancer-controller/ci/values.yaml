@@ -1,0 +1,7 @@
+# CI testing values for aws-loadbalancer-controller
+
+region: us-west-2
+image:
+  repository: kishorj/aws-loadbalancer-controller
+  tag: v2.0.0-beta1
+  pullPolicy: Always
