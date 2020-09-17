@@ -24,10 +24,9 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           args:
-          - --metrics-addr=0.0.0.0:8080
           - --cluster-name={{ required "Chart cannot be installed without a valid clusterName!" .Values.clusterName }}
           command:
-          - /manager
+          - /controller
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
