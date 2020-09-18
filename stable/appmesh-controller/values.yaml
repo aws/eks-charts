@@ -68,6 +68,10 @@ cloudMapCustomHealthCheck:
   # cloudMapCustomHealthCheck.enabled: `true` if CustomHealthCheck needs to be enabled in CloudMap
   enabled: false
 
+cloudMapDNS:
+  # cloudMapDNS.ttl if set will use this global ttl value
+  ttl: 300
+
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
   create: true
