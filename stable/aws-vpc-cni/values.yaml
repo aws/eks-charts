@@ -95,7 +95,8 @@ resources:
 
 updateStrategy:
   type: RollingUpdate
-  maxUnavailable: "10%"
+  rollingUpdate:
+    maxUnavailable: "10%"
 
 nodeSelector: {}
 

@@ -72,6 +72,7 @@ spec:
         volumeMounts:
           - mountPath: /host/opt/cni/bin
             name: cni-bin-dir
+      terminationGracePeriodSeconds: 10
       tolerations:
         - operator: Exists
     {{- with .Values.imagePullSecrets }}
@@ -130,11 +131,11 @@ spec:
       - name: log-dir
         hostPath:
           path: /var/log/aws-routed-eni
-        type: DirectoryOrCreate
+          type: DirectoryOrCreate
       - name: run-dir
         hostPath:
           path: /var/run/aws-node
-        type: DirectoryOrCreate
+          type: DirectoryOrCreate
       - name: xtables-lock
         hostPath:
           path: /run/xtables.lock
