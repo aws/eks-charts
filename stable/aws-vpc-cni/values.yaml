@@ -6,9 +6,19 @@
 # existing naming
 nameOverride: aws-node
 
+init:
+  image:
+    tag: v1.7.3
+    region: us-west-2
+    pullPolicy: Always
+    # Set to use custom image
+    # override: "repo/org/image:tag"
+  securityContext:
+    privileged: true
+
 image:
   region: us-west-2
-  tag: v1.7.2
+  tag: v1.7.3
   pullPolicy: Always
   # Set to use custom image
   # override: "repo/org/image:tag"
@@ -86,20 +96,8 @@ updateStrategy:
   type: RollingUpdate
   maxUnavailable: "10%"
 
-
 nodeSelector: {}
 
 tolerations: []
 
 affinity: {}
-
-init:
-  image:
-    region: us-west-2
-    tag: v1.7.2
-    pullPolicy: Always
-    # Set to use custom image
-    # override: "repo/org/image:tag"
-
-  securityContext:
-    privileged: true
