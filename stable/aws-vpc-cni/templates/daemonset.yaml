@@ -64,9 +64,14 @@ spec:
       serviceAccountName: {{ template "aws-vpc-cni.serviceAccountName" . }}
       hostNetwork: true
       initContainers:
-      - image: "{{- if .Values.init.image.override }}{{- .Values.init.image.override }}{{- else }}602401143452.dkr.ecr.{{- .Values.init.image.region }}.amazonaws.com/amazon-k8s-cni-init:{{- .Values.init.image.tag }}{{- end}}"
+      - name: aws-vpc-cni-init
+        image: "{{- if .Values.init.image.override }}{{- .Values.init.image.override }}{{- else }}602401143452.dkr.ecr.{{- .Values.init.image.region }}.amazonaws.com/amazon-k8s-cni-init:{{- .Values.init.image.tag }}{{- end}}"
         imagePullPolicy: {{ .Values.init.image.pullPolicy }}
-        name: aws-vpc-cni-init
+        env:
+{{- range $key, $value := .Values.init.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+{{- end }}
         securityContext:
           {{- toYaml .Values.init.securityContext | nindent 12 }}
         volumeMounts:
