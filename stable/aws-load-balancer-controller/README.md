@@ -1,16 +1,16 @@
-# AWS Loadbalancer Controller
+# AWS Load Balancer Controller
 
-AWS Loadbalancer controller Helm chart for Kubernetes
+AWS Load Balancer controller Helm chart for Kubernetes
 
 ## TL;DR:
 ```sh
 helm repo add eks https://aws.github.io/eks-charts
-kubectl apply -k github.com/aws/eks-charts/stable/aws-loadbalancer-controller//crds?ref=master
-helm install eks/aws-loadbalancer-controller
+kubectl apply -k github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master
+helm install eks/aws-load-balancer-controller
 ```
 
 ## Introduction
-AWS Loadbalancer controller manages the following AWS resources
+AWS Load Balancer controller manages the following AWS resources
 - Application Load Balancers to satisfy Kubernetes ingress objects
 - Network Load Balancers in IP mode to satisfy Kubernetes service objects of type LoadBalancer with NLB IP mode annotation
 
@@ -173,14 +173,14 @@ helm repo add eks https://aws.github.io/eks-charts
 Install the TargetGroupBinding CRDs:
 
 ```shell script
-kubectl apply -k github.com/aws/eks-charts/stable/aws-loadbalancer-controller//crds?ref=master
+kubectl apply -k github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master
 ```
 
-Install the AWS Loadbalancer controller
+Install the AWS Load Balancer controller
 ```shell script
 # NOTE: The clusterName value must be set either via the values.yaml or the Helm command line. The <k8s-cluster-name> in the command
 # below should be replaced with name of your k8s cluster before running it.
-helm upgrade -i aws-loadbalancer-controller eks/aws-loadbalancer-controller -n kube-system --set clusterName=<k8s-cluster-name>
+helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=<k8s-cluster-name>
 ```
 
 ## Upgrade
@@ -206,7 +206,7 @@ $ helm delete aws-alb-ingress-controller -n kube-system
 
 ## Uninstalling the Chart
 ```sh
-helm delete aws-loadbalancer-controller -n kube-system
+helm delete aws-load-balancer-controller -n kube-system
 ```
 
 ## Configuration
@@ -215,7 +215,7 @@ The following tables lists the configurable parameters of the chart and their de
 
 | Parameter                         | Description                                               | Default                                                                                   |
 | ----------------------------------| --------------------------------------------------------- | ------------------------------------------------------------------------------------------|
-| `image.repository`                | image repository                                          | ` 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-loadbalancer-controller`        |
+| `image.repository`                | image repository                                          | `amazon/aws-load-balancer-controller`        						    |
 | `image.tag`                       | image tag                                                 | `<VERSION>`                                                                               |
 | `image.pullPolicy`                | image pull policy                                         | `IfNotPresent`                                                                            |
 | `clusterName`                     | Kubernetes cluster name                                   | None                                                                                      |
