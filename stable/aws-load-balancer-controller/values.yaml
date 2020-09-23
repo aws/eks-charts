@@ -1,4 +1,4 @@
-# Default values for aws-loadbalancer-controller.
+# Default values for aws-load-balancer-controller.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -29,8 +29,8 @@ rbac:
   # Specifies whether rbac resources should be created
   create: true
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 65534
 
 securityContext: {}
   # capabilities:

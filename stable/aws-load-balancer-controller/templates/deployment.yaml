@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "aws-loadbalancer-controller.fullname" . }}
+  name: {{ include "aws-load-balancer-controller.fullname" . }}
   labels:
-    {{- include "aws-loadbalancer-controller.labels" . | nindent 4 }}
+    {{- include "aws-load-balancer-controller.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "aws-loadbalancer-controller.selectorLabels" . | nindent 6 }}
+      {{- include "aws-load-balancer-controller.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "aws-loadbalancer-controller.selectorLabels" . | nindent 8 }}
+        {{- include "aws-load-balancer-controller.selectorLabels" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "aws-loadbalancer-controller.serviceAccountName" . }}
+      serviceAccountName: {{ include "aws-load-balancer-controller.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -31,10 +31,6 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: metrics-server
-              containerPort: 8080
-              protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
