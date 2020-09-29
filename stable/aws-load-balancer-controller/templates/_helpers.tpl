@@ -32,6 +32,16 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Chart name prefix for resource names
+Strip the "-controller" suffix from the default .Chart.Name if the nameOverride is not specified.
+This enables using a shorter name for the resources, for example aws-load-balancer-webhook.
+*/}}
+{{- define "aws-load-balancer-controller.namePrefix" -}}
+{{- $defaultNamePrefix := .Chart.Name | trimSuffix "-controller" -}}
+{{- default $defaultNamePrefix .Values.nameOverride | trunc 42 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
 Common labels
 */}}
 {{- define "aws-load-balancer-controller.labels" -}}
@@ -60,4 +70,17 @@ Create the name of the service account to use
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
+{{- end -}}
+
+{{/*
+Generate certificates for webhook
+*/}}
+{{- define "aws-load-balancer-controller.gen-certs" -}}
+{{- $namePrefix := ( include "aws-load-balancer-controller.namePrefix" . ) -}}
+{{- $altNames := list ( printf "%s-%s.%s" $namePrefix "webhook-service" .Release.Namespace ) ( printf "%s-%s.%s.svc" $namePrefix "webhook-service" .Release.Namespace ) -}}
+{{- $ca := genCA "aws-load-balancer-controller-ca" 3650 -}}
+{{- $cert := genSignedCert ( include "aws-load-balancer-controller.fullname" . ) nil $altNames 3650 $ca -}}
+caCert: {{ $ca.Cert | b64enc }}
+clientCert: {{ $cert.Cert | b64enc }}
+clientKey: {{ $cert.Key | b64enc }}
 {{- end -}}

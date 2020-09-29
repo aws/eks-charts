@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: amazon/aws-alb-ingress-controller
-  tag: v2.0.0-rc0
+  tag: v2.0.0-rc2
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -60,3 +60,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Enable cert-manager
+enableCertManager: false
