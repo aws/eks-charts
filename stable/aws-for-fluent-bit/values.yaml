@@ -119,3 +119,9 @@ resources:
 
 updateStrategy:
   type: RollingUpdate
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
