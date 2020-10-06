@@ -213,20 +213,21 @@ helm delete aws-load-balancer-controller -n kube-system
 
 The following tables lists the configurable parameters of the chart and their default values.
 
-| Parameter                         | Description                                               | Default                                                                                   |
-| ----------------------------------| --------------------------------------------------------- | ------------------------------------------------------------------------------------------|
-| `image.repository`                | image repository                                          | `amazon/aws-load-balancer-controller`        						    |
-| `image.tag`                       | image tag                                                 | `<VERSION>`                                                                               |
-| `image.pullPolicy`                | image pull policy                                         | `IfNotPresent`                                                                            |
-| `clusterName`                     | Kubernetes cluster name                                   | None                                                                                      |
-| `securityContext`                 | Set to security context for pod                           | `{}`                                                                                      |
-| `resources`                       | Controller pod resource requests & limits                 | `{}`                                                                                      |
-| `nodeSelector`                    | Node labels for controller pod assignment                 | `{}`                                                                                      |
-| `tolerations`                     | Controller pod toleration for taints                      | `{}`                                                                                      |
-| `affinity`                        | Affinity for pod assignment                               | `{}`                                                                                      |
-| `rbac.create`                     | if `true`, create and use RBAC resources                  | `true`                                                                                    |
-| `serviceAccount.annotations`      | optional annotations to add to service account            | None                                                                                      |
-| `serviceAccount.create`           | If `true`, create a new service account                   | `true`                                                                                    |
-| `serviceAccount.name`             | Service account to be used                                | None                                                                                      |
-| `terminationGracePeriodSeconds`   | Time period for controller pod to do a graceful shutdown  | 10                                                                                        |
-
+| Parameter                          | Description                                               | Default                                                                                    |
+| ---------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `image.repository`                 | image repository                                          | `amazon/aws-load-balancer-controller`                                                      |
+| `image.tag`                        | image tag                                                 | `<VERSION>`                                                                                |
+| `image.pullPolicy`                 | image pull policy                                         | `IfNotPresent`                                                                             |
+| `clusterName`                      | Kubernetes cluster name                                   | None                                                                                       |
+| `securityContext`                  | Set to security context for pod                           | `{}`                                                                                       |
+| `resources`                        | Controller pod resource requests & limits                 | `{}`                                                                                       |
+| `nodeSelector`                     | Node labels for controller pod assignment                 | `{}`                                                                                       |
+| `tolerations`                      | Controller pod toleration for taints                      | `{}`                                                                                       |
+| `affinity`                         | Affinity for pod assignment                               | `{}`                                                                                       |
+| `podAnnotations`                   | Annotations to add to each pod                            | `{}`                                                                                       |
+| `podLabels`                        | Labels to add to each pod                                 | `{}`                                                                                       |
+| `rbac.create`                      | if `true`, create and use RBAC resources                  | `true`                                                                                     |
+| `serviceAccount.annotations`       | optional annotations to add to service account            | None                                                                                       |
+| `serviceAccount.create`            | If `true`, create a new service account                   | `true`                                                                                     |
+| `serviceAccount.name`              | Service account to be used                                | None                                                                                       |
+| `terminationGracePeriodSeconds`    | Time period for controller pod to do a graceful shutdown  | 10                                                                                         |

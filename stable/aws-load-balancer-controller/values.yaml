@@ -61,5 +61,9 @@ tolerations: []
 
 affinity: {}
 
+podAnnotations: {}
+
+podLabels: {}
+
 # Enable cert-manager
 enableCertManager: false

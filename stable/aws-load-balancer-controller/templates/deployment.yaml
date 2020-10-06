@@ -13,9 +13,15 @@ spec:
     metadata:
       labels:
         {{- include "aws-load-balancer-controller.selectorLabels" . | nindent 8 }}
+        {{- if .Values.podLabels }}
+        {{- toYaml .Values.podLabels | nindent 8 }}
+        {{- end }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
+        {{- if .Values.podAnnotations }}
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
