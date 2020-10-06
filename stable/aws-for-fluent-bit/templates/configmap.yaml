@@ -131,10 +131,10 @@ data:
     [OUTPUT]
         Name            es
         Match           {{ .Values.elasticsearch.match }}
-        AWS_Region      {{ .Values.elasticsearch.region }}
-        AWS_Auth        {{ .Values.elasticsearch.aws_auth }}
+        AWS_Region      {{ .Values.elasticsearch.awsRegion }}
+        AWS_Auth        {{ .Values.elasticsearch.awsAuth }}
         {{- if .Values.elasticsearch.host }}
-        host            {{ .Values.elasticsearch.host }}
+        Host            {{ .Values.elasticsearch.host }}
         {{- end }}
         {{- if .Values.elasticsearch.port }}
         Port            {{ .Values.elasticsearch.port }}
@@ -143,10 +143,7 @@ data:
         TLS             {{ .Values.elasticsearch.tls }}
         {{- end }}
         {{- if .Values.elasticsearch.retry_limit }}
-        Retry_Limit     {{ .Values.elasticsearch.retry_limit }}
-        {{- end }}
-        {{- if .Values.elasticsearch.timeKeyFormat }}
-        time_key_format {{ .Values.elasticsearch.timeKeyFormat }}
+        Retry_Limit     {{ .Values.elasticsearch.retryLimit }}
         {{- end }}
 {{- end }}
 
