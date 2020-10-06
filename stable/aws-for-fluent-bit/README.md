@@ -33,6 +33,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `image.repository` | Image to deploy | `amazon/aws-for-fluent-bit` | ✔
 | `image.tag` | Image tag to deploy | `2.2.0`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
+| `imagePullSecrets` | Docker registry pull secret | `[]` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` | 
 | `service.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
 | `service.extraParsers` | Adding more parsers with this value | `""` |
@@ -65,7 +66,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `kinesis.match` | The log filter | `"*"` | ✔
 | `kinesis.region` | The region which your Kinesis Data Stream is in. | `"us-east-1"` | ✔
 | `kinesis.stream` | The name of the Kinesis Data Stream that you want log records sent to. | `"my-kinesis-stream-name"` | ✔
-| `kinesis.partitionKey` | A partition key is used to group data by shard within a stream. A Kinesis Data Stream uses the partition key that is associated with each data record to determine which shard a given data record belongs to. For example, if your logs come from Docker containers, you can use container_id as the partition key, and the logs will be grouped and stored on different shards depending upon the id of the container they were generated from. As the data within a shard are coarsely ordered, you will get all your logs from one container in one shard roughly in order. If you don't set a partition key or put an invalid one, a random key will be generated, and the logs will be directed to random shards. If the partition key is invalid, the plugin will print an warning message. | `"container_id"` | ✔
+| `kinesis.partitionKey` | A partition key is used to group data by shard within a stream. A Kinesis Data Stream uses the partition key that is associated with each data record to determine which shard a given data record belongs to. For example, if your logs come from Docker containers, you can use container_id as the partition key, and the logs will be grouped and stored on different shards depending upon the id of the container they were generated from. As the data within a shard are coarsely ordered, you will get all your logs from one container in one shard roughly in order. If you don't set a partition key or put an invalid one, a random key will be generated, and the logs will be directed to random shards. If the partition key is invalid, the plugin will print an warning message. | `"container_id"` | 
 | `kinesis.appendNewline` | If you set append_newline as true, a newline will be addded after each log record. | | 
 | `kinesis.dataKeys` | By default, the whole log record will be sent to Kinesis. If you specify key name(s) with this option, then only those keys and values will be sent to Kinesis. For example, if you are using the Fluentd Docker log driver, you can specify data_keys log and only the log message will be sent to Kinesis. If you specify multiple keys, they should be comma delimited. | |
 | `kinesis.roleArn` | ARN of an IAM role to assume (for cross account access). | |
@@ -73,3 +74,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `kinesis.timeKeyFormat` |  strftime compliant format string for the timestamp; for example, `%Y-%m-%dT%H:%M:%S%z`. This option is used with `time_key`. | |
 | `extraOutputs` | Adding more outputs with value | `""` |
 | `priorityClassName` | Name of Priority Class to assign pods | |
+| `updateStrategy` | Optional update strategy | `type: RollingUpdate` |
+| `affinity` | Map of node/pod affinities | `{}` |
+| `tolerations` | Optional deployment tolerations | `[]` |
+| `nodeSelector` | Node labels for pod assignment | `{}` |

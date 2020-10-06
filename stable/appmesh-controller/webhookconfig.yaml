@@ -1,6 +1,6 @@
 # This file contains configuration for the webhooks defined
-# in the appmesh-manager. The contents should not be changed
-# unless there are corresponding changes in the appmesh-manager
+# in the appmesh-controller. The contents should not be changed
+# unless there are corresponding changes in the appmesh-controller
 # controller. This file is referenced in the templates for
 # generating the admission webhooks for the resources
 customResources:
@@ -8,11 +8,11 @@ customResources:
     resource: gatewayroutes
   - name: mesh
     resource: meshes
-  - name: virtualgateway
-    resource: virtualgateways
   - name: virtualnode
     resource: virtualnodes
   - name: virtualrouter
     resource: virtualrouters
   - name: virtualservice
     resource: virtualservices
+  - name: virtualgateway
+    resource: virtualgateways

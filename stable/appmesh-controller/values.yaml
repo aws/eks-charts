@@ -4,11 +4,44 @@
 
 replicaCount: 1
 region: ""
+accountId: ""
 
 image:
-  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/app-mesh-controller
-  tag: v0.5.0
+  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
+  tag: v1.1.1
   pullPolicy: IfNotPresent
+
+sidecar:
+  image:
+    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
+    tag: v1.15.0.0-prod
+    # sidecar.logLevel: Envoy log level can be info, warn or error
+  logLevel: info
+  resources:
+    # sidecar.resources.requests: Envoy CPU and memory requests
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    # sidecar.resources/limits: Envoy CPU and memory limits
+    limits:
+      cpu: ""
+      memory: ""
+  lifecycleHooks:
+    # sidecar.lifecycleHooks: Envoy PreStop Hook Delay
+    preStopDelay: 20
+  probes:
+    # sidecar.probes: Envoy Readiness Probe
+    readinessProbeInitialDelay: 1
+    readinessProbePeriod: 10
+init:
+  image:
+    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
+    tag: v3-prod
+
+xray:
+  image:
+    repository: amazon/aws-xray-daemon
+    tag: latest
 
 nameOverride: ""
 fullnameOverride: ""
@@ -19,7 +52,7 @@ resources:
     memory: 1Gi
   requests:
     cpu: 100m
-    memory: 64Mi
+    memory: 200Mi
 
 nodeSelector: {}
 
@@ -29,14 +62,23 @@ affinity: {}
 
 podAnnotations: {}
 
+podLabels: {}
+
+cloudMapCustomHealthCheck:
+  # cloudMapCustomHealthCheck.enabled: `true` if CustomHealthCheck needs to be enabled in CloudMap
+  enabled: false
+
+cloudMapDNS:
+  # cloudMapDNS.ttl if set will use this global ttl value
+  ttl: 300
+
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
   create: true
   # serviceAccount.name: The name of the service account to create or use
   name: ""
-  # serviceAccount.annotations: Annotations to be added to ServiceAccount
-  annotations: {}
-    # eks.amazonaws.com/role-arn: arn:aws:iam::AWS_ACCOUNT_ID:role/IAM_ROLE_NAME
+  # serviceAccount.annotations: optional annotations to be applied to service account
+  annotations: ""
 
 rbac:
   # rbac.create: `true` if rbac resources should be created
@@ -47,3 +89,31 @@ rbac:
 log:
   #log.level: info (default), debug
   level: "info"
+
+tracing:
+  # tracing.enabled: `true` if Envoy should be configured tracing
+  enabled: false
+  # tracing.provider: can be x-ray, jaeger or datadog
+  provider: x-ray
+  # tracing.address: Jaeger or Datadog agent server address (ignored for X-Ray)
+  address: appmesh-jaeger.appmesh-system
+  # tracing.address: Jaeger or Datadog agent server port (ignored for X-Ray)
+  port: 9411
+
+stats:
+  # stats.tagsEnabled: `true` if Envoy should include app-mesh tags
+  tagsEnabled: false
+  # stats.statsdEnabled: `true` if Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125
+  statsdEnabled: false
+
+# Enable cert-manager
+enableCertManager: false
+
+# Environment variables to set in appmesh-controller pod
+env: {}
+
+#Example
+#env:
+#    http_proxy: http://proxyserver:3128
+#    https_proxy: http://proxyserver:3128
+#    no_proxy: "localhost,127.0.0.1,.cluster.local"

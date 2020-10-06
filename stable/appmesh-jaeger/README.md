@@ -27,12 +27,12 @@ and use `--set persistentVolumeClaim.claimName=<PVC-CLAIM-NAME>`.
 Enable Jaeger tracing for the App Mesh data plane:
 
 ```sh
-helm upgrade -i appmesh-inject eks/appmesh-inject \
---namespace appmesh-system \
---set tracing.enabled=true \
---set tracing.provider=jaeger \
---set tracing.address=appmesh-jaeger.appmesh-system \
---set tracing.port=9411
+helm upgrade -i appmesh-controller eks/appmesh-controller \
+    --namespace appmesh-system \
+    --set tracing.enabled=true \
+    --set tracing.provider=jaeger \
+    --set tracing.address=appmesh-jaeger.appmesh-system \
+    --set tracing.port=9411
 ```
 
 **Note** that you should restart all pods running inside the mesh after enabling tracing.

@@ -1,3 +1,4 @@
+{{- if .Values.crd.create -}}
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
@@ -15,3 +16,4 @@ spec:
     plural: eniconfigs
     singular: eniconfig
     kind: ENIConfig
+{{- end -}}

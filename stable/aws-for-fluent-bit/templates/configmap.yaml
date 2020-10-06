@@ -107,7 +107,9 @@ data:
         Match           {{ .Values.kinesis.match }}
         region          {{ .Values.kinesis.region }}
         stream          {{ .Values.kinesis.stream }}
+        {{- if .Values.kinesis.partitionKey }}
         partition_key   {{ .Values.kinesis.partitionKey }}
+        {{- end }}
         {{- if .Values.kinesis.appendNewline }}
         append_newline  {{ .Values.kinesis.appendNewline }}
         {{- end }}

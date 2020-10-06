@@ -1,0 +1,24 @@
+{{- if .Values.appmesh.gateway }}
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualGateway
+metadata:
+  name: {{ template "appmesh-gateway.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "appmesh-gateway.labels" . | indent 4 }}
+spec:
+  namespaceSelector:
+    matchLabels:
+      appmesh.k8s.aws/sidecarInjectorWebhook: enabled
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ template "appmesh-gateway.fullname" . }}
+  listeners:
+    - portMapping:
+        port: 8088
+        protocol: http
+  logging:
+    accessLog:
+      file:
+        path: "/dev/stdout"
+{{- end }}

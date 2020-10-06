@@ -1,5 +1,5 @@
-{{ $tls := fromYaml ( include "appmesh-manager.gen-certs" . ) }}
-{{ $fullName := ( include "appmesh-manager.fullname" . ) }}
+{{ $tls := fromYaml ( include "appmesh-controller.gen-certs" . ) }}
+{{ $fullName := ( include "appmesh-controller.fullname" . ) }}
 {{ $webhookConfig := .Files.Get "webhookconfig.yaml" | fromYaml }}
 ---
 apiVersion: admissionregistration.k8s.io/v1beta1
@@ -7,11 +7,11 @@ kind: MutatingWebhookConfiguration
 metadata:
 {{- if $.Values.enableCertManager }}
   annotations:
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ template "appmesh-manager.fullname" . }}-serving-cert
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ template "appmesh-controller.fullname" . }}-serving-cert
 {{- end }}
-  name: {{ template "appmesh-manager.fullname" . }}-mutating-webhook-configuration
+  name: {{ template "appmesh-controller.fullname" . }}-mutating-webhook-configuration
   labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
+{{ include "appmesh-controller.labels" . | indent 4 }}
 webhooks:
 {{- range $res := $webhookConfig.customResources }}
 - clientConfig:
@@ -42,8 +42,12 @@ webhooks:
   failurePolicy: Fail
   name: mpod.appmesh.k8s.aws
   namespaceSelector:
-    matchLabels:
-      appmesh.k8s.aws/sidecarInjectorWebhook: enabled
+    matchExpressions:
+      - key: appmesh.k8s.aws/sidecarInjectorWebhook
+        operator: In
+        values:
+          - enabled
+          - disabled
   rules:
   - apiGroups:
     - ""
@@ -59,11 +63,11 @@ kind: ValidatingWebhookConfiguration
 metadata:
 {{- if $.Values.enableCertManager }}
   annotations:
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ template "appmesh-manager.fullname" . }}-serving-cert
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ template "appmesh-controller.fullname" . }}-serving-cert
 {{- end }}
-  name: {{ template "appmesh-manager.fullname" . }}-validating-webhook-configuration
+  name: {{ template "appmesh-controller.fullname" . }}-validating-webhook-configuration
   labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
+{{ include "appmesh-controller.labels" . | indent 4 }}
 webhooks:
 {{- range $res := $webhookConfig.customResources }}
 - clientConfig:
@@ -90,10 +94,10 @@ webhooks:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ template "appmesh-manager.fullname" . }}-webhook-server-cert
+  name: {{ template "appmesh-controller.fullname" . }}-webhook-server-cert
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
+{{ include "appmesh-controller.labels" . | indent 4 }}
 type: kubernetes.io/tls
 data:
   ca.crt: {{ $tls.caCert }}
@@ -103,26 +107,26 @@ data:
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: {{ template "appmesh-manager.fullname" . }}-serving-cert
+  name: {{ template "appmesh-controller.fullname" . }}-serving-cert
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
+{{ include "appmesh-controller.labels" . | indent 4 }}
 spec:
   dnsNames:
-  - {{ template "appmesh-manager.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc
-  - {{ template "appmesh-manager.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc.cluster.local
+  - {{ template "appmesh-controller.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc
+  - {{ template "appmesh-controller.fullname" . }}-webhook-service.{{ .Release.Namespace }}.svc.cluster.local
   issuerRef:
     kind: Issuer
-    name: {{ template "appmesh-manager.fullname" . }}-selfsigned-issuer
-  secretName: {{ template "appmesh-manager.fullname" . }}-webhook-server-cert
+    name: {{ template "appmesh-controller.fullname" . }}-selfsigned-issuer
+  secretName: {{ template "appmesh-controller.fullname" . }}-webhook-server-cert
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
-  name: {{ template "appmesh-manager.fullname" . }}-selfsigned-issuer
+  name: {{ template "appmesh-controller.fullname" . }}-selfsigned-issuer
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
+{{ include "appmesh-controller.labels" . | indent 4 }}
 spec:
   selfSigned: {}
 {{- end }}

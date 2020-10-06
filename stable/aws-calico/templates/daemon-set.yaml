@@ -17,10 +17,22 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-node"
+      {{- with .Values.calico.node.podAnnotations }}
+      annotations: {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       priorityClassName: system-node-critical
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "eks.amazonaws.com/compute-type"
+                  operator: NotIn
+                  values:
+                    - fargate
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        {{- toYaml .Values.calico.node.nodeSelector | nindent 8 }}
       hostNetwork: true
       serviceAccountName: "{{ include "aws-calico.serviceAccountName" . }}-node"
       # Minimize downtime during a rolling upgrade or deletion; tell Kubernetes to do a "force
@@ -82,13 +94,16 @@ spec:
               value: ""
             - name: FELIX_HEALTHENABLED
               value: "true"
+          {{- if .Values.calico.node.extraEnv }}
+            {{- toYaml .Values.calico.node.extraEnv | nindent 12 }}
+          {{- end }}
           securityContext:
             privileged: true
           livenessProbe:
-            httpGet:
-              path: /liveness
-              port: 9099
-              host: localhost
+            exec:
+              command:
+              - /bin/calico-node
+              - -felix-live
             periodSeconds: 10
             initialDelaySeconds: 10
             failureThreshold: 6

@@ -4,7 +4,7 @@
 
 image:
   repository: amazon/aws-node-termination-handler
-  tag: v1.4.0
+  tag: v1.8.0
   pullPolicy: IfNotPresent
   pullSecrets: []
 
@@ -18,6 +18,12 @@ fullnameOverride: ""
 priorityClassName: system-node-critical
 
 podAnnotations: {}
+linuxPodAnnotations: {}
+windowsPodAnnotations: {}
+
+podLabels: {}
+linuxPodLabels: {}
+windowsPodLabels: {}
 
 resources:
   requests:
@@ -27,11 +33,23 @@ resources:
     memory: "128Mi"
     cpu: "100m"
 
-## enableSpotInterruptionDraining If true, drain nodes when the spot interruption termination notice is receieved
+## enableSpotInterruptionDraining If false, do not drain nodes when the spot interruption termination notice is received
 enableSpotInterruptionDraining: ""
 
 ## enableScheduledEventDraining [EXPERIMENTAL] If true, drain nodes before the maintenance window starts for an EC2 instance scheduled event
 enableScheduledEventDraining: ""
+
+# Total number of times to try making the metadata request before failing.
+metadataTries: 3
+
+# Cordon but do not drain nodes upon spot interruption termination notice.
+cordonOnly: false
+
+# Taint node upon spot interruption termination notice.
+taintNode: false
+
+# Log messages in JSON format.
+jsonLogging: false
 
 ## dryRun tells node-termination-handler to only log calls to kubernetes control plane
 dryRun: false
@@ -54,11 +72,21 @@ nodeTerminationGracePeriod: ""
 # webhookURL if specified, posts event data to URL upon instance interruption action.
 webhookURL: ""
 
+# Webhook URL will be fetched from the secret store using the given name.
+webhookURLSecretName: ""
+
 # webhookProxy if specified, uses this HTTP(S) proxy configuration.
 webhookProxy: ""
 
 # webhookHeaders if specified, replaces the default webhook headers.
 webhookHeaders: ""
+
+# webhook template file will be fetched from given config map name
+# if specified, replaces the default webhook message with the content of the template file
+webhookTemplateConfigMapName: ""
+
+# template file name stored in configmap
+webhookTemplateConfigMapKey: ""
 
 # webhookTemplate if specified, replaces the default webhook message template.
 webhookTemplate: ""
@@ -67,19 +95,33 @@ webhookTemplate: ""
 instanceMetadataURL: ""
 
 # (TESTING USE): Mount path for uptime file
-procUptimeFile: "/proc/uptime"
+procUptimeFile: ""
 
-# nodeSelector tells the daemonset where to place the node-termination-handler
+# Create node OS specific daemonset(s). (e.g. "linux", "windows", "linux windows")
+targetNodeOs: "linux"
+
+# nodeSelector tells both linux and windows daemonsets where to place the node-termination-handler
 # pods. By default, this value is empty and every node will receive a pod.
 nodeSelector: {}
+# linuxNodeSelector tells the linux daemonset where to place the node-termination-handler
+# pods. By default, this value is empty and every linux node will receive a pod.
+linuxNodeSelector: {}
+# windowsNodeSelector tells the windows daemonset where to place the node-termination-handler
+# pods. By default, this value is empty and every windows node will receive a pod.
+windowsNodeSelector: {}
 
 nodeSelectorTermsOs: ""
 nodeSelectorTermsArch: ""
 
-tolerations: 
+enablePrometheusServer: false
+prometheusServerPort: "9092"
+
+tolerations:
   - operator: "Exists"
 
 affinity: {}
+linuxAffinity: {}
+windowsAffinity: {}
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -94,4 +136,22 @@ rbac:
   # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
   pspEnabled: true
 
-dnsPolicy: "ClusterFirstWithHostNet"
+dnsPolicy: ""
+
+podMonitor:
+  # Specifies whether PodMonitor should be created
+  create: false
+   # The Prometheus scrape interval
+  interval: 30s
+  # The number of scraped samples that will be accepted
+  sampleLimit: 5000
+   # Additional labels to add to the metadata
+  labels: {}
+
+# K8s DaemonSet update strategy.
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+linuxUpdateStrategy: ""
+windowsUpdateStrategy: ""

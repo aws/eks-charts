@@ -2,9 +2,9 @@
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: {{ template "appmesh-manager.fullname" . }}
+  name: {{ template "appmesh-gateway.fullname" . }}
   labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
+{{ include "appmesh-gateway.labels" . | indent 4 }}
   annotations:
     seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
 spec:
@@ -30,28 +30,28 @@ spec:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ template "appmesh-manager.fullname" . }}-psp
+  name: {{ template "appmesh-gateway.fullname" . }}-psp
   labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
+{{ include "appmesh-gateway.labels" . | indent 4 }}
 rules:
   - apiGroups: ['policy']
     resources: ['podsecuritypolicies']
     verbs:     ['use']
     resourceNames:
-      - {{ template "appmesh-manager.fullname" . }}
+      - {{ template "appmesh-gateway.fullname" . }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ template "appmesh-manager.fullname" . }}-psp
+  name: {{ template "appmesh-gateway.fullname" . }}-psp
   labels:
-{{ include "appmesh-manager.labels" . | indent 4 }}
+{{ include "appmesh-gateway.labels" . | indent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ template "appmesh-manager.fullname" . }}-psp
+  name: {{ template "appmesh-gateway.fullname" . }}-psp
 subjects:
   - kind: ServiceAccount
-    name: {{ template "appmesh-manager.serviceAccountName" . }}
+    name: {{ template "appmesh-gateway.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 {{- end }}

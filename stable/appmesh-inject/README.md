@@ -2,6 +2,8 @@
 
 App Mesh inject Helm chart for Kubernetes
 
+**Note**: Users of AppMesh controller v1.0.0+ **shouldn't** install this inject chart. The sidecar injection functionality is already included in the controller itself.
+
 ## Prerequisites
 
 * Kubernetes >= 1.13
@@ -74,7 +76,7 @@ Parameter | Description | Default
 `sidecar.image.tag` | Envoy image tag | `<VERSION>`
 `sidecar.logLevel` | Envoy log level | `info`
 `sidecar.resources` | Envoy container resources | `requests: cpu 10m memory 32Mi`
-`init.image.repository` | Route manager image repository | `111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
+`init.image.repository` | Route manager image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
 `init.image.tag` | Route manager image tag | `<VERSION>`
 `mesh.create` | If `true`, create mesh custom resource | `false`
 `mesh.name` | The name of the mesh to use | `global`
