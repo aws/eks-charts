@@ -127,6 +127,26 @@ data:
         {{- end }}
 {{- end }}
 
+{{- if .Values.elasticsearch.enabled }}
+    [OUTPUT]
+        Name            es
+        Match           {{ .Values.elasticsearch.match }}
+        AWS_Region      {{ .Values.elasticsearch.awsRegion }}
+        AWS_Auth        {{ .Values.elasticsearch.awsAuth }}
+        {{- if .Values.elasticsearch.host }}
+        Host            {{ .Values.elasticsearch.host }}
+        {{- end }}
+        {{- if .Values.elasticsearch.port }}
+        Port            {{ .Values.elasticsearch.port }}
+        {{- end }}
+        {{- if .Values.elasticsearch.tls }}
+        TLS             {{ .Values.elasticsearch.tls }}
+        {{- end }}
+        {{- if .Values.elasticsearch.retry_limit }}
+        Retry_Limit     {{ .Values.elasticsearch.retryLimit }}
+        {{- end }}
+{{- end }}
+
 {{- if .Values.extraOutputs }}
 {{ .Values.extraOutputs | indent 4}}
 {{- end }}

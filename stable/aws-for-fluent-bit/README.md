@@ -31,7 +31,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | - | - | - | -
 | `global.namespaceOverride` | Override the deployment namespace	| Not set (`Release.Namespace`) |
 | `image.repository` | Image to deploy | `amazon/aws-for-fluent-bit` | ✔
-| `image.tag` | Image tag to deploy | `2.2.0`
+| `image.tag` | Image tag to deploy | `2.7.0`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
 | `imagePullSecrets` | Docker registry pull secret | `[]` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` | 
@@ -72,6 +72,14 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `kinesis.roleArn` | ARN of an IAM role to assume (for cross account access). | |
 | `kinesis.timeKey` | Add the timestamp to the record under this key. By default the timestamp from Fluent Bit will not be added to records sent to Kinesis. | |
 | `kinesis.timeKeyFormat` |  strftime compliant format string for the timestamp; for example, `%Y-%m-%dT%H:%M:%S%z`. This option is used with `time_key`. | |
+| `elasticsearch.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch) | `true` | ✔
+| `elasticsearch.match` | The log filter | `"*"` | ✔
+| `elasticsearch.awsRegion` | The region which your Firehose delivery stream(s) is/are in. | `"us-east-1"` | ✔
+| `elasticsearch.host` | The url of the Elastic Search endpoint you want log records sent to. | | ✔
+| `elasticsearch.awsAuth` | Enable AWS Sigv4 Authentication for Amazon ElasticSearch Service | On |
+| `elasticsearch.tls` | Enable or disable TLS support | On |
+| `elasticsearch.port` | TCP Port of the target service. | 443 |
+| `elasticsearch.retryLimit` | Integer value to set the maximum number of retries allowed. N must be >= 1  | 6 |
 | `extraOutputs` | Adding more outputs with value | `""` |
 | `priorityClassName` | Name of Priority Class to assign pods | |
 | `updateStrategy` | Optional update strategy | `type: RollingUpdate` |
