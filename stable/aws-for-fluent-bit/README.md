@@ -74,12 +74,12 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `kinesis.timeKeyFormat` |  strftime compliant format string for the timestamp; for example, `%Y-%m-%dT%H:%M:%S%z`. This option is used with `time_key`. | |
 | `elasticsearch.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch) | `true` | ✔
 | `elasticsearch.match` | The log filter | `"*"` | ✔
-| `elasticsearch.region` | The region which your Firehose delivery stream(s) is/are in. | `"us-east-1"` | ✔
+| `elasticsearch.awsRegion` | The region which your Firehose delivery stream(s) is/are in. | `"us-east-1"` | ✔
 | `elasticsearch.host` | The url of the Elastic Search endpoint you want log records sent to. | | ✔
-| `elasticsearch.aws_auth` | Enable AWS Sigv4 Authentication for Amazon ElasticSearch Service | On |
+| `elasticsearch.awsAuth` | Enable AWS Sigv4 Authentication for Amazon ElasticSearch Service | On |
 | `elasticsearch.tls` | Enable or disable TLS support | On |
 | `elasticsearch.port` | TCP Port of the target service. | 443 |
-| `elasticsearch.retry_limit` | Integer value to set the maximum number of retries allowed. N must be >= 1  | 6 |
+| `elasticsearch.retryLimit` | Integer value to set the maximum number of retries allowed. N must be >= 1  | 6 |
 | `extraOutputs` | Adding more outputs with value | `""` |
 | `priorityClassName` | Name of Priority Class to assign pods | |
 | `updateStrategy` | Optional update strategy | `type: RollingUpdate` |
