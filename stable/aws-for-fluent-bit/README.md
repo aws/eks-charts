@@ -75,3 +75,6 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `extraOutputs` | Adding more outputs with value | `""` |
 | `priorityClassName` | Name of Priority Class to assign pods | |
 | `updateStrategy` | Optional update strategy | `type: RollingUpdate` |
+| `affinity` | Map of node/pod affinities | `{}` |
+| `tolerations` | Optional deployment tolerations | `[]` |
+| `nodeSelector` | Node labels for pod assignment | `{}` |
