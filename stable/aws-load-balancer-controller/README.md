@@ -14,6 +14,9 @@ AWS Load Balancer controller manages the following AWS resources
 - Application Load Balancers to satisfy Kubernetes ingress objects
 - Network Load Balancers in IP mode to satisfy Kubernetes service objects of type LoadBalancer with NLB IP mode annotation
 
+## Security updates
+**Note**: Deployed chart does not receive security updates automatically. You need to manually upgrade to a newer chart.
+
 ## Prerequisites
 - Kubernetes 1.9+ for ALB, 1.20+ for NLB IP mode
 - IAM permissions
