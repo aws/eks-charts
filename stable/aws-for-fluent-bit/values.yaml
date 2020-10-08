@@ -4,7 +4,7 @@ global:
 
 image:
   repository: amazon/aws-for-fluent-bit
-  tag: 2.2.0
+  tag: 2.7.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -36,7 +36,6 @@ input:
 #       Interval_Sec 1
 #       DB           winlog.sqlite
 
-
 filter:
   match: "kube.*"
   kubeURL: "https://kubernetes.default.svc.cluster.local:443"
@@ -63,7 +62,7 @@ cloudWatch:
   roleArn:
   autoCreateGroup: true
   endpoint:
-  credentialsEndpoint:  {}
+  credentialsEndpoint: {}
 
 firehose:
   enabled: true
@@ -86,6 +85,16 @@ kinesis:
   roleArn:
   timeKey:
   timeKeyFormat:
+
+elasticsearch:
+  enabled: true
+  match: "*"
+  host:
+  awsRegion: "us-east-1"
+  awsAuth: "On"
+  tls: "On"
+  port: "443"
+  retryLimit: 6
 
 # extraOutputs: |
 #   [OUTPUT]
@@ -110,3 +119,9 @@ resources:
 
 updateStrategy:
   type: RollingUpdate
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

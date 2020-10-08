@@ -68,6 +68,9 @@ spec:
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}
+        {{- if .Values.cloudMapDNS.ttl }}
+        - --cloudmap-dns-ttl={{ .Values.cloudMapDNS.ttl }}
+        {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
         - --enable-xray-tracing=true
         - --xray-image={{ .Values.xray.image.repository}}:{{ .Values.xray.image.tag }}
@@ -84,6 +87,9 @@ spec:
         {{- end }}
         {{- if .Values.region }}
         - --aws-region={{ .Values.region }}
+        {{- end }}
+        {{- if .Values.accountId }}
+        - --aws-account-id={{ .Values.accountId }}
         {{- end }}
         - --sidecar-log-level={{ .Values.sidecar.logLevel }}
         {{- if .Values.env }}
