@@ -32,13 +32,15 @@ rbac:
 podSecurityContext:
   fsGroup: 65534
 
-securityContext: {}
+securityContext:
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1002
+  runAsGroup: 65534
+  allowPrivilegeEscalation: false
 
 # Time period for the controller pod to do a graceful shutdown
 terminationGracePeriodSeconds: 10
