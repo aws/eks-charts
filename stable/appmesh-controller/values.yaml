@@ -15,7 +15,7 @@ sidecar:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
     tag: v1.15.0.0-prod
-    # sidecar.logLevel: Envoy log level can be info, warn or error
+    # sidecar.logLevel: Envoy log level can be info, warn, error or debug
   logLevel: info
   resources:
     # sidecar.resources.requests: Envoy CPU and memory requests
@@ -67,6 +67,10 @@ podLabels: {}
 cloudMapCustomHealthCheck:
   # cloudMapCustomHealthCheck.enabled: `true` if CustomHealthCheck needs to be enabled in CloudMap
   enabled: false
+
+cloudMapDNS:
+  # cloudMapDNS.ttl if set will use this global ttl value
+  ttl: 300
 
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not

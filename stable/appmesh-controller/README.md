@@ -6,7 +6,7 @@ App Mesh controller Helm chart for Kubernetes
 
 ## Prerequisites
 
-* Kubernetes >= 1.13
+* Kubernetes >= 1.14
 * EKS nodes should have the IAM permissions from the following policies: `AWSAppMeshFullAccess`, `AWSCloudMapFullAccess`
 
 ## Installing the Chart
@@ -23,7 +23,7 @@ helm repo add eks https://aws.github.io/eks-charts
 Install the App Mesh CRDs:
 
 ```sh
-kubectl apply -k github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=master
+kubectl apply -k "github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=master"
 ```
 
 Install the App Mesh CRD controller:
@@ -247,7 +247,7 @@ Parameter | Description | Default
 `serviceAccount.annotations` | optional annotations to add to service account | None
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | None
-`sidecar.image.repository` | Envoy image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`
+`sidecar.image.repository` | Envoy image repository. If you override with non-Amazon built Envoy image, you will need to test/ensure it works with the App Mesh | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`
 `sidecar.image.tag` | Envoy image tag | `<VERSION>`
 `sidecar.logLevel` | Envoy log level | `info`
 `sidecar.resources.requests` | Envoy container resource requests | `requests: cpu 10m memory 32Mi`
@@ -260,6 +260,7 @@ Parameter | Description | Default
 `stats.tagsEnabled` |  If `true`, Envoy should include app-mesh tags | `false`
 `stats.statsdEnabled` |  If `true`, Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125 | `false`
 `cloudMapCustomHealthCheck.enabled` |  If `true`, CustomHealthCheck will be enabled for CloudMap Services | `false`
+`cloudMapDNS.ttl` |  Sets CloudMap DNS TTL | `300`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`
 `tracing.provider` |  The tracing provider can be x-ray, jaeger or datadog | `x-ray`
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`
