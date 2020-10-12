@@ -85,7 +85,6 @@ Parameter | Description | Default
 `priorityClassName` | Name of the priorityClass | `system-node-critical`
 `resources` | Resources for the pods | `requests.cpu: 50m, requests.memory: 64Mi, limits.cpu: 100m, limits.memory: 128Mi`
 `dnsPolicy` | DaemonSet DNS policy | Linux: `ClusterFirstWithHostNet`, Windows: `ClusterFirst`
-`useHostNetwork` | If `true`, enables `hostNetwork` for the Linux DaemonSet.| `true`
 `nodeSelector` | Tells the all daemon sets where to place the node-termination-handler pods. For example: `lifecycle: "Ec2Spot"`, `on-demand: "false"`, `aws.amazon.com/purchaseType: "spot"`, etc. Value must be a valid yaml expression. | `{}`
 `linuxNodeSelector` | Tells the Linux daemon set where to place the node-termination-handler pods. For example: `lifecycle: "Ec2Spot"`, `on-demand: "false"`, `aws.amazon.com/purchaseType: "spot"`, etc. Value must be a valid yaml expression. | `{}`
 `windowsNodeSelector` | Tells the Windows daemon set where to place the node-termination-handler pods. For example: `lifecycle: "Ec2Spot"`, `on-demand: "false"`, `aws.amazon.com/purchaseType: "spot"`, etc. Value must be a valid yaml expression. | `{}`

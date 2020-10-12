@@ -138,11 +138,6 @@ rbac:
 
 dnsPolicy: ""
 
-# Specified whether the Linux DaemonSet binds to the host network or not.
-# Enabling this gives the pod access to the loopback device, services listening
-# on localhost, and could be used to snoop on network activity of other pods on the same node
-useHostNetwork: true
-
 podMonitor:
   # Specifies whether PodMonitor should be created
   create: false
