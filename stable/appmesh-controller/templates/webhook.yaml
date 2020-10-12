@@ -42,8 +42,12 @@ webhooks:
   failurePolicy: Fail
   name: mpod.appmesh.k8s.aws
   namespaceSelector:
-    matchLabels:
-      appmesh.k8s.aws/sidecarInjectorWebhook: enabled
+    matchExpressions:
+      - key: appmesh.k8s.aws/sidecarInjectorWebhook
+        operator: In
+        values:
+          - enabled
+          - disabled
   rules:
   - apiGroups:
     - ""

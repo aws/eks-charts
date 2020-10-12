@@ -7,7 +7,7 @@ fullnameOverride: ""
 
 image:
   repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
-  tag: v1.12.4.0-prod
+  tag: v1.15.1.0-prod
   pullPolicy: IfNotPresent
   # skipImageOverride: when enabled the App Mesh injector will not override the Envoy image
   skipImageOverride: false
