@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: amazon/aws-alb-ingress-controller
-  tag: v2.0.0-rc2
+  tag: v2.0.0-rc3
   pullPolicy: Always
 
 imagePullSecrets: []

@@ -32,7 +32,7 @@ spec:
       - name: cert
         secret:
           defaultMode: 420
-          secretName: {{ template "aws-load-balancer-controller.namePrefix" . }}-webhook-secret
+          secretName: {{ template "aws-load-balancer-controller.namePrefix" . }}-tls
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
