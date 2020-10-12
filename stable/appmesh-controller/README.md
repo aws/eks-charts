@@ -63,7 +63,7 @@ spec:
       mesh: <mesh-name> // any string value
 ```
 
-Note: If you set `namespaceSelector: {}`, mesh will select all the namespace in your cluster.
+Note: If you set `namespaceSelector: {}`, mesh will select all the namespace in your cluster. Labels on your namespace spec is a no-op when selecting all namespaces.
 
 In the namespace spec, you will need to add a label `mesh: <mesh-name>`. Here's a sample namespace spec:
 
