@@ -119,11 +119,27 @@ data:
         {{- if .Values.kinesis.endpoint }}
         endpoint        {{ .Values.kinesis.endpoint }}
         {{- end }}
+        {{- if .Values.kinesis.stsEndpoint }}
+        sts_endpoint    {{ .Values.kinesis.stsEndpoint }}
+        {{- end }}
         {{- if .Values.kinesis.timeKey }}
         time_key        {{ .Values.kinesis.timeKey }}
         {{- end }}
         {{- if .Values.kinesis.timeKeyFormat }}
         time_key_format {{ .Values.kinesis.timeKeyFormat }}
+        {{- end }}
+        {{- if .Values.kinesis.aggregation }}
+        aggregation     {{ .Values.kinesis.aggregation }}
+        {{- end }}
+        {{- if .Values.kinesis.compression }}
+        compression     {{ .Values.kinesis.compression }}
+        {{- end }}
+
+        {{- if .Values.kinesis.experimental.concurrency }}
+        experimental_concurrency          {{ .Values.kinesis.experimental.concurrency }}
+        {{- end }}
+        {{- if .Values.kinesis.experimental.concurrencyRetries }}
+        experimental_concurrency_retries  {{ .Values.kinesis.experimental.concurrencyRetries }}
         {{- end }}
 {{- end }}
 

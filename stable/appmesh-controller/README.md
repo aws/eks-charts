@@ -6,7 +6,7 @@ App Mesh controller Helm chart for Kubernetes
 
 ## Prerequisites
 
-* Kubernetes >= 1.13
+* Kubernetes >= 1.14
 * EKS nodes should have the IAM permissions from the following policies: `AWSAppMeshFullAccess`, `AWSCloudMapFullAccess`
 
 ## Installing the Chart
@@ -23,7 +23,7 @@ helm repo add eks https://aws.github.io/eks-charts
 Install the App Mesh CRDs:
 
 ```sh
-kubectl apply -k github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=master
+kubectl apply -k "github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=master"
 ```
 
 Install the App Mesh CRD controller:

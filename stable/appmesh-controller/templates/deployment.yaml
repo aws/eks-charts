@@ -68,7 +68,7 @@ spec:
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}
-        {{- if .Values.cloudMapDNS.ttl }}
+        {{- if kindIs "float64" .Values.cloudMapDNS.ttl }}
         - --cloudmap-dns-ttl={{ .Values.cloudMapDNS.ttl }}
         {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
