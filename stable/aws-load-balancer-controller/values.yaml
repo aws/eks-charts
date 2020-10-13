@@ -67,3 +67,7 @@ podLabels: {}
 
 # Enable cert-manager
 enableCertManager: false
+
+# The ingress class this controller will satisfy. If not specified, controller will match all
+# ingresses without ingress class annotation and ingresses of type alb
+ingressClass: alb
