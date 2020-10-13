@@ -83,18 +83,25 @@ kinesis:
   appendNewline:
   dataKeys:
   roleArn:
+  endpoint:
+  stsEndpoint:
   timeKey:
   timeKeyFormat:
+  compression:
+  aggregation:
+  experimental:
+    concurrency:
+    concurrencyRetries:
 
 elasticsearch:
   enabled: true
   match: "*"
   host:
-  region: "us-east-1"
-  aws_auth: "On"
+  awsRegion: "us-east-1"
+  awsAuth: "On"
   tls: "On"
   port: "443"
-  retry_limit: 6
+  retryLimit: 6
 
 # extraOutputs: |
 #   [OUTPUT]
@@ -119,3 +126,9 @@ resources:
 
 updateStrategy:
   type: RollingUpdate
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

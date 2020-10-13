@@ -55,11 +55,7 @@ app.kubernetes.io/instance: {{ include "aws-for-fluent-bit.namespace" . }}
 Create the name of the service account to use
 */}}
 {{- define "aws-for-fluent-bit.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create -}}
-    {{ default (include "aws-for-fluent-bit.fullname" .) .Values.serviceAccount.name }}
-{{- else -}}
-    {{ default "default" .Values.serviceAccount.name }}
-{{- end -}}
+  {{ default (include "aws-for-fluent-bit.fullname" .) .Values.serviceAccount.name }}
 {{- end -}}
 
 {{/*

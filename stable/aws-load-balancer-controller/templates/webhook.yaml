@@ -42,7 +42,7 @@ webhooks:
     service:
       name: {{ template "aws-load-balancer-controller.namePrefix" . }}-webhook-service
       namespace: {{ $.Release.Namespace }}
-      path: /mutate-elbv2-k8s-aws-v1alpha1-targetgroupbinding
+      path: /mutate-elbv2-k8s-aws-v1beta1-targetgroupbinding
   failurePolicy: Fail
   name: mtargetgroupbinding.elbv2.k8s.aws
   admissionReviewVersions:
@@ -51,7 +51,7 @@ webhooks:
   - apiGroups:
     - elbv2.k8s.aws
     apiVersions:
-    - v1alpha1
+    - v1beta1
     operations:
     - CREATE
     - UPDATE
@@ -75,7 +75,7 @@ webhooks:
     service:
       name: {{ template "aws-load-balancer-controller.namePrefix" . }}-webhook-service
       namespace: {{ $.Release.Namespace }}
-      path: /validate-elbv2-k8s-aws-v1alpha1-targetgroupbinding
+      path: /validate-elbv2-k8s-aws-v1beta1-targetgroupbinding
   failurePolicy: Fail
   name: vtargetgroupbinding.elbv2.k8s.aws
   admissionReviewVersions:
@@ -84,7 +84,7 @@ webhooks:
   - apiGroups:
     - elbv2.k8s.aws
     apiVersions:
-    - v1alpha1
+    - v1beta1
     operations:
     - CREATE
     - UPDATE
@@ -96,7 +96,7 @@ webhooks:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ template "aws-load-balancer-controller.namePrefix" . }}-webhook-secret
+  name: {{ template "aws-load-balancer-controller.namePrefix" . }}-tls
   labels:
 {{ include "aws-load-balancer-controller.labels" . | indent 4 }}
 type: kubernetes.io/tls
@@ -118,7 +118,7 @@ spec:
   issuerRef:
     kind: Issuer
     name: {{ template "aws-load-balancer-controller.namePrefix" . }}-selfsigned-issuer
-  secretName: {{ template "aws-load-balancer-controller.namePrefix" . }}-webhook-secret
+  secretName: {{ template "aws-load-balancer-controller.namePrefix" . }}-tls
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: Issuer

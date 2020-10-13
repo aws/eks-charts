@@ -17,8 +17,20 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-node"
+      {{- with .Values.calico.node.podAnnotations }}
+      annotations: {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       priorityClassName: system-node-critical
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "eks.amazonaws.com/compute-type"
+                  operator: NotIn
+                  values:
+                    - fargate
       nodeSelector:
         {{- toYaml .Values.calico.node.nodeSelector | nindent 8 }}
       hostNetwork: true

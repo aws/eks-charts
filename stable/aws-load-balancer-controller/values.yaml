@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: amazon/aws-alb-ingress-controller
-  tag: v2.0.0-rc2
+  tag: v2.0.0-rc3
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -32,13 +32,13 @@ rbac:
 podSecurityContext:
   fsGroup: 65534
 
-securityContext: {}
+securityContext:
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
 
 # Time period for the controller pod to do a graceful shutdown
 terminationGracePeriodSeconds: 10
@@ -60,6 +60,10 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+podAnnotations: {}
+
+podLabels: {}
 
 # Enable cert-manager
 enableCertManager: false
