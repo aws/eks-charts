@@ -57,16 +57,18 @@ Parameter | Description | Default
 `gracePeriod` | (DEPRECATED: Renamed to podTerminationGracePeriod) The time in seconds given to each pod to terminate gracefully. If negative, the default value specified in the pod will be used. | `30`
 `podTerminationGracePeriod` | The time in seconds given to each pod to terminate gracefully. If negative, the default value specified in the pod will be used. | `30`
 `nodeTerminationGracePeriod` | Period of time in seconds given to each NODE to terminate gracefully. Node draining will be scheduled based on this value to optimize the amount of compute time, but still safely drain the node before an event. | `120`
-`ignoreDaemonsSets` | Causes kubectl to skip daemon set managed pods | `true`
+`ignoreDaemonSets` | Causes kubectl to skip daemon set managed pods | `true`
 `instanceMetadataURL` | The URL of EC2 instance metadata. This shouldn't need to be changed unless you are testing. | `http://169.254.169.254:80`
 `webhookURL` | Posts event data to URL upon instance interruption action | ``
 `webhookURLSecretName` | Pass Webhook URL as a secret. Secret Key: `webhookurl`, Value: `<WEBHOOK_URL>` | None
 `webhookProxy` | Uses the specified HTTP(S) proxy for sending webhooks | ``
 `webhookHeaders` | Replaces the default webhook headers. | `{"Content-type":"application/json"}`
 `webhookTemplate` | Replaces the default webhook message template. | `{"text":"[NTH][Instance Interruption] EventID: {{ .EventID }} - Kind: {{ .Kind }} - Description: {{ .Description }} - State: {{ .State }} - Start Time: {{ .StartTime }}"}`
+`webhookTemplateConfigMapName` | Pass Webhook template file as configmap | None
+`webhookTemplateConfigMapKey` | Name of the template file stored in the configmap| None
 `dryRun` | If true, only log if a node would be drained | `false`
 `enableScheduledEventDraining` | [EXPERIMENTAL] If true, drain nodes before the maintenance window starts for an EC2 instance scheduled event | `false`
-`enableSpotInterruptionDraining` | If true, drain nodes when the spot interruption termination notice is received | `true`
+`enableSpotInterruptionDraining` | If false, do not drain nodes when the spot interruption termination notice is received | `true`
 `metadataTries` | The number of times to try requesting metadata. If you would like 2 retries, set metadata-tries to 3. | `3`
 `cordonOnly` | If true, nodes will be cordoned but not drained when an interruption event occurs. | `false`
 `taintNode` | If true, nodes will be tainted when an interruption event occurs. Currently used taint keys are `aws-node-termination-handler/scheduled-maintenance` and `aws-node-termination-handler/spot-itn` | `false`
@@ -94,12 +96,19 @@ Parameter | Description | Default
 `serviceAccount.annotations` | Specifies the annotations for ServiceAccount       | `{}`
 `procUptimeFile` | (Used for Testing) Specify the uptime file | `/proc/uptime`
 `securityContext.runAsUserID` | User ID to run the container | `1000`
-`securityContext.runAsGroupID` | Group ID to run the container | `1000` 
+`securityContext.runAsGroupID` | Group ID to run the container | `1000`
 `nodeSelectorTermsOs` | Operating System Node Selector Key | >=1.14: `kubernetes.io/os`, <1.14: `beta.kubernetes.io/os`
 `nodeSelectorTermsArch` | CPU Architecture Node Selector Key | >=1.14: `kubernetes.io/arch`, <1.14: `beta.kubernetes.io/arch`
-`targetNodeOs | Space separated list of node OS's to target, e.g. "linux", "windows", "linux windows".  Note: Windows support is experimental. | `"linux"`
+`targetNodeOs` | Space separated list of node OS's to target, e.g. "linux", "windows", "linux windows".  Note: Windows support is experimental. | `"linux"`
 `enablePrometheusServer` | If true, start an http server exposing `/metrics` endpoint for prometheus. | `false`
 `prometheusServerPort` | Replaces the default HTTP port for exposing prometheus metrics. | `9092`
+`podMonitor.create` | if `true`, create a PodMonitor | `false`
+`podMonitor.interval` | Prometheus scrape interval | `30s`
+`podMonitor.sampleLimit` | Number of scraped samples accepted | `5000`
+`podMonitor.labels` | Additional PodMonitor metadata labels | `{}`
+`updateStrategy` | Update strategy for the all DaemonSets (Linux and Windows) | `type=RollingUpdate,rollingUpdate.maxUnavailable=1`
+`linuxUpdateStrategy` | Update strategy for the Linux DaemonSet | `type=RollingUpdate,rollingUpdate.maxUnavailable=1`
+`windowsUpdateStrategy` | Update strategy for the Windows DaemonSet | `type=RollingUpdate,rollingUpdate.maxUnavailable=1`
 
 ## Metrics endpoint consideration
 If prometheus server is enabled and since NTH is a daemonset with `host_networking=true`, nothing else will be able to bind to `:9092` (or the port configured) in the root network namespace

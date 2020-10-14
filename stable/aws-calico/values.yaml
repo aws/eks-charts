@@ -3,8 +3,11 @@ fullnameOverride: calico
 serviceAccount:
   create: true
 
+podSecurityPolicy:
+  create: false
+
 calico:
-  tag: v3.8.1
+  tag: v3.13.4
 
   typha:
     logseverity: Info #Debug, Info, Warning, Error, Fatal
@@ -16,6 +19,10 @@ calico:
       limits:
         memory: "96Mi"
         cpu: "100m"
+    tolerations: []
+    nodeSelector:
+      beta.kubernetes.io/os: linux
+    podAnnotations: {}
   node:
     logseverity: Info #Debug, Info, Warning, Error, Fatal
     image: quay.io/calico/node
@@ -29,6 +36,9 @@ calico:
     extraEnv: []
     # - name: SOME_VAR
     #   value: 'some value'
+    nodeSelector:
+      beta.kubernetes.io/os: linux
+    podAnnotations: {}
   typha_autoscaler:
     resources:
       requests:
@@ -37,7 +47,11 @@ calico:
       limits:
         memory: "32Mi"
         cpu: "10m"
+    tolerations: []
+    nodeSelector:
+      beta.kubernetes.io/os: linux
+    podAnnotations: {}
 
 autoscaler:
-  tag: "1.1.2"
+  tag: "1.7.1"
   image: k8s.gcr.io/cluster-proportional-autoscaler-amd64

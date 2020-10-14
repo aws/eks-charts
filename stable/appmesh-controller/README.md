@@ -6,39 +6,8 @@ App Mesh controller Helm chart for Kubernetes
 
 ## Prerequisites
 
-* Kubernetes >= 1.13
-* IAM policies
-    ```json
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "appmesh:*",
-                    "servicediscovery:CreateService",
-                    "servicediscovery:DeleteService",
-                    "servicediscovery:GetService",
-                    "servicediscovery:GetInstance",
-                    "servicediscovery:RegisterInstance",
-                    "servicediscovery:DeregisterInstance",
-                    "servicediscovery:ListInstances",
-                    "servicediscovery:ListNamespaces",
-                    "servicediscovery:ListServices",
-                    "servicediscovery:GetOperation",
-                    "servicediscovery:GetInstancesHealthStatus",
-                    "servicediscovery:UpdateInstanceCustomHealthStatus",
-                    "route53:GetHealthCheck",
-                    "route53:CreateHealthCheck",
-                    "route53:UpdateHealthCheck",
-                    "route53:ChangeResourceRecordSets",
-                    "route53:DeleteHealthCheck"
-                ],
-                "Resource": "*"
-            }
-        ]
-    }
-    ```
+* Kubernetes >= 1.14
+* EKS nodes should have the IAM permissions from the following policies: `AWSAppMeshFullAccess`, `AWSCloudMapFullAccess`
 
 ## Installing the Chart
 
@@ -54,7 +23,7 @@ helm repo add eks https://aws.github.io/eks-charts
 Install the App Mesh CRDs:
 
 ```sh
-kubectl apply -k github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=master
+kubectl apply -k "github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=master"
 ```
 
 Install the App Mesh CRD controller:
@@ -77,6 +46,38 @@ The [configuration](#configuration) section lists the parameters that can be con
 
 ## Upgrade
 
+This section will assist you in upgrading the appmesh-controller from <=v0.5.0 version to >=v1.0.0 version.
+
+You can either build new CRDs from scratch or migrate existing CRDs to the new schema. Please refer to the documentation [here for the new API spec](https://aws.github.io/aws-app-mesh-controller-for-k8s/reference/api_spec/). Also, you can find several examples [here](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs) with v1beta2 spec to help you get started.
+
+Starting v1.0.0, Mesh resource supports namespaceSelectors, where you can either select namespace based on labels (recommended option) or select all namespaces. To select a namespace in a Mesh, you will need to define `namespaceSelector`:
+
+```
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: Mesh
+metadata:
+  name: <mesh-name>
+spec:
+  namespaceSelector:
+    matchLabels:
+      mesh: <mesh-name> // any string value
+```
+
+Note: If you set `namespaceSelector: {}`, mesh will select all the namespace in your cluster. Labels on your namespace spec is a no-op when selecting all namespaces.
+
+In the namespace spec, you will need to add a label `mesh: <mesh-name>`. Here's a sample namespace spec:
+
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns
+  labels:
+    mesh: <mesh-name>
+    appmesh.k8s.aws/sidecarInjectorWebhook: enabled
+```
+
+For more examples, please refer to the walkthroughs [here](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs). If you don't find an example that fits your use-case, please read the API spec [here](https://aws.github.io/aws-app-mesh-controller-for-k8s/reference/api_spec/). If you find an issue in the documentation or the examples, please open an issue and we'll help resolve it.
 
 ### Upgrade without preserving old App Mesh resources
 
@@ -271,20 +272,33 @@ Parameter | Description | Default
 `affinity` | node/pod affinities | None
 `nodeSelector` | node labels for pod assignment | `{}`
 `podAnnotations` | annotations to add to each pod | `{}`
+`podLabels` | labels to add to each pod | `{}`
 `tolerations` | list of node taints to tolerate | `[]`
 `rbac.create` | if `true`, create and use RBAC resources | `true`
 `rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
 `serviceAccount.annotations` | optional annotations to add to service account | None
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | None
-`sidecar.image.repository` | Envoy image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`
+`sidecar.image.repository` | Envoy image repository. If you override with non-Amazon built Envoy image, you will need to test/ensure it works with the App Mesh | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`
 `sidecar.image.tag` | Envoy image tag | `<VERSION>`
 `sidecar.logLevel` | Envoy log level | `info`
-`sidecar.resources` | Envoy container resources | `requests: cpu 10m memory 32Mi`
-`init.image.repository` | Route manager image repository | `111345817488.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
+`sidecar.resources.requests` | Envoy container resource requests | `requests: cpu 10m memory 32Mi`
+`sidecar.resources.limits` | Envoy container resource limits | `limits: cpu "" memory ""`
+`sidecar.lifecycleHooks.preStopDelay` | Envoy container PreStop Hook Delay Value | `20s`
+`sidecar.probes.readinessProbeInitialDelay` | Envoy container Readiness Probe Initial Delay | `1s`
+`sidecar.probes.readinessProbePeriod` | Envoy container Readiness Probe Period | `10s`
+`init.image.repository` | Route manager image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
 `init.image.tag` | Route manager image tag | `<VERSION>`
+`stats.tagsEnabled` |  If `true`, Envoy should include app-mesh tags | `false`
+`stats.statsdEnabled` |  If `true`, Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125 | `false`
+`cloudMapCustomHealthCheck.enabled` |  If `true`, CustomHealthCheck will be enabled for CloudMap Services | `false`
+`cloudMapDNS.ttl` |  Sets CloudMap DNS TTL | `300`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`
 `tracing.provider` |  The tracing provider can be x-ray, jaeger or datadog | `x-ray`
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`
 `tracing.port` |  Jaeger or Datadog agent port (ignored for X-Ray) | `9411`
 `enableCertManager` |  Enable Cert-Manager | `false`
+`xray.image.repository` | X-Ray image repository | `amazon/aws-xray-daemon`
+`xray.image.tag` | X-Ray image tag | `latest`
+`accountId` | AWS Account ID for the Kubernetes cluster | None
+`env` |  environment variables to be injected into the appmesh-controller pod | `{}`
