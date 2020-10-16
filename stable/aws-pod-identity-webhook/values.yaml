@@ -5,8 +5,8 @@ tokenAudience: sts.amazonaws.com
 replicas: 3
 
 image:
-  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/pod-identity-webhook
-  tag: "0.2.0"
+  repository: amazon/amazon-eks-pod-identity-webhook
+  tag: "c0431e1"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
