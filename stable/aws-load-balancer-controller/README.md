@@ -18,152 +18,49 @@ AWS Load Balancer controller manages the following AWS resources
 **Note**: Deployed chart does not receive security updates automatically. You need to manually upgrade to a newer chart.
 
 ## Prerequisites
-- Kubernetes 1.9+ for ALB, 1.20+ for NLB IP mode
+- Kubernetes 1.9+ for ALB, 1.20+ for NLB IP mode, or EKS 1.18
 - IAM permissions
 
-IAM permissions are required for the controller to access the AWS ALB/NLB resources. The following permissions are required at the minimum
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "acm:DescribeCertificate",
-        "acm:ListCertificates",
-        "acm:GetCertificate"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:AuthorizeSecurityGroupIngress",
-        "ec2:CreateSecurityGroup",
-        "ec2:CreateTags",
-        "ec2:DeleteTags",
-        "ec2:DeleteSecurityGroup",
-        "ec2:DescribeAccountAttributes",
-        "ec2:DescribeAddresses",
-        "ec2:DescribeInstances",
-        "ec2:DescribeInstanceStatus",
-        "ec2:DescribeInternetGateways",
-        "ec2:DescribeNetworkInterfaces",
-        "ec2:DescribeSecurityGroups",
-        "ec2:DescribeSubnets",
-        "ec2:DescribeTags",
-        "ec2:DescribeVpcs",
-        "ec2:ModifyInstanceAttribute",
-        "ec2:ModifyNetworkInterfaceAttribute",
-        "ec2:RevokeSecurityGroupIngress"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "elasticloadbalancing:AddListenerCertificates",
-        "elasticloadbalancing:AddTags",
-        "elasticloadbalancing:CreateListener",
-        "elasticloadbalancing:CreateLoadBalancer",
-        "elasticloadbalancing:CreateRule",
-        "elasticloadbalancing:CreateTargetGroup",
-        "elasticloadbalancing:DeleteListener",
-        "elasticloadbalancing:DeleteLoadBalancer",
-        "elasticloadbalancing:DeleteRule",
-        "elasticloadbalancing:DeleteTargetGroup",
-        "elasticloadbalancing:DeregisterTargets",
-        "elasticloadbalancing:DescribeListenerCertificates",
-        "elasticloadbalancing:DescribeListeners",
-        "elasticloadbalancing:DescribeLoadBalancers",
-        "elasticloadbalancing:DescribeLoadBalancerAttributes",
-        "elasticloadbalancing:DescribeRules",
-        "elasticloadbalancing:DescribeSSLPolicies",
-        "elasticloadbalancing:DescribeTags",
-        "elasticloadbalancing:DescribeTargetGroups",
-        "elasticloadbalancing:DescribeTargetGroupAttributes",
-        "elasticloadbalancing:DescribeTargetHealth",
-        "elasticloadbalancing:ModifyListener",
-        "elasticloadbalancing:ModifyLoadBalancerAttributes",
-        "elasticloadbalancing:ModifyRule",
-        "elasticloadbalancing:ModifyTargetGroup",
-        "elasticloadbalancing:ModifyTargetGroupAttributes",
-        "elasticloadbalancing:RegisterTargets",
-        "elasticloadbalancing:RemoveListenerCertificates",
-        "elasticloadbalancing:RemoveTags",
-        "elasticloadbalancing:SetIpAddressType",
-        "elasticloadbalancing:SetSecurityGroups",
-        "elasticloadbalancing:SetSubnets",
-        "elasticloadbalancing:SetWebAcl"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "iam:CreateServiceLinkedRole",
-        "iam:GetServerCertificate",
-        "iam:ListServerCertificates"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "cognito-idp:DescribeUserPoolClient"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "waf-regional:GetWebACLForResource",
-        "waf-regional:GetWebACL",
-        "waf-regional:AssociateWebACL",
-        "waf-regional:DisassociateWebACL"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "tag:GetResources",
-        "tag:TagResources"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "waf:GetWebACL"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "wafv2:GetWebACL",
-        "wafv2:GetWebACLForResource",
-        "wafv2:AssociateWebACL",
-        "wafv2:DisassociateWebACL"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "shield:DescribeProtection",
-        "shield:GetSubscriptionState",
-        "shield:DeleteProtection",
-        "shield:CreateProtection",
-        "shield:DescribeSubscription",
-        "shield:ListProtections"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
+The controller runs on the worker nodes, so it needs access to the AWS ALB/NLB resources via IAM permissions. The
+IAM permissions can either be setup via IAM roles for ServiceAccount or can be attached directly to the worker node IAM roles.
+
+#### Setup IAM for ServiceAccount
+1. Create IAM OIDC provider
+    ```
+    eksctl utils associate-iam-oidc-provider \
+        --region <aws-region> \
+        --cluster <your-cluster-name> \
+        --approve
+    ```
+1. Download IAM policy for the AWS Load Balancer Controller
+    ```
+    curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2_ga/docs/install/iam_policy.json
+    ```
+1. Create an IAM policy called AWSLoadBalancerControllerIAMPolicy
+    ```
+    aws iam create-policy \
+        --policy-name AWSLoadBalancerControllerIAMPolicy \
+        --policy-document file://iam-policy.json
+    ```
+    Take note of the policy ARN that is returned
+
+1. Create a IAM role and ServiceAccount for the Load Balancer controller, use the ARN from the step above
+    ```
+    eksctl create iamserviceaccount \
+    --cluster=<cluster-name> \
+    --namespace=kube-system \
+    --name=aws-load-balancer-controller \
+    --attach-policy-arn=arn:aws:iam::<AWS_ACCOUNT_ID>:policy/AWSLoadBalancerControllerIAMPolicy \
+    --approve
+    ```
+#### Setup IAM manually
+If not setting up IAM for ServiceAccount, apply the IAM policies from the following URL at minimum.
 ```
+https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v2_ga/docs/install/iam_policy.json
+```
+
+#### Upgrading from ALB ingress controller
+If migrating from ALB ingress controller, grant [additional IAM permissions](https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2_ga/docs/install/iam_policy_v1_to_v2_additional.json).
 
 ## Installing the Chart
 **Note**: You need to uninstall aws-alb-ingress-controller. Please refer to the [upgrade](#Upgrade) section below before you proceed.
@@ -179,10 +76,15 @@ Install the TargetGroupBinding CRDs:
 kubectl apply -k github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master
 ```
 
-Install the AWS Load Balancer controller
+Install the AWS Load Balancer controller, if using iamserviceaccount
 ```shell script
 # NOTE: The clusterName value must be set either via the values.yaml or the Helm command line. The <k8s-cluster-name> in the command
 # below should be replaced with name of your k8s cluster before running it.
+helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=<k8s-cluster-name> --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller
+```
+
+Install the AWS Load Balancer controller, if not using iamserviceaccount
+```shell script
 helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=<k8s-cluster-name>
 ```
 
@@ -190,7 +92,7 @@ helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller -n
 The new controller is backwards compatible with the existing ingress objects. However, it will not coexist with the older aws-alb-ingress-controller.
 The old controller must be uninstalled completely before installing the new version.
 ### Kubectl installation
-If previous version was installed via kubectl, uninstall as follows
+If you had installed the previous version via kubectl, uninstall as follows
 ```shell script
 $ kubectl delete deployment -n kube-system alb-ingress-controller
 # Find the version of the current controller
@@ -200,12 +102,11 @@ $ kubectl describe deployment  -n kube-system  alb-ingress-controller |grep Imag
 $ kubectl delete -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.8/docs/examples/rbac-role.yaml
 ```
 ### Helm installation
-If incubator/aws-alb-ingress-controller Helm chart was installed, uninstall as follows
+If you had installed the incubator/aws-alb-ingress-controller Helm chart, uninstall as follows
 ```shell script
 # NOTE: If installed under a different chart name and namespace, please specify as appropriate
 $ helm delete aws-alb-ingress-controller -n kube-system
 ```
-
 
 ## Uninstalling the Chart
 ```sh
@@ -218,7 +119,7 @@ The following tables lists the configurable parameters of the chart and their de
 
 | Parameter                          | Description                                               | Default                                                                                    |
 | ---------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `image.repository`                 | image repository                                          | `amazon/aws-load-balancer-controller`                                                      |
+| `image.repository`                 | image repository                                          | `602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller`         |
 | `image.tag`                        | image tag                                                 | `<VERSION>`                                                                                |
 | `image.pullPolicy`                 | image pull policy                                         | `IfNotPresent`                                                                             |
 | `clusterName`                      | Kubernetes cluster name                                   | None                                                                                       |
