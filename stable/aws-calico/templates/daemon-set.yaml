@@ -82,6 +82,8 @@ spec:
               value: "none"
             - name: FELIX_PROMETHEUSMETRICSENABLED
               value: "true"
+            - name: FELIX_ROUTESOURCE
+              value: "WorkloadIPs"
             - name: NO_DEFAULT_POOLS
               value: "true"
             # Set based on the k8s node name.
