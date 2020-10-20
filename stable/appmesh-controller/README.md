@@ -7,7 +7,7 @@ App Mesh controller Helm chart for Kubernetes
 ## Prerequisites
 
 * Kubernetes >= 1.14
-* EKS nodes should have the IAM permissions from the following policies: `AWSAppMeshFullAccess`, `AWSCloudMapFullAccess`
+* IAM permissions (see below)
 
 ## Installing the Chart
 
@@ -26,14 +26,76 @@ Install the App Mesh CRDs:
 kubectl apply -k "github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=master"
 ```
 
-Install the App Mesh CRD controller:
-
-### Regular Kubernetes distribution
-
 Create namespace
 ```sh
 kubectl create ns appmesh-system
 ```
+
+The controller runs on the worker nodes, so it needs access to the AWS App Mesh / Cloud Map resources via IAM permissions. The
+IAM permissions can either be setup via IAM roles for service account or can be attached directly to the worker node IAM roles.
+
+#### Setup IAM Role for Service Account
+
+```
+export CLUSTER_NAME=<eks-cluster-name>
+export AWS_REGION=<aws-region e.g. us-east-1>
+export AWS_ACCOUNT_ID=<AWS account ID>
+```
+
+Enable IAM OIDC provider
+```sh
+eksctl utils associate-iam-oidc-provider --region=$AWS_REGION \
+    --cluster=$CLUSTER_NAME \
+    --approve
+```
+
+Download the IAM policy for AWS App Mesh Kubernetes Controller 
+```
+curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+```
+
+Create an IAM policy called AWSAppMeshK8sControllerIAMPolicy
+```
+aws iam create-policy \
+    --policy-name AWSAppMeshK8sControllerIAMPolicy \
+    --policy-document file://controller-iam-policy.json
+```
+Take note of the policy ARN that is returned
+
+
+Create an IAM role for service account for the App Mesh Kubernetes controller, use the ARN from the step above
+```
+eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
+    --namespace appmesh-system \
+    --name appmesh-controller \
+    --attach-policy-arn arn:aws:iam::$AWS_ACCOUNT_ID:policy/AWSAppMeshK8sControllerIAMPolicy  \
+    --override-existing-serviceaccounts \
+    --approve
+```
+
+Deploy appmesh-controller
+```sh
+helm upgrade -i appmesh-controller eks/appmesh-controller \
+    --namespace appmesh-system \
+    --set region=$AWS_REGION \
+    --set serviceAccount.create=false \
+    --set serviceAccount.name=appmesh-controller
+```
+
+The [configuration](#configuration) section lists the parameters that can be configured during installation.
+
+**Note:** When using IRSA, make sure the Envoy proxies have the following IAM policies attached for Envoy to authenticate with AWS App Mesh and fetch it's configuration
+- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
+
+#### Setup IAM permissions manually on worker nodes
+If not setting up IAM role for service account, apply the IAM policies to your worker nodes:
+
+Controller IAM policy
+- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+
+Envoy IAM policy
+- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
+
 
 Deploy appmesh-controller
 ```sh
@@ -43,6 +105,60 @@ helm upgrade -i appmesh-controller eks/appmesh-controller \
 
 The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
+### Installation on EKS with Fargate
+
+```
+export CLUSTER_NAME=<eks-cluster-name>
+export AWS_REGION=<aws-region e.g. us-east-1>
+export AWS_ACCOUNT_ID=<AWS account ID>
+```
+
+Create namespace
+```sh
+kubectl create ns appmesh-system
+```
+
+Setup EKS Fargate profile
+```sh
+eksctl create fargateprofile --cluster $CLUSTER_NAME --namespace appmesh-system
+```
+
+Enable IAM OIDC provider
+```sh
+eksctl utils associate-iam-oidc-provider --region=$AWS_REGION --cluster=$CLUSTER_NAME --approve
+```
+
+Download the IAM policy for AWS App Mesh Kubernetes Controller
+```
+curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+```
+
+Create an IAM policy called AWSAppMeshK8sControllerIAMPolicy
+```
+aws iam create-policy \
+    --policy-name AWSAppMeshK8sControllerIAMPolicy \
+    --policy-document file://controller-iam-policy.json
+```
+Take note of the policy ARN that is returned
+
+Create an IAM role for service account for the App Mesh Kubernetes controller, use the ARN from the step above
+```
+eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
+    --namespace appmesh-system \
+    --name appmesh-controller \
+    --attach-policy-arn arn:aws:iam::$AWS_ACCOUNT_ID:policy/AWSAppMeshK8sControllerIAMPolicy  \
+    --override-existing-serviceaccounts \
+    --approve
+```
+
+Deploy appmesh-controller
+```sh
+helm upgrade -i appmesh-controller eks/appmesh-controller \
+    --namespace appmesh-system \
+    --set region=$AWS_REGION \
+    --set serviceAccount.create=false \
+    --set serviceAccount.name=appmesh-controller
+```
 
 ## Upgrade
 
@@ -168,82 +284,6 @@ kubectl delete ClusterRole app-mesh-controller
 Run the `appmesh-controller/upgrade/pre_upgrade_check.sh` script and make sure it passes before you proceed
 
 For handling the existing custom resources and the CRDs please refer to either of the previous upgrade sections as relevant.
-
-### EKS on Fargate
-
-```
-export CLUSTER_NAME=<eks-cluster-name>
-export AWS_REGION=<aws-region e.g. us-east-1>
-```
-
-Create namespace
-```sh
-kubectl create ns appmesh-system
-```
-
-Setup fargate-profile
-```sh
-eksctl create fargateprofile --cluster $CLUSTER_NAME --namespace appmesh-system
-```
-
-Enable IAM OIDC provider
-```sh
-eksctl utils associate-iam-oidc-provider --region=$AWS_REGION --cluster=$CLUSTER_NAME --approve
-```
-
-Create IRSA for appmesh-controller
-```sh
-eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
-        --namespace appmesh-system \
-        --name appmesh-controller \
-        --attach-policy-arn  arn:aws:iam::aws:policy/AWSCloudMapFullAccess,arn:aws:iam::aws:policy/AWSAppMeshFullAccess \
-        --override-existing-serviceaccounts \
-        --approve
-```
-
-Deploy appmesh-controller
-```sh
-helm upgrade -i appmesh-controller eks/appmesh-controller \
-    --namespace appmesh-system \
-    --set region=$AWS_REGION \
-    --set serviceAccount.create=false \
-    --set serviceAccount.name=appmesh-controller
-```
-
-### EKS with IAM Roles for Service Account
-
-```
-export CLUSTER_NAME=<eks-cluster-name>
-export AWS_REGION=<aws-region e.g. us-east-1>
-```
-
-Create namespace
-```sh
-kubectl create ns appmesh-system
-```
-
-Create IRSA for appmesh-controller
-```sh
-eksctl utils associate-iam-oidc-provider --region=$AWS_REGION \
-    --cluster=$CLUSTER_NAME \
-    --approve
-
-eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
-    --namespace appmesh-system \
-    --name appmesh-controller \
-    --attach-policy-arn  arn:aws:iam::aws:policy/AWSCloudMapFullAccess,arn:aws:iam::aws:policy/AWSAppMeshFullAccess \
-    --override-existing-serviceaccounts \
-    --approve
-```
-
-Deploy appmesh-controller
-```sh
-helm upgrade -i appmesh-controller eks/appmesh-controller \
-    --namespace appmesh-system \
-    --set region=$AWS_REGION \
-    --set serviceAccount.create=false \
-    --set serviceAccount.name=appmesh-controller
-```
 
 ## Uninstalling the Chart
 
