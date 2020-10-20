@@ -34,7 +34,7 @@ IAM permissions can either be setup via IAM roles for ServiceAccount or can be a
     ```
 1. Download IAM policy for the AWS Load Balancer Controller
     ```
-    curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2_ga/docs/install/iam_policy.json
+    curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
     ```
 1. Create an IAM policy called AWSLoadBalancerControllerIAMPolicy
     ```
@@ -56,11 +56,11 @@ IAM permissions can either be setup via IAM roles for ServiceAccount or can be a
 #### Setup IAM manually
 If not setting up IAM for ServiceAccount, apply the IAM policies from the following URL at minimum.
 ```
-https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v2_ga/docs/install/iam_policy.json
+https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/main/docs/install/iam_policy.json
 ```
 
 #### Upgrading from ALB ingress controller
-If migrating from ALB ingress controller, grant [additional IAM permissions](https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2_ga/docs/install/iam_policy_v1_to_v2_additional.json).
+If migrating from ALB ingress controller, grant [additional IAM permissions](https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy_v1_to_v2_additional.json).
 
 ## Installing the Chart
 **Note**: You need to uninstall aws-alb-ingress-controller. Please refer to the [upgrade](#Upgrade) section below before you proceed.
