@@ -71,3 +71,13 @@ enableCertManager: false
 # The ingress class this controller will satisfy. If not specified, controller will match all
 # ingresses without ingress class annotation and ingresses of type alb
 ingressClass: alb
+
+# Liveness probe configuration for the controller
+livenessProbe:
+  failureThreshold: 2
+  httpGet:
+    path: /healthz
+    port: 61779
+    scheme: HTTP
+  initialDelaySeconds: 30
+  timeoutSeconds: 10
