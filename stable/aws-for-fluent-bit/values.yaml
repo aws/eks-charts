@@ -109,8 +109,6 @@ elasticsearch:
 #     Format template
 #     Template {time} used={Mem.used} free={Mem.free} total={Mem.total}
 
-rbac:
-  create: true
 serviceAccount:
   create: true
   annotations: {}
