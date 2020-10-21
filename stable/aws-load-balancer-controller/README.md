@@ -108,6 +108,12 @@ If you had installed the incubator/aws-alb-ingress-controller Helm chart, uninst
 $ helm delete aws-alb-ingress-controller -n kube-system
 ```
 
+If you had installed the 0.1.x version of eks-charts/aws-load-balancer-controller chart earlier, the upgrade to chart version 1.0.0 will
+not work due to incompatibility of the webhook api version, uninstall as follows
+```shell script
+$ helm delete aws-load-balancer-controller -n kube-system
+```
+
 ## Uninstalling the Chart
 ```sh
 helm delete aws-load-balancer-controller -n kube-system
