@@ -2,7 +2,7 @@
 
 App Mesh controller Helm chart for Kubernetes
 
-**Note**: If you wish to use [App Mesh preview](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) features, please refer to our [preview version](https://github.com/aws/eks-charts/blob/preview/stable/appmesh-controller/README.md) instructions.
+**Note:** This is a preview version of appmesh-controller chart that will install preview App Mesh Controller. The [App Mesh Preview Channel](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) is a distinct variant of the App Mesh service provided in the `us-west-2` Region. Preview exposes upcoming features for you to try as they are developed. 
 
 ## Prerequisites
 
@@ -14,6 +14,8 @@ App Mesh controller Helm chart for Kubernetes
 **Note**: AppMesh controller v1.0.0+ is **backwards incompatible** with old versions(e.g. v0.5.0).
 If you're running an older version of App Mesh controller, please go to the [upgrade](#upgrade) section below before you proceed. If you are unsure, please run the `appmesh-controller/upgrade/pre_upgrade_check.sh` script to check if your cluster can be upgraded
 
+**Note:** Preview only supports local git cloned Helm chart installation
+
 Add the EKS repository to Helm:
 
 ```sh
@@ -23,7 +25,7 @@ helm repo add eks https://aws.github.io/eks-charts
 Install the App Mesh CRDs:
 
 ```sh
-kubectl apply -k "github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=master"
+kubectl apply -k "github.com/aws/eks-charts/stable/appmesh-controller//crds?ref=preview"
 ```
 
 Create namespace
@@ -51,7 +53,7 @@ eksctl utils associate-iam-oidc-provider --region=$AWS_REGION \
 
 Download the IAM policy for AWS App Mesh Kubernetes Controller 
 ```
-curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/preview/preview-controller-iam-policy.json
 ```
 
 Create an IAM policy called AWSAppMeshK8sControllerIAMPolicy
@@ -75,7 +77,7 @@ eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
 
 Deploy appmesh-controller
 ```sh
-helm upgrade -i appmesh-controller eks/appmesh-controller \
+helm upgrade -i appmesh-controller ./stable/appmesh-controller \
     --namespace appmesh-system \
     --set region=$AWS_REGION \
     --set serviceAccount.create=false \
@@ -85,21 +87,21 @@ helm upgrade -i appmesh-controller eks/appmesh-controller \
 The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 **Note:** When using IRSA, make sure the Envoy proxies have the following IAM policies attached for Envoy to authenticate with AWS App Mesh and fetch it's configuration
-- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
+- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/preview/preview-envoy-iam-policy.json
 
 #### Setup IAM permissions manually on worker nodes
 If not setting up IAM role for service account, apply the IAM policies to your worker nodes:
 
 Controller IAM policy
-- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/preview/preview-controller-iam-policy.json
 
 Envoy IAM policy
-- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
+- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/preview/preview-envoy-iam-policy.json
 
 
 Deploy appmesh-controller
 ```sh
-helm upgrade -i appmesh-controller eks/appmesh-controller \
+helm upgrade -i appmesh-controller ./stable/appmesh-controller \
     --namespace appmesh-system
 ```
 
@@ -130,7 +132,7 @@ eksctl utils associate-iam-oidc-provider --region=$AWS_REGION --cluster=$CLUSTER
 
 Download the IAM policy for AWS App Mesh Kubernetes Controller
 ```
-curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/preview/preview-controller-iam-policy.json
 ```
 
 Create an IAM policy called AWSAppMeshK8sControllerIAMPolicy
@@ -153,7 +155,7 @@ eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
 
 Deploy appmesh-controller
 ```sh
-helm upgrade -i appmesh-controller eks/appmesh-controller \
+helm upgrade -i appmesh-controller ./stable/appmesh-controller \
     --namespace appmesh-system \
     --set region=$AWS_REGION \
     --set serviceAccount.create=false \
