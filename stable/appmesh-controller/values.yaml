@@ -8,7 +8,7 @@ accountId: ""
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
-  tag: v1.1.1
+  tag: v1.2.0-rc0-preview
   pullPolicy: IfNotPresent
 
 sidecar:
