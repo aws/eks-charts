@@ -1,4 +1,4 @@
-{{- if (lower .Values.targetNodeOs | contains "linux") -}}
+{{- if and (lower .Values.targetNodeOs | contains "linux") (not .Values.enableSqsTerminationDraining) -}}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -74,7 +74,7 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
       serviceAccountName: {{ template "aws-node-termination-handler.serviceAccountName" . }}
-      hostNetwork: true
+      hostNetwork: {{ .Values.useHostNetwork }} 
       dnsPolicy: {{ .Values.dnsPolicy | default "ClusterFirstWithHostNet" | quote }}
       containers:
         - name: {{ include "aws-node-termination-handler.name" . }}
