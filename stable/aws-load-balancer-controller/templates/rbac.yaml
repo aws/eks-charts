@@ -8,13 +8,7 @@ metadata:
 rules:
 - apiGroups: [""]
   resources: [configmaps]
-  verbs: [create, delete, get, list, patch, update, watch]
-- apiGroups: [""]
-  resources: [configmaps/status]
-  verbs: [get, update, patch]
-- apiGroups: [""]
-  resources: [events]
-  verbs: [create]
+  verbs: [create, get, patch, update]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -38,18 +32,24 @@ metadata:
   labels:
     {{- include "aws-load-balancer-controller.labels" . | nindent 4 }}
 rules:
-- apiGroups: ["elbv2.k8s.aws", ""]
-  resources: [targetgroupbindings, events]
+- apiGroups: ["elbv2.k8s.aws"]
+  resources: [targetgroupbindings]
   verbs: [create, delete, get, list, patch, update, watch]
+- apiGroups: [""]
+  resources: [events]
+  verbs: [create, patch]
+- apiGroups: [""]
+  resources: [pods]
+  verbs: [get, list, watch]
 - apiGroups: ["", "extensions", "networking.k8s.io"]
-  resources: [pods, services, ingresses]
+  resources: [services, ingresses]
   verbs: [get, list, patch, update, watch]
 - apiGroups: [""]
   resources: [nodes, secrets, namespaces, endpoints]
   verbs: [get, list, watch]
 - apiGroups: ["elbv2.k8s.aws", "", "extensions", "networking.k8s.io"]
   resources: [targetgroupbindings/status, pods/status, services/status, ingresses/status]
-  verbs: [get, update, patch]
+  verbs: [update, patch]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
