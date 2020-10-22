@@ -8,6 +8,7 @@ metadata:
 rules:
 - apiGroups: [""]
   resources: [configmaps]
+  resourceNames: [aws-load-balancer-controller-leader]
   verbs: [create, get, patch, update]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
