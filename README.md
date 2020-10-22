@@ -28,8 +28,8 @@ helm repo add eks https://aws.github.io/eks-charts
 ### AWS for Fluent Bit
 * [aws-for-fluent-bit](stable/aws-for-fluent-bit): A helm chart for [AWS-for-fluent-bit](https://github.com/aws/aws-for-fluent-bit)
 
-### AWS Load Balancer Controller - Release Candidate
-* [aws-load-balancer-controller](stable/aws-load-balancer-controller): v2.0 of the [aws-alb-ingress-controller](https://github.com/kubernetes-sigs/aws-alb-ingress-controller)
+### AWS Load Balancer Controller
+* [aws-load-balancer-controller](stable/aws-load-balancer-controller): A helm chart for [AWS Load Balancer Controller](https://github.com/kubernetes-sigs/aws-load-balancer-controller)
 
 ### AWS VPC CNI
 * [aws-vpc-cni](stable/aws-vpc-cni): Networking plugin for pod networking in Kubernetes using Elastic Network Interfaces on AWS. https://github.com/aws/amazon-vpc-cni-k8s
