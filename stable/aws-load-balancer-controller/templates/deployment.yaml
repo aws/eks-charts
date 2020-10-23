@@ -42,6 +42,7 @@ spec:
         {{- if .Values.ingressClass }}
         - --ingress-class={{ .Values.ingressClass }}
         {{- end }}
+        {{- with .Values.extraArgs }}{{ toYaml . | nindent 8 }}{{- end }}
         command:
         - /controller
         securityContext:

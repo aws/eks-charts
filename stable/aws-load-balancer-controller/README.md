@@ -143,3 +143,4 @@ The following tables lists the configurable parameters of the chart and their de
 | `terminationGracePeriodSeconds`    | Time period for controller pod to do a graceful shutdown  | 10                                                                                         |
 | `ingressClass`                     | The ingress class to satisfy                              | alb                                                                                        |
 | `livenessProbe`                    | Liveness probe settings for the controller                | (see `values.yaml`)                                                                        |
+| `extraArgs`                    | Extra arguments for the controller                | `[]`                                                                       

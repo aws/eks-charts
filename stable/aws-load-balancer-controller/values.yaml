@@ -81,3 +81,8 @@ livenessProbe:
     scheme: HTTP
   initialDelaySeconds: 30
   timeoutSeconds: 10
+
+# Extra args(Excluding clusterName and ingressClass) for controller
+extraArgs: []
+ #- --aws-region=XXX
+ #- --aws-vpc-id=XXX
