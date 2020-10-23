@@ -42,6 +42,9 @@ spec:
         {{- if .Values.ingressClass }}
         - --ingress-class={{ .Values.ingressClass }}
         {{- end }}
+        {{- if .Values.region }}
+        - --aws-region={{ .Values.region }}
+        {{- end }}
         command:
         - /controller
         securityContext:
