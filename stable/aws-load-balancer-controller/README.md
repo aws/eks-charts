@@ -142,5 +142,5 @@ The following tables lists the configurable parameters of the chart and their de
 | `serviceAccount.name`              | Service account to be used                                | None                                                                                       |
 | `terminationGracePeriodSeconds`    | Time period for controller pod to do a graceful shutdown  | 10                                                                                         |
 | `ingressClass`                     | The ingress class to satisfy                              | alb                                                                                        |
-| `region`                          | Set the aws region when using KIAM                             |       
+| `region`                          | Set to use KIAM or kube2iam for example                             |       
 | `livenessProbe`                    | Liveness probe settings for the controller                | (see `values.yaml`)                                                                        |
