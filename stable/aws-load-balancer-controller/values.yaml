@@ -72,6 +72,9 @@ enableCertManager: false
 # ingresses without ingress class annotation and ingresses of type alb
 ingressClass: alb
 
+# set to use KIAM or kube2iam for example
+region: 
+
 # Liveness probe configuration for the controller
 livenessProbe:
   failureThreshold: 2
