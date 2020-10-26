@@ -5,6 +5,7 @@ GIT_REPO_ROOT=$(git rev-parse --show-toplevel)
 BUILD_DIR="${GIT_REPO_ROOT}/build"
 TOOLS_DIR="${BUILD_DIR}/tools"
 STABLE="${GIT_REPO_ROOT}/stable"
+PACKAGE_DIR="${GIT_REPO_ROOT}/build"
 export PATH="${TOOLS_DIR}:${PATH}"
 
 if echo "${CIRCLE_TAG}" | grep -Eq "^v[0-9]+(\.[0-9]+){2}$"; then
