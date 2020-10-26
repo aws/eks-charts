@@ -5,7 +5,7 @@ AWS Load Balancer controller Helm chart for Kubernetes
 ## TL;DR:
 ```sh
 helm repo add eks https://aws.github.io/eks-charts
-kubectl apply -k github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master
+kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master"
 helm install eks/aws-load-balancer-controller
 ```
 
@@ -73,7 +73,7 @@ helm repo add eks https://aws.github.io/eks-charts
 Install the TargetGroupBinding CRDs:
 
 ```shell script
-kubectl apply -k github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master
+kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master"
 ```
 
 Install the AWS Load Balancer controller, if using iamserviceaccount
@@ -142,5 +142,5 @@ The following tables lists the configurable parameters of the chart and their de
 | `serviceAccount.name`              | Service account to be used                                | None                                                                                       |
 | `terminationGracePeriodSeconds`    | Time period for controller pod to do a graceful shutdown  | 10                                                                                         |
 | `ingressClass`                     | The ingress class to satisfy                              | alb                                                                                        |
-| `region`                          | The AWS region for the kubernetes cluster                             |       
+| `region`                           | The AWS region for the kubernetes cluster                 | None                                                                                       |
 | `livenessProbe`                    | Liveness probe settings for the controller                | (see `values.yaml`)                                                                        |
