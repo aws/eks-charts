@@ -75,6 +75,9 @@ ingressClass: alb
 # The AWS region for the kubernetes cluster. Set to use KIAM or kube2iam for example.
 region:
 
+# The VPC ID for the Kubernetes cluster. Set this manually when your pods are unable to use the metadata service to determine this automatically
+vpcId:
+
 # Liveness probe configuration for the controller
 livenessProbe:
   failureThreshold: 2

@@ -45,6 +45,9 @@ spec:
         {{- if .Values.region }}
         - --aws-region={{ .Values.region }}
         {{- end }}
+        {{- if .Values.vpcId }}
+        - --aws-vpc-id={{ .Values.vpcId }}
+        {{- end }}
         command:
         - /controller
         securityContext:
