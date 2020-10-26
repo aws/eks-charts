@@ -17,6 +17,8 @@ sidecar:
     tag: v1.15.1.0-prod
     # sidecar.logLevel: Envoy log level can be info, warn, error or debug
   logLevel: info
+  envoyAdminAccessPort: 9901
+  envoyAdminAccessLogFile: /tmp/envoy_admin_access.log
   resources:
     # sidecar.resources.requests: Envoy CPU and memory requests
     requests:
@@ -97,14 +99,18 @@ tracing:
   provider: x-ray
   # tracing.address: Jaeger or Datadog agent server address (ignored for X-Ray)
   address: appmesh-jaeger.appmesh-system
-  # tracing.address: Jaeger or Datadog agent server port (ignored for X-Ray)
-  port: 9411
+  # tracing.address: Jaeger or Datadog agent server port
+  port: 2000
 
 stats:
   # stats.tagsEnabled: `true` if Envoy should include app-mesh tags
   tagsEnabled: false
   # stats.statsdEnabled: `true` if Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125
   statsdEnabled: false
+  #stats.statsdAddress: DogStatsD daemon address
+  statsdAddress: 127.0.0.1
+  #stats.statsdPort: DogStatsD daemon port
+  statsdPort: 8125
 
 # Enable cert-manager
 enableCertManager: false
