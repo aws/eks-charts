@@ -99,7 +99,7 @@ tracing:
   provider: x-ray
   # tracing.address: Jaeger or Datadog agent server address (ignored for X-Ray)
   address: appmesh-jaeger.appmesh-system
-  # tracing.address: Jaeger or Datadog agent server port
+  # tracing.port: Jaeger or Datadog agent server port
   port: 2000
 
 stats:
