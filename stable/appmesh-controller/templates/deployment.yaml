@@ -18,6 +18,8 @@ spec:
     metadata:
       labels:
         control-plane: {{ template "appmesh-controller.fullname" . }}
+        app.kubernetes.io/name: {{ include "appmesh-controller.fullname" . }}
+        app.kubernetes.io/part-of: appmesh
         {{- if .Values.podLabels }}
 {{ toYaml .Values.podLabels | indent 8 }}
         {{- end }}
