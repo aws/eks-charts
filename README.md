@@ -23,7 +23,7 @@ helm repo add eks https://aws.github.io/eks-charts
 * [aws-calico](stable/aws-calico): Install Calico network policy enforcement on AWS
 
 ### AWS CloudWatch Metrics
-* [aws-cloudwatch-metrics](stable/aws-cloudwatch): A helm chart for CloudWatch Agent to Collect Cluster Metrics
+* [aws-cloudwatch-metrics](stable/aws-cloudwatch-metrics): A helm chart for CloudWatch Agent to Collect Cluster Metrics
 
 ### AWS for Fluent Bit
 * [aws-for-fluent-bit](stable/aws-for-fluent-bit): A helm chart for [AWS-for-fluent-bit](https://github.com/aws/aws-for-fluent-bit)
