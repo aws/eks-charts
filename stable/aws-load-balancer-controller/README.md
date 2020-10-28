@@ -122,6 +122,7 @@ helm delete aws-load-balancer-controller -n kube-system
 ## Configuration
 
 The following tables lists the configurable parameters of the chart and their default values.
+The default values set by the application itself can be confirmed [here](https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/docs/guide/controller/configurations.md).
 
 | Parameter                          | Description                                               | Default                                                                                    |
 | ---------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
