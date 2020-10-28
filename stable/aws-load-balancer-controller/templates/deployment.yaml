@@ -18,7 +18,7 @@ spec:
         {{- end }}
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "8080"
+        prometheus.io/port: "{{ (split ":" .Values.metricsBindAddr)._1 | default 8080 }}"
         {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
         {{- end }}
@@ -40,13 +40,52 @@ spec:
         args:
         - --cluster-name={{ required "Chart cannot be installed without a valid clusterName!" .Values.clusterName }}
         {{- if .Values.ingressClass }}
-        - --ingress-class={{ .Values.ingressClass }}
+        - --ingress-class={{ .Values.ingressClass}}
         {{- end }}
         {{- if .Values.region }}
         - --aws-region={{ .Values.region }}
         {{- end }}
         {{- if .Values.vpcId }}
         - --aws-vpc-id={{ .Values.vpcId }}
+        {{- end }}
+        {{- if .Values.awsMaxRetries }}
+        - --aws-max-retries={{ .Values.awsMaxRetries }}
+        {{- end }}
+        {{- if .Values.enablePodReadinessGateInject }}
+        - --enable-pod-readiness-gate-inject={{ .Values.enablePodReadinessGateInject }}
+        {{- end }}
+        {{- if .Values.enableShield }}
+        - --enable-shield={{ .Values.enableShield }}
+        {{- end }}
+        {{- if .Values.enableWaf }}
+        - --enable-waf={{ .Values.enableWaf }}
+        {{- end }}
+        {{- if .Values.enableWafv2 }}
+        - --enable-wafv2={{ .Values.enableWafv2 }}
+        {{- end }}
+        {{- if .Values.healthProbeBindAddr }}
+        - --health-probe-bind-addr={{ .Values.healthProbeBindAddr }}
+        {{- end }}
+        {{- if .Values.metricsBindAddr }}
+        - --metrics-bind-addr={{ .Values.metricsBindAddr }}
+        {{- end }}
+        {{- if .Values.ingressMaxConcurrentReconciles }}
+        - --ingress-max-concurrent-reconciles={{ .Values.ingressMaxConcurrentReconciles }}
+        {{- end }}
+        {{- if .Values.serviceMaxConcurrentReconciles }}
+        - --service-max-concurrent-reconciles={{ .Values.serviceMaxConcurrentReconciles }}
+        {{- end }}
+        {{- if .Values.logLevel }}
+        - --log-level={{ .Values.logLevel }}
+        {{- end }}
+        {{- if .Values.webhookBindPort }}
+        - --webhook-bind-port={{ .Values.webhookBindPort }}
+        {{- end }}
+        {{- if .Values.syncPeriod }}
+        - --sync-period={{ .Values.syncPeriod }}
+        {{- end }}
+        {{- if .Values.watchNamespace }}
+        - --watch-namespace={{ .Values.watchNamespace }}
         {{- end }}
         command:
         - /controller
@@ -60,15 +99,22 @@ spec:
           readOnly: true
         ports:
         - name: webhook-server
-          containerPort: 9443
+          containerPort: {{ .Values.webhookBindPort | default 9443 }}
           protocol: TCP
         - name: metrics-server
-          containerPort: 8080
+          containerPort: {{ (split ":" .Values.metricsBindAddr)._1 | default 8080 }}
           protocol: TCP
+        {{- if .Values.livenessProbe }}
+        - name: health
+          containerPort: {{ (split ":" .Values.healthProbeBindAddr)._1 | default 61779}}
+          protocol: TCP
+        {{- end }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
+        {{- with .Values.livenessProbe }}
         livenessProbe:
-          {{- toYaml .Values.livenessProbe | nindent 10 }}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

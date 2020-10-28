@@ -144,4 +144,17 @@ The following tables lists the configurable parameters of the chart and their de
 | `ingressClass`                     | The ingress class to satisfy                              | alb                                                                                        |
 | `region`                           | The AWS region for the kubernetes cluster                 | None                                                                                       |
 | `vpcId`                            | The VPC ID for the Kubernetes cluster                     | None                                                                                       |
+| `awsMaxRetries`                    | Maximum retries for AWS APIs                        |                                                             None |
+| `enablePodReadinessGateInject`     | If enabled, targetHealth readiness gate will get injected to the pod spec for the matching endpoint pods |        None |
+| `enableShield`                     | Enable Shield addon for ALB                         |                                                             None |
+| `enableWaf`                        | Enable WAF addon for ALB                            |                                                             None |
+| `enableWafv2`                      | Enable WAF V2 addon for ALB                         |                                                             None |
+| `healthProbeBindAddr`              | The address the health probes binds to              |                                                             "" |
+| `ingressMaxConcurrentReconciles`   | Maximum number of concurrently running reconcile loops for ingress |                                              None |
+| `logLevel`                         | Set the controller log level - info, debug          |                                                             None |
+| `metricsBindAddr`                  | The address the metric endpoint binds to            |                                                             "" |
+| `webhookBindPort`                  | The TCP port the Webhook server binds to            |                                                             None |
+| `serviceMaxConcurrentReconciles`   | Maximum number of concurrently running reconcile loops for service  |                                             None |
+| `syncPeriod`                       | Period at which the controller forces the repopulation of its local object stores      |                          None |
+| `watchNamespace`                   | Namespace the controller watches for updates to Kubernetes objects, If empty, all namespaces are watche |         None |
 | `livenessProbe`                    | Liveness probe settings for the controller                | (see `values.yaml`)                                                                        |
