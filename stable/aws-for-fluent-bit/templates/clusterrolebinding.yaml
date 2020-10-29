@@ -1,4 +1,4 @@
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: {{ include "rbac.apiVersion" . }}
 kind: ClusterRoleBinding
 metadata:
   name: {{ include "aws-for-fluent-bit.fullname" . }}
