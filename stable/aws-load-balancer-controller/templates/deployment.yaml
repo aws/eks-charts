@@ -18,7 +18,7 @@ spec:
         {{- end }}
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "8080"
+        prometheus.io/port: "{{ (split ":" .Values.metricsBindAddr)._1 | default 8080 }}"
         {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
         {{- end }}
@@ -48,6 +48,45 @@ spec:
         {{- if .Values.vpcId }}
         - --aws-vpc-id={{ .Values.vpcId }}
         {{- end }}
+        {{- if .Values.awsMaxRetries }}
+        - --aws-max-retries={{ .Values.awsMaxRetries }}
+        {{- end }}
+        {{- if .Values.enablePodReadinessGateInject }}
+        - --enable-pod-readiness-gate-inject={{ .Values.enablePodReadinessGateInject }}
+        {{- end }}
+        {{- if .Values.enableShield }}
+        - --enable-shield={{ .Values.enableShield }}
+        {{- end }}
+        {{- if .Values.enableWaf }}
+        - --enable-waf={{ .Values.enableWaf }}
+        {{- end }}
+        {{- if .Values.enableWafv2 }}
+        - --enable-wafv2={{ .Values.enableWafv2 }}
+        {{- end }}
+        {{- if .Values.metricsBindAddr }}
+        - --metrics-bind-addr={{ .Values.metricsBindAddr }}
+        {{- end }}
+        {{- if .Values.ingressMaxConcurrentReconciles }}
+        - --ingress-max-concurrent-reconciles={{ .Values.ingressMaxConcurrentReconciles }}
+        {{- end }}
+        {{- if .Values.serviceMaxConcurrentReconciles }}
+        - --service-max-concurrent-reconciles={{ .Values.serviceMaxConcurrentReconciles }}
+        {{- end }}
+        {{- if .Values.targetgroupbindingMaxConcurrentReconciles }}
+        - --targetgroupbinding-max-concurrent-reconciles={{ .Values.targetgroupbindingMaxConcurrentReconciles }}
+        {{- end }}
+        {{- if .Values.logLevel }}
+        - --log-level={{ .Values.logLevel }}
+        {{- end }}
+        {{- if .Values.webhookBindPort }}
+        - --webhook-bind-port={{ .Values.webhookBindPort }}
+        {{- end }}
+        {{- if .Values.syncPeriod }}
+        - --sync-period={{ .Values.syncPeriod }}
+        {{- end }}
+        {{- if .Values.watchNamespace }}
+        - --watch-namespace={{ .Values.watchNamespace }}
+        {{- end }}
         command:
         - /controller
         securityContext:
@@ -60,15 +99,17 @@ spec:
           readOnly: true
         ports:
         - name: webhook-server
-          containerPort: 9443
+          containerPort: {{ .Values.webhookBindPort | default 9443 }}
           protocol: TCP
         - name: metrics-server
-          containerPort: 8080
+          containerPort: {{ (split ":" .Values.metricsBindAddr)._1 | default 8080 }}
           protocol: TCP
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
+        {{- with .Values.livenessProbe }}
         livenessProbe:
-          {{- toYaml .Values.livenessProbe | nindent 10 }}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
