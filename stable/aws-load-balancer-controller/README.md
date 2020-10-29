@@ -150,7 +150,6 @@ The default values set by the application itself can be confirmed [here](https:/
 | `enableShield`                     | Enable Shield addon for ALB                         |                                                             None |
 | `enableWaf`                        | Enable WAF addon for ALB                            |                                                             None |
 | `enableWafv2`                      | Enable WAF V2 addon for ALB                         |                                                             None |
-| `healthProbeBindAddr`              | The address the health probes binds to              |                                                             "" |
 | `ingressMaxConcurrentReconciles`   | Maximum number of concurrently running reconcile loops for ingress |                                              None |
 | `logLevel`                         | Set the controller log level - info, debug          |                                                             None |
 | `metricsBindAddr`                  | The address the metric endpoint binds to            |                                                             "" |

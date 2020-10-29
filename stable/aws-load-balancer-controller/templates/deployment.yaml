@@ -63,9 +63,6 @@ spec:
         {{- if .Values.enableWafv2 }}
         - --enable-wafv2={{ .Values.enableWafv2 }}
         {{- end }}
-        {{- if .Values.healthProbeBindAddr }}
-        - --health-probe-bind-addr={{ .Values.healthProbeBindAddr }}
-        {{- end }}
         {{- if .Values.metricsBindAddr }}
         - --metrics-bind-addr={{ .Values.metricsBindAddr }}
         {{- end }}
@@ -107,11 +104,6 @@ spec:
         - name: metrics-server
           containerPort: {{ (split ":" .Values.metricsBindAddr)._1 | default 8080 }}
           protocol: TCP
-        {{- if .Values.livenessProbe }}
-        - name: health
-          containerPort: {{ (split ":" .Values.healthProbeBindAddr)._1 | default 61779}}
-          protocol: TCP
-        {{- end }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         {{- with .Values.livenessProbe }}

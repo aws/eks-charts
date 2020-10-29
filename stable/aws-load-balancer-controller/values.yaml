@@ -93,9 +93,6 @@ enableWaf:
 # Enable WAF V2 addon for ALB (default true)
 enableWafv2:
 
-# The address the health probes binds to. (default ":61779")
-healthProbeBindAddr: ""
-
 # Maximum number of concurrently running reconcile loops for ingress (default 3)
 ingressMaxConcurrentReconciles:
 
@@ -126,7 +123,7 @@ livenessProbe:
   failureThreshold: 2
   httpGet:
     path: /healthz
-    port: health
+    port: 61779
     scheme: HTTP
   initialDelaySeconds: 30
   timeoutSeconds: 10
