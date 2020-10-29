@@ -73,3 +73,13 @@ Allow the release namespace to be overridden for multi-namespace deployments in 
   {{- end -}}
 {{- end -}}
 
+{{/*
+Return the appropriate apiVersion for ClusterRole and ClusterRoleBinding.
+*/}}
+{{- define "rbac.apiVersion" -}}
+{{- if .Capabilities.APIVersions.Has "rbac.authorization.k8s.io/v1beta1" -}}
+{{- print "rbac.authorization.k8s.io/v1beta1" -}}
+{{- else -}}
+{{- print "rbac.authorization.k8s.io/v1" -}}
+{{- end -}}
+{{- end -}}
