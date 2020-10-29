@@ -118,7 +118,6 @@ syncPeriod:
 watchNamespace:
 
 # Liveness probe configuration for the controller
-# livenessProbe port must be consistent with healthProbeBindAddr's port
 livenessProbe:
   failureThreshold: 2
   httpGet:
