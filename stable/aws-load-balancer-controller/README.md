@@ -156,6 +156,7 @@ The default values set by the application itself can be confirmed [here](https:/
 | `metricsBindAddr`                  | The address the metric endpoint binds to            |                                                             "" |
 | `webhookBindPort`                  | The TCP port the Webhook server binds to            |                                                             None |
 | `serviceMaxConcurrentReconciles`   | Maximum number of concurrently running reconcile loops for service  |                                             None |
+| `targetgroupbindingMaxConcurrentReconciles` | Maximum number of concurrently running reconcile loops for targetGroupBinding  |                         None |
 | `syncPeriod`                       | Period at which the controller forces the repopulation of its local object stores      |                          None |
 | `watchNamespace`                   | Namespace the controller watches for updates to Kubernetes objects, If empty, all namespaces are watche |         None |
 | `livenessProbe`                    | Liveness probe settings for the controller                | (see `values.yaml`)                                                                        |

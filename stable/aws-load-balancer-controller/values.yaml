@@ -111,6 +111,9 @@ webhookBindPort:
 # Maximum number of concurrently running reconcile loops for service (default 3)
 serviceMaxConcurrentReconciles:
 
+# Maximum number of concurrently running reconcile loops for targetGroupBinding
+targetgroupbindingMaxConcurrentReconciles:
+
 # Period at which the controller forces the repopulation of its local object stores. (default 1h0m0s)
 syncPeriod:
 

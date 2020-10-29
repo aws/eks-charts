@@ -75,6 +75,9 @@ spec:
         {{- if .Values.serviceMaxConcurrentReconciles }}
         - --service-max-concurrent-reconciles={{ .Values.serviceMaxConcurrentReconciles }}
         {{- end }}
+        {{- if .Values.targetgroupbindingMaxConcurrentReconciles }}
+        - --targetgroupbinding-max-concurrent-reconciles={{ .Values.targetgroupbindingMaxConcurrentReconciles }}
+        {{- end }}
         {{- if .Values.logLevel }}
         - --log-level={{ .Values.logLevel }}
         {{- end }}
