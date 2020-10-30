@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller
+  repository: docker.io/amazon/aws-alb-ingress-controller
   tag: v2.0.0
   pullPolicy: IfNotPresent
 
