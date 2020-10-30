@@ -87,6 +87,13 @@ spec:
         {{- if .Values.watchNamespace }}
         - --watch-namespace={{ .Values.watchNamespace }}
         {{- end }}
+        {{- if .Values.env }}
+        env:
+        {{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+          value: "{{ $value }}"
+        {{- end }}
+        {{- end }}
         command:
         - /controller
         securityContext:
