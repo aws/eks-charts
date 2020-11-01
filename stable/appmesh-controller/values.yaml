@@ -72,6 +72,10 @@ cloudMapDNS:
   # cloudMapDNS.ttl if set will use this global ttl value
   ttl: 300
 
+awsAccessValidation:
+  # awsAccessValidation.enabled: `true` to enable AWS AppMesh and CloudMap Access validation during controller boot up
+  enabled: false
+
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
   create: true
