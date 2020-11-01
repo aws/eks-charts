@@ -339,6 +339,7 @@ Parameter | Description | Default
 `stats.statsdPort` |  DogStatsD daemon port | `8125`
 `cloudMapCustomHealthCheck.enabled` |  If `true`, CustomHealthCheck will be enabled for CloudMap Services | `false`
 `cloudMapDNS.ttl` |  Sets CloudMap DNS TTL | `300`
+`awsAccessValidation.enabled` |  If `true`, Access to AWS App Mesh and CloudMap will be validated | `false`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`
 `tracing.provider` |  The tracing provider can be x-ray, jaeger or datadog | `x-ray`
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`

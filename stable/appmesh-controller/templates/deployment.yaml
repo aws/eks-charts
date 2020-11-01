@@ -69,6 +69,9 @@ spec:
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}
+        {{- if .Values.awsAccessValidation.enabled }}
+        - --enable-aws-access-validation=true
+        {{- end }}
         {{- if kindIs "float64" .Values.cloudMapDNS.ttl }}
         - --cloudmap-dns-ttl={{ .Values.cloudMapDNS.ttl }}
         {{- end }}
