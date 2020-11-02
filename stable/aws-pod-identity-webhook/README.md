@@ -54,7 +54,7 @@ The following table lists the configurable parameters for this chart and their d
 | `annotationPrefix`          | Prefix for annotation                 | `eks.amazonaws.com`                                                     |
 | `tokenAudience`             | Token audience                        | `sts.amazonaws.com`                                                     |
 | `caBundle`                  | CA cert bundle data                   | None. Must be provided on chart install                                 |
-| `image.repository`          | Image repository                      | `602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/pod-identity-webhook` |
+| `image.repository`          | Image repository                      | `amazon/amazon-eks-pod-identity-webhook`                                |
 | `image.tag`                 | Image tag                             | `latest`                                                                |
 | `image.pullPolicy`          | Container pull policy                 | `IfNotPresent`                                                          |
 | `replicas`                  | Number of deployment replicas         | `3`                                                                     |
