@@ -76,7 +76,7 @@ cloudMapDNS:
 
 awsAccessValidation:
   # awsAccessValidation.enabled: `true` to enable AWS AppMesh and CloudMap Access validation during controller boot up
-  enabled: false
+  enabled: true
 
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not

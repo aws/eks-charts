@@ -5,3 +5,5 @@ image:
   repository: apuroop/appmesh-controller
   tag: v1.2.0-rc3
   pullPolicy: IfNotPresent
+awsAccessValidation:
+  enabled: false
