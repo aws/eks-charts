@@ -66,6 +66,7 @@ spec:
         - --readiness-probe-period={{ .Values.sidecar.probes.readinessProbePeriod }}
         - --envoy-admin-access-port={{ .Values.sidecar.envoyAdminAccessPort }}
         - --envoy-admin-access-log-file={{ .Values.sidecar.envoyAdminAccessLogFile }}
+        - --preview={{ .Values.preview }}
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}

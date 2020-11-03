@@ -5,6 +5,7 @@
 replicaCount: 1
 region: ""
 accountId: ""
+preview: true
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller

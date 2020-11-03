@@ -4,7 +4,7 @@ App Mesh Jaeger Helm chart for Kubernetes
 
 ## Prerequisites
 
-* Kubernetes >= 1.13
+* Kubernetes >= 1.15
 
 ## Installing the Chart
 
@@ -17,7 +17,7 @@ helm repo add eks https://aws.github.io/eks-charts
 Install App Mesh Jaeger:
 
 ```sh
-helm upgrade -i appmesh-jaeger eks/appmesh-jaeger \
+helm upgrade -i appmesh-jaeger ./stable/appmesh-jaeger \
 --namespace appmesh-system
 ```
 
@@ -27,7 +27,7 @@ and use `--set persistentVolumeClaim.claimName=<PVC-CLAIM-NAME>`.
 Enable Jaeger tracing for the App Mesh data plane:
 
 ```sh
-helm upgrade -i appmesh-controller eks/appmesh-controller \
+helm upgrade -i appmesh-controller ./stable/appmesh-controller \
     --namespace appmesh-system \
     --set tracing.enabled=true \
     --set tracing.provider=jaeger \
