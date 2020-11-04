@@ -128,9 +128,11 @@ livenessProbe:
   timeoutSeconds: 10
 
 # Environment variables to set for aws-load-balancer-controller pod.
+# We strongly discourage programming access credentials in the controller environment. You should setup IRSA or
+# comparable solutions like kube2iam, kiam etc instead.
 env:
-  # AWS_ACCESS_KEY_ID: ""
-  # AWS_SECRET_ACCESS_KEY: ""
+  # ENV_1: ""
+  # ENV_2: ""
 
 # Specifies if aws-load-balancer-controller should be started in hostNetwork mode.
 #
