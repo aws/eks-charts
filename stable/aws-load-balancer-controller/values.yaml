@@ -131,3 +131,9 @@ livenessProbe:
 env:
   # AWS_ACCESS_KEY_ID: ""
   # AWS_SECRET_ACCESS_KEY: ""
+
+# Specifies if aws-load-balancer-controller should be started in hostNetwork mode.
+#
+# This is required if using a custom CNI with a managed kubernetes service (e.g. EKS).
+# The managed control plane is unable to communicate with the pods/service IP address.
+hostNetwork: false
