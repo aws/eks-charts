@@ -62,8 +62,10 @@ aws iam create-policy \
 ```
 Take note of the policy ARN that is returned
 
-
 Create an IAM role for service account for the App Mesh Kubernetes controller, use the ARN from the step above
+
+> Note: if you deleted `serviceaccount` in the `appmesh-system` namespace, you will need to delete and re-create `iamserviceaccount`. `eksctl` does not override the `iamserviceaccount` correctly ([see this issue](https://github.com/weaveworks/eksctl/issues/2665))
+
 ```
 eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
     --namespace appmesh-system \
@@ -142,6 +144,9 @@ aws iam create-policy \
 Take note of the policy ARN that is returned
 
 Create an IAM role for service account for the App Mesh Kubernetes controller, use the ARN from the step above
+
+> Note: if you deleted `serviceaccount` in the `appmesh-system` namespace, you will need to delete and re-create `iamserviceaccount`. `eksctl` does not override the `iamserviceaccount` correctly ([see this issue](https://github.com/weaveworks/eksctl/issues/2665))
+
 ```
 eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
     --namespace appmesh-system \
