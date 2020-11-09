@@ -35,6 +35,9 @@ spec:
           secretName: {{ template "aws-load-balancer-controller.namePrefix" . }}-tls
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         args:
