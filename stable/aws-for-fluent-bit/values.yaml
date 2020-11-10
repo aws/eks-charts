@@ -133,3 +133,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+annotations: {}
+  # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit
