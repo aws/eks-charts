@@ -11,7 +11,7 @@ rules:
   verbs: [create]
 - apiGroups: [""]
   resources: [configmaps]
-  resourceNames: [{{ index .Values "leader-election-id" | default "aws-load-balancer-controller-leader" }}]
+  resourceNames: [aws-load-balancer-controller-leader]
   verbs: [get, patch, update]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -51,10 +51,6 @@ rules:
 - apiGroups: [""]
   resources: [nodes, secrets, namespaces, endpoints]
   verbs: [get, list, watch]
-- apiGroups: [""]
-  resources: [configmaps]
-  resourceNames: [{{ index .Values "leader-election-id" | default "aws-load-balancer-controller-leader" }}]
-  verbs: [get, patch, update]
 - apiGroups: ["elbv2.k8s.aws", "", "extensions", "networking.k8s.io"]
   resources: [targetgroupbindings/status, pods/status, services/status, ingresses/status]
   verbs: [update, patch]

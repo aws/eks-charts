@@ -90,12 +90,6 @@ spec:
         {{- if .Values.watchNamespace }}
         - --watch-namespace={{ .Values.watchNamespace }}
         {{- end }}
-        {{- if index .Values "leader-election-id" }}
-        - --leader-election-id={{ index .Values "leader-election-id" }}
-        {{- end }}
-        {{- if index  .Values "leader-election-namespace" }}
-        - --leader-election-namespace={{ index .Values "leader-election-namespace" }}
-        {{- end }}
         {{- if .Values.env }}
         env:
         {{- range $key, $value := .Values.env }}

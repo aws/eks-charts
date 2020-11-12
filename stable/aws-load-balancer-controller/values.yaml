@@ -117,12 +117,6 @@ syncPeriod:
 # Namespace the controller watches for updates to Kubernetes objects, If empty, all namespaces are watched.
 watchNamespace:
 
-# Namespace of leader-election configmap for ingress controller. If unspecified, the namespace of this controller pod will be used
-leader-election-namespace:
-
-# Name of leader-election configmap for the controller
-leader-election-id:
-
 # Liveness probe configuration for the controller
 livenessProbe:
   failureThreshold: 2
