@@ -91,10 +91,10 @@ spec:
         - --watch-namespace={{ .Values.watchNamespace }}
         {{- end }}
         {{- if index .Values "election-id" }}
-          - --election-id={{ .Values index "election-id" }}
+        - --election-id={{ index .Values "election-id" }}
         {{- end }}
         {{- if index  .Values "election-namespace" }}
-          - --election-namespace={{ index .Values "election-namespace" }}
+        - --election-namespace={{ index .Values "election-namespace" }}
         {{- end }}
         {{- if .Values.env }}
         env:
