@@ -11,7 +11,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: true
+fullnameOverride: ""
 
 # The name of the Kubernetes cluster. A non-empty value is required
 clusterName:
