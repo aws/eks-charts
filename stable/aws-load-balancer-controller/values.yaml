@@ -11,7 +11,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: true
 
 # The name of the Kubernetes cluster. A non-empty value is required
 clusterName:
@@ -118,10 +118,10 @@ syncPeriod:
 watchNamespace:
 
 # Namespace of leader-election configmap for ingress controller. If unspecified, the namespace of this controller pod will be used
-election-namespace:
+leader-election-namespace:
 
 # Name of leader-election configmap for the controller
-election-id:
+leader-election-id:
 
 # Liveness probe configuration for the controller
 livenessProbe:
