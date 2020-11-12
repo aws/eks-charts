@@ -32,7 +32,7 @@ spec:
       - name: cert
         secret:
           defaultMode: 420
-          secretName: {{ template "aws-load-balancer-controller.namePrefix" . }}-tls
+          secretName: {{ template "aws-load-balancer-controller.namePrefix" . }}-{{ .Release.Name }}-tls
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- if .Values.hostNetwork }}

@@ -77,7 +77,7 @@ Generate certificates for webhook
 */}}
 {{- define "aws-load-balancer-controller.gen-certs" -}}
 {{- $namePrefix := ( include "aws-load-balancer-controller.namePrefix" . ) -}}
-{{- $altNames := list ( printf "%s-%s.%s" $namePrefix "webhook-service" .Release.Namespace ) ( printf "%s-%s.%s.svc" $namePrefix "webhook-service" .Release.Namespace ) -}}
+{{- $altNames := list ( printf "%s-%s.%s" $namePrefix "webhook-service" .Release.Namespace ) ( printf "%s-%s-%s.%s.svc" $namePrefix .Release.Name "webhook-service" .Release.Namespace ) -}}
 {{- $ca := genCA "aws-load-balancer-controller-ca" 3650 -}}
 {{- $cert := genSignedCert ( include "aws-load-balancer-controller.fullname" . ) nil $altNames 3650 $ca -}}
 caCert: {{ $ca.Cert | b64enc }}
