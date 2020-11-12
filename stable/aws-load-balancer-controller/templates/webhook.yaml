@@ -96,7 +96,7 @@ webhooks:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ template "aws-load-balancer-controller.namePrefix" . }}-tls
+  name: {{ template "aws-load-balancer-controller.namePrefix" . }}-{{ .Release.Name }}-tls
   labels:
 {{ include "aws-load-balancer-controller.labels" . | indent 4 }}
 type: kubernetes.io/tls
