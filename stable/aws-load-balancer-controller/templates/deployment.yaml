@@ -33,6 +33,9 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ template "aws-load-balancer-controller.namePrefix" . }}-tls
+      {{- with .Values.extraVolumes }}
+      {{ toYaml . | nindent 6 }}
+      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- if .Values.hostNetwork }}
@@ -107,6 +110,9 @@ spec:
         - mountPath: /tmp/k8s-webhook-server/serving-certs
           name: cert
           readOnly: true
+        {{- with .Values.extraVolumeMounts }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
         ports:
         - name: webhook-server
           containerPort: {{ .Values.webhookBindPort | default 9443 }}
