@@ -307,6 +307,8 @@ Parameter | Description | Default
 `image.tag` | image tag | `<VERSION>`
 `image.pullPolicy` | image pull policy | `IfNotPresent`
 `log.level` | controller log level, possible values are `info` and `debug`  | `info`
+`sds.enabled` | If `true`, SDS will be enabled in Envoy | `true`
+`sds.udsPath` | Unix Domain Socket Path of the SDS Provider(SPIRE for preview release) | `/run/spire/sockets/agent.sock`
 `resources.requests/cpu` | pod CPU request | `100m`
 `resources.requests/memory` | pod memory request | `64Mi`
 `resources.limits/cpu` | pod CPU limit | `2000m`
