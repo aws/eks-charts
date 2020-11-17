@@ -4,7 +4,7 @@ global:
 
 image:
   repository: amazon/aws-for-fluent-bit
-  tag: 2.7.0
+  tag: 2.9.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -81,6 +81,7 @@ kinesis:
   stream: "my-kinesis-stream-name"
   partitionKey: "container_id"
   appendNewline:
+  replaceDots:
   dataKeys:
   roleArn:
   endpoint:
