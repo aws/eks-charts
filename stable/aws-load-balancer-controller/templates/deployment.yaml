@@ -57,13 +57,13 @@ spec:
         {{- if .Values.enablePodReadinessGateInject }}
         - --enable-pod-readiness-gate-inject={{ .Values.enablePodReadinessGateInject }}
         {{- end }}
-        {{- if .Values.enableShield }}
+        {{- if or .Values.enableShield (eq .Values.enableShield false) }}
         - --enable-shield={{ .Values.enableShield }}
         {{- end }}
-        {{- if .Values.enableWaf }}
+        {{- if or .Values.enableWaf (eq .Values.enableWaf false) }}
         - --enable-waf={{ .Values.enableWaf }}
         {{- end }}
-        {{- if .Values.enableWafv2 }}
+        {{- if or .Values.enableWafv2 (eq .Values.enableWafv2 false) }}
         - --enable-wafv2={{ .Values.enableWafv2 }}
         {{- end }}
         {{- if .Values.metricsBindAddr }}
