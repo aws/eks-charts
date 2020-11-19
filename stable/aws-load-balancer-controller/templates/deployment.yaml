@@ -54,16 +54,16 @@ spec:
         {{- if .Values.awsMaxRetries }}
         - --aws-max-retries={{ .Values.awsMaxRetries }}
         {{- end }}
-        {{- if .Values.enablePodReadinessGateInject }}
+        {{- if kindIs "bool" .Values.enablePodReadinessGateInject }}
         - --enable-pod-readiness-gate-inject={{ .Values.enablePodReadinessGateInject }}
         {{- end }}
-        {{- if .Values.enableShield }}
+        {{- if kindIs "bool" .Values.enableShield }}
         - --enable-shield={{ .Values.enableShield }}
         {{- end }}
-        {{- if .Values.enableWaf }}
+        {{- if kindIs "bool" .Values.enableWaf }}
         - --enable-waf={{ .Values.enableWaf }}
         {{- end }}
-        {{- if .Values.enableWafv2 }}
+        {{- if kindIs "bool" .Values.enableWafv2 }}
         - --enable-wafv2={{ .Values.enableWafv2 }}
         {{- end }}
         {{- if .Values.metricsBindAddr }}
