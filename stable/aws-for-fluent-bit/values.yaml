@@ -102,6 +102,7 @@ elasticsearch:
   tls: "On"
   port: "443"
   retryLimit: 6
+  replaceDots: "On"
 
 # extraOutputs: |
 #   [OUTPUT]
