@@ -67,6 +67,8 @@ spec:
         - --envoy-admin-access-port={{ .Values.sidecar.envoyAdminAccessPort }}
         - --envoy-admin-access-log-file={{ .Values.sidecar.envoyAdminAccessLogFile }}
         - --preview={{ .Values.preview }}
+        - --enable-sds={{ .Values.sds.enabled }}
+        - --sds-uds-path={{ .Values.sds.udsPath }}
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}
