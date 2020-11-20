@@ -8,8 +8,8 @@ accountId: ""
 preview: true
 
 image:
-  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
-  tag: v1.2.0-mtls-preview
+  repository: 940911992744.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
+  tag: v1.2.1-mtls-preview
   pullPolicy: IfNotPresent
 
 sidecar:

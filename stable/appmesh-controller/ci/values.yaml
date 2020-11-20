@@ -3,5 +3,5 @@
 region: us-west-2
 image:
   repository: apuroop/appmesh-controller
-  tag: v1.2.0-rc2
+  tag: v1.2.1-mtls-preview
   pullPolicy: IfNotPresent
