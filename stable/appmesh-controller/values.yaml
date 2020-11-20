@@ -77,7 +77,7 @@ cloudMapDNS:
 
 sds:
   # sds.enabled: `true` if SDS based mTLS support needs to be enabled in envoy
-  enabled: true
+  enabled: false
   #sds.udsPath: UDS Path of the SDS Provider
   udsPath: /run/spire/sockets/agent.sock
 
