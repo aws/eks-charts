@@ -1265,7 +1265,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "SSL - SAN Verification Failures ",
+      "title": "SSL - SAN Verification Failures",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1353,7 +1353,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "SSL - CA Verification Failures ",
+      "title": "SSL - CA Verification Failures",
       "tooltip": {
         "shared": true,
         "sort": 0,
