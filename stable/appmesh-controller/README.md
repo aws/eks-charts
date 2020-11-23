@@ -56,10 +56,10 @@ Download the IAM policy for AWS App Mesh Kubernetes Controller
 curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/preview/preview-controller-iam-policy.json
 ```
 
-Create an IAM policy called AWSAppMeshK8sControllerIAMPolicy
+Create an IAM policy called AWSAppMeshK8sControllerIAMPreviewPolicy
 ```
 aws iam create-policy \
-    --policy-name AWSAppMeshK8sControllerIAMPolicy \
+    --policy-name AWSAppMeshK8sControllerIAMPreviewPolicy \
     --policy-document file://controller-iam-policy.json
 ```
 Take note of the policy ARN that is returned
@@ -70,7 +70,7 @@ Create an IAM role for service account for the App Mesh Kubernetes controller, u
 eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
     --namespace appmesh-system \
     --name appmesh-controller \
-    --attach-policy-arn arn:aws:iam::$AWS_ACCOUNT_ID:policy/AWSAppMeshK8sControllerIAMPolicy  \
+    --attach-policy-arn arn:aws:iam::$AWS_ACCOUNT_ID:policy/AWSAppMeshK8sControllerIAMPreviewPolicy  \
     --override-existing-serviceaccounts \
     --approve
 ```
@@ -138,10 +138,10 @@ Download the IAM policy for AWS App Mesh Kubernetes Controller
 curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/preview/preview-controller-iam-policy.json
 ```
 
-Create an IAM policy called AWSAppMeshK8sControllerIAMPolicy
+Create an IAM policy called AWSAppMeshK8sControllerIAMPreviewPolicy
 ```
 aws iam create-policy \
-    --policy-name AWSAppMeshK8sControllerIAMPolicy \
+    --policy-name AWSAppMeshK8sControllerIAMPreviewPolicy \
     --policy-document file://controller-iam-policy.json
 ```
 Take note of the policy ARN that is returned
@@ -151,7 +151,7 @@ Create an IAM role for service account for the App Mesh Kubernetes controller, u
 eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
     --namespace appmesh-system \
     --name appmesh-controller \
-    --attach-policy-arn arn:aws:iam::$AWS_ACCOUNT_ID:policy/AWSAppMeshK8sControllerIAMPolicy  \
+    --attach-policy-arn arn:aws:iam::$AWS_ACCOUNT_ID:policy/AWSAppMeshK8sControllerIAMPreviewPolicy  \
     --override-existing-serviceaccounts \
     --approve
 ```
