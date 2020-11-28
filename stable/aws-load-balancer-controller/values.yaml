@@ -55,6 +55,10 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+# Leverage a PriorityClass to ensure the controller will survive resource shortages
+# ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
+priorityClassName: ""
+
 nodeSelector: {}
 
 tolerations: []
