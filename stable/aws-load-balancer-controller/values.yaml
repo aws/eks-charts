@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller
-  tag: v2.0.1
+  tag: v2.1.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -141,6 +141,7 @@ env:
 # recommended if using the Amazon VPC CNI plugin.
 hostNetwork: false
 
+# Extra volume mount enables setting up IRSA on non-EKS Kubernetes cluster
 extraVolumeMounts:
   # - name: aws-iam-token
   #   mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
