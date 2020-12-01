@@ -141,13 +141,13 @@ env:
 # recommended if using the Amazon VPC CNI plugin.
 hostNetwork: false
 
-# Extra volume mount enables setting up IRSA on non-EKS Kubernetes cluster
+# extraVolumeMounts are the additional volume mounts. This enables setting up IRSA on non-EKS Kubernetes cluster
 extraVolumeMounts:
   # - name: aws-iam-token
   #   mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
   #   readOnly: true
 
-# Extra volumes to mount a projected service account token for example.
+# extraVolumes for the extraVolumeMounts. Useful to mount a projected service account token for example.
 extraVolumes:
   # - name: aws-iam-token
   #   projected:
@@ -157,3 +157,8 @@ extraVolumes:
   #         audience: sts.amazonaws.com
   #         expirationSeconds: 86400
   #         path: token
+
+# defaultTags are the tags to apply to all AWS resources managed by this controller
+defaultTags: {}
+  # default_tag1: value1
+  # default_tag2: value2

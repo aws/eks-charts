@@ -93,6 +93,9 @@ spec:
         {{- if .Values.watchNamespace }}
         - --watch-namespace={{ .Values.watchNamespace }}
         {{- end }}
+        {{- if .Values.defaultTags }}
+        - --default-tags={{ include "aws-load-balancer-controller.convert-map-to-csv" .Values.defaultTags | trimSuffix "," }}
+        {{- end }}
         {{- if .Values.env }}
         env:
         {{- range $key, $value := .Values.env }}
