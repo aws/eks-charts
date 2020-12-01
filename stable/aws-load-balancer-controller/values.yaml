@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller
-  tag: v2.0.1
+  tag: v2.1.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -141,12 +141,13 @@ env:
 # recommended if using the Amazon VPC CNI plugin.
 hostNetwork: false
 
+# extraVolumeMounts are the additional volume mounts. This enables setting up IRSA on non-EKS Kubernetes cluster
 extraVolumeMounts:
   # - name: aws-iam-token
   #   mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
   #   readOnly: true
 
-# Extra volumes to mount a projected service account token for example.
+# extraVolumes for the extraVolumeMounts. Useful to mount a projected service account token for example.
 extraVolumes:
   # - name: aws-iam-token
   #   projected:
@@ -156,3 +157,8 @@ extraVolumes:
   #         audience: sts.amazonaws.com
   #         expirationSeconds: 86400
   #         path: token
+
+# defaultTags are the tags to apply to all AWS resources managed by this controller
+defaultTags: {}
+  # default_tag1: value1
+  # default_tag2: value2
