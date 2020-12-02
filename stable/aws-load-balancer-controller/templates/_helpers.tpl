@@ -84,3 +84,10 @@ caCert: {{ $ca.Cert | b64enc }}
 clientCert: {{ $cert.Cert | b64enc }}
 clientKey: {{ $cert.Key | b64enc }}
 {{- end -}}
+
+{{/*
+Convert map to comma separated key=value string
+*/}}
+{{- define "aws-load-balancer-controller.convert-map-to-csv" -}}
+{{- range $key, $value := . -}} {{ $key }}={{ $value }}, {{- end -}}
+{{- end -}}
