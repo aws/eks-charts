@@ -176,7 +176,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "(sum(envoy_cluster_membership_healthy{job=\"appmesh-envoy\"})  - sum(envoy_cluster_membership_total{job=\"appmesh-envoy\"}))",
+          "expr": "(sum(envoy_cluster_membership_total{job=\"appmesh-envoy\"})  - sum(envoy_cluster_membership_healthy{job=\"appmesh-envoy\"}))",
           "format": "time_series",
           "instant": false,
           "legendFormat": "Unhealthy sidecars",
@@ -1081,7 +1081,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(envoy_cluster_outlier_detection_ejections_enforced_total{job=\"appmesh-envoy\"}) by (kubernetes_namespace)",
+          "expr": "sum(round(increase(envoy_cluster_outlier_detection_ejections_enforced_total{job=\"appmesh-envoy\"}[1m]))) by (kubernetes_namespace)",
           "legendFormat": "{{kubernetes_namespace}}",
           "refId": "A"
         }
@@ -1261,7 +1261,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(envoy_cluster_outlier_detection_ejections_enforced_consecutive_5xx{job=\"appmesh-envoy\"}) by (kubernetes_namespace)",
+          "expr": "sum(round(increase(envoy_cluster_outlier_detection_ejections_enforced_consecutive_5xx{job=\"appmesh-envoy\"}[1m]))) by (kubernetes_namespace)",
           "legendFormat": "{{kubernetes_namespace}}",
           "refId": "A"
         }
@@ -1351,7 +1351,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(envoy_cluster_outlier_detection_ejections_detected_consecutive_5xx{job=\"appmesh-envoy\"}) by (kubernetes_namespace)",
+          "expr": "sum(round(increase(envoy_cluster_outlier_detection_ejections_detected_consecutive_5xx{job=\"appmesh-envoy\"}[1m]))) by (kubernetes_namespace)",
           "legendFormat": "{{kubernetes_namespace}}",
           "refId": "A"
         }

@@ -120,6 +120,8 @@ spec:
             value: "false"
           - name: ENABLE_SCHEDULED_EVENT_DRAINING
             value: "false"
+          - name: ENABLE_REBALANCE_MONITORING
+            value: "false"
           - name: ENABLE_SQS_TERMINATION_DRAINING
             value: "true"
           - name: QUEUE_URL
@@ -138,6 +140,8 @@ spec:
           {{- end }}
           - name: CHECK_ASG_TAG_BEFORE_DRAINING
             value: {{ .Values.checkASGTagBeforeDraining | quote }}
+          - name: MANAGED_ASG_TAG
+            value: {{ .Values.managedAsgTag | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.enablePrometheusServer }}

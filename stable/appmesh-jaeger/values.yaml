@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: jaegertracing/all-in-one
-  tag: 1.14
+  tag: 1.19
   pullPolicy: IfNotPresent
 
 nameOverride: ""
