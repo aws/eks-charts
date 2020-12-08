@@ -43,6 +43,7 @@ filter:
   mergeLogKey: "data"
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
+  bufferSize: "32k"
 
 # extraFilters: |
 #   [FILTER]
