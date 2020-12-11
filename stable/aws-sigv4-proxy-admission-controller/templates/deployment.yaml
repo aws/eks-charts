@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "sidecar-injector.fullname" . }}-webhook-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "sidecar-injector.fullname" . }}
+{{ include "sidecar-injector.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "sidecar-injector.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "sidecar-injector.fullname" . }}
+    spec:
+      serviceAccountName: {{ template "sidecar-injector.serviceAccountName" . }}
+      containers:
+        - name: {{ template "sidecar-injector.fullname" . }}
+          image: {{ .Values.image.uri }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - -tlsCertFile=/etc/webhook/certs/cert.pem
+            - -tlsKeyFile=/etc/webhook/certs/key.pem
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /etc/webhook/certs
+              readOnly: true
+          env:
+            - name: AWS-SIGV4-PROXY-IMAGE
+              value: {{ .Values.env.awsSigV4ProxyImage }}
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: {{ template "sidecar-injector.fullname" . }}-webhook-certs

@@ -1,0 +1,34 @@
+{{ $tls := fromYaml ( include "sidecar-injector.gen-certs" . ) }}
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ template "sidecar-injector.fullname" . }}-webhook-cfg
+  labels:
+    app: {{ template "sidecar-injector.fullname" . }}
+{{ include "sidecar-injector.labels" . | indent 4 }}
+webhooks:
+  - name: {{ template "sidecar-injector.fullname" . }}.k8s.aws
+    clientConfig:
+      service:
+        name: {{ template "sidecar-injector.fullname" . }}-webhook-svc
+        namespace: {{ .Release.Namespace }}
+        path: "/mutate"
+      caBundle: {{ $tls.caCert }}
+    rules:
+      - operations: [ "CREATE" ]
+        apiGroups: ["apps", ""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "sidecar-injector.fullname" . }}-webhook-certs
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "sidecar-injector.labels" . | indent 4 }}
+type: Opaque
+data:
+  cert.pem: {{ $tls.clientCert }}
+  key.pem: {{ $tls.clientKey }}
