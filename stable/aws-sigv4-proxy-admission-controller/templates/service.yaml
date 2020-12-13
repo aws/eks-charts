@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "sidecar-injector.fullname" . }}-webhook-svc
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-service
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "sidecar-injector.fullname" . }}
-{{ include "sidecar-injector.labels" . | indent 4 }}
+    app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+{{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
 spec:
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
   selector:
-    app: {{ template "sidecar-injector.fullname" . }}
+    app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}

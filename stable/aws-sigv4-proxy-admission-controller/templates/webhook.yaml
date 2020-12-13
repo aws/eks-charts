@@ -1,17 +1,17 @@
-{{ $tls := fromYaml ( include "sidecar-injector.gen-certs" . ) }}
+{{ $tls := fromYaml ( include "aws-sigv4-proxy-admission-controller.gen-certs" . ) }}
 ---
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: {{ template "sidecar-injector.fullname" . }}-webhook-cfg
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-config
   labels:
-    app: {{ template "sidecar-injector.fullname" . }}
-{{ include "sidecar-injector.labels" . | indent 4 }}
+    app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+{{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
 webhooks:
-  - name: {{ template "sidecar-injector.fullname" . }}.k8s.aws
+  - name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}.k8s.aws
     clientConfig:
       service:
-        name: {{ template "sidecar-injector.fullname" . }}-webhook-svc
+        name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-service
         namespace: {{ .Release.Namespace }}
         path: "/mutate"
       caBundle: {{ $tls.caCert }}
@@ -20,14 +20,15 @@ webhooks:
         apiGroups: ["apps", ""]
         apiVersions: ["v1"]
         resources: ["pods"]
+    sideEffects: None
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ template "sidecar-injector.fullname" . }}-webhook-certs
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-certs
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "sidecar-injector.labels" . | indent 4 }}
+{{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
 type: Opaque
 data:
   cert.pem: {{ $tls.clientCert }}

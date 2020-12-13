@@ -10,29 +10,33 @@ Add the EKS repository to Helm:
 helm repo add eks https://aws.github.io/eks-charts
 ```
 
-Install or upgrading the AWS SIGv4 Admission Controller chart with default configuration:
+Install the AWS SIGv4 Admission Controller chart with default configuration:
 
 ```bash
-helm upgrade --install aws-sigv4-proxy --namespace <namespace>
+helm install aws-sigv4-proxy-admission-controller eks/aws-sigv4-proxy-admission-controller --namespace <namespace>
 ```
 
 ## Uninstalling the Chart
 
-To uninstall/delete the `aws-sigv4-proxy` release:
+To uninstall/delete the `aws-sigv4-proxy-admission-controller` release:
 
 ```bash
-helm delete aws-sigv4-proxy --namespace <namespace>
+helm uninstall aws-sigv4-proxy-admission-controller --namespace <namespace>
 ```
 
 ## Configuration
 
-| Parameter | Description | Default | Required |
-| - | - | - | -
-| `name` | Name of chart | `sidecar-injector` | ✔
-| `image.uri` | URI of image to deploy | `public.ecr.aws/aws-observability/aws-sigv4-proxy-admission-controller:1.0` | ✔
-| `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
-| `env.awsSigV4ProxyImage` | AWS SIGv4 image to use as sidecar | `public.ecr.aws/aws-observability/aws-sigv4-proxy:1.0` | ✔
-| `serviceAccount.create` | Whether a new service account should be created | `true` |
-| `serviceAccount.name` | Name of the service account | `""` |
-| `service.port` | Incoming port | `443` |
-| `service.targetPort` | Target port | `443` |
+| Parameter | Description | Default
+| - | - | -
+| `nameOverride` | Used to override name of chart | `""`
+| `fullnameOverride` | Used to override the full name of the application | `""`
+| `replicaCount` | Number of replicas | `1`
+| `image.repository` | Repository of image to pull for deployment | `public.ecr.aws/aws-observability/aws-sigv4-proxy-admission-controller`
+| `image.tag` | Tag of image to pull from repository | `1.0`
+| `image.pullPolicy` | Policy of how to pull image | `IfNotPresent`
+| `env.awsSigV4ProxyImage` | Image URI of sidecar container for AWS SIGv4 Proxy | `public.ecr.aws/aws-observability/aws-sigv4-proxy:1.0`
+| `serviceAccount.create` | Whether to create a service account or not | `true`
+| `serviceAccount.name` | The name of the service account to create or use | `""`
+| `rbac.create` | Whether to create rbac resources or not | `true`
+| `service.port` | Incoming port used by service | `443`
+| `service.targetPort` | Target port used by service | `443`

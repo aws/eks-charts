@@ -34,6 +34,9 @@ helm repo add eks https://aws.github.io/eks-charts
 ### AWS VPC CNI
 * [aws-vpc-cni](stable/aws-vpc-cni): Networking plugin for pod networking in Kubernetes using Elastic Network Interfaces on AWS. https://github.com/aws/amazon-vpc-cni-k8s
 
+### AWS SIGv4 Proxy Admission Controller
+* [aws-sigv4-proxy-admission-controller](stable/aws-sigv4-proxy-admission-controller): A helm chart for [AWS SIGv4 Proxy Admission Controller](https://github.com/aws-observability/aws-sigv4-proxy-admission-controller)
+
 ## License
 
 This project is licensed under the Apache-2.0 License.

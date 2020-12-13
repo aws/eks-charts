@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "sidecar-injector.fullname" . }}-webhook-deployment
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-deployment
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "sidecar-injector.fullname" . }}
-{{ include "sidecar-injector.labels" . | indent 4 }}
+    app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+{{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "sidecar-injector.fullname" . }}
+      app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
   template:
     metadata:
       labels:
-        app: {{ template "sidecar-injector.fullname" . }}
+        app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
     spec:
-      serviceAccountName: {{ template "sidecar-injector.serviceAccountName" . }}
+      serviceAccountName: {{ template "aws-sigv4-proxy-admission-controller.serviceAccountName" . }}
       containers:
-        - name: {{ template "sidecar-injector.fullname" . }}
-          image: {{ .Values.image.uri }}
+        - name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - -tlsCertFile=/etc/webhook/certs/cert.pem
@@ -34,4 +34,4 @@ spec:
       volumes:
         - name: webhook-certs
           secret:
-            secretName: {{ template "sidecar-injector.fullname" . }}-webhook-certs
+            secretName: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-certs

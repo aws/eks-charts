@@ -1,18 +1,11 @@
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: {{ template "sidecar-injector.serviceAccountName" . }}
-  namespace: {{ .Release.Namespace }}
-  labels:
-{{ include "sidecar-injector.labels" . | indent 4 }}
----
+{{- if .Values.rbac.create }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ template "sidecar-injector.fullname" . }}-role
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-role
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "sidecar-injector.labels" . | indent 4 }}
+{{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
 rules:
   - apiGroups: [""]
     resources: [namespaces]
@@ -21,15 +14,16 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ template "sidecar-injector.fullname" . }}-rolebinding
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-rolebinding
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "sidecar-injector.labels" . | indent 4 }}
+{{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ template "sidecar-injector.fullname" . }}-role
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-role
 subjects:
   - kind: ServiceAccount
-    name: {{ template "sidecar-injector.serviceAccountName" . }}
+    name: {{ template "aws-sigv4-proxy-admission-controller.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
+{{- end }}
