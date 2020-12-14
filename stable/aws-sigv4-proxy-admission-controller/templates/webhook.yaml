@@ -1,0 +1,35 @@
+{{ $tls := fromYaml ( include "aws-sigv4-proxy-admission-controller.gen-certs" . ) }}
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-config
+  labels:
+    app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+{{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
+webhooks:
+  - name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}.k8s.aws
+    clientConfig:
+      service:
+        name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-service
+        namespace: {{ .Release.Namespace }}
+        path: "/mutate"
+      caBundle: {{ $tls.caCert }}
+    rules:
+      - operations: [ "CREATE" ]
+        apiGroups: ["apps", ""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+    sideEffects: None
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-certs
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
+type: Opaque
+data:
+  cert.pem: {{ $tls.clientCert }}
+  key.pem: {{ $tls.clientKey }}
