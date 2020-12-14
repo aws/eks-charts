@@ -8,7 +8,7 @@ metadata:
 {{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
 spec:
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetPort }}
+    - port: {{ .Values.webhookService.port }}
+      targetPort: {{ .Values.webhookService.targetPort }}
   selector:
     app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}

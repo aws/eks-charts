@@ -38,5 +38,5 @@ helm uninstall aws-sigv4-proxy-admission-controller --namespace <namespace>
 | `serviceAccount.create` | Whether to create a service account or not | `true`
 | `serviceAccount.name` | The name of the service account to create or use | `""`
 | `rbac.create` | Whether to create rbac resources or not | `true`
-| `service.port` | Incoming port used by service | `443`
-| `service.targetPort` | Target port used by service | `443`
+| `webhookService.port` | Incoming port used by webhook service | `443`
+| `webhookService.targetPort` | Target port used by webhook service | `443`

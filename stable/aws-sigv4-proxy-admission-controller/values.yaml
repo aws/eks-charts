@@ -28,8 +28,8 @@ rbac:
   # rbac.create: Whether to create rbac resources or not
   create: true
 
-service:
-  # service.port: Incoming port used by service
+webhookService:
+  # webhookService.port: Incoming port used by webhook service
   port: 443
-  # service.targetPort: Target port used by service
+  # webhookService.targetPort: Target port used by webhook service
   targetPort: 443

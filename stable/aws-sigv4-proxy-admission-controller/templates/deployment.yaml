@@ -24,6 +24,8 @@ spec:
           args:
             - -tlsCertFile=/etc/webhook/certs/cert.pem
             - -tlsKeyFile=/etc/webhook/certs/key.pem
+          ports:
+            - containerPort: {{ .Values.webhookService.targetPort }}
           volumeMounts:
             - name: webhook-certs
               mountPath: /etc/webhook/certs
