@@ -20,7 +20,7 @@ resources:
     cpu: 100m
     memory: 256Mi
 
-  ## Prometheus server readiness and liveness probe initial delay and timeout
+  ## Jaeger server readiness and liveness probe initial delay and timeout
   ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
   ##
 probes:
