@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "aws-cloudwatch-metrics.labels" . | nindent 4 }}
 spec:
-  hostNetwork: {{ .Values.hostNetwork | default false}}
+  hostNetwork: {{ .Values.hostNetwork }}
   selector:
     matchLabels:
       {{- include "aws-cloudwatch-metrics.selectorLabels" . | nindent 6 }}
