@@ -7,7 +7,7 @@ podSecurityPolicy:
   create: false
 
 calico:
-  tag: v3.13.4
+  tag: v3.15.1
 
   typha:
     logseverity: Info #Debug, Info, Warning, Error, Fatal

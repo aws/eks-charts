@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+{{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
+spec:
+  ports:
+    - port: {{ .Values.webhookService.port }}
+      targetPort: {{ .Values.webhookService.targetPort }}
+  selector:
+    app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}

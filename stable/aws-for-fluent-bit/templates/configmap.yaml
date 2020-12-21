@@ -158,7 +158,7 @@ data:
         {{- if .Values.elasticsearch.tls }}
         TLS             {{ .Values.elasticsearch.tls }}
         {{- end }}
-        {{- if .Values.elasticsearch.retry_limit }}
+        {{- if .Values.elasticsearch.retryLimit }}
         Retry_Limit     {{ .Values.elasticsearch.retryLimit }}
         {{- end }}
 {{- end }}

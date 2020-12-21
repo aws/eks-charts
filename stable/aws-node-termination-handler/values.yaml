@@ -4,7 +4,7 @@
 
 image:
   repository: amazon/aws-node-termination-handler
-  tag: v1.8.0
+  tag: v1.11.1
   pullPolicy: IfNotPresent
   pullSecrets: []
 
@@ -33,10 +33,35 @@ resources:
     memory: "128Mi"
     cpu: "100m"
 
-## enableSpotInterruptionDraining If false, do not drain nodes when the spot interruption termination notice is received
+# enableSqsTerminationDraining If true, this turns on queue-processor mode which drains nodes when an SQS termination event is received 
+enableSqsTerminationDraining: false
+
+# enableRebalanceMonitoring If true, cordon nodes when a rebalance recommendation notice is received
+enableRebalanceMonitoring: false
+
+# queueURL Listens for messages on the specified SQS queue URL
+queueURL: ""
+
+# checkASGTagBeforeDraining  If true, check that the instance is tagged with "aws-node-termination-handler/managed" as the key before draining the node
+checkASGTagBeforeDraining: true
+
+# managedAsgTag  The tag to ensure is on a node if checkASGTagBeforeDraining is true
+managedAsgTag: "aws-node-termination-handler/managed"
+
+# awsRegion If specified, use the AWS region for AWS API calls
+awsRegion: ""
+
+# awsEndpoint If specified, use the AWS endpoint to make API calls.
+awsEndpoint: ""
+
+# These should only be used for testing w/ localstack!
+awsSecretAccessKey:
+awsAccessKeyID:
+
+# enableSpotInterruptionDraining If false, do not drain nodes when the spot interruption termination notice is received
 enableSpotInterruptionDraining: ""
 
-## enableScheduledEventDraining [EXPERIMENTAL] If true, drain nodes before the maintenance window starts for an EC2 instance scheduled event
+# enableScheduledEventDraining [EXPERIMENTAL] If true, drain nodes before the maintenance window starts for an EC2 instance scheduled event
 enableScheduledEventDraining: ""
 
 # Total number of times to try making the metadata request before failing.
@@ -51,7 +76,10 @@ taintNode: false
 # Log messages in JSON format.
 jsonLogging: false
 
-## dryRun tells node-termination-handler to only log calls to kubernetes control plane
+# Sets the log level
+logLevel: "info"
+
+# dryRun tells node-termination-handler to only log calls to kubernetes control plane
 dryRun: false
 
 # deleteLocalData tells kubectl to continue even if there are pods using
@@ -155,3 +183,8 @@ updateStrategy:
     maxUnavailable: 1
 linuxUpdateStrategy: ""
 windowsUpdateStrategy: ""
+
+# Determines if NTH uses host networking for Linux when running the DaemonSet (only IMDS mode; queue-processor never runs with host networking)
+# If you have disabled IMDSv1 and are relying on IMDSv2, you'll need to increase the IP hop count to 2 before switching this to false
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+useHostNetwork: true
