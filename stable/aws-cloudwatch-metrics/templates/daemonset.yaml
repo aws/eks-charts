@@ -5,7 +5,6 @@ metadata:
   labels:
     {{- include "aws-cloudwatch-metrics.labels" . | nindent 4 }}
 spec:
-  hostNetwork: {{ .Values.hostNetwork }}
   selector:
     matchLabels:
       {{- include "aws-cloudwatch-metrics.selectorLabels" . | nindent 6 }}
@@ -15,6 +14,7 @@ spec:
         {{- include "aws-cloudwatch-metrics.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "aws-cloudwatch-metrics.serviceAccountName" . }}
+      hostNetwork: {{ .Values.hostNetwork }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
