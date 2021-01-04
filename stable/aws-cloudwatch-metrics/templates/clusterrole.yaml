@@ -24,8 +24,8 @@ rules:
   resourceNames: ["cwagent-clusterleader"]
   verbs: ["get","update"]
 - apiGroups: ["policy"]
-    resources: ["podsecuritypolicies"]
-    verbs: ["use"]
-    resourceNames:
-      - {{ include "aws-cloudwatch-metrics.fullname" . }}
+  resources: ["podsecuritypolicies"]
+  verbs: ["use"]
+  resourceNames:
+    - {{ include "aws-cloudwatch-metrics.fullname" . }}
 {{- end -}}
