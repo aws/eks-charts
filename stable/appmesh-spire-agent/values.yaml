@@ -1,0 +1,54 @@
+# Default values for appmesh-spire-agent.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: gcr.io/spiffe-io/spire-agent
+  tag: 0.10.0
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: "spire-agent"
+
+service:
+  type: NodePort
+  port: 8081
+
+resources:
+  limits:
+    memory: 512Mi
+  requests:
+    cpu: 10m
+    memory: 1Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+initContainers:
+  image: gcr.io/spiffe-io/wait-for-it
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  # serviceAccount.create: Whether to create a service account or not
+  create: true
+  # serviceAccount.name: The name of the service account to create or use
+  name: "spire-agent"
+
+rbac:
+  # rbac.create: `true` if rbac resources should be created
+  create: true
+  # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
+  pspEnabled: false
+
+config:
+  # SPIRE Trust Domain
+  trustDomain: appmesh.aws
+  ## SPIRE Agent Log Level
+  logLevel: DEBUG
+  # SPIRE Server Bind Address
+  serverAddress: spire-server
+  #SPIRE Server Bind Port
+  serverPort: 8081

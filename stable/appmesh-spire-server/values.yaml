@@ -1,0 +1,54 @@
+# Default values for appmesh-spire-server.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: gcr.io/spiffe-io/spire-server
+  tag: 0.10.0
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: "spire-server"
+
+service:
+  type: NodePort
+  port: 8081
+
+resources:
+  limits:
+    memory: 512Mi
+  requests:
+    cpu: 10m
+    memory: 1Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serviceAccount:
+  # serviceAccount.create: Whether to create a service account or not
+  create: true
+  # serviceAccount.name: The name of the service account to create or use
+  name: "spire-server"
+
+rbac:
+  # rbac.create: `true` if rbac resources should be created
+  create: true
+  # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
+  pspEnabled: false
+
+config:
+  # SPIRE Trust Domain
+  trustDomain: appmesh.aws
+  ## SPIRE Server Log Level
+  logLevel: DEBUG
+  # SVID TTL value
+  svidTTL: 1h
+  # SPIRE Server Bind Address
+  bindAddress: 0.0.0.0
+  #SPIRE Server Bind Port
+  bindPort: 8081

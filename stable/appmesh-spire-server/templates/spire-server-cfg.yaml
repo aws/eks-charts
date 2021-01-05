@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "appmesh-spire-server.fullname" . }}
+  labels:
+{{ include "appmesh-spire-server.labels" . | indent 4 }}
+data:
+  server.conf: |
+    server {
+      bind_address = "{{ .Values.config.bindAddress }}"
+      bind_port = "{{ .Values.config.bindPort }}"
+      registration_uds_path = "/tmp/spire-registration.sock"
+      trust_domain = "{{ .Values.config.trustDomain }}"
+      data_dir = "/run/spire/data"
+      log_level = "{{ .Values.config.logLevel }}"
+      ca_key_type = "rsa-2048"
+
+      default_svid_ttl = "{{ .Values.config.svidTTL }}"
+      ca_subject = {
+        country = ["US"],
+        organization = ["SPIFFE"],
+        common_name = "",
+      }
+    }
+
+    plugins {
+      DataStore "sql" {
+        plugin_data {
+          database_type = "sqlite3"
+          connection_string = "/run/spire/data/datastore.sqlite3"
+        }
+      }
+
+      NodeAttestor "k8s_sat" {
+        plugin_data {
+          clusters = {
+            "eks-cluster" = {
+              use_token_review_api_validation = true
+              service_account_whitelist = ["spire:spire-agent"]
+            }
+          }
+        }
+      }
+
+      NodeResolver "noop" {
+        plugin_data {}
+      }
+
+      KeyManager "disk" {
+        plugin_data {
+          keys_path = "/run/spire/data/keys.json"
+        }
+      }
+
+      Notifier "k8sbundle" {
+        plugin_data {
+        }
+      }
+    }

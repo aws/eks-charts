@@ -1,0 +1,27 @@
+{{- if .Values.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ template "appmesh-spire-agent.fullname" . }}-role
+  labels:
+{{ include "appmesh-spire-agent.labels" . | indent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: ["pods","nodes","nodes/proxy"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ template "appmesh-spire-agent.fullname" . }}-rolebinding
+  labels:
+{{ include "appmesh-spire-agent.labels" . | indent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ template "appmesh-spire-agent.fullname" . }}-role
+subjects:
+- name: {{ template "appmesh-spire-agent.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+  kind: ServiceAccount
+{{- end }}
