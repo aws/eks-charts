@@ -1,1 +1,1 @@
-SPIRE installed!
+SPIRE Agent installed!

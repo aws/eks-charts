@@ -66,4 +66,3 @@ spec:
             - name: spire-agent-socket
               mountPath: /run/spire/sockets
               readOnly: false
-

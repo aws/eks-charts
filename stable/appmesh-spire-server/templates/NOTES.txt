@@ -1,1 +1,1 @@
-SPIRE installed!
+SPIRE Server installed!
