@@ -62,8 +62,10 @@ aws iam create-policy \
 ```
 Take note of the policy ARN that is returned
 
-
 Create an IAM role for service account for the App Mesh Kubernetes controller, use the ARN from the step above
+
+> Note: if you deleted `serviceaccount` in the `appmesh-system` namespace, you will need to delete and re-create `iamserviceaccount`. `eksctl` does not override the `iamserviceaccount` correctly ([see this issue](https://github.com/weaveworks/eksctl/issues/2665))
+
 ```
 eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
     --namespace appmesh-system \
@@ -142,6 +144,9 @@ aws iam create-policy \
 Take note of the policy ARN that is returned
 
 Create an IAM role for service account for the App Mesh Kubernetes controller, use the ARN from the step above
+
+> Note: if you deleted `serviceaccount` in the `appmesh-system` namespace, you will need to delete and re-create `iamserviceaccount`. `eksctl` does not override the `iamserviceaccount` correctly ([see this issue](https://github.com/weaveworks/eksctl/issues/2665))
+
 ```
 eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
     --namespace appmesh-system \
@@ -322,6 +327,8 @@ Parameter | Description | Default
 `sidecar.image.repository` | Envoy image repository. If you override with non-Amazon built Envoy image, you will need to test/ensure it works with the App Mesh | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`
 `sidecar.image.tag` | Envoy image tag | `<VERSION>`
 `sidecar.logLevel` | Envoy log level | `info`
+`sidecar.envoyAdminAccessPort` | Envoy Admin Access Port | `9901`
+`sidecar.envoyAdminAccessLogFile` | Envoy Admin Access Log File | `/tmp/envoy_admin_access.log`
 `sidecar.resources.requests` | Envoy container resource requests | `requests: cpu 10m memory 32Mi`
 `sidecar.resources.limits` | Envoy container resource limits | `limits: cpu "" memory ""`
 `sidecar.lifecycleHooks.preStopDelay` | Envoy container PreStop Hook Delay Value | `20s`
@@ -331,6 +338,8 @@ Parameter | Description | Default
 `init.image.tag` | Route manager image tag | `<VERSION>`
 `stats.tagsEnabled` |  If `true`, Envoy should include app-mesh tags | `false`
 `stats.statsdEnabled` |  If `true`, Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125 | `false`
+`stats.statsdAddress` |  DogStatsD daemon IP address | `127.0.0.1`
+`stats.statsdPort` |  DogStatsD daemon port | `8125`
 `cloudMapCustomHealthCheck.enabled` |  If `true`, CustomHealthCheck will be enabled for CloudMap Services | `false`
 `cloudMapDNS.ttl` |  Sets CloudMap DNS TTL | `300`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`

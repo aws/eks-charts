@@ -1,0 +1,35 @@
+# nameOverride: Used to override name of chart
+nameOverride: ""
+# fullnameOverride: Used to override the full name of the application
+fullnameOverride: ""
+
+# replicaCount: Number of replicas
+replicaCount: 1
+
+image:
+  # image.repository: Repository of image to pull for deployment
+  repository: public.ecr.aws/aws-observability/aws-sigv4-proxy-admission-controller
+  # image.tag: Tag of image to pull from repository
+  tag: "1.0"
+  # image.pullPolicy: Policy of how to pull image
+  pullPolicy: IfNotPresent
+
+env:
+  # env.awsSigV4ProxyImage: Image URI of sidecar container for AWS SIGv4 Proxy
+  awsSigV4ProxyImage: public.ecr.aws/aws-observability/aws-sigv4-proxy:1.0
+
+serviceAccount:
+  # serviceAccount.create: Whether to create a service account or not
+  create: true
+  # serviceAccount.name: The name of the service account to create or use
+  name: ""
+
+rbac:
+  # rbac.create: Whether to create rbac resources or not
+  create: true
+
+webhookService:
+  # webhookService.port: Incoming port used by webhook service
+  port: 443
+  # webhookService.targetPort: Target port used by webhook service
+  targetPort: 443
