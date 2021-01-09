@@ -13,6 +13,10 @@ spec:
       {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      {{- if .Values.annotations }}
+      annotations:
+{{ toYaml .Values.annotations | indent 8 }}
+      {{- end }}
       labels:
         {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 8 }}
     spec:
