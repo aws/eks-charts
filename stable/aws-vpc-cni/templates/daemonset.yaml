@@ -29,38 +29,6 @@ spec:
         k8s-app: aws-node
     spec:
       priorityClassName: "{{ .Values.priorityClassName }}"
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: "beta.kubernetes.io/os"
-                    operator: In
-                    values:
-                      - linux
-                  - key: "beta.kubernetes.io/arch"
-                    operator: In
-                    values:
-                      - amd64
-                      - arm64
-                  - key: "eks.amazonaws.com/compute-type"
-                    operator: NotIn
-                    values:
-                      - fargate
-              - matchExpressions:
-                  - key: "kubernetes.io/os"
-                    operator: In
-                    values:
-                      - linux
-                  - key: "kubernetes.io/arch"
-                    operator: In
-                    values:
-                      - amd64
-                      - arm64
-                  - key: "eks.amazonaws.com/compute-type"
-                    operator: NotIn
-                    values:
-                      - fargate
       serviceAccountName: {{ template "aws-vpc-cni.serviceAccountName" . }}
       hostNetwork: true
       initContainers:
