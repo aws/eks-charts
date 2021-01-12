@@ -61,6 +61,9 @@ data:
         {{- if .Values.cloudWatch.logFormat }}
         log_format            {{ .Values.cloudWatch.logFormat }}
         {{- end }}
+        {{- if .Values.cloudWatch.logRetentionDays }}
+        log_retention_days    {{ .Values.cloudWatch.logRetentionDays }}
+        {{- end }}
         {{- if .Values.cloudWatch.roleArn }}
         role_arn              {{ .Values.cloudWatch.roleArn }}
         {{- end }}
@@ -119,11 +122,47 @@ data:
         {{- if .Values.kinesis.endpoint }}
         endpoint        {{ .Values.kinesis.endpoint }}
         {{- end }}
+        {{- if .Values.kinesis.stsEndpoint }}
+        sts_endpoint    {{ .Values.kinesis.stsEndpoint }}
+        {{- end }}
         {{- if .Values.kinesis.timeKey }}
         time_key        {{ .Values.kinesis.timeKey }}
         {{- end }}
         {{- if .Values.kinesis.timeKeyFormat }}
         time_key_format {{ .Values.kinesis.timeKeyFormat }}
+        {{- end }}
+        {{- if .Values.kinesis.aggregation }}
+        aggregation     {{ .Values.kinesis.aggregation }}
+        {{- end }}
+        {{- if .Values.kinesis.compression }}
+        compression     {{ .Values.kinesis.compression }}
+        {{- end }}
+
+        {{- if .Values.kinesis.experimental.concurrency }}
+        experimental_concurrency          {{ .Values.kinesis.experimental.concurrency }}
+        {{- end }}
+        {{- if .Values.kinesis.experimental.concurrencyRetries }}
+        experimental_concurrency_retries  {{ .Values.kinesis.experimental.concurrencyRetries }}
+        {{- end }}
+{{- end }}
+
+{{- if .Values.elasticsearch.enabled }}
+    [OUTPUT]
+        Name            es
+        Match           {{ .Values.elasticsearch.match }}
+        AWS_Region      {{ .Values.elasticsearch.awsRegion }}
+        AWS_Auth        {{ .Values.elasticsearch.awsAuth }}
+        {{- if .Values.elasticsearch.host }}
+        Host            {{ .Values.elasticsearch.host }}
+        {{- end }}
+        {{- if .Values.elasticsearch.port }}
+        Port            {{ .Values.elasticsearch.port }}
+        {{- end }}
+        {{- if .Values.elasticsearch.tls }}
+        TLS             {{ .Values.elasticsearch.tls }}
+        {{- end }}
+        {{- if .Values.elasticsearch.retryLimit }}
+        Retry_Limit     {{ .Values.elasticsearch.retryLimit }}
         {{- end }}
 {{- end }}
 

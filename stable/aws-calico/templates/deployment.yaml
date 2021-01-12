@@ -16,6 +16,9 @@ spec:
         app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha"
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
+        {{- with .Values.calico.typha.podAnnotations }}
+        annotations: {{- toYaml . | nindent 10 }}
+        {{- end }}
     spec:
       priorityClassName: system-cluster-critical
       nodeSelector:
@@ -102,6 +105,9 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha-autoscaler"
+        {{- with .Values.calico.typha_autoscaler.podAnnotations }}
+        annotations: {{- toYaml . | nindent 10 }}
+        {{- end }}
     spec:
       priorityClassName: system-cluster-critical
       nodeSelector:

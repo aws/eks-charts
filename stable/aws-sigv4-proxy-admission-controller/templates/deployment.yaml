@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+{{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+    spec:
+      serviceAccountName: {{ template "aws-sigv4-proxy-admission-controller.serviceAccountName" . }}
+      containers:
+        - name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - -tlsCertFile=/etc/webhook/certs/cert.pem
+            - -tlsKeyFile=/etc/webhook/certs/key.pem
+          ports:
+            - containerPort: {{ .Values.webhookService.targetPort }}
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /etc/webhook/certs
+              readOnly: true
+          env:
+            - name: AWS-SIGV4-PROXY-IMAGE
+              value: {{ .Values.env.awsSigV4ProxyImage }}
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-certs

@@ -37,7 +37,7 @@ function installHelm() {
     kubectl create clusterrolebinding tiller-cluster-rule \
       --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 
-    helm init --service-account tiller --upgrade --wait
+    helm init --stable-repo-url https://charts.helm.sh/stable --service-account tiller --upgrade --wait
   fi
 
   if [[ "${1}" == "v3" ]]; then

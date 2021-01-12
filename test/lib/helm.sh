@@ -63,6 +63,3 @@ function waitForService() {
   done
     infof "✔ service/$chartName test passed"
 }
-
-
-
