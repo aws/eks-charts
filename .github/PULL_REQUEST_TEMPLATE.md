@@ -8,7 +8,7 @@
 
 ### Checklist
 - [ ] Added/modified documentation as required (such as the `README.md` for modified charts)
-- [ ] Bumped the chart `version` in `Chart.yaml` for the modified chart(s)
+- [ ] Incremented the chart `version` in `Chart.yaml` for the modified chart(s)
 - [ ] Manually tested. Describe what testing was done in the testing section below
 - [ ] Make sure the title of the PR is a good description that can go into the release notes
 
