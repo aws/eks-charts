@@ -166,3 +166,6 @@ extraVolumes:
 defaultTags: {}
   # default_tag1: value1
   # default_tag2: value2
+
+podDisruptionBudget: {}
+#  maxUnavailable: 1
