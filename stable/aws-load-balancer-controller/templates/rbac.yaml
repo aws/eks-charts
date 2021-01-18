@@ -3,6 +3,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: {{ template "aws-load-balancer-controller.fullname" . }}-leader-election-role
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "aws-load-balancer-controller.labels" . | nindent 4 }}
 rules:
@@ -18,6 +19,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ template "aws-load-balancer-controller.fullname" . }}-leader-election-rolebinding
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "aws-load-balancer-controller.labels" . | nindent 4 }}
 roleRef:
