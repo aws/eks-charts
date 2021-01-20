@@ -122,7 +122,7 @@ helm delete aws-load-balancer-controller -n kube-system
 ## Configuration
 
 The following tables lists the configurable parameters of the chart and their default values.
-The default values set by the application itself can be confirmed [here](https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/docs/guide/controller/configurations.md).
+The default values set by the application itself can be confirmed [here](https://kubernetes-sigs.github.io/aws-load-balancer-controller/guide/controller/configurations/).
 
 | Parameter                                   | Description                                                                                              | Default                                                                            |
 | ------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -165,3 +165,4 @@ The default values set by the application itself can be confirmed [here](https:/
 | `extraVolumeMounts`                         | Extra volume mounts for the pod                                                                          | `[]`                                                                               |
 | `extraVolumes`                              | Extra volumes for the pod                                                                                | `[]`                                                                               |
 | `defaultTags`                               | Default tags to apply to all AWS resources managed by this controller                                    | `{}`                                                                               |
+| `podDisruptionBudget`                       | PodDisruptionBudget                                                                                      | `{}`                                                                               |
