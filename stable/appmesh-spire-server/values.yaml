@@ -12,13 +12,16 @@ image:
 nameOverride: ""
 fullnameOverride: "spire-server"
 
+#SPIRE server service parameters
 service:
   type: NodePort
   port: 8081
 
 resources:
+  #SPIRE Server memory limits
   limits:
     memory: 512Mi
+  #SPIRE Server CPU and memory requests
   requests:
     cpu: 10m
     memory: 1Gi

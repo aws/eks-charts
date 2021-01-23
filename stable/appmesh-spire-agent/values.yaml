@@ -10,13 +10,11 @@ image:
 nameOverride: ""
 fullnameOverride: "spire-agent"
 
-service:
-  type: NodePort
-  port: 8081
-
 resources:
+  #SPIRE Agent memory limits
   limits:
     memory: 512Mi
+  #SPIRE Agent CPU and memory requests
   requests:
     cpu: 10m
     memory: 1Gi
@@ -27,6 +25,7 @@ tolerations: []
 
 affinity: {}
 
+#SPIRE Agent Init Container parameters
 initContainers:
   image: gcr.io/spiffe-io/wait-for-it
   pullPolicy: IfNotPresent
