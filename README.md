@@ -23,7 +23,7 @@ helm repo add eks https://aws.github.io/eks-charts
 * [aws-calico](stable/aws-calico): Install Calico network policy enforcement on AWS
 
 ### AWS CloudWatch Metrics
-* [aws-cloudwatch-metrics](stable/aws-cloudwatch): A helm chart for CloudWatch Agent to Collect Cluster Metrics
+* [aws-cloudwatch-metrics](stable/aws-cloudwatch-metrics): A helm chart for CloudWatch Agent to Collect Cluster Metrics
 
 ### AWS for Fluent Bit
 * [aws-for-fluent-bit](stable/aws-for-fluent-bit): A helm chart for [AWS-for-fluent-bit](https://github.com/aws/aws-for-fluent-bit)
@@ -33,6 +33,9 @@ helm repo add eks https://aws.github.io/eks-charts
 
 ### AWS VPC CNI
 * [aws-vpc-cni](stable/aws-vpc-cni): Networking plugin for pod networking in Kubernetes using Elastic Network Interfaces on AWS. https://github.com/aws/amazon-vpc-cni-k8s
+
+### AWS SIGv4 Proxy Admission Controller
+* [aws-sigv4-proxy-admission-controller](stable/aws-sigv4-proxy-admission-controller): A helm chart for [AWS SIGv4 Proxy Admission Controller](https://github.com/aws-observability/aws-sigv4-proxy-admission-controller)
 
 ## License
 

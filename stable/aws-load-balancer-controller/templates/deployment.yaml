@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "aws-load-balancer-controller.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "aws-load-balancer-controller.labels" . | nindent 4 }}
 spec:
@@ -33,6 +34,9 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ template "aws-load-balancer-controller.namePrefix" . }}-tls
+      {{- with .Values.extraVolumes }}
+      {{ toYaml . | nindent 6 }}
+      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- if .Values.hostNetwork }}
@@ -54,16 +58,16 @@ spec:
         {{- if .Values.awsMaxRetries }}
         - --aws-max-retries={{ .Values.awsMaxRetries }}
         {{- end }}
-        {{- if .Values.enablePodReadinessGateInject }}
+        {{- if kindIs "bool" .Values.enablePodReadinessGateInject }}
         - --enable-pod-readiness-gate-inject={{ .Values.enablePodReadinessGateInject }}
         {{- end }}
-        {{- if .Values.enableShield }}
+        {{- if kindIs "bool" .Values.enableShield }}
         - --enable-shield={{ .Values.enableShield }}
         {{- end }}
-        {{- if .Values.enableWaf }}
+        {{- if kindIs "bool" .Values.enableWaf }}
         - --enable-waf={{ .Values.enableWaf }}
         {{- end }}
-        {{- if .Values.enableWafv2 }}
+        {{- if kindIs "bool" .Values.enableWafv2 }}
         - --enable-wafv2={{ .Values.enableWafv2 }}
         {{- end }}
         {{- if .Values.metricsBindAddr }}
@@ -90,6 +94,9 @@ spec:
         {{- if .Values.watchNamespace }}
         - --watch-namespace={{ .Values.watchNamespace }}
         {{- end }}
+        {{- if .Values.defaultTags }}
+        - --default-tags={{ include "aws-load-balancer-controller.convert-map-to-csv" .Values.defaultTags | trimSuffix "," }}
+        {{- end }}
         {{- if .Values.env }}
         env:
         {{- range $key, $value := .Values.env }}
@@ -107,6 +114,9 @@ spec:
         - mountPath: /tmp/k8s-webhook-server/serving-certs
           name: cert
           readOnly: true
+        {{- with .Values.extraVolumeMounts }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
         ports:
         - name: webhook-server
           containerPort: {{ .Values.webhookBindPort | default 9443 }}
@@ -133,3 +143,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName | quote }}
+      {{- end }}

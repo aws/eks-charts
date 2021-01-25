@@ -40,7 +40,7 @@ spec:
     spec:
       {{- if and .Values.webhookTemplateConfigMapName .Values.webhookTemplateConfigMapKey }}
       volumes:
-      - name: "webhookTemplate"
+      - name: "webhook-template"
         configMap:
           name: {{ .Values.webhookTemplateConfigMapName }}
       {{- end }}
@@ -72,7 +72,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if and .Values.webhookTemplateConfigMapName .Values.webhookTemplateConfigMapKey }}
           volumeMounts:
-          - name: "webhookTemplate"
+          - name: "webhook-template"
             mountPath: "/config/"
           {{- end }}
           env:
@@ -130,6 +130,8 @@ spec:
             value: {{ .Values.taintNode | quote }}
           - name: JSON_LOGGING
             value: {{ .Values.jsonLogging | quote }}
+          - name: LOG_LEVEL
+            value: {{ .Values.logLevel | quote }}
           - name: WEBHOOK_PROXY
             value: {{ .Values.webhookProxy | quote }}
           - name: UPTIME_FROM_FILE

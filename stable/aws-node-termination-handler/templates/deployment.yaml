@@ -112,6 +112,8 @@ spec:
             value: {{ .Values.taintNode | quote }}
           - name: JSON_LOGGING
             value: {{ .Values.jsonLogging | quote }}
+          - name: LOG_LEVEL
+            value: {{ .Values.logLevel | quote }}
           - name: WEBHOOK_PROXY
             value: {{ .Values.webhookProxy | quote }}
           - name: ENABLE_PROMETHEUS_SERVER
@@ -140,6 +142,10 @@ spec:
           {{- end }}
           - name: CHECK_ASG_TAG_BEFORE_DRAINING
             value: {{ .Values.checkASGTagBeforeDraining | quote }}
+          - name: MANAGED_ASG_TAG
+            value: {{ .Values.managedAsgTag | quote }}
+          - name: WORKERS
+            value: {{ .Values.workers | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.enablePrometheusServer }}

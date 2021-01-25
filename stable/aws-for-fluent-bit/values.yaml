@@ -59,6 +59,7 @@ cloudWatch:
   logStreamPrefix: "fluentbit-"
   logKey:
   logFormat:
+  logRetentionDays:
   roleArn:
   autoCreateGroup: true
   endpoint:
