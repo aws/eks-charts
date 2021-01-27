@@ -34,7 +34,7 @@ data:
       NodeAttestor "k8s_sat" {
         plugin_data {
           clusters = {
-            "eks-cluster" = {
+            "k8s-cluster" = {
               use_token_review_api_validation = true
               service_account_whitelist = ["spire:spire-agent"]
             }

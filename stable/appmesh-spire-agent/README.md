@@ -1,6 +1,6 @@
-# App Mesh SPIRE Agent
+# Sample App Mesh SPIRE Agent
 
-App Mesh SPIRE Agent Helm chart for Kubernetes
+Sample App Mesh SPIRE Agent Helm chart for Kubernetes
 
 ## Installing the Chart
 

@@ -11,7 +11,7 @@ data:
       log_level = "{{ .Values.config.logLevel }}"
       server_address = "{{ .Values.config.serverAddress }}"
       server_port = "{{ .Values.config.serverPort }}"
-      socket_path = "/run/spire/sockets/agent.sock"
+      socket_path = "{{ .Values.config.socketPath }}"
       trust_bundle_path = "/run/spire/bundle/bundle.crt"
       trust_domain = "{{ .Values.config.trustDomain }}"
       enable_sds = true
@@ -20,7 +20,7 @@ data:
     plugins {
       NodeAttestor "k8s_sat" {
         plugin_data {
-          cluster = "eks-cluster"
+          cluster = "k8s-cluster"
         }
       }
 

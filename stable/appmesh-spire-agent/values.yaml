@@ -51,3 +51,5 @@ config:
   serverAddress: spire-server
   #SPIRE Server Bind Port
   serverPort: 8081
+  #SPIRE Agent Socket Path
+  socketPath: /run/spire/sockets/agent.sock

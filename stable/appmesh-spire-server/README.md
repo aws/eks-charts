@@ -1,6 +1,6 @@
-# App Mesh SPIRE Server
+# Sample App Mesh SPIRE Server
 
-App Mesh SPIRE Server Helm chart for Kubernetes
+Sample App Mesh SPIRE Server Helm chart for Kubernetes
 
 ## Installing the Chart
 
