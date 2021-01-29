@@ -40,6 +40,5 @@ Parameter | Description | Default
 `config.svidTTL` | SVID TTL value | `1h`
 `config.bindAddress` | SPIRE Server Bind Address | `0.0.0.0`
 `config.bindPort` | SPIRE Server Bind Port | `8081`
-`rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | `spire-server`

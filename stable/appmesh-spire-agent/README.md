@@ -39,6 +39,5 @@ Parameter | Description | Default
 `config.logLevel` | Log Level | `DEBUG`
 `config.serverAddress` | SPIRE Server Address | `spire-server`
 `config.serverPort` | SPIRE Server Bind Port | `8081`
-`rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | `spire-agent`

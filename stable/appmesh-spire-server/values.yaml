@@ -41,8 +41,6 @@ serviceAccount:
 rbac:
   # rbac.create: `true` if rbac resources should be created
   create: true
-  # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
-  pspEnabled: false
 
 config:
   # SPIRE Trust Domain
