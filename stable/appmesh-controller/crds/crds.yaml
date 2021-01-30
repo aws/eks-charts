@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.5
+    controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
   name: gatewayroutes.appmesh.k8s.aws
 spec:
@@ -265,7 +265,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.5
+    controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
   name: meshes.appmesh.k8s.aws
 spec:
@@ -403,7 +403,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.5
+    controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
   name: virtualgateways.appmesh.k8s.aws
 spec:
@@ -453,6 +453,36 @@ spec:
                     tls:
                       description: A reference to an object that represents a Transport Layer Security (TLS) client policy.
                       properties:
+                        certificate:
+                          description: A reference to an object that represents TLS certificate.
+                          properties:
+                            file:
+                              description: An object that represents a TLS cert via a local file
+                              properties:
+                                certificateChain:
+                                  description: The certificate chain for the certificate.
+                                  maxLength: 255
+                                  minLength: 1
+                                  type: string
+                                privateKey:
+                                  description: The private key for a certificate stored on the file system of the virtual Gateway.
+                                  maxLength: 255
+                                  minLength: 1
+                                  type: string
+                              required:
+                              - certificateChain
+                              - privateKey
+                              type: object
+                            sds:
+                              description: An object that represents a TLS cert via SDS entry
+                              properties:
+                                secretName:
+                                  description: The certificate trust chain for a certificate issued via SDS cluster
+                                  type: string
+                              required:
+                              - secretName
+                              type: object
+                          type: object
                         enforce:
                           description: Whether the policy is enforced. If unspecified, default settings from AWS API will be applied. Refer to AWS Docs for default settings.
                           type: boolean
@@ -467,6 +497,23 @@ spec:
                         validation:
                           description: A reference to an object that represents a TLS validation context.
                           properties:
+                            subjectAlternativeNames:
+                              description: Possible alternative names to consider
+                              properties:
+                                match:
+                                  description: Match is a required field
+                                  properties:
+                                    exact:
+                                      description: Exact is a required field
+                                      items:
+                                        type: string
+                                      type: array
+                                  required:
+                                  - exact
+                                  type: object
+                              required:
+                              - match
+                              type: object
                             trust:
                               description: A reference to an object that represents a TLS validation context trust
                               properties:
@@ -493,6 +540,15 @@ spec:
                                       type: string
                                   required:
                                   - certificateChain
+                                  type: object
+                                sds:
+                                  description: An object that represents a TLS validation context trust for a SDS certificate
+                                  properties:
+                                    secretName:
+                                      description: The certificate trust chain for a certificate issued via SDS.
+                                      type: string
+                                  required:
+                                  - secretName
                                   type: object
                               type: object
                           required:
@@ -651,6 +707,15 @@ spec:
                             - certificateChain
                             - privateKey
                             type: object
+                          sds:
+                            description: A reference to an object that represents an SDS issued certificate
+                            properties:
+                              secretName:
+                                description: The certificate trust chain for a certificate issued via SDS cluster
+                                type: string
+                            required:
+                            - secretName
+                            type: object
                         type: object
                       mode:
                         description: ListenerTLS mode
@@ -659,6 +724,65 @@ spec:
                         - PERMISSIVE
                         - STRICT
                         type: string
+                      validation:
+                        description: A reference to an object that represents Validation context
+                        properties:
+                          subjectAlternativeNames:
+                            description: Possible alternate names to consider
+                            properties:
+                              match:
+                                description: Match is a required field
+                                properties:
+                                  exact:
+                                    description: Exact is a required field
+                                    items:
+                                      type: string
+                                    type: array
+                                required:
+                                - exact
+                                type: object
+                            required:
+                            - match
+                            type: object
+                          trust:
+                            properties:
+                              acm:
+                                description: A reference to an object that represents a TLS validation context trust for an AWS Certicate Manager (ACM) certificate.
+                                properties:
+                                  certificateAuthorityARNs:
+                                    description: One or more ACM Amazon Resource Name (ARN)s.
+                                    items:
+                                      type: string
+                                    maxItems: 3
+                                    minItems: 1
+                                    type: array
+                                required:
+                                - certificateAuthorityARNs
+                                type: object
+                              file:
+                                description: An object that represents a TLS validation context trust for a local file.
+                                properties:
+                                  certificateChain:
+                                    description: The certificate trust chain for a certificate stored on the file system of the virtual Gateway.
+                                    maxLength: 255
+                                    minLength: 1
+                                    type: string
+                                required:
+                                - certificateChain
+                                type: object
+                              sds:
+                                description: An object that represents a TLS validation context trust for an SDS system
+                                properties:
+                                  secretName:
+                                    description: The certificate trust chain for a certificate issued via SDS.
+                                    type: string
+                                required:
+                                - secretName
+                                type: object
+                            type: object
+                        required:
+                        - trust
+                        type: object
                     required:
                     - certificate
                     - mode
@@ -815,7 +939,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.5
+    controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
   name: virtualnodes.appmesh.k8s.aws
 spec:
@@ -865,6 +989,36 @@ spec:
                     tls:
                       description: A reference to an object that represents a Transport Layer Security (TLS) client policy.
                       properties:
+                        certificate:
+                          description: A reference to an object that represents TLS certificate.
+                          properties:
+                            file:
+                              description: An object that represents a TLS cert via a local file
+                              properties:
+                                certificateChain:
+                                  description: The certificate chain for the certificate.
+                                  maxLength: 255
+                                  minLength: 1
+                                  type: string
+                                privateKey:
+                                  description: The private key for a certificate stored on the file system of the virtual node that the proxy is running on.
+                                  maxLength: 255
+                                  minLength: 1
+                                  type: string
+                              required:
+                              - certificateChain
+                              - privateKey
+                              type: object
+                            sds:
+                              description: An object that represents a TLS cert via SDS entry
+                              properties:
+                                secretName:
+                                  description: The certificate trust chain for a certificate issued via SDS cluster
+                                  type: string
+                              required:
+                              - secretName
+                              type: object
+                          type: object
                         enforce:
                           description: Whether the policy is enforced. If unspecified, default settings from AWS API will be applied. Refer to AWS Docs for default settings.
                           type: boolean
@@ -879,6 +1033,23 @@ spec:
                         validation:
                           description: A reference to an object that represents a TLS validation context.
                           properties:
+                            subjectAlternativeNames:
+                              description: Possible Alternative names to consider
+                              properties:
+                                match:
+                                  description: Match is a required field
+                                  properties:
+                                    exact:
+                                      description: Exact is a required field
+                                      items:
+                                        type: string
+                                      type: array
+                                  required:
+                                  - exact
+                                  type: object
+                              required:
+                              - match
+                              type: object
                             trust:
                               description: A reference to an object that represents a TLS validation context trust
                               properties:
@@ -906,6 +1077,15 @@ spec:
                                   required:
                                   - certificateChain
                                   type: object
+                                sds:
+                                  description: An object that represents a TLS validation context trust for a SDS.
+                                  properties:
+                                    secretName:
+                                      description: The certificate trust chain for a certificate obtained via SDS
+                                      type: string
+                                  required:
+                                  - secretName
+                                  type: object
                               type: object
                           required:
                           - trust
@@ -929,6 +1109,36 @@ spec:
                           tls:
                             description: A reference to an object that represents a Transport Layer Security (TLS) client policy.
                             properties:
+                              certificate:
+                                description: A reference to an object that represents TLS certificate.
+                                properties:
+                                  file:
+                                    description: An object that represents a TLS cert via a local file
+                                    properties:
+                                      certificateChain:
+                                        description: The certificate chain for the certificate.
+                                        maxLength: 255
+                                        minLength: 1
+                                        type: string
+                                      privateKey:
+                                        description: The private key for a certificate stored on the file system of the virtual node that the proxy is running on.
+                                        maxLength: 255
+                                        minLength: 1
+                                        type: string
+                                    required:
+                                    - certificateChain
+                                    - privateKey
+                                    type: object
+                                  sds:
+                                    description: An object that represents a TLS cert via SDS entry
+                                    properties:
+                                      secretName:
+                                        description: The certificate trust chain for a certificate issued via SDS cluster
+                                        type: string
+                                    required:
+                                    - secretName
+                                    type: object
+                                type: object
                               enforce:
                                 description: Whether the policy is enforced. If unspecified, default settings from AWS API will be applied. Refer to AWS Docs for default settings.
                                 type: boolean
@@ -943,6 +1153,23 @@ spec:
                               validation:
                                 description: A reference to an object that represents a TLS validation context.
                                 properties:
+                                  subjectAlternativeNames:
+                                    description: Possible Alternative names to consider
+                                    properties:
+                                      match:
+                                        description: Match is a required field
+                                        properties:
+                                          exact:
+                                            description: Exact is a required field
+                                            items:
+                                              type: string
+                                            type: array
+                                        required:
+                                        - exact
+                                        type: object
+                                    required:
+                                    - match
+                                    type: object
                                   trust:
                                     description: A reference to an object that represents a TLS validation context trust
                                     properties:
@@ -969,6 +1196,15 @@ spec:
                                             type: string
                                         required:
                                         - certificateChain
+                                        type: object
+                                      sds:
+                                        description: An object that represents a TLS validation context trust for a SDS.
+                                        properties:
+                                          secretName:
+                                            description: The certificate trust chain for a certificate obtained via SDS
+                                            type: string
+                                        required:
+                                        - secretName
                                         type: object
                                     type: object
                                 required:
@@ -1362,6 +1598,15 @@ spec:
                             - certificateChain
                             - privateKey
                             type: object
+                          sds:
+                            description: A reference to an object that represents an SDS certificate.
+                            properties:
+                              secretName:
+                                description: The certificate trust chain for a certificate issued via SDS cluster
+                                type: string
+                            required:
+                            - secretName
+                            type: object
                         type: object
                       mode:
                         description: ListenerTLS mode
@@ -1370,6 +1615,52 @@ spec:
                         - PERMISSIVE
                         - STRICT
                         type: string
+                      validation:
+                        description: A reference to an object that represents an SDS Trust Domain
+                        properties:
+                          subjectAlternativeNames:
+                            description: Possible alternative names to consider
+                            properties:
+                              match:
+                                description: Match is a required field
+                                properties:
+                                  exact:
+                                    description: Exact is a required field
+                                    items:
+                                      type: string
+                                    type: array
+                                required:
+                                - exact
+                                type: object
+                            required:
+                            - match
+                            type: object
+                          trust:
+                            properties:
+                              file:
+                                description: An object that represents a TLS validation context trust for a local file.
+                                properties:
+                                  certificateChain:
+                                    description: The certificate trust chain for a certificate stored on the file system of the virtual node that the proxy is running on.
+                                    maxLength: 255
+                                    minLength: 1
+                                    type: string
+                                required:
+                                - certificateChain
+                                type: object
+                              sds:
+                                description: An object that represents a TLS validation context trust for an SDS server
+                                properties:
+                                  secretName:
+                                    description: The certificate trust chain for a certificate obtained via SDS
+                                    type: string
+                                required:
+                                - secretName
+                                type: object
+                            type: object
+                        required:
+                        - trust
+                        type: object
                     required:
                     - certificate
                     - mode
@@ -1546,7 +1837,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.5
+    controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
   name: virtualrouters.appmesh.k8s.aws
 spec:
@@ -2422,7 +2713,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.5
+    controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
   name: virtualservices.appmesh.k8s.aws
 spec:
