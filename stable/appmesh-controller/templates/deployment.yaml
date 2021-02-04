@@ -68,6 +68,9 @@ spec:
         - --readiness-probe-period={{ .Values.sidecar.probes.readinessProbePeriod }}
         - --envoy-admin-access-port={{ .Values.sidecar.envoyAdminAccessPort }}
         - --envoy-admin-access-log-file={{ .Values.sidecar.envoyAdminAccessLogFile }}
+        - --preview={{ .Values.preview }}
+        - --enable-sds={{ .Values.sds.enabled }}
+        - --sds-uds-path={{ .Values.sds.udsPath }}
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}
@@ -101,6 +104,8 @@ spec:
         - --aws-account-id={{ .Values.accountId }}
         {{- end }}
         - --sidecar-log-level={{ .Values.sidecar.logLevel }}
+        # this must be same as livenessProbe port which can be configured 
+        - --health-probe-port={{ .Values.livenessProbe.httpGet.port }}
         {{- if .Values.env }}
         env:
           {{- range $key, $value := .Values.env }}
@@ -110,6 +115,8 @@ spec:
         {{- end}}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+        livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 10 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
