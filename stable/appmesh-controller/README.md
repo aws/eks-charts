@@ -76,6 +76,9 @@ eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
 ```
 
 Deploy appmesh-controller
+
+**Note:** To enable mTLS via SDS(SPIRE), please set "sds.enabled=true".
+
 ```sh
 helm upgrade -i appmesh-controller eks/appmesh-controller \
     --namespace appmesh-system \
@@ -157,6 +160,9 @@ eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
 ```
 
 Deploy appmesh-controller
+
+**Note:** mTLS via SDS(SPIRE) is not supported on Fargate.
+
 ```sh
 helm upgrade -i appmesh-controller eks/appmesh-controller \
     --namespace appmesh-system \
@@ -310,6 +316,8 @@ Parameter | Description | Default
 `image.tag` | image tag | `<VERSION>`
 `image.pullPolicy` | image pull policy | `IfNotPresent`
 `log.level` | controller log level, possible values are `info` and `debug`  | `info`
+`sds.enabled` | If `true`, SDS will be enabled in Envoy | `false`
+`sds.udsPath` | Unix Domain Socket Path of the SDS Provider(SPIRE in the current release) | `/run/spire/sockets/agent.sock`
 `resources.requests/cpu` | pod CPU request | `100m`
 `resources.requests/memory` | pod memory request | `64Mi`
 `resources.limits/cpu` | pod CPU limit | `2000m`
@@ -351,3 +359,4 @@ Parameter | Description | Default
 `xray.image.tag` | X-Ray image tag | `latest`
 `accountId` | AWS Account ID for the Kubernetes cluster | None
 `env` |  environment variables to be injected into the appmesh-controller pod | `{}`
+`livenessProbe` | Liveness probe settings for the controller | (see `values.yaml`)

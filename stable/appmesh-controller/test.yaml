@@ -1,4 +1,4 @@
-# Default values for appmesh-controller.
+# Test values for appmesh-controller.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -27,8 +27,8 @@ sidecar:
       memory: 32Mi
     # sidecar.resources/limits: Envoy CPU and memory limits
     limits:
-      cpu: ""
-      memory: ""
+      cpu: 100m
+      memory: 64Mi
   lifecycleHooks:
     # sidecar.lifecycleHooks: Envoy PreStop Hook Delay
     preStopDelay: 20
@@ -57,19 +57,31 @@ resources:
     cpu: 100m
     memory: 200Mi
 
-nodeSelector: {}
+nodeSelector: {
+    test: test
+}
 
-tolerations: []
+tolerations:
+  - key: "key1"
+    operator: "Equal"
+    value: "value1"
+    effect: "NoExecute"
 
-affinity: {}
+affinity: {
+    test: test
+}
 
-podAnnotations: {}
+podAnnotations: {
+    test: test
+}
 
-podLabels: {}
+podLabels: {
+    test: test
+}
 
 cloudMapCustomHealthCheck:
   # cloudMapCustomHealthCheck.enabled: `true` if CustomHealthCheck needs to be enabled in CloudMap
-  enabled: false
+  enabled: true
 
 cloudMapDNS:
   # cloudMapDNS.ttl if set will use this global ttl value
@@ -77,7 +89,7 @@ cloudMapDNS:
 
 sds:
   # sds.enabled: `true` if SDS based mTLS support needs to be enabled in envoy
-  enabled: false
+  enabled: true
   #sds.udsPath: UDS Path of the SDS Provider. Default value is tied to SPIRE.
   udsPath: /run/spire/sockets/agent.sock
 
@@ -85,15 +97,17 @@ serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
   create: true
   # serviceAccount.name: The name of the service account to create or use
-  name: ""
+  name: test
   # serviceAccount.annotations: optional annotations to be applied to service account
-  annotations: ""
+  annotations: {
+      test: test
+  }
 
 rbac:
   # rbac.create: `true` if rbac resources should be created
   create: true
   # rbac.pspEnabled: `true` if PodSecurityPolicy resources should be created
-  pspEnabled: false
+  pspEnabled: true
 
 log:
   #log.level: info (default), debug
@@ -101,7 +115,7 @@ log:
 
 tracing:
   # tracing.enabled: `true` if Envoy should be configured tracing
-  enabled: false
+  enabled: true
   # tracing.provider: can be x-ray, jaeger or datadog
   provider: x-ray
   # tracing.address: Jaeger or Datadog agent server address (ignored for X-Ray)
@@ -131,7 +145,7 @@ env: {}
 #    https_proxy: http://proxyserver:3128
 #    no_proxy: "localhost,127.0.0.1,.cluster.local"
 
-# Liveness probe configuration for the controller
+# Liveness probe configuration for the appmesh-controller pod
 livenessProbe:
   failureThreshold: 2
   httpGet:
