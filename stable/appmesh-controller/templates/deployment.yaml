@@ -63,19 +63,29 @@ spec:
         - --sidecar-memory-limits={{ .Values.sidecar.resources.limits.memory }}
         - --init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
         - --enable-stats-tags={{ .Values.stats.tagsEnabled }}
-        - --enable-statsd={{ .Values.stats.statsdEnabled }}
         - --prestop-delay={{ .Values.sidecar.lifecycleHooks.preStopDelay }}
         - --readiness-probe-initial-delay={{ .Values.sidecar.probes.readinessProbeInitialDelay }}
         - --readiness-probe-period={{ .Values.sidecar.probes.readinessProbePeriod }}
+        - --envoy-admin-access-port={{ .Values.sidecar.envoyAdminAccessPort }}
+        - --envoy-admin-access-log-file={{ .Values.sidecar.envoyAdminAccessLogFile }}
+        - --preview={{ .Values.preview }}
+        - --enable-sds={{ .Values.sds.enabled }}
+        - --sds-uds-path={{ .Values.sds.udsPath }}
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}
         {{- if kindIs "float64" .Values.cloudMapDNS.ttl }}
         - --cloudmap-dns-ttl={{ .Values.cloudMapDNS.ttl }}
         {{- end }}
+        {{- if .Values.stats.statsdEnabled }}
+        - --enable-statsd=true
+        - --statsd-address={{ .Values.stats.statsdAddress }}
+        - --statsd-port={{ .Values.stats.statsdPort }}
+        {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
         - --enable-xray-tracing=true
         - --xray-image={{ .Values.xray.image.repository}}:{{ .Values.xray.image.tag }}
+        - --xray-daemon-port={{ .Values.tracing.port }}
         {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "jaeger" ) }}
         - --enable-jaeger-tracing=true
@@ -94,6 +104,8 @@ spec:
         - --aws-account-id={{ .Values.accountId }}
         {{- end }}
         - --sidecar-log-level={{ .Values.sidecar.logLevel }}
+        # this must be same as livenessProbe port which can be configured 
+        - --health-probe-port={{ .Values.livenessProbe.httpGet.port }}
         {{- if .Values.env }}
         env:
           {{- range $key, $value := .Values.env }}
@@ -103,6 +115,8 @@ spec:
         {{- end}}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+        livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 10 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

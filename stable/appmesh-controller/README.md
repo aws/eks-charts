@@ -62,8 +62,10 @@ aws iam create-policy \
 ```
 Take note of the policy ARN that is returned
 
-
 Create an IAM role for service account for the App Mesh Kubernetes controller, use the ARN from the step above
+
+> Note: if you deleted `serviceaccount` in the `appmesh-system` namespace, you will need to delete and re-create `iamserviceaccount`. `eksctl` does not override the `iamserviceaccount` correctly ([see this issue](https://github.com/weaveworks/eksctl/issues/2665))
+
 ```
 eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
     --namespace appmesh-system \
@@ -74,6 +76,9 @@ eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
 ```
 
 Deploy appmesh-controller
+
+**Note:** To enable mTLS via SDS(SPIRE), please set "sds.enabled=true".
+
 ```sh
 helm upgrade -i appmesh-controller eks/appmesh-controller \
     --namespace appmesh-system \
@@ -142,6 +147,9 @@ aws iam create-policy \
 Take note of the policy ARN that is returned
 
 Create an IAM role for service account for the App Mesh Kubernetes controller, use the ARN from the step above
+
+> Note: if you deleted `serviceaccount` in the `appmesh-system` namespace, you will need to delete and re-create `iamserviceaccount`. `eksctl` does not override the `iamserviceaccount` correctly ([see this issue](https://github.com/weaveworks/eksctl/issues/2665))
+
 ```
 eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
     --namespace appmesh-system \
@@ -152,6 +160,9 @@ eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
 ```
 
 Deploy appmesh-controller
+
+**Note:** mTLS via SDS(SPIRE) is not supported on Fargate.
+
 ```sh
 helm upgrade -i appmesh-controller eks/appmesh-controller \
     --namespace appmesh-system \
@@ -305,6 +316,8 @@ Parameter | Description | Default
 `image.tag` | image tag | `<VERSION>`
 `image.pullPolicy` | image pull policy | `IfNotPresent`
 `log.level` | controller log level, possible values are `info` and `debug`  | `info`
+`sds.enabled` | If `true`, SDS will be enabled in Envoy | `false`
+`sds.udsPath` | Unix Domain Socket Path of the SDS Provider(SPIRE in the current release) | `/run/spire/sockets/agent.sock`
 `resources.requests/cpu` | pod CPU request | `100m`
 `resources.requests/memory` | pod memory request | `64Mi`
 `resources.limits/cpu` | pod CPU limit | `2000m`
@@ -322,6 +335,8 @@ Parameter | Description | Default
 `sidecar.image.repository` | Envoy image repository. If you override with non-Amazon built Envoy image, you will need to test/ensure it works with the App Mesh | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`
 `sidecar.image.tag` | Envoy image tag | `<VERSION>`
 `sidecar.logLevel` | Envoy log level | `info`
+`sidecar.envoyAdminAccessPort` | Envoy Admin Access Port | `9901`
+`sidecar.envoyAdminAccessLogFile` | Envoy Admin Access Log File | `/tmp/envoy_admin_access.log`
 `sidecar.resources.requests` | Envoy container resource requests | `requests: cpu 10m memory 32Mi`
 `sidecar.resources.limits` | Envoy container resource limits | `limits: cpu "" memory ""`
 `sidecar.lifecycleHooks.preStopDelay` | Envoy container PreStop Hook Delay Value | `20s`
@@ -331,6 +346,8 @@ Parameter | Description | Default
 `init.image.tag` | Route manager image tag | `<VERSION>`
 `stats.tagsEnabled` |  If `true`, Envoy should include app-mesh tags | `false`
 `stats.statsdEnabled` |  If `true`, Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125 | `false`
+`stats.statsdAddress` |  DogStatsD daemon IP address | `127.0.0.1`
+`stats.statsdPort` |  DogStatsD daemon port | `8125`
 `cloudMapCustomHealthCheck.enabled` |  If `true`, CustomHealthCheck will be enabled for CloudMap Services | `false`
 `cloudMapDNS.ttl` |  Sets CloudMap DNS TTL | `300`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`
@@ -342,3 +359,4 @@ Parameter | Description | Default
 `xray.image.tag` | X-Ray image tag | `latest`
 `accountId` | AWS Account ID for the Kubernetes cluster | None
 `env` |  environment variables to be injected into the appmesh-controller pod | `{}`
+`livenessProbe` | Liveness probe settings for the controller | (see `values.yaml`)

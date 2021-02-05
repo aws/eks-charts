@@ -16,8 +16,9 @@ Install AWS Node Termination Handler:
 To install the chart with the release name aws-node-termination-handler and default configuration:
 
 ```sh
-helm install --name aws-node-termination-handler \
-  --namespace kube-system eks/aws-node-termination-handler
+helm upgrade --install aws-node-termination-handler \
+  --namespace kube-system \
+  eks/aws-node-termination-handler
 ```
 
 To install into an EKS cluster where the Node Termination Handler is already installed, you can run:
@@ -70,13 +71,13 @@ Parameter | Description | Default
 `cordonOnly` | If true, nodes will be cordoned but not drained when an interruption event occurs. | `false`
 `taintNode` | If true, nodes will be tainted when an interruption event occurs. Currently used taint keys are `aws-node-termination-handler/scheduled-maintenance`, `aws-node-termination-handler/spot-itn`, and `aws-node-termination-handler/asg-lifecycle-termination` | `false`
 `jsonLogging` | If true, use JSON-formatted logs instead of human readable logs. | `false`
+`logLevel` | Sets the log level (INFO, DEBUG, or ERROR) | `INFO`
 `enablePrometheusServer` | If true, start an http server exposing `/metrics` endpoint for prometheus. | `false`
 `prometheusServerPort` | Replaces the default HTTP port for exposing prometheus metrics. | `9092`
 `podMonitor.create` | if `true`, create a PodMonitor | `false`
 `podMonitor.interval` | Prometheus scrape interval | `30s`
 `podMonitor.sampleLimit` | Number of scraped samples accepted | `5000`
 `podMonitor.labels` | Additional PodMonitor metadata labels | `{}`
-
 
 ### AWS Node Termination Handler - Queue-Processor Mode Configuration
 
@@ -85,6 +86,9 @@ Parameter | Description | Default
 `enableSqsTerminationDraining` | If true, this turns on queue-processor mode which drains nodes when an SQS termination event is received| `false`
 `queueURL` | Listens for messages on the specified SQS queue URL | None
 `awsRegion` | If specified, use the AWS region for AWS API calls, else NTH will try to find the region through AWS_REGION env var, IMDS, or the specified queue URL | ``
+`checkASGTagBeforeDraining` | If true, check that the instance is tagged with "aws-node-termination-handler/managed" as the key before draining the node | `true`
+`managedAsgTag` | The tag to ensure is on a node if checkASGTagBeforeDraining is true | `aws-node-termination-handler/managed`
+`workers` | The maximum amount of parallel event processors | `10`
 
 ### AWS Node Termination Handler - IMDS Mode Configuration
 
@@ -92,13 +96,14 @@ Parameter | Description | Default
 --- | --- | ---
 `enableScheduledEventDraining` | [EXPERIMENTAL] If true, drain nodes before the maintenance window starts for an EC2 instance scheduled event | `false`
 `enableSpotInterruptionDraining` | If true, drain nodes when the spot interruption termination notice is received | `true`
+`enableRebalanceMonitoring` | If true, cordon nodes when rebalance recommendation is received | `false`
 `useHostNetwork` | If `true`, enables `hostNetwork` for the Linux DaemonSet. NOTE: setting this to `false` may cause issues accessing IMDSv2 if your account is not configured with an IP hop count of 2 | `true`
 
 ### Kubernetes Configuration
 
 Parameter | Description | Default
 --- | --- | ---
-`image.repository` | image repository | `amazon/aws-node-termination-handler`
+`image.repository` | image repository | `public.ecr.aws/aws-ec2/aws-node-termination-handler`
 `image.tag` | image tag | `<VERSION>`
 `image.pullPolicy` | image pull policy | `IfNotPresent`
 `image.pullSecrets` | image pull secrets (for private docker registries) | `[]`

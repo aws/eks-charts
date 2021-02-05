@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller
-  tag: v2.0.0
+  tag: v2.1.1
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -54,6 +54,10 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+# Leverage a PriorityClass to ensure the controller will survive resource shortages
+# ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
+priorityClassName: ""
 
 nodeSelector: {}
 
@@ -128,6 +132,40 @@ livenessProbe:
   timeoutSeconds: 10
 
 # Environment variables to set for aws-load-balancer-controller pod.
+# We strongly discourage programming access credentials in the controller environment. You should setup IRSA or
+# comparable solutions like kube2iam, kiam etc instead.
 env:
-  # AWS_ACCESS_KEY_ID: ""
-  # AWS_SECRET_ACCESS_KEY: ""
+  # ENV_1: ""
+  # ENV_2: ""
+
+# Specifies if aws-load-balancer-controller should be started in hostNetwork mode.
+#
+# This is required if using a custom CNI where the managed control plane nodes are unable to initiate
+# network connections to the pods, for example using Calico CNI plugin on EKS. This is not required or
+# recommended if using the Amazon VPC CNI plugin.
+hostNetwork: false
+
+# extraVolumeMounts are the additional volume mounts. This enables setting up IRSA on non-EKS Kubernetes cluster
+extraVolumeMounts:
+  # - name: aws-iam-token
+  #   mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+  #   readOnly: true
+
+# extraVolumes for the extraVolumeMounts. Useful to mount a projected service account token for example.
+extraVolumes:
+  # - name: aws-iam-token
+  #   projected:
+  #     defaultMode: 420
+  #     sources:
+  #     - serviceAccountToken:
+  #         audience: sts.amazonaws.com
+  #         expirationSeconds: 86400
+  #         path: token
+
+# defaultTags are the tags to apply to all AWS resources managed by this controller
+defaultTags: {}
+  # default_tag1: value1
+  # default_tag2: value2
+
+podDisruptionBudget: {}
+#  maxUnavailable: 1
