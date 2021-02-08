@@ -5,7 +5,7 @@ AWS Load Balancer controller Helm chart for Kubernetes
 ## TL;DR:
 ```sh
 helm repo add eks https://aws.github.io/eks-charts
-helm install aws-load-balancer-controller eks/aws-load-balancer-controller --set clusterName=my-cluster
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller --set clusterName=my-cluster -n kube-system
 ```
 
 ## Introduction
