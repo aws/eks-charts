@@ -1,6 +1,10 @@
 {{ $tls := fromYaml ( include "aws-load-balancer-controller.gen-certs" . ) }}
 ---
+{{- if .Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1" }}
+apiVersion: admissionregistration.k8s.io/v1
+{{- else }}
 apiVersion: admissionregistration.k8s.io/v1beta1
+{{- end }}
 kind: MutatingWebhookConfiguration
 metadata:
 {{- if $.Values.enableCertManager }}
@@ -59,7 +63,11 @@ webhooks:
     - targetgroupbindings
   sideEffects: None
 ---
+{{- if .Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1" }}
+apiVersion: admissionregistration.k8s.io/v1
+{{- else }}
 apiVersion: admissionregistration.k8s.io/v1beta1
+{{- end }}
 kind: ValidatingWebhookConfiguration
 metadata:
 {{- if $.Values.enableCertManager }}
