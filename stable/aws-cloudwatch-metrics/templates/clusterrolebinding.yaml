@@ -9,6 +9,6 @@ roleRef:
   name: {{ include "aws-cloudwatch-metrics.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "aws-cloudwatch-metrics.fullname" . }}
+  name: {{ include "aws-cloudwatch-metrics.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
 {{- end -}}
