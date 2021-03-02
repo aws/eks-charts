@@ -4,7 +4,7 @@
 
 image:
   repository: public.ecr.aws/aws-ec2/aws-node-termination-handler
-  tag: v1.12.0
+  tag: v1.12.1
   pullPolicy: IfNotPresent
   pullSecrets: []
 
@@ -142,7 +142,7 @@ nodeSelectorTermsOs: ""
 nodeSelectorTermsArch: ""
 
 enablePrometheusServer: false
-prometheusServerPort: "9092"
+prometheusServerPort: 9092
 
 tolerations:
   - operator: "Exists"
@@ -175,6 +175,9 @@ podMonitor:
   sampleLimit: 5000
    # Additional labels to add to the metadata
   labels: {}
+  # Specifies whether a pod monitor should be created in a different namespace than
+  # the Helm release
+  # namespace: monitoring
 
 # K8s DaemonSet update strategy.
 updateStrategy:
