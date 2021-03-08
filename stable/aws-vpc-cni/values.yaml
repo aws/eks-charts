@@ -15,6 +15,7 @@ init:
     # override: "repo/org/image:tag"
   env:
     DISABLE_TCP_EARLY_DEMUX: "false"
+  resources: {}
   securityContext:
     privileged: true
 
@@ -49,7 +50,7 @@ env:
 # You can then annotate and label the original aws-node resources and 'adopt' them into a helm release
 originalMatchLabels: false
 
-cniConfig: 
+cniConfig:
   enabled: false
   fileContents: ""
 

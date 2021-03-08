@@ -29,6 +29,7 @@ affinity: {}
 initContainers:
   image: gcr.io/spiffe-io/wait-for-it
   pullPolicy: IfNotPresent
+  resources: {}
 
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not

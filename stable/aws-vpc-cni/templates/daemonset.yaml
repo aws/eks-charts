@@ -40,6 +40,8 @@ spec:
           - name: {{ $key }}
             value: {{ $value | quote }}
 {{- end }}
+        resources:
+          {{- toYaml .Values.init.resources | nindent 10 }}
         securityContext:
           {{- toYaml .Values.init.securityContext | nindent 12 }}
         volumeMounts:

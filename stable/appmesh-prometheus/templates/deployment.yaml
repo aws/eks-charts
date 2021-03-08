@@ -39,6 +39,8 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - chown 65534:65534 /mount;
+          resources:
+            {{- toYaml .Values.init.resources | nindent 12 }}
           volumeMounts:
             - name: data-volume
               mountPath: /mount

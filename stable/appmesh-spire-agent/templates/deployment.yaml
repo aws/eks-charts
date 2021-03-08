@@ -27,6 +27,8 @@ spec:
             - -t
             - "30"
             - spire-server:8081
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
       volumes:
         - name: spire-config
           configMap:

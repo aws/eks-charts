@@ -85,3 +85,4 @@ Parameter | Description | Default
 `retention` |  When to remove old data | `6h`
 `scrapeInterval` |  Interval between consecutive scrapes | `5s`
 `persistentVolumeClaim.claimName` |  Specify an existing volume claim to be used for Prometheus data | None
+`init.resources` | init container resources | `{}`
