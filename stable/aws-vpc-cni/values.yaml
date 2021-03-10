@@ -144,7 +144,7 @@ eniConfig:
   # Specifies whether ENIConfigs should be created
   create: false
   region: us-west-2
-  subnets:
+  subnets: {}
     # Key identifies the AZ
     # Value contains the subnet ID and security group IDs within that AZ
     # a:
