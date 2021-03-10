@@ -7,7 +7,9 @@ metadata:
 spec:
   {{- if $value.securityGroups }}
   securityGroups:
-    {{- toYaml $value.securityGroups | nindent 4 }}
+    {{- range $sg := $value.securityGroups }}
+    - {{ $sg }}
+    {{- end }}
   {{- end }}
   subnet: {{ $value.id }}
 ---
