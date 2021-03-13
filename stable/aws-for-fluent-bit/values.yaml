@@ -133,3 +133,5 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+annotations: {}
