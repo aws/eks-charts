@@ -5,6 +5,9 @@ image:
 
 clusterName: cluster_name
 
+metricsCollectionInterval: 60
+forceFlushInterval: 5
+
 resources:
   limits:
     cpu: 200m
