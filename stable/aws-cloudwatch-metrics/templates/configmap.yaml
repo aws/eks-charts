@@ -11,9 +11,9 @@ data:
         "metrics_collected": {
           "kubernetes": {
             "cluster_name": "{{ .Values.clusterName }}",
-            "metrics_collection_interval": "{{ .Values.clusterName }}"
+            "metrics_collection_interval": "{{ .Values.metricsCollectionInterval }}"
           }
         },
-        "force_flush_interval": "{{ .Values.force_flush_interval }}"
+        "force_flush_interval": "{{ .Values.forceFlushInterval }}"
       }
     }

@@ -5,8 +5,8 @@ image:
 
 clusterName: cluster_name
 
-metrics_collection_interval:
-force_flush_interval:
+metricsCollectionInterval:
+forceFlushInterval:
 
 resources:
   limits:
