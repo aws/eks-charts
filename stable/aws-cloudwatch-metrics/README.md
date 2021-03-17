@@ -29,5 +29,5 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `serviceAccount.create` | Whether a new service account should be created | `true` | 
 | `serviceAccount.name` | Service account to be used | | 
 | `hostNetwork` | Allow to use the network namespace and network resources of the node | `false` | 
-| `` | Allow to use the network namespace and network resources of the node | `false` |
-| `hostNetwork` | Allow to use the network namespace and network resources of the node | `false` |
+| `metricsCollectionInterval:` | specifies the time interval for the metrics collected | |
+| `forceFlushInterval` | specifies flush interval | |
