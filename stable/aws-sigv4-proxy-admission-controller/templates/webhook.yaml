@@ -1,6 +1,10 @@
 {{ $tls := fromYaml ( include "aws-sigv4-proxy-admission-controller.gen-certs" . ) }}
 ---
+{{- if .Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1" }}
+apiVersion: admissionregistration.k8s.io/v1
+{{- else }}
 apiVersion: admissionregistration.k8s.io/v1beta1
+{{- end }}
 kind: MutatingWebhookConfiguration
 metadata:
   name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-config
