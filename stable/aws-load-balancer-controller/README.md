@@ -17,7 +17,9 @@ AWS Load Balancer controller manages the following AWS resources
 **Note**: Deployed chart does not receive security updates automatically. You need to manually upgrade to a newer chart.
 
 ## Prerequisites
-- Kubernetes 1.9+ for ALB, 1.20+ for NLB IP mode, or EKS 1.18
+- Kubernetes >= 1.15 for ALB
+- Kubernetes >= 1.15 for NLB IP using Service type NodePort
+- Kubernetes >= 1.20 or EKS >= 1.16 for NLB IP using Service type LoadBalancer
 - IAM permissions
 
 The controller runs on the worker nodes, so it needs access to the AWS ALB/NLB resources via IAM permissions. The
