@@ -106,15 +106,10 @@ aws iam create-policy \
 
 Take note of the policy ARN that is returned
 
-Create Application namespace to which Envoy proxy will get injected
-```
-kubectl create ns <ApplicationNamespaceName>
-```
-
-Create an IAM role for service account for the App Mesh Envoy, use the ARN from the step above
+Create an IAM role for service account for the App Mesh Envoy, use the ARN from the step above. Ensure that Application Namespace already exists  
 ```
 eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
-    --namespace <ApplicationNamespaceName> \
+    --namespace <ApplicationNamespaceName to which Envoy gets Injected> \
     --name envoy-proxy \
     --attach-policy-arn arn:aws:iam::$AWS_ACCOUNT_ID:policy/AWSAppMeshEnvoyIAMPolicy  \
     --override-existing-serviceaccounts \
