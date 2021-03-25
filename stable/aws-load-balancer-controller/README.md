@@ -71,12 +71,6 @@ Add the EKS repository to Helm:
 helm repo add eks https://aws.github.io/eks-charts
 ```
 
-Install the TargetGroupBinding CRDs:
-
-```shell script
-kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master"
-```
-
 Install the AWS Load Balancer controller, if using iamserviceaccount
 ```shell script
 # NOTE: The clusterName value must be set either via the values.yaml or the Helm command line. The <k8s-cluster-name> in the command
