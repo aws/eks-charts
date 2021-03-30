@@ -37,6 +37,8 @@ webhooks:
     resources:
     - {{ $res.resource }}
   sideEffects: None
+  admissionReviewVersions:
+  - v1beta1
 {{- end }}
 - clientConfig:
     caBundle: {{ if not $.Values.enableCertManager -}}{{ $tls.caCert }}{{- else -}}Cg=={{ end }}
@@ -63,6 +65,8 @@ webhooks:
     resources:
     - pods
   sideEffects: None
+  admissionReviewVersions:
+  - v1beta1
 ---
 {{- if .Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1" }}
 apiVersion: admissionregistration.k8s.io/v1
@@ -99,6 +103,8 @@ webhooks:
     resources:
     - {{ $res.resource }}
   sideEffects: None
+  admissionReviewVersions:
+  - v1beta1
 {{- end }}
 ---
 {{- if not $.Values.enableCertManager }}
