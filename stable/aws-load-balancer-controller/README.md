@@ -5,8 +5,7 @@ AWS Load Balancer controller Helm chart for Kubernetes
 ## TL;DR:
 ```sh
 helm repo add eks https://aws.github.io/eks-charts
-kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master"
-helm install eks/aws-load-balancer-controller
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller --set clusterName=my-cluster -n kube-system
 ```
 
 ## Introduction
@@ -18,7 +17,9 @@ AWS Load Balancer controller manages the following AWS resources
 **Note**: Deployed chart does not receive security updates automatically. You need to manually upgrade to a newer chart.
 
 ## Prerequisites
-- Kubernetes 1.9+ for ALB, 1.20+ for NLB IP mode, or EKS 1.18
+- Kubernetes >= 1.15 for ALB
+- Kubernetes >= 1.15 for NLB IP using Service type NodePort
+- Kubernetes >= 1.20 or EKS >= 1.16 for NLB IP using Service type LoadBalancer
 - IAM permissions
 
 The controller runs on the worker nodes, so it needs access to the AWS ALB/NLB resources via IAM permissions. The
@@ -122,7 +123,7 @@ helm delete aws-load-balancer-controller -n kube-system
 ## Configuration
 
 The following tables lists the configurable parameters of the chart and their default values.
-The default values set by the application itself can be confirmed [here](https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/docs/guide/controller/configurations.md).
+The default values set by the application itself can be confirmed [here](https://kubernetes-sigs.github.io/aws-load-balancer-controller/guide/controller/configurations/).
 
 | Parameter                                   | Description                                                                                              | Default                                                                            |
 | ------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -132,6 +133,7 @@ The default values set by the application itself can be confirmed [here](https:/
 | `clusterName`                               | Kubernetes cluster name                                                                                  | None                                                                               |
 | `securityContext`                           | Set to security context for pod                                                                          | `{}`                                                                               |
 | `resources`                                 | Controller pod resource requests & limits                                                                | `{}`                                                                               |
+| `priorityClassName`                         | Controller pod priority class                                                                            | None                                                                               |
 | `nodeSelector`                              | Node labels for controller pod assignment                                                                | `{}`                                                                               |
 | `tolerations`                               | Controller pod toleration for taints                                                                     | `{}`                                                                               |
 | `affinity`                                  | Affinity for pod assignment                                                                              | `{}`                                                                               |
@@ -161,3 +163,7 @@ The default values set by the application itself can be confirmed [here](https:/
 | `livenessProbe`                             | Liveness probe settings for the controller                                                               | (see `values.yaml`)                                                                |
 | `env`                                       | Environment variables to set for aws-load-balancer-controller pod                                        | None                                                                               |
 | `hostNetwork`                               | If `true`, use hostNetwork                                                                               | `false`                                                                            |
+| `extraVolumeMounts`                         | Extra volume mounts for the pod                                                                          | `[]`                                                                               |
+| `extraVolumes`                              | Extra volumes for the pod                                                                                | `[]`                                                                               |
+| `defaultTags`                               | Default tags to apply to all AWS resources managed by this controller                                    | `{}`                                                                               |
+| `podDisruptionBudget`                       | PodDisruptionBudget                                                                                      | `{}`                                                                               |

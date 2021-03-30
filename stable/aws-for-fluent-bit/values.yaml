@@ -60,6 +60,7 @@ cloudWatch:
   logStreamPrefix: "fluentbit-"
   logKey:
   logFormat:
+  logRetentionDays:
   roleArn:
   autoCreateGroup: true
   endpoint:
@@ -117,10 +118,10 @@ serviceAccount:
 
 resources:
   limits:
-    memory: 500Mi
+    memory: 250Mi
   requests:
-    cpu: 500m
-    memory: 500Mi
+    cpu: 50m
+    memory: 50Mi
 
 ## Assign a PriorityClassName to pods if set
 # priorityClassName: system-node-critical

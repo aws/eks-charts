@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: amazon/aws-node-termination-handler
-  tag: v1.10.0
+  repository: public.ecr.aws/aws-ec2/aws-node-termination-handler
+  tag: v1.12.2
   pullPolicy: IfNotPresent
   pullSecrets: []
 
@@ -25,6 +25,14 @@ podLabels: {}
 linuxPodLabels: {}
 windowsPodLabels: {}
 
+# liveness probe settings.
+probes:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
 resources:
   requests:
     memory: "64Mi"
@@ -44,6 +52,9 @@ queueURL: ""
 
 # checkASGTagBeforeDraining  If true, check that the instance is tagged with "aws-node-termination-handler/managed" as the key before draining the node
 checkASGTagBeforeDraining: true
+
+# managedAsgTag  The tag to ensure is on a node if checkASGTagBeforeDraining is true
+managedAsgTag: "aws-node-termination-handler/managed"
 
 # awsRegion If specified, use the AWS region for AWS API calls
 awsRegion: ""
@@ -72,6 +83,9 @@ taintNode: false
 
 # Log messages in JSON format.
 jsonLogging: false
+
+# Sets the log level
+logLevel: "info"
 
 # dryRun tells node-termination-handler to only log calls to kubernetes control plane
 dryRun: false
@@ -136,7 +150,11 @@ nodeSelectorTermsOs: ""
 nodeSelectorTermsArch: ""
 
 enablePrometheusServer: false
-prometheusServerPort: "9092"
+prometheusServerPort: 9092
+
+enableProbesServer: false
+probesServerPort: 8080
+probesServerEndpoint: "/healthz"
 
 tolerations:
   - operator: "Exists"
@@ -169,6 +187,9 @@ podMonitor:
   sampleLimit: 5000
    # Additional labels to add to the metadata
   labels: {}
+  # Specifies whether a pod monitor should be created in a different namespace than
+  # the Helm release
+  # namespace: monitoring
 
 # K8s DaemonSet update strategy.
 updateStrategy:
@@ -182,3 +203,6 @@ windowsUpdateStrategy: ""
 # If you have disabled IMDSv1 and are relying on IMDSv2, you'll need to increase the IP hop count to 2 before switching this to false
 # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
 useHostNetwork: true
+
+# The maximal amount of parallel event processors to handle concurrent events
+workers: 10

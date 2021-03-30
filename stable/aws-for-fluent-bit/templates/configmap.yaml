@@ -64,6 +64,9 @@ data:
         {{- if .Values.cloudWatch.logFormat }}
         log_format            {{ .Values.cloudWatch.logFormat }}
         {{- end }}
+        {{- if .Values.cloudWatch.logRetentionDays }}
+        log_retention_days    {{ .Values.cloudWatch.logRetentionDays }}
+        {{- end }}
         {{- if .Values.cloudWatch.roleArn }}
         role_arn              {{ .Values.cloudWatch.roleArn }}
         {{- end }}
