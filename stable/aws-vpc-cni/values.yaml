@@ -49,6 +49,10 @@ env:
 # You can then annotate and label the original aws-node resources and 'adopt' them into a helm release
 originalMatchLabels: false
 
+cniConfig: 
+  enabled: false
+  fileContents: ""
+
 imagePullSecrets: []
 
 fullnameOverride: "aws-node"
@@ -103,4 +107,55 @@ nodeSelector: {}
 
 tolerations: []
 
-affinity: {}
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: "beta.kubernetes.io/os"
+              operator: In
+              values:
+                - linux
+            - key: "beta.kubernetes.io/arch"
+              operator: In
+              values:
+                - amd64
+                - arm64
+            - key: "eks.amazonaws.com/compute-type"
+              operator: NotIn
+              values:
+                - fargate
+        - matchExpressions:
+            - key: "kubernetes.io/os"
+              operator: In
+              values:
+                - linux
+            - key: "kubernetes.io/arch"
+              operator: In
+              values:
+                - amd64
+                - arm64
+            - key: "eks.amazonaws.com/compute-type"
+              operator: NotIn
+              values:
+                - fargate
+
+eniConfig:
+  # Specifies whether ENIConfigs should be created
+  create: false
+  region: us-west-2
+  subnets:
+    # Key identifies the AZ
+    # Value contains the subnet ID and security group IDs within that AZ
+    # a:
+    #   id: subnet-123
+    #   securityGroups:
+    #   - sg-123
+    # b:
+    #   id: subnet-456
+    #   securityGroups:
+    #   - sg-456
+    # c:
+    #   id: subnet-789
+    #   securityGroups:
+    #   - sg-789

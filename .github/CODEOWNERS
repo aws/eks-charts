@@ -1,0 +1,21 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+*       @bwagner5 @kishorj @fawadkhaliq @jaypipes
+
+/stable/appmesh-controller/ @achevuru @fawadkhaliq
+/stable/appmesh-gateway/ @stefanprodan
+/stable/appmesh-grafana/ @achevuru @fawadkhaliq
+/stable/appmesh-inject/ @achevuru @fawadkhaliq
+/stable/appmesh-jaeger/ @achevuru @fawadkhaliq
+/stable/appmesh-prometheus/ @achevuru @fawadkhaliq
+
+/stable/aws-load-balancer-controller/ @kishorj @M00nF1sh
+
+/stable/aws-calico/ @jayanthvn
+/stable/aws-vpc-cni/ @jayanthvn
+
+/stable/aws-node-termination-handler/ @bwagner5
+
+/stable/aws-sigv4-proxy-admission-controller/ @alanprot @alolita
+
+/stable/aws-for-fluent-bit/ @PettitWesley @hossain-rayhan

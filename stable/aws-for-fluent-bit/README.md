@@ -49,6 +49,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `cloudWatch.logStreamName` | The name of the CloudWatch Log Stream that you want log records sent to. |  |
 | `cloudWatch.logStreamPrefix` | Prefix for the Log Stream name. The tag is appended to the prefix to construct the full log stream name. Not compatible with the log_stream_name option. | `"fluentbit-"` |
 | `cloudWatch.logKey` | By default, the whole log record will be sent to CloudWatch. If you specify a key name with this option, then only the value of that key will be sent to CloudWatch. For example, if you are using the Fluentd Docker log driver, you can specify logKey log and only the log message will be sent to CloudWatch. |  |
+| `cloudWatch.logRetentionDays` | If set to a number greater than zero, and newly create log group's retention policy is set to this many days. | |
 | `cloudWatch.logFormat` | An optional parameter that can be used to tell CloudWatch the format of the data. A value of json/emf enables CloudWatch to extract custom metrics embedded in a JSON payload. See the Embedded Metric Format. |  |
 | `cloudWatch.roleArn` | ARN of an IAM role to assume (for cross account access). |  |
 | `cloudWatch.autoCreateGroup` | Automatically create the log group. Valid values are "true" or "false" (case insensitive). | true |
@@ -91,3 +92,4 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `affinity` | Map of node/pod affinities | `{}` |
 | `tolerations` | Optional deployment tolerations | `[]` |
 | `nodeSelector` | Node labels for pod assignment | `{}` |
+| `annotations` | Optional pod annotations | `{}` |

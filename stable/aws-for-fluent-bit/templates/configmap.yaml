@@ -35,7 +35,10 @@ data:
         Match               {{ .Values.filter.match }}
         Kube_URL            {{ .Values.filter.kubeURL }}
         Merge_Log           {{ .Values.filter.mergeLog }}
+        {{- if .Values.filter.mergeLogKey }}
         Merge_Log_Key       {{ .Values.filter.mergeLogKey }}
+        {{- end }}
+        Keep_Log            {{ .Values.filter.keepLog }}
         K8S-Logging.Parser  {{ .Values.filter.k8sLoggingParser }}
         K8S-Logging.Exclude {{ .Values.filter.k8sLoggingExclude }}
         Buffer_Size         {{ .Values.filter.bufferSize }}
@@ -61,6 +64,9 @@ data:
         {{- end }}
         {{- if .Values.cloudWatch.logFormat }}
         log_format            {{ .Values.cloudWatch.logFormat }}
+        {{- end }}
+        {{- if .Values.cloudWatch.logRetentionDays }}
+        log_retention_days    {{ .Values.cloudWatch.logRetentionDays }}
         {{- end }}
         {{- if .Values.cloudWatch.roleArn }}
         role_arn              {{ .Values.cloudWatch.roleArn }}

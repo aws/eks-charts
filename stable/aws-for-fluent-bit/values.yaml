@@ -41,6 +41,7 @@ filter:
   kubeURL: "https://kubernetes.default.svc.cluster.local:443"
   mergeLog: "On"
   mergeLogKey: "data"
+  keepLog: "On"
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
   bufferSize: "32k"
@@ -60,6 +61,7 @@ cloudWatch:
   logStreamPrefix: "fluentbit-"
   logKey:
   logFormat:
+  logRetentionDays:
   roleArn:
   autoCreateGroup: true
   endpoint:
@@ -117,10 +119,10 @@ serviceAccount:
 
 resources:
   limits:
-    memory: 500Mi
+    memory: 250Mi
   requests:
-    cpu: 500m
-    memory: 500Mi
+    cpu: 50m
+    memory: 50Mi
 
 ## Assign a PriorityClassName to pods if set
 # priorityClassName: system-node-critical
@@ -133,3 +135,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+annotations: {}
+  # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit

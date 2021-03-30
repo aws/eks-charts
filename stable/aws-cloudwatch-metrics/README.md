@@ -14,7 +14,7 @@ Install or upgrading aws-cloudwatch-metrics chart with default configuration:
 
 ```sh
 helm upgrade --install aws-cloudwatch-metrics \
-    --namespace amazon-cloudwatch eks/aws-cloudwatch-metric \
+    --namespace amazon-cloudwatch eks/aws-cloudwatch-metrics \
     --set clusterName=my-eks-cluster
 ```
 
@@ -28,3 +28,4 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `clusterName` | Name of your cluster | `cluster_name` | ✔
 | `serviceAccount.create` | Whether a new service account should be created | `true` | 
 | `serviceAccount.name` | Service account to be used | | 
+| `hostNetwork` | Allow to use the network namespace and network resources of the node | `false` | 
