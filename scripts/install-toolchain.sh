@@ -37,7 +37,9 @@ mv "${TMP_DIR}/helmv3/${PLATFORM}-${ARCH}/helm" "${TOOLS_DIR}/helmv3"
 rm -rf "${PLATFORM}-${ARCH}"
 
 ## Initialize helm
+
 helm init --stable-repo-url https://charts.helm.sh/stable --client-only --kubeconfig="${BUILD_DIR}/.kube/kubeconfig"
+
 
 ## Install kind
 curl -sSL "https://github.com/kubernetes-sigs/kind/releases/download/${KIND_VERSION}/kind-${PLATFORM}-${ARCH}" -o "${TOOLS_DIR}/kind"
