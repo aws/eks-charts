@@ -92,3 +92,4 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `affinity` | Map of node/pod affinities | `{}` |
 | `tolerations` | Optional deployment tolerations | `[]` |
 | `nodeSelector` | Node labels for pod assignment | `{}` |
+| `annotations` | Optional pod annotations | `{}` |
