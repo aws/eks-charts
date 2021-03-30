@@ -5,18 +5,21 @@
 replicaCount: 1
 region: ""
 accountId: ""
+preview: false
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
-  tag: v1.1.1
+  tag: v1.3.0
   pullPolicy: IfNotPresent
 
 sidecar:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
-    tag: v1.15.1.0-prod
+    tag: v1.16.1.0-prod
     # sidecar.logLevel: Envoy log level can be info, warn, error or debug
   logLevel: info
+  envoyAdminAccessPort: 9901
+  envoyAdminAccessLogFile: /tmp/envoy_admin_access.log
   resources:
     # sidecar.resources.requests: Envoy CPU and memory requests
     requests:
@@ -72,6 +75,12 @@ cloudMapDNS:
   # cloudMapDNS.ttl if set will use this global ttl value
   ttl: 300
 
+sds:
+  # sds.enabled: `true` if SDS based mTLS support needs to be enabled in envoy
+  enabled: false
+  #sds.udsPath: UDS Path of the SDS Provider. Default value is tied to SPIRE.
+  udsPath: /run/spire/sockets/agent.sock
+
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not
   create: true
@@ -97,14 +106,18 @@ tracing:
   provider: x-ray
   # tracing.address: Jaeger or Datadog agent server address (ignored for X-Ray)
   address: appmesh-jaeger.appmesh-system
-  # tracing.address: Jaeger or Datadog agent server port (ignored for X-Ray)
-  port: 9411
+  # tracing.port: Jaeger or Datadog agent server port
+  port: 2000
 
 stats:
   # stats.tagsEnabled: `true` if Envoy should include app-mesh tags
   tagsEnabled: false
   # stats.statsdEnabled: `true` if Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125
   statsdEnabled: false
+  #stats.statsdAddress: DogStatsD daemon address
+  statsdAddress: 127.0.0.1
+  #stats.statsdPort: DogStatsD daemon port
+  statsdPort: 8125
 
 # Enable cert-manager
 enableCertManager: false
@@ -117,3 +130,13 @@ env: {}
 #    http_proxy: http://proxyserver:3128
 #    https_proxy: http://proxyserver:3128
 #    no_proxy: "localhost,127.0.0.1,.cluster.local"
+
+# Liveness probe configuration for the controller
+livenessProbe:
+  failureThreshold: 2
+  httpGet:
+    path: /healthz
+    port: 61779
+    scheme: HTTP
+  initialDelaySeconds: 30
+  timeoutSeconds: 10

@@ -4,6 +4,6 @@
 accountId: 123456789
 region: us-west-2
 image:
-  repository: fawadkhaliq/appmesh-controller
-  tag: v1.1.1-rc2
+  repository: apuroop/appmesh-controller
+  tag: v1.3.0
   pullPolicy: IfNotPresent

@@ -2,7 +2,11 @@
 {{ $fullName := ( include "appmesh-controller.fullname" . ) }}
 {{ $webhookConfig := .Files.Get "webhookconfig.yaml" | fromYaml }}
 ---
+{{- if .Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1" }}
+apiVersion: admissionregistration.k8s.io/v1
+{{- else }}
 apiVersion: admissionregistration.k8s.io/v1beta1
+{{- end }}
 kind: MutatingWebhookConfiguration
 metadata:
 {{- if $.Values.enableCertManager }}
@@ -32,6 +36,7 @@ webhooks:
     - UPDATE
     resources:
     - {{ $res.resource }}
+  sideEffects: None
 {{- end }}
 - clientConfig:
     caBundle: {{ if not $.Values.enableCertManager -}}{{ $tls.caCert }}{{- else -}}Cg=={{ end }}
@@ -57,8 +62,13 @@ webhooks:
     - CREATE
     resources:
     - pods
+  sideEffects: None
 ---
+{{- if .Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1" }}
+apiVersion: admissionregistration.k8s.io/v1
+{{- else }}
 apiVersion: admissionregistration.k8s.io/v1beta1
+{{- end }}
 kind: ValidatingWebhookConfiguration
 metadata:
 {{- if $.Values.enableCertManager }}
@@ -88,6 +98,7 @@ webhooks:
     - UPDATE
     resources:
     - {{ $res.resource }}
+  sideEffects: None
 {{- end }}
 ---
 {{- if not $.Values.enableCertManager }}

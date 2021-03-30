@@ -5,8 +5,7 @@ AWS Load Balancer controller Helm chart for Kubernetes
 ## TL;DR:
 ```sh
 helm repo add eks https://aws.github.io/eks-charts
-kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master"
-helm install eks/aws-load-balancer-controller
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller --set clusterName=my-cluster -n kube-system
 ```
 
 ## Introduction
@@ -18,7 +17,9 @@ AWS Load Balancer controller manages the following AWS resources
 **Note**: Deployed chart does not receive security updates automatically. You need to manually upgrade to a newer chart.
 
 ## Prerequisites
-- Kubernetes 1.9+ for ALB, 1.20+ for NLB IP mode, or EKS 1.18
+- Kubernetes >= 1.15 for ALB
+- Kubernetes >= 1.15 for NLB IP using Service type NodePort
+- Kubernetes >= 1.20 or EKS >= 1.16 for NLB IP using Service type LoadBalancer
 - IAM permissions
 
 The controller runs on the worker nodes, so it needs access to the AWS ALB/NLB resources via IAM permissions. The
@@ -122,40 +123,47 @@ helm delete aws-load-balancer-controller -n kube-system
 ## Configuration
 
 The following tables lists the configurable parameters of the chart and their default values.
-The default values set by the application itself can be confirmed [here](https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/docs/guide/controller/configurations.md).
+The default values set by the application itself can be confirmed [here](https://kubernetes-sigs.github.io/aws-load-balancer-controller/guide/controller/configurations/).
 
-| Parameter                          | Description                                               | Default                                                                                    |
-| ---------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `image.repository`                 | image repository                                          | `602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller`         |
-| `image.tag`                        | image tag                                                 | `<VERSION>`                                                                                |
-| `image.pullPolicy`                 | image pull policy                                         | `IfNotPresent`                                                                             |
-| `clusterName`                      | Kubernetes cluster name                                   | None                                                                                       |
-| `securityContext`                  | Set to security context for pod                           | `{}`                                                                                       |
-| `resources`                        | Controller pod resource requests & limits                 | `{}`                                                                                       |
-| `nodeSelector`                     | Node labels for controller pod assignment                 | `{}`                                                                                       |
-| `tolerations`                      | Controller pod toleration for taints                      | `{}`                                                                                       |
-| `affinity`                         | Affinity for pod assignment                               | `{}`                                                                                       |
-| `podAnnotations`                   | Annotations to add to each pod                            | `{}`                                                                                       |
-| `podLabels`                        | Labels to add to each pod                                 | `{}`                                                                                       |
-| `rbac.create`                      | if `true`, create and use RBAC resources                  | `true`                                                                                     |
-| `serviceAccount.annotations`       | optional annotations to add to service account            | None                                                                                       |
-| `serviceAccount.create`            | If `true`, create a new service account                   | `true`                                                                                     |
-| `serviceAccount.name`              | Service account to be used                                | None                                                                                       |
-| `terminationGracePeriodSeconds`    | Time period for controller pod to do a graceful shutdown  | 10                                                                                         |
-| `ingressClass`                     | The ingress class to satisfy                              | alb                                                                                        |
-| `region`                           | The AWS region for the kubernetes cluster                 | None                                                                                       |
-| `vpcId`                            | The VPC ID for the Kubernetes cluster                     | None                                                                                       |
-| `awsMaxRetries`                    | Maximum retries for AWS APIs                        |                                                             None |
-| `enablePodReadinessGateInject`     | If enabled, targetHealth readiness gate will get injected to the pod spec for the matching endpoint pods |        None |
-| `enableShield`                     | Enable Shield addon for ALB                         |                                                             None |
-| `enableWaf`                        | Enable WAF addon for ALB                            |                                                             None |
-| `enableWafv2`                      | Enable WAF V2 addon for ALB                         |                                                             None |
-| `ingressMaxConcurrentReconciles`   | Maximum number of concurrently running reconcile loops for ingress |                                              None |
-| `logLevel`                         | Set the controller log level - info, debug          |                                                             None |
-| `metricsBindAddr`                  | The address the metric endpoint binds to            |                                                             "" |
-| `webhookBindPort`                  | The TCP port the Webhook server binds to            |                                                             None |
-| `serviceMaxConcurrentReconciles`   | Maximum number of concurrently running reconcile loops for service  |                                             None |
-| `targetgroupbindingMaxConcurrentReconciles` | Maximum number of concurrently running reconcile loops for targetGroupBinding  |                         None |
-| `syncPeriod`                       | Period at which the controller forces the repopulation of its local object stores      |                          None |
-| `watchNamespace`                   | Namespace the controller watches for updates to Kubernetes objects, If empty, all namespaces are watche |         None |
-| `livenessProbe`                    | Liveness probe settings for the controller                | (see `values.yaml`)                                                                        |
+| Parameter                                   | Description                                                                                              | Default                                                                            |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `image.repository`                          | image repository                                                                                         | `602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller` |
+| `image.tag`                                 | image tag                                                                                                | `<VERSION>`                                                                        |
+| `image.pullPolicy`                          | image pull policy                                                                                        | `IfNotPresent`                                                                     |
+| `clusterName`                               | Kubernetes cluster name                                                                                  | None                                                                               |
+| `securityContext`                           | Set to security context for pod                                                                          | `{}`                                                                               |
+| `resources`                                 | Controller pod resource requests & limits                                                                | `{}`                                                                               |
+| `priorityClassName`                         | Controller pod priority class                                                                            | None                                                                               |
+| `nodeSelector`                              | Node labels for controller pod assignment                                                                | `{}`                                                                               |
+| `tolerations`                               | Controller pod toleration for taints                                                                     | `{}`                                                                               |
+| `affinity`                                  | Affinity for pod assignment                                                                              | `{}`                                                                               |
+| `podAnnotations`                            | Annotations to add to each pod                                                                           | `{}`                                                                               |
+| `podLabels`                                 | Labels to add to each pod                                                                                | `{}`                                                                               |
+| `rbac.create`                               | if `true`, create and use RBAC resources                                                                 | `true`                                                                             |
+| `serviceAccount.annotations`                | optional annotations to add to service account                                                           | None                                                                               |
+| `serviceAccount.create`                     | If `true`, create a new service account                                                                  | `true`                                                                             |
+| `serviceAccount.name`                       | Service account to be used                                                                               | None                                                                               |
+| `terminationGracePeriodSeconds`             | Time period for controller pod to do a graceful shutdown                                                 | 10                                                                                 |
+| `ingressClass`                              | The ingress class to satisfy                                                                             | alb                                                                                |
+| `region`                                    | The AWS region for the kubernetes cluster                                                                | None                                                                               |
+| `vpcId`                                     | The VPC ID for the Kubernetes cluster                                                                    | None                                                                               |
+| `awsMaxRetries`                             | Maximum retries for AWS APIs                                                                             | None                                                                               |
+| `enablePodReadinessGateInject`              | If enabled, targetHealth readiness gate will get injected to the pod spec for the matching endpoint pods | None                                                                               |
+| `enableShield`                              | Enable Shield addon for ALB                                                                              | None                                                                               |
+| `enableWaf`                                 | Enable WAF addon for ALB                                                                                 | None                                                                               |
+| `enableWafv2`                               | Enable WAF V2 addon for ALB                                                                              | None                                                                               |
+| `ingressMaxConcurrentReconciles`            | Maximum number of concurrently running reconcile loops for ingress                                       | None                                                                               |
+| `logLevel`                                  | Set the controller log level - info, debug                                                               | None                                                                               |
+| `metricsBindAddr`                           | The address the metric endpoint binds to                                                                 | ""                                                                                 |
+| `webhookBindPort`                           | The TCP port the Webhook server binds to                                                                 | None                                                                               |
+| `serviceMaxConcurrentReconciles`            | Maximum number of concurrently running reconcile loops for service                                       | None                                                                               |
+| `targetgroupbindingMaxConcurrentReconciles` | Maximum number of concurrently running reconcile loops for targetGroupBinding                            | None                                                                               |
+| `syncPeriod`                                | Period at which the controller forces the repopulation of its local object stores                        | None                                                                               |
+| `watchNamespace`                            | Namespace the controller watches for updates to Kubernetes objects, If empty, all namespaces are watche  | None                                                                               |
+| `livenessProbe`                             | Liveness probe settings for the controller                                                               | (see `values.yaml`)                                                                |
+| `env`                                       | Environment variables to set for aws-load-balancer-controller pod                                        | None                                                                               |
+| `hostNetwork`                               | If `true`, use hostNetwork                                                                               | `false`                                                                            |
+| `extraVolumeMounts`                         | Extra volume mounts for the pod                                                                          | `[]`                                                                               |
+| `extraVolumes`                              | Extra volumes for the pod                                                                                | `[]`                                                                               |
+| `defaultTags`                               | Default tags to apply to all AWS resources managed by this controller                                    | `{}`                                                                               |
+| `podDisruptionBudget`                       | PodDisruptionBudget                                                                                      | `{}`                                                                               |

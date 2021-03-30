@@ -40,7 +40,7 @@ spec:
     spec:
       {{- if and .Values.webhookTemplateConfigMapName .Values.webhookTemplateConfigMapKey }}
       volumes:
-      - name: "webhookTemplate"
+      - name: "webhook-template"
         configMap:
           name: {{ .Values.webhookTemplateConfigMapName }}
       {{- end }}
@@ -72,7 +72,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if and .Values.webhookTemplateConfigMapName .Values.webhookTemplateConfigMapKey }}
           volumeMounts:
-          - name: "webhookTemplate"
+          - name: "webhook-template"
             mountPath: "/config/"
           {{- end }}
           env:
@@ -120,6 +120,8 @@ spec:
             value: {{ .Values.enableSpotInterruptionDraining | quote }}
           - name: ENABLE_SCHEDULED_EVENT_DRAINING
             value: {{ .Values.enableScheduledEventDraining | quote }}
+          - name: ENABLE_REBALANCE_MONITORING
+            value: {{ .Values.enableRebalanceMonitoring | quote }}
           - name: METADATA_TRIES
             value: {{ .Values.metadataTries | quote }}
           - name: CORDON_ONLY
@@ -128,6 +130,8 @@ spec:
             value: {{ .Values.taintNode | quote }}
           - name: JSON_LOGGING
             value: {{ .Values.jsonLogging | quote }}
+          - name: LOG_LEVEL
+            value: {{ .Values.logLevel | quote }}
           - name: WEBHOOK_PROXY
             value: {{ .Values.webhookProxy | quote }}
           - name: UPTIME_FROM_FILE
@@ -136,6 +140,12 @@ spec:
             value: {{ .Values.enablePrometheusServer | quote }}
           - name: PROMETHEUS_SERVER_PORT
             value: {{ .Values.prometheusServerPort | quote }}
+          - name: ENABLE_PROBES_SERVER
+            value: {{ .Values.enableProbesServer | quote }}
+          - name: PROBES_SERVER_PORT
+            value: {{ .Values.probesServerPort | quote }}
+          - name: PROBES_SERVER_ENDPOINT
+            value: {{ .Values.probesServerEndpoint | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.enablePrometheusServer }}
@@ -143,6 +153,13 @@ spec:
           - containerPort: {{ .Values.prometheusServerPort  }}
             hostPort: {{ .Values.prometheusServerPort }}
             name: http-metrics
+            protocol: TCP
+          {{- end }}
+          {{- if .Values.enableProbesServer }}
+          ports:
+          - containerPort: {{ .Values.probesServerPort }}
+            hostPort: {{ .Values.probesServerPort }}
+            name: liveness-probe
             protocol: TCP
           {{- end }}
       nodeSelector:

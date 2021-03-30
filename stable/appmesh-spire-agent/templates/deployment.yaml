@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ template "appmesh-spire-agent.fullname" . }}
+  labels:
+{{ include "appmesh-spire-agent.labels" . | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "appmesh-spire-agent.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "appmesh-spire-agent.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/part-of: appmesh
+    spec:
+      hostPID: true
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      serviceAccountName: {{ include "appmesh-spire-agent.serviceAccountName" . }}
+      initContainers:
+        - name: init
+          image: "{{ .Values.initContainers.image }}"
+          args:
+            - -t
+            - "30"
+            - spire-server:8081
+      volumes:
+        - name: spire-config
+          configMap:
+            name: {{ template "appmesh-spire-agent.fullname" . }}
+        - name: spire-bundle
+          configMap:
+            name: spire-bundle
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - -config
+            - /run/spire/config/agent.conf
+          livenessProbe:
+            exec:
+              command:
+                - /opt/spire/bin/spire-agent
+                - healthcheck
+                - -socketPath
+                - /run/spire/sockets/agent.sock
+            failureThreshold: 2
+            initialDelaySeconds: 15
+            periodSeconds: 60
+            timeoutSeconds: 3
+          volumeMounts:
+            - name: spire-config
+              mountPath: /run/spire/config
+              readOnly: true
+            - name: spire-bundle
+              mountPath: /run/spire/bundle
+              readOnly: true
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+              readOnly: false
