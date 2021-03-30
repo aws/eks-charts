@@ -54,9 +54,9 @@ The configuration in this table applies to both queue-processor mode and IMDS mo
 
 Parameter | Description | Default
 --- | --- | ---
-`deleteLocalData` | Tells kubectl to continue even if there are pods using emptyDir (local data that will be deleted when the node is drained). | `false`
-`gracePeriod` | (DEPRECATED: Renamed to podTerminationGracePeriod) The time in seconds given to each pod to terminate gracefully. If negative, the default value specified in the pod will be used. | `30`
-`podTerminationGracePeriod` | The time in seconds given to each pod to terminate gracefully. If negative, the default value specified in the pod will be used. | `30`
+`deleteLocalData` | Tells kubectl to continue even if there are pods using emptyDir (local data that will be deleted when the node is drained). | `true`
+`gracePeriod` | (DEPRECATED: Renamed to podTerminationGracePeriod) The time in seconds given to each pod to terminate gracefully. If negative, the default value specified in the pod will be used, which defaults to 30 seconds if not specified. | `-1`
+`podTerminationGracePeriod` | The time in seconds given to each pod to terminate gracefully. If negative, the default value specified in the pod will be used, which defaults to 30 seconds if not specified. | `-1`
 `nodeTerminationGracePeriod` | Period of time in seconds given to each NODE to terminate gracefully. Node draining will be scheduled based on this value to optimize the amount of compute time, but still safely drain the node before an event. | `120`
 `ignoreDaemonSets` | Causes kubectl to skip daemon set managed pods | `true`
 `instanceMetadataURL` | The URL of EC2 instance metadata. This shouldn't need to be changed unless you are testing. | `http://169.254.169.254:80`
@@ -64,7 +64,7 @@ Parameter | Description | Default
 `webhookURLSecretName` | Pass Webhook URL as a secret. Secret Key: `webhookurl`, Value: `<WEBHOOK_URL>` | None
 `webhookProxy` | Uses the specified HTTP(S) proxy for sending webhooks | ``
 `webhookHeaders` | Replaces the default webhook headers. | `{"Content-type":"application/json"}`
-`webhookTemplate` | Replaces the default webhook message template. | `{"text":"[NTH][Instance Interruption] EventID: {{ .EventID }} - Kind: {{ .Kind }} - Instance: {{ .InstanceID }} - Description: {{ .Description }} - Start Time: {{ .StartTime }}"}`
+`webhookTemplate` | Replaces the default webhook message template. | `{"text":"[NTH][Instance Interruption] EventID: {{ .EventID }} - Kind: {{ .Kind }} - Instance: {{ .InstanceID }} - Node: {{ .NodeName }} - Description: {{ .Description }} - Start Time: {{ .StartTime }}"}`
 `webhookTemplateConfigMapName` | Pass Webhook template file as configmap | None
 `webhookTemplateConfigMapKey` | Name of the template file stored in the configmap| None
 `metadataTries` | The number of times to try requesting metadata. If you would like 2 retries, set metadata-tries to 3. | `3`
@@ -74,10 +74,14 @@ Parameter | Description | Default
 `logLevel` | Sets the log level (INFO, DEBUG, or ERROR) | `INFO`
 `enablePrometheusServer` | If true, start an http server exposing `/metrics` endpoint for prometheus. | `false`
 `prometheusServerPort` | Replaces the default HTTP port for exposing prometheus metrics. | `9092`
+`enableProbesServer` |If true, start an http server exposing `/healthz` endpoint for probes. | `false`
+`probesServerPort` | Replaces the default HTTP port for exposing probes endpoint. | `8080`
+`probesServerEndpoint` | Replaces the default endpoint for exposing probes endpoint. | `/healthz`
 `podMonitor.create` | if `true`, create a PodMonitor | `false`
 `podMonitor.interval` | Prometheus scrape interval | `30s`
 `podMonitor.sampleLimit` | Number of scraped samples accepted | `5000`
 `podMonitor.labels` | Additional PodMonitor metadata labels | `{}`
+`podMonitor.namespace` | override podMonitor Helm release namespace | `{{.Release.Namespace}}`
 
 ### AWS Node Termination Handler - Queue-Processor Mode Configuration
 

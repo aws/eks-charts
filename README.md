@@ -13,6 +13,8 @@ helm repo add eks https://aws.github.io/eks-charts
 * [appmesh-prometheus](stable/appmesh-prometheus): App Mesh Prometheus Helm chart for Kubernetes
 * [appmesh-grafana](stable/appmesh-grafana): App Mesh Grafana Helm chart for Kubernetes
 * [appmesh-jaeger](stable/appmesh-jaeger): App Mesh Jaeger Helm chart for Kubernetes
+* [appmesh-spire-server](stable/appmesh-spire-server): App Mesh SPIRE Server Helm chart for Kubernetes
+* [appmesh-spire-agent](stable/appmesh-spire-agent): App Mesh SPIRE Agent Helm chart for Kubernetes
 * [appmesh-gateway](stable/appmesh-gateway): App Mesh Gateway Helm chart for Kubernetes
 * [appmesh-inject](stable/appmesh-inject)(**deprecated**): App Mesh inject Helm chart for Kubernetes
 

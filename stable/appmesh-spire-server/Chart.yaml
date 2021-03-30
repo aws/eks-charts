@@ -1,16 +1,17 @@
 apiVersion: v1
-name: appmesh-controller
-description: App Mesh controller Helm chart for Kubernetes
-version: 1.3.1
-appVersion: 1.3.0
+name: appmesh-spire-server
+description: SPIRE Server Helm chart for AppMesh mTLS support on Kubernetes
+version: 1.0.0
+appVersion: 1.0.0
 home: https://github.com/aws/eks-charts
 icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
 sources:
   - https://github.com/aws/eks-charts
 maintainers:
-  - name: Kishor Joshi
-    url: https://github.com/kishorj
-    email: kishorj@users.noreply.github.com
+  - name: Apurup Chevuru
+    url: https://github.com/achevuru
 keywords:
   - eks
   - appmesh
+  - spire
+
