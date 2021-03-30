@@ -76,3 +76,7 @@ spec:
         hostPath:
           path: /dev/disk/
       terminationGracePeriodSeconds: 60
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
