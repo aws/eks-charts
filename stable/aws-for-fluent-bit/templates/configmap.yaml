@@ -167,6 +167,9 @@ data:
         {{- if .Values.elasticsearch.retryLimit }}
         Retry_Limit     {{ .Values.elasticsearch.retryLimit }}
         {{- end }}
+        {{- if .Values.elasticsearch.replaceDots }}
+        Replace_Dots    {{ .Values.elasticsearch.replaceDots }}
+        {{- end }}
 {{- end }}
 
 {{- if .Values.extraOutputs }}
