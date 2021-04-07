@@ -169,3 +169,11 @@ defaultTags: {}
 
 podDisruptionBudget: {}
 #  maxUnavailable: 1
+
+# serviceMonitor specifies the attributes of the serviceMonitor custom resource coming of the prometheus-operator
+serviceMonitor:
+  enabled: false
+  interval: "10s"
+  selector: {}
+    # prometheus: kube-prometheus
+  path: /metrics

@@ -21,6 +21,7 @@ AWS Load Balancer controller manages the following AWS resources
 - Kubernetes >= 1.15 for NLB IP using Service type NodePort
 - Kubernetes >= 1.20 or EKS >= 1.16 for NLB IP using Service type LoadBalancer
 - IAM permissions
+- [prometheus-operator](https://github.com/prometheus-operator/prometheus-operator) >= 0.46.0 if serviceMonitor is to be deployed
 
 The controller runs on the worker nodes, so it needs access to the AWS ALB/NLB resources via IAM permissions. The
 IAM permissions can either be setup via IAM roles for ServiceAccount or can be attached directly to the worker node IAM roles.
@@ -167,3 +168,7 @@ The default values set by the application itself can be confirmed [here](https:/
 | `extraVolumes`                              | Extra volumes for the pod                                                                                | `[]`                                                                               |
 | `defaultTags`                               | Default tags to apply to all AWS resources managed by this controller                                    | `{}`                                                                               |
 | `podDisruptionBudget`                       | PodDisruptionBudget                                                                                      | `{}`                                                                               |
+| `serviceMonitor.enabled`                    | If true, create a serviceMonitor resource                                                                | `false`                                                                            |
+| `serviceMonitor.interval`                   | Interval at which prometheus should scrape metrics                                                       | `10s`                                                                              |
+| `serviceMonitor.selector`                   | Labels to be applied on the serviceMonitor resource for prometheus-operator to discover it               | `{}                                                                                |
+| `serviceMonitor.path`                       | The path on the metrics port to scrape metrics                                                           | `/metrics                                                                          |
