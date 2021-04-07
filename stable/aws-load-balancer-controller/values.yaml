@@ -105,9 +105,6 @@ ingressMaxConcurrentReconciles:
 # Set the controller log level - info(default), debug (default "info")
 logLevel:
 
-# The address the metric endpoint binds to. (default ":8080")
-metricsBindAddr: ""
-
 # The TCP port the Webhook server binds to. (default 9443)
 webhookBindPort:
 
@@ -173,3 +170,14 @@ defaultTags: {}
 # Disruption budget will be configured only when the replicaCount is greater than 1
 podDisruptionBudget: {}
 #  maxUnavailable: 1
+
+# metrics specifies the configurable options for exposing metrics to prometheus
+metrics:
+  enabled: false
+  port: 8080
+  serviceMonitor:
+    enabled: false
+    interval: "10s"
+    selector: {}
+      # prometheus: kube-prometheus
+    path: /metrics

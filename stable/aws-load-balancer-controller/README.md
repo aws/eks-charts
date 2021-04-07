@@ -26,6 +26,7 @@ AWS Load Balancer controller manages the following AWS resources
    - 1.18.18+ for 1.18
    - 1.19.10+ for 1.19
 - IAM permissions
+- [prometheus-operator](https://github.com/prometheus-operator/prometheus-operator) >= 0.46.0 if serviceMonitor is to be deployed
 
 The controller runs on the worker nodes, so it needs access to the AWS ALB/NLB resources via IAM permissions. The
 IAM permissions can either be setup via IAM roles for ServiceAccount or can be attached directly to the worker node IAM roles.
@@ -175,7 +176,6 @@ The default values set by the application itself can be confirmed [here](https:/
 | `enableWafv2`                               | Enable WAF V2 addon for ALB                                                                              | None                                                                               |
 | `ingressMaxConcurrentReconciles`            | Maximum number of concurrently running reconcile loops for ingress                                       | None                                                                               |
 | `logLevel`                                  | Set the controller log level - info, debug                                                               | None                                                                               |
-| `metricsBindAddr`                           | The address the metric endpoint binds to                                                                 | ""                                                                                 |
 | `webhookBindPort`                           | The TCP port the Webhook server binds to                                                                 | None                                                                               |
 | `serviceMaxConcurrentReconciles`            | Maximum number of concurrently running reconcile loops for service                                       | None                                                                               |
 | `targetgroupbindingMaxConcurrentReconciles` | Maximum number of concurrently running reconcile loops for targetGroupBinding                            | None                                                                               |
@@ -189,3 +189,9 @@ The default values set by the application itself can be confirmed [here](https:/
 | `defaultTags`                               | Default tags to apply to all AWS resources managed by this controller                                    | `{}`                                                                               |
 | `replicaCount`                              | Number of controller pods to run, only one will be active due to leader election                         | `2`                                                                                |
 | `podDisruptionBudget`                       | Limit the disruption for controller pods. Require at least 2 controller replicas and 3 worker nodes      | `{}`                                                                               |
+| `metrics.enabled`                           | Whether the load balancer controller should expose metrics                                               | `false`                                                                            |
+| `metrics.port`                              | The port the metric endpoint binds to                                                                    | `8080`                                                                             |
+| `metrics.serviceMonitor.enabled`            | If true, create a serviceMonitor resource                                                                | `false`                                                                            |
+| `metrics.serviceMonitor.interval`           | Interval at which prometheus should scrape metrics                                                       | `10s`                                                                              |
+| `metrics.serviceMonitor.selector`           | Labels to be applied on the serviceMonitor resource for prometheus-operator to discover it               | `{}                                                                                |
+| `metrics.serviceMonitor.path`               | The path on the metrics port to scrape metrics                                                           | `/metrics                                                                          |

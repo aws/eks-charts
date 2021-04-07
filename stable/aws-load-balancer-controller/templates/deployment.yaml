@@ -18,8 +18,10 @@ spec:
         {{- toYaml .Values.podLabels | nindent 8 }}
         {{- end }}
       annotations:
+        {{- if and .Values.metrics.enabled (not .Values.metrics.serviceMonitor.enabled) }}
         prometheus.io/scrape: "true"
-        prometheus.io/port: "{{ (split ":" .Values.metricsBindAddr)._1 | default 8080 }}"
+        prometheus.io/port: "{{ .Values.metrics.port }}"
+        {{- end }}
         {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
         {{- end }}
@@ -70,8 +72,8 @@ spec:
         {{- if kindIs "bool" .Values.enableWafv2 }}
         - --enable-wafv2={{ .Values.enableWafv2 }}
         {{- end }}
-        {{- if .Values.metricsBindAddr }}
-        - --metrics-bind-addr={{ .Values.metricsBindAddr }}
+        {{- if .Values.metrics.enabled }}
+        - --metrics-bind-addr={{ .Values.metrics.port }}
         {{- end }}
         {{- if .Values.ingressMaxConcurrentReconciles }}
         - --ingress-max-concurrent-reconciles={{ .Values.ingressMaxConcurrentReconciles }}
@@ -121,9 +123,11 @@ spec:
         - name: webhook-server
           containerPort: {{ .Values.webhookBindPort | default 9443 }}
           protocol: TCP
+        {{- if .Values.metrics.enabled }}
         - name: metrics-server
-          containerPort: {{ (split ":" .Values.metricsBindAddr)._1 | default 8080 }}
+          containerPort: {{ .Values.metrics.port }}
           protocol: TCP
+        {{- end }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         {{- with .Values.livenessProbe }}
