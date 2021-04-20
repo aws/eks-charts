@@ -13,6 +13,10 @@ spec:
       {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      {{- if .Values.annotations }}
+      annotations:
+        {{- toYaml .Values.annotations | nindent 8 }}
+      {{- end }}
       labels:
         {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 8 }}
     spec:
@@ -28,26 +32,25 @@ spec:
         - name: {{ .Chart.Name }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          {{- if .Values.env }}
+          env:
+            {{- toYaml .Values.env | nindent 12 }}
+          {{- end }}
           volumeMounts:
-            - name: varlog
-              mountPath: /var/log
-            - name: varlibdockercontainers
-              mountPath: /var/lib/docker/containers
-              readOnly: true
             - name: fluentbit-config
               mountPath: /fluent-bit/etc/
+            {{- if .Values.volumeMounts }}
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-        - name: varlog
-          hostPath:
-            path: /var/log
-        - name: varlibdockercontainers
-          hostPath:
-            path: /var/lib/docker/containers
         - name: fluentbit-config
           configMap:
             name: {{ include "aws-for-fluent-bit.fullname" . }}
+        {{- if .Values.volumes }}
+        {{- toYaml .Values.volumes | nindent 8}}
+        {{- end}}
       {{- if .Values.tolerations }}
       tolerations:
         {{- toYaml .Values.tolerations | nindent 8 }}

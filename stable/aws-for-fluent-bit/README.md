@@ -30,7 +30,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | - | - | - | -
 | `global.namespaceOverride` | Override the deployment namespace | Not set (`Release.Namespace`) |
 | `image.repository` | Image to deploy | `amazon/aws-for-fluent-bit` | ✔
-| `image.tag` | Image tag to deploy | `2.7.0`
+| `image.tag` | Image tag to deploy | `2.12.0`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
 | `imagePullSecrets` | Docker registry pull secret | `[]` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` |
@@ -91,5 +91,9 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `priorityClassName` | Name of Priority Class to assign pods | |
 | `updateStrategy` | Optional update strategy | `type: RollingUpdate` |
 | `affinity` | Map of node/pod affinities | `{}` |
+| `env` | Optional List of pod environment variables for the pods | `[]` |
 | `tolerations` | Optional deployment tolerations | `[]` |
 | `nodeSelector` | Node labels for pod assignment | `{}` |
+| `annotations` | Optional pod annotations | `{}` |
+| `volumes` | Volumes for the pods, provide as a list of volume objects (see values.yaml) |  volumes for /var/log and /var/lib/docker/containers are present, along with a fluentbit config volume |
+| `volumeMounts` | Volume mounts for the pods, provided as a list of volumeMount objects (see values.yaml) | volumes for /var/log and /var/lib/docker/containers are mounted, along with a fluentbit config volume |

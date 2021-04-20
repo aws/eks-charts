@@ -4,7 +4,7 @@ global:
 
 image:
   repository: amazon/aws-for-fluent-bit
-  tag: 2.9.0
+  tag: 2.12.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -41,6 +41,7 @@ filter:
   kubeURL: "https://kubernetes.default.svc.cluster.local:443"
   mergeLog: "On"
   mergeLogKey: "data"
+  keepLog: "On"
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
 
@@ -134,3 +135,40 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+annotations: {}
+  # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit
+  
+env: []
+## To add extra environment variables to the pods, add as below
+# env:
+#   - name: AWS_REGION
+#     valueFrom:
+#       configMapKeyRef:
+#         name: fluent-bit-cluster-info
+#         key: logs.region
+#   - name: CLUSTER_NAME
+#     valueFrom:
+#       configMapKeyRef:
+#         name: fluent-bit-cluster-info
+#         key: cluster.name
+#   - name: HOST_NAME
+#     valueFrom:
+#       fieldRef:
+#         fieldPath: spec.nodeName
+  
+
+volumes:
+  - name: varlog
+    hostPath:
+      path: /var/log
+  - name: varlibdockercontainers
+    hostPath:
+      path: /var/lib/docker/containers
+
+volumeMounts:
+  - name: varlog
+    mountPath: /var/log
+  - name: varlibdockercontainers
+    mountPath: /var/lib/docker/containers
+    readOnly: true

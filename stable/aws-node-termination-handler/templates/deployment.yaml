@@ -75,10 +75,6 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          - name: SPOT_POD_IP
-            valueFrom:
-              fieldRef:
-                fieldPath: status.podIP
           - name: DELETE_LOCAL_DATA
             value: {{ .Values.deleteLocalData | quote }}
           - name: IGNORE_DAEMON_SETS
@@ -125,6 +121,8 @@ spec:
           - name: ENABLE_SCHEDULED_EVENT_DRAINING
             value: "false"
           - name: ENABLE_REBALANCE_MONITORING
+            value: "false"
+          - name: ENABLE_REBALANCE_DRAINING
             value: "false"
           - name: ENABLE_SQS_TERMINATION_DRAINING
             value: "true"
