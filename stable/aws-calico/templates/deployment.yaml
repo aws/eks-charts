@@ -10,10 +10,16 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha"
+      {{- if .Values.calico.typha.podLabels }}
+{{ toYaml .Values.calico.typha.podLabels | indent 6 }}
+      {{- end }}
   template:
     metadata:
       labels:
         app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha"
+        {{- if .Values.calico.typha.podLabels }}
+{{ toYaml .Values.calico.typha.podLabels | indent 8 }}
+        {{- end }}
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
         {{- with .Values.calico.typha.podAnnotations }}
@@ -100,11 +106,17 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha-autoscaler"
+      {{- if .Values.calico.typha_autoscaler.podLabels }}
+{{ toYaml .Values.calico.typha_autoscaler.podLabels | indent 6 }}
+      {{- end }}
   replicas: 1
   template:
     metadata:
       labels:
         app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-typha-autoscaler"
+        {{- if .Values.calico.typha_autoscaler.podLabels }}
+{{ toYaml .Values.calico.typha_autoscaler.podLabels | indent 8 }}
+        {{- end }}
         {{- with .Values.calico.typha_autoscaler.podAnnotations }}
         annotations: {{- toYaml . | nindent 10 }}
         {{- end }}
