@@ -122,6 +122,11 @@ stats:
 # Enable cert-manager
 enableCertManager: false
 
+# podDisruptionBudget for Appmesh controller
+pdb:
+  # minAvailable pods for appmesh-controller
+  minAvailable: 0
+
 # Environment variables to set in appmesh-controller pod
 env: {}
 
