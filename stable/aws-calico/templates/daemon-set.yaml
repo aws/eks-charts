@@ -9,6 +9,9 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-node"
+      {{- if .Values.calico.node.podLabels }}
+{{ toYaml .Values.calico.node.podLabels | indent 6 }}
+      {{- end }}
   updateStrategy:
     type: RollingUpdate
     rollingUpdate:
@@ -17,6 +20,9 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: "{{ include "aws-calico.fullname" . }}-node"
+        {{- if .Values.calico.node.podLabels }}
+{{ toYaml .Values.calico.node.podLabels | indent 8 }}
+        {{- end }}
       {{- with .Values.calico.node.podAnnotations }}
       annotations: {{- toYaml . | nindent 8 }}
       {{- end }}
