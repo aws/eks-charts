@@ -4,7 +4,7 @@ global:
 
 image:
   repository: amazon/aws-for-fluent-bit
-  tag: 2.12.0
+  tag: 2.13.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
