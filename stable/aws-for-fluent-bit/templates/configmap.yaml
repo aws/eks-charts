@@ -116,6 +116,9 @@ data:
         {{- if .Values.kinesis.appendNewline }}
         append_newline  {{ .Values.kinesis.appendNewline }}
         {{- end }}
+        {{- if .Values.kinesis.replaceDots }}
+        replace_dots    {{ .Values.kinesis.replaceDots }}
+        {{- end }}
         {{- if .Values.kinesis.dataKeys }}
         data_keys       {{ .Values.kinesis.dataKeys }}
         {{- end }}
