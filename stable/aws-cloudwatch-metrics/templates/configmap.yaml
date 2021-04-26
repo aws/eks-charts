@@ -15,5 +15,16 @@ data:
           }
         },
         "force_flush_interval": 5
+{{- if .Values.statsd.enabled }}
+      },
+      "metrics": {
+        "metrics_collected": {
+            "statsd": {
+                "service_address": ":{{- .Values.statsd.port -}}"
+            }
+        }
       }
+{{- else }}
+      }
+{{- end }}
     }

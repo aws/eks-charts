@@ -21,6 +21,5 @@ hostNetwork: false
 
 statsd:
   enabled: false
-  containerPort: 8125
-  hostPort: 8125
+  port: 8125
   protocol: UDP
