@@ -17,4 +17,8 @@ serviceAccount:
   create: true
   name:
 
+rbac:
+  # Specifies whether rbac resources should be created
+  create: true
+
 hostNetwork: false
