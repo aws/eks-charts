@@ -31,6 +31,12 @@ webhooks:
       operator: In
       values:
       - enabled
+  objectSelector:
+    matchExpressions:
+    - key: app.kubernetes.io/name
+      operator: NotIn
+      values:
+      - aws-load-balancer-controller
   rules:
   - apiGroups:
     - ""
