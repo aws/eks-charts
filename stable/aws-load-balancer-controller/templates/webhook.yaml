@@ -36,7 +36,7 @@ webhooks:
     - key: app.kubernetes.io/name
       operator: NotIn
       values:
-      - aws-load-balancer-controller
+      - {{ include "aws-load-balancer-controller.fullname" . }}
   rules:
   - apiGroups:
     - ""
@@ -104,6 +104,28 @@ webhooks:
     - UPDATE
     resources:
     - targetgroupbindings
+  sideEffects: None
+- clientConfig:
+    caBundle: {{ if not $.Values.enableCertManager -}}{{ $tls.caCert }}{{- else -}}Cg=={{ end }}
+    service:
+      name: {{ template "aws-load-balancer-controller.namePrefix" . }}-webhook-service
+      namespace: {{ $.Release.Namespace }}
+      path: /validate-networking-v1beta1-ingress
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: vingress.elbv2.k8s.aws
+  admissionReviewVersions:
+  - v1beta1
+  rules:
+  - apiGroups:
+    - networking.k8s.io
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ingresses
   sideEffects: None
 ---
 {{- if not $.Values.enableCertManager }}
