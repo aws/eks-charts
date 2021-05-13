@@ -97,11 +97,27 @@ spec:
         {{- if .Values.defaultTags }}
         - --default-tags={{ include "aws-load-balancer-controller.convert-map-to-csv" .Values.defaultTags | trimSuffix "," }}
         {{- end }}
-        {{- if .Values.env }}
+        {{- if or .Values.env .Values.envFrom }}
         env:
         {{- range $key, $value := .Values.env }}
         - name: {{ $key }}
           value: "{{ $value }}"
+        {{- end }}
+        {{- range $key, $value := .Values.envFrom }}
+        {{- range $env, $envValue := $value.env }}
+        - name: {{ $env }}
+          valueFrom:
+            {{ $value.type }}KeyRef:
+              key: {{ $envValue.key }}
+              name: {{ $key }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.envFrom }}
+        envFrom:
+        {{- range $key, $value := .Values.envFrom }}
+        - {{ $value.type }}Ref:
+            name: {{ $key }}
+        {{- end }}
         {{- end }}
         {{- end }}
         command:
