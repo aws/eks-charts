@@ -1,9 +1,7 @@
-# Default values for aws-vpc-cni.
+# Test values for aws-vpc-cni.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
-# This default name override is to maintain backwards compatability with
-# existing naming
+#
 nameOverride: aws-node
 
 init:
@@ -62,8 +60,6 @@ priorityClassName: system-node-critical
 podSecurityContext: {}
 
 podAnnotations: {}
-
-podLabels: {}
 
 securityContext:
   capabilities:
@@ -161,6 +157,3 @@ eniConfig:
     #   id: subnet-789
     #   securityGroups:
     #   - sg-789
-
-cri:
-  hostPath: # "/var/run/containerd/containerd.sock"
