@@ -145,7 +145,7 @@ spec:
                 - key: app.kubernetes.io/name
                   operator: In
                   values:
-                  - {{ include "aws-load-balancer-controller.fullname" . }}
+                  - {{ include "aws-load-balancer-controller.name" . }}
               topologyKey: kubernetes.io/hostname
     {{- with .Values.affinity }}
         {{- toYaml . | nindent 8 }}

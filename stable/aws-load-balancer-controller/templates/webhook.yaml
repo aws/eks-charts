@@ -36,7 +36,7 @@ webhooks:
     - key: app.kubernetes.io/name
       operator: NotIn
       values:
-      - {{ include "aws-load-balancer-controller.fullname" . }}
+      - {{ include "aws-load-balancer-controller.name" . }}
   rules:
   - apiGroups:
     - ""
