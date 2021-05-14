@@ -2,11 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller
-  tag: v2.1.3
+  tag: v2.2.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -57,9 +57,9 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-# Leverage a PriorityClass to ensure the controller will survive resource shortages
+# priorityClassName specifies the PriorityClass to indicate the importance of controller pods
 # ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
-priorityClassName: ""
+priorityClassName: system-cluster-critical
 
 nodeSelector: {}
 
@@ -169,5 +169,7 @@ defaultTags: {}
   # default_tag1: value1
   # default_tag2: value2
 
+# podDisruptionBudget specifies the disruption budget for the controller pods.
+# Disruption budget will be configured only when the replicaCount is greater than 1
 podDisruptionBudget: {}
 #  maxUnavailable: 1

@@ -5,21 +5,26 @@ AWS Load Balancer controller Helm chart for Kubernetes
 ## TL;DR:
 ```sh
 helm repo add eks https://aws.github.io/eks-charts
+# If using IAM Roles for service account install as follows -  NOTE: you need to specify both of the chart values `serviceAccount.create=false` and `serviceAccount.name=aws-load-balancer-controller`
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller --set clusterName=my-cluster -n kube-system --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller
+# If not using IM Roles for service account
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller --set clusterName=my-cluster -n kube-system
 ```
 
 ## Introduction
 AWS Load Balancer controller manages the following AWS resources
 - Application Load Balancers to satisfy Kubernetes ingress objects
-- Network Load Balancers in IP mode to satisfy Kubernetes service objects of type LoadBalancer with NLB IP mode annotation
+- Network Load Balancers to satisfy Kubernetes service objects of type LoadBalancer with appropriate annotations
 
 ## Security updates
 **Note**: Deployed chart does not receive security updates automatically. You need to manually upgrade to a newer chart.
 
 ## Prerequisites
-- Kubernetes >= 1.15 for ALB
-- Kubernetes >= 1.15 for NLB IP using Service type NodePort
-- Kubernetes >= 1.20 or EKS >= 1.16 for NLB IP using Service type LoadBalancer
+- Kubernetes >= 1.16 for ALB
+- Kubernetes >= 1.16 for NLB IP/Instance using Service type NodePort
+- Kubernetes >= v1.20 or EKS >= 1.16 or the following patch releases for Service type `LoadBalancer`
+   - 1.18.18+ for 1.18
+   - 1.19.10+ for 1.19
 - IAM permissions
 
 The controller runs on the worker nodes, so it needs access to the AWS ALB/NLB resources via IAM permissions. The
@@ -62,6 +67,14 @@ https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/mai
 
 #### Upgrading from ALB ingress controller
 If migrating from ALB ingress controller, grant [additional IAM permissions](https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy_v1_to_v2_additional.json).
+
+#### Upgrading from  AWS Load Balancer controller v2.1.3 and earlier
+- Additional IAM permissions required, ensure you have granted the [required IAM permissions](https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json).
+- CRDs need to be updated as follows
+```shell script
+kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master"
+```
+- you can run helm upgrade without uninstalling the old chart completely
 
 ## Installing the Chart
 **Note**: You need to uninstall aws-alb-ingress-controller. Please refer to the [upgrade](#Upgrade) section below before you proceed.
@@ -120,6 +133,13 @@ $ helm delete aws-load-balancer-controller -n kube-system
 helm delete aws-load-balancer-controller -n kube-system
 ```
 
+## HA configuration
+Chart release v1.2.0 and later enables high availability configuration by default.
+- The default number of replicas is 2. You can pass`--set replicaCount=1` flag during chart installation to disable this. Due to leader election, only one controller will actively reconcile resources.
+- The default priority class for the controller pods is `system-cluster-critical`
+- Soft pod anti-affinity is enabled for controller pods with `topologyKey: kubernetes.io/hostname`
+- Pod disruption budget (PDB) has not been set by default. If you plan on running at least 2 controller pods, you can pass `--set podDisruptionBudget.maxUnavailable=1` flag during chart installation
+
 ## Configuration
 
 The following tables lists the configurable parameters of the chart and their default values.
@@ -133,15 +153,15 @@ The default values set by the application itself can be confirmed [here](https:/
 | `clusterName`                               | Kubernetes cluster name                                                                                  | None                                                                               |
 | `securityContext`                           | Set to security context for pod                                                                          | `{}`                                                                               |
 | `resources`                                 | Controller pod resource requests & limits                                                                | `{}`                                                                               |
-| `priorityClassName`                         | Controller pod priority class                                                                            | None                                                                               |
+| `priorityClassName`                         | Controller pod priority class                                                                            | system-cluster-critical                                                            |
 | `nodeSelector`                              | Node labels for controller pod assignment                                                                | `{}`                                                                               |
 | `tolerations`                               | Controller pod toleration for taints                                                                     | `{}`                                                                               |
 | `affinity`                                  | Affinity for pod assignment                                                                              | `{}`                                                                               |
 | `podAnnotations`                            | Annotations to add to each pod                                                                           | `{}`                                                                               |
 | `podLabels`                                 | Labels to add to each pod                                                                                | `{}`                                                                               |
 | `rbac.create`                               | if `true`, create and use RBAC resources                                                                 | `true`                                                                             |
-| `serviceAccount.annotations`                | optional annotations to add to service account                                                           | None
-| `serviceAccount.automountServiceAccountToken`                | Automount API credentials for a Service Account                                                           | `true`                                                                             |
+| `serviceAccount.annotations`                | optional annotations to add to service account                                                           | None                                                                               |
+| `serviceAccount.automountServiceAccountToken`                | Automount API credentials for a Service Account                                         | `true`                                                                             |
 | `serviceAccount.create`                     | If `true`, create a new service account                                                                  | `true`                                                                             |
 | `serviceAccount.name`                       | Service account to be used                                                                               | None                                                                               |
 | `terminationGracePeriodSeconds`             | Time period for controller pod to do a graceful shutdown                                                 | 10                                                                                 |
@@ -167,4 +187,5 @@ The default values set by the application itself can be confirmed [here](https:/
 | `extraVolumeMounts`                         | Extra volume mounts for the pod                                                                          | `[]`                                                                               |
 | `extraVolumes`                              | Extra volumes for the pod                                                                                | `[]`                                                                               |
 | `defaultTags`                               | Default tags to apply to all AWS resources managed by this controller                                    | `{}`                                                                               |
-| `podDisruptionBudget`                       | PodDisruptionBudget                                                                                      | `{}`                                                                               |
+| `replicaCount`                              | Number of controller pods to run, only one will be active due to leader election                         | `2`                                                                                |
+| `podDisruptionBudget`                       | Limit the disruption for controller pods. Require at least 2 controller replicas and 3 worker nodes      | `{}`                                                                               |
