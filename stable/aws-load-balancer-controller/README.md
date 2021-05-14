@@ -22,7 +22,9 @@ AWS Load Balancer controller manages the following AWS resources
 ## Prerequisites
 - Kubernetes >= 1.16 for ALB
 - Kubernetes >= 1.16 for NLB IP/Instance using Service type NodePort
-- Kubernetes >= 1.20 ( >= 1.18.18 for 1.18, >= 1.19.10 for 1.19) or EKS >= 1.16 for NLB IP/Instance targets using Service type LoadBalancer
+- Kubernetes >= v1.20 or EKS >= 1.16 or the following patch releases for Service type `LoadBalancer`
+   - 1.18.18+ for 1.18
+   - 1.19.10+ for 1.19
 - IAM permissions
 
 The controller runs on the worker nodes, so it needs access to the AWS ALB/NLB resources via IAM permissions. The
