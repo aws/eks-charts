@@ -137,8 +137,8 @@ helm delete aws-load-balancer-controller -n kube-system
 Chart release v1.2.0 and later enables high availability configuration by default.
 - The default number of replicas is 2. You can pass`--set replicaCount=1` flag during chart installation to disable this. Due to leader election, only one controller will actively reconcile resources.
 - The default priority class for the controller pods is `system-cluster-critical`
-- Hard pod anti-affinity is enabled for controller pods with `topologyKey: kubernetes.io/hostname`
-- Pod disruption budget (PDB) has not been set by default. If your cluster has at least 3 worker nodes and you plan on running at least 2 controller pods, you can pass `--set podDisruptionBudget.maxUnavailable=1` flag during chart installation
+- Soft pod anti-affinity is enabled for controller pods with `topologyKey: kubernetes.io/hostname`
+- Pod disruption budget (PDB) has not been set by default. If you plan on running at least 2 controller pods, you can pass `--set podDisruptionBudget.maxUnavailable=1` flag during chart installation
 
 ## Configuration
 

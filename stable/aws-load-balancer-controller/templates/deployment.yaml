@@ -137,14 +137,16 @@ spec:
       {{- end }}
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                - {{ include "aws-load-balancer-controller.fullname" . }}
-            topologyKey: kubernetes.io/hostname
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - {{ include "aws-load-balancer-controller.fullname" . }}
+              topologyKey: kubernetes.io/hostname
     {{- with .Values.affinity }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
