@@ -24,6 +24,7 @@ webhooks:
         apiGroups: ["apps", ""]
         apiVersions: ["v1"]
         resources: ["pods"]
+    failurePolicy: Ignore
     sideEffects: None
     admissionReviewVersions:
     - v1beta1
