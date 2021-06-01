@@ -1,0 +1,10 @@
+apiVersion: v1
+appVersion: v1.0
+description: Helm Chart for Kube-Bench Compliance Checks
+home: https://github.com/aws/eks-charts/kube-bench/
+keywords:
+- aquasec kube-bench
+name: kube-bench
+sources:
+- https://github.com/aws/eks-charts/kube-bench.git
+version: v1.0
