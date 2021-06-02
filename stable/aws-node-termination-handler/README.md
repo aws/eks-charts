@@ -82,6 +82,7 @@ Parameter | Description | Default
 `podMonitor.sampleLimit` | Number of scraped samples accepted | `5000`
 `podMonitor.labels` | Additional PodMonitor metadata labels | `{}`
 `podMonitor.namespace` | override podMonitor Helm release namespace | `{{.Release.Namespace}}`
+`stsRegionalEndpoint` | Use regional STS endpoint | `false`
 
 ### AWS Node Termination Handler - Queue-Processor Mode Configuration
 
