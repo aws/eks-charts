@@ -65,6 +65,9 @@ awsRegion: ""
 # awsEndpoint If specified, use the AWS endpoint to make API calls.
 awsEndpoint: ""
 
+# stsRegionalEndpoint if true will use the STS regional endpoint instead of the global one
+stsRegionalEndpoint: false
+
 # These should only be used for testing w/ localstack!
 awsSecretAccessKey:
 awsAccessKeyID:
