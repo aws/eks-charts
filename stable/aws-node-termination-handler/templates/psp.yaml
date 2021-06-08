@@ -10,7 +10,7 @@ metadata:
 spec:
   privileged: false
   hostIPC: false
-  hostNetwork: {{ .Values.useHostNetwork }} 
+  hostNetwork: {{ .Values.useHostNetwork }}
   hostPID: false
 {{- if and .Values.rbac.pspEnabled .Values.enablePrometheusServer }}
   hostPorts:
@@ -32,10 +32,11 @@ spec:
   volumes:
     - '*'
 ---
-kind: ClusterRole
+kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ template "aws-node-termination-handler.fullname" . }}-psp
+  namespace: {{ .Release.Namespace }}
   labels:
 {{ include "aws-node-termination-handler.labels" . | indent 4 }}
 rules:
@@ -49,11 +50,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ template "aws-node-termination-handler.fullname" . }}-psp
+  namespace: {{ .Release.Namespace }}
   labels:
 {{ include "aws-node-termination-handler.labels" . | indent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: {{ template "aws-node-termination-handler.fullname" . }}-psp
 subjects:
   - kind: ServiceAccount
