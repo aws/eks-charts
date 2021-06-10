@@ -8,7 +8,7 @@ nameOverride: aws-node
 
 init:
   image:
-    tag: v1.7.10
+    tag: v1.7.5
     region: us-west-2
     pullPolicy: Always
     # Set to use custom image
@@ -20,7 +20,7 @@ init:
 
 image:
   region: us-west-2
-  tag: v1.7.10
+  tag: v1.7.5
   pullPolicy: Always
   # Set to use custom image
   # override: "repo/org/image:tag"
@@ -49,7 +49,7 @@ env:
 # You can then annotate and label the original aws-node resources and 'adopt' them into a helm release
 originalMatchLabels: false
 
-cniConfig:
+cniConfig: 
   enabled: false
   fileContents: ""
 
@@ -163,5 +163,4 @@ eniConfig:
     #   - sg-789
 
 cri:
-  hostPath:
-    #path: "/var/run/containerd/containerd.sock"
+  hostPath: # "/var/run/containerd/containerd.sock"
