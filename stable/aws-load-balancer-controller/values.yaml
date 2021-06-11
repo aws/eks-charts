@@ -123,6 +123,15 @@ syncPeriod:
 # Namespace the controller watches for updates to Kubernetes objects, If empty, all namespaces are watched.
 watchNamespace:
 
+# disableIngressClassAnnotation disables the usage of kubernetes.io/ingress.class annotation, false by default
+disableIngressClassAnnotation:
+
+# disableIngressGroupNameAnnotation disables the usage of alb.ingress.kubernetes.io/group.name annotation, false by default
+disableIngressGroupNameAnnotation:
+
+# defaultSSLPolicy specifies the default SSL policy to use for TLS/HTTPS listeners
+defaultSSLPolicy:
+
 # Liveness probe configuration for the controller
 livenessProbe:
   failureThreshold: 2
@@ -173,3 +182,6 @@ defaultTags: {}
 # Disruption budget will be configured only when the replicaCount is greater than 1
 podDisruptionBudget: {}
 #  maxUnavailable: 1
+
+# externalManagedTags is the list of tag keys on AWS resources that will be managed externally
+externalManagedTags: []
