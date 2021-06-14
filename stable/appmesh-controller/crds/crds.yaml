@@ -49,6 +49,18 @@ spec:
                 action:
                   description: An object that represents the action to take if a match is determined.
                   properties:
+                    rewrite:
+                      properties:
+                        hostname:
+                          description: ENABLE or DISABLE default behavior for Hostname rewrite
+                          properties:
+                            defaultTargetHostname:
+                              enum:
+                              - ENABLED
+                              - DISABLED
+                              type: string
+                          type: object
+                      type: object
                     target:
                       description: An object that represents the target that traffic is routed to when a request matches the route.
                       properties:
@@ -80,8 +92,80 @@ spec:
                 match:
                   description: An object that represents the criteria for determining a request match.
                   properties:
+                    hostname:
+                      description: The client specified Hostname to match on.
+                      properties:
+                        exact:
+                          description: The value sent by the client must match the specified value exactly.
+                          maxLength: 253
+                          minLength: 1
+                          type: string
+                        suffix:
+                          description: The value sent by the client must end with the specified characters.
+                          maxLength: 253
+                          minLength: 1
+                          type: string
+                      type: object
+                    metadata:
+                      description: An object that represents the data to match from the request.
+                      items:
+                        description: GRPCGatewayRouteMetadata refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_GrpcRouteMetadata.html
+                        properties:
+                          invert:
+                            description: Specify True to match anything except the match criteria. The default value is False.
+                            type: boolean
+                          match:
+                            description: An object that represents the data to match from the request.
+                            properties:
+                              exact:
+                                description: The value sent by the client must match the specified value exactly.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              prefix:
+                                description: The value sent by the client must begin with the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              range:
+                                description: An object that represents the range of values to match on
+                                properties:
+                                  end:
+                                    description: The end of the range.
+                                    format: int64
+                                    type: integer
+                                  start:
+                                    description: The start of the range.
+                                    format: int64
+                                    type: integer
+                                required:
+                                - end
+                                - start
+                                type: object
+                              regex:
+                                description: The value sent by the client must include the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              suffix:
+                                description: The value sent by the client must end with the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            type: object
+                          name:
+                            description: The name of the route.
+                            maxLength: 50
+                            minLength: 1
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      maxItems: 10
+                      minItems: 1
+                      type: array
                     serviceName:
-                      description: The fully qualified domain name for the service to match from the request.
+                      description: Either ServiceName or Hostname must be specified. Both are allowed as well The fully qualified domain name for the service to match from the request.
                       type: string
                   type: object
               required:
@@ -94,6 +178,38 @@ spec:
                 action:
                   description: An object that represents the action to take if a match is determined.
                   properties:
+                    rewrite:
+                      properties:
+                        hostname:
+                          description: ENABLE or DISABLE default behavior for Hostname rewrite
+                          properties:
+                            defaultTargetHostname:
+                              enum:
+                              - ENABLED
+                              - DISABLED
+                              type: string
+                          type: object
+                        path:
+                          properties:
+                            exact:
+                              maxLength: 255
+                              minLength: 1
+                              type: string
+                          type: object
+                        prefix:
+                          properties:
+                            defaultPrefix:
+                              enum:
+                              - ENABLED
+                              - DISABLED
+                              type: string
+                            value:
+                              description: When DefaultPrefix is specified, Value cannot be set
+                              maxLength: 255
+                              minLength: 1
+                              type: string
+                          type: object
+                      type: object
                     target:
                       description: An object that represents the target that traffic is routed to when a request matches the route.
                       properties:
@@ -125,11 +241,126 @@ spec:
                 match:
                   description: An object that represents the criteria for determining a request match.
                   properties:
-                    prefix:
-                      description: Specifies the path to match requests with
+                    headers:
+                      description: An object that represents the client request headers to match on.
+                      items:
+                        description: HTTPGatewayRouteHeader refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_HttpRouteHeader.html
+                        properties:
+                          invert:
+                            description: Specify True to match anything except the match criteria. The default value is False.
+                            type: boolean
+                          match:
+                            description: The HeaderMatchMethod object.
+                            properties:
+                              exact:
+                                description: The value sent by the client must match the specified value exactly.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              prefix:
+                                description: The value sent by the client must begin with the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              range:
+                                description: An object that represents the range of values to match on.
+                                properties:
+                                  end:
+                                    description: The end of the range.
+                                    format: int64
+                                    type: integer
+                                  start:
+                                    description: The start of the range.
+                                    format: int64
+                                    type: integer
+                                required:
+                                - end
+                                - start
+                                type: object
+                              regex:
+                                description: The value sent by the client must include the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              suffix:
+                                description: The value sent by the client must end with the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            type: object
+                          name:
+                            description: A name for the HTTP header in the client request that will be matched on.
+                            maxLength: 50
+                            minLength: 1
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      maxItems: 10
+                      minItems: 1
+                      type: array
+                    hostname:
+                      description: The client specified Hostname to match on.
+                      properties:
+                        exact:
+                          description: The value sent by the client must match the specified value exactly.
+                          maxLength: 253
+                          minLength: 1
+                          type: string
+                        suffix:
+                          description: The value sent by the client must end with the specified characters.
+                          maxLength: 253
+                          minLength: 1
+                          type: string
+                      type: object
+                    method:
+                      description: The client request method to match on.
+                      enum:
+                      - CONNECT
+                      - DELETE
+                      - GET
+                      - HEAD
+                      - OPTIONS
+                      - PATCH
+                      - POST
+                      - PUT
+                      - TRACE
                       type: string
-                  required:
-                  - prefix
+                    path:
+                      properties:
+                        exact:
+                          description: The value sent by the client must match the specified value exactly.
+                          maxLength: 255
+                          minLength: 1
+                          type: string
+                        regex:
+                          description: The value sent by the client must end with the specified characters.
+                          maxLength: 255
+                          minLength: 1
+                          type: string
+                      type: object
+                    prefix:
+                      description: Either Prefix or Hostname must be specified. Both are allowed as well. Specifies the path to match requests with
+                      type: string
+                    queryParameters:
+                      items:
+                        properties:
+                          match:
+                            description: The HeaderMatchMethod object.
+                            properties:
+                              exact:
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            type: object
+                          name:
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      maxItems: 10
+                      minItems: 1
+                      type: array
                   type: object
               required:
               - action
@@ -141,6 +372,38 @@ spec:
                 action:
                   description: An object that represents the action to take if a match is determined.
                   properties:
+                    rewrite:
+                      properties:
+                        hostname:
+                          description: ENABLE or DISABLE default behavior for Hostname rewrite
+                          properties:
+                            defaultTargetHostname:
+                              enum:
+                              - ENABLED
+                              - DISABLED
+                              type: string
+                          type: object
+                        path:
+                          properties:
+                            exact:
+                              maxLength: 255
+                              minLength: 1
+                              type: string
+                          type: object
+                        prefix:
+                          properties:
+                            defaultPrefix:
+                              enum:
+                              - ENABLED
+                              - DISABLED
+                              type: string
+                            value:
+                              description: When DefaultPrefix is specified, Value cannot be set
+                              maxLength: 255
+                              minLength: 1
+                              type: string
+                          type: object
+                      type: object
                     target:
                       description: An object that represents the target that traffic is routed to when a request matches the route.
                       properties:
@@ -172,11 +435,126 @@ spec:
                 match:
                   description: An object that represents the criteria for determining a request match.
                   properties:
-                    prefix:
-                      description: Specifies the path to match requests with
+                    headers:
+                      description: An object that represents the client request headers to match on.
+                      items:
+                        description: HTTPGatewayRouteHeader refers to https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_HttpRouteHeader.html
+                        properties:
+                          invert:
+                            description: Specify True to match anything except the match criteria. The default value is False.
+                            type: boolean
+                          match:
+                            description: The HeaderMatchMethod object.
+                            properties:
+                              exact:
+                                description: The value sent by the client must match the specified value exactly.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              prefix:
+                                description: The value sent by the client must begin with the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              range:
+                                description: An object that represents the range of values to match on.
+                                properties:
+                                  end:
+                                    description: The end of the range.
+                                    format: int64
+                                    type: integer
+                                  start:
+                                    description: The start of the range.
+                                    format: int64
+                                    type: integer
+                                required:
+                                - end
+                                - start
+                                type: object
+                              regex:
+                                description: The value sent by the client must include the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              suffix:
+                                description: The value sent by the client must end with the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            type: object
+                          name:
+                            description: A name for the HTTP header in the client request that will be matched on.
+                            maxLength: 50
+                            minLength: 1
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      maxItems: 10
+                      minItems: 1
+                      type: array
+                    hostname:
+                      description: The client specified Hostname to match on.
+                      properties:
+                        exact:
+                          description: The value sent by the client must match the specified value exactly.
+                          maxLength: 253
+                          minLength: 1
+                          type: string
+                        suffix:
+                          description: The value sent by the client must end with the specified characters.
+                          maxLength: 253
+                          minLength: 1
+                          type: string
+                      type: object
+                    method:
+                      description: The client request method to match on.
+                      enum:
+                      - CONNECT
+                      - DELETE
+                      - GET
+                      - HEAD
+                      - OPTIONS
+                      - PATCH
+                      - POST
+                      - PUT
+                      - TRACE
                       type: string
-                  required:
-                  - prefix
+                    path:
+                      properties:
+                        exact:
+                          description: The value sent by the client must match the specified value exactly.
+                          maxLength: 255
+                          minLength: 1
+                          type: string
+                        regex:
+                          description: The value sent by the client must end with the specified characters.
+                          maxLength: 255
+                          minLength: 1
+                          type: string
+                      type: object
+                    prefix:
+                      description: Either Prefix or Hostname must be specified. Both are allowed as well. Specifies the path to match requests with
+                      type: string
+                    queryParameters:
+                      items:
+                        properties:
+                          match:
+                            description: The HeaderMatchMethod object.
+                            properties:
+                              exact:
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            type: object
+                          name:
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      maxItems: 10
+                      minItems: 1
+                      type: array
                   type: object
               required:
               - action
@@ -195,6 +573,12 @@ spec:
               - name
               - uid
               type: object
+            priority:
+              description: Priority for the gatewayroute. Default Priority is 1000 which is lowest priority
+              format: int64
+              maximum: 1000
+              minimum: 0
+              type: integer
             virtualGatewayRef:
               description: "A reference to k8s VirtualGateway CR that this GatewayRoute belongs to. The admission controller populates it using VirtualGateway's selector, and prevents users from setting this field. \n Populated by the system. Read-only."
               properties:
@@ -557,6 +941,36 @@ spec:
                       required:
                       - validation
                       type: object
+                  type: object
+              type: object
+            gatewayRouteSelector:
+              description: GatewayRouteSelector selects GatewayRoutes using labels to designate GatewayRoute membership. If not specified it selects all GatewayRoutes in that namespace.
+              properties:
+                matchExpressions:
+                  description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                  items:
+                    description: A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                    properties:
+                      key:
+                        description: key is the label key that the selector applies to.
+                        type: string
+                      operator:
+                        description: operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+                        type: string
+                      values:
+                        description: values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - key
+                    - operator
+                    type: object
+                  type: array
+                matchLabels:
+                  additionalProperties:
+                    type: string
+                  description: matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
                   type: object
               type: object
             listeners:
@@ -1779,6 +2193,12 @@ spec:
                     hostname:
                       description: Specifies the DNS service discovery hostname for the virtual node.
                       type: string
+                    responseType:
+                      description: Choose between ENDPOINTS (strict DNS) and LOADBALANCER (logical DNS) mode in Envoy sidecar
+                      enum:
+                      - ENDPOINTS
+                      - LOADBALANCER
+                      type: string
                   required:
                   - hostname
                   type: object
@@ -2004,6 +2424,9 @@ spec:
                                           description: The start of the range.
                                           format: int64
                                           type: integer
+                                      required:
+                                      - end
+                                      - start
                                       type: object
                                     regex:
                                       description: The value sent by the client must include the specified characters.
@@ -2217,6 +2640,9 @@ spec:
                                           description: The start of the range.
                                           format: int64
                                           type: integer
+                                      required:
+                                      - end
+                                      - start
                                       type: object
                                     regex:
                                       description: The value sent by the client must include the specified characters.
@@ -2253,17 +2679,49 @@ spec:
                             - PUT
                             - TRACE
                             type: string
+                          path:
+                            description: The client specified Path to match on.
+                            properties:
+                              exact:
+                                description: The value sent by the client must match the specified value exactly.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              regex:
+                                description: The value sent by the client must end with the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            type: object
                           prefix:
-                            description: Specifies the path to match requests with
+                            description: Specifies the prefix to match requests with
                             type: string
+                          queryParameters:
+                            description: The client specified queryParameters to match on
+                            items:
+                              properties:
+                                match:
+                                  description: The HeaderMatchMethod object.
+                                  properties:
+                                    exact:
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                  type: object
+                                name:
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                            maxItems: 10
+                            minItems: 1
+                            type: array
                           scheme:
                             description: The client request scheme to match on
                             enum:
                             - http
                             - https
                             type: string
-                        required:
-                        - prefix
                         type: object
                       retryPolicy:
                         description: An object that represents a retry policy.
@@ -2434,6 +2892,9 @@ spec:
                                           description: The start of the range.
                                           format: int64
                                           type: integer
+                                      required:
+                                      - end
+                                      - start
                                       type: object
                                     regex:
                                       description: The value sent by the client must include the specified characters.
@@ -2470,17 +2931,49 @@ spec:
                             - PUT
                             - TRACE
                             type: string
+                          path:
+                            description: The client specified Path to match on.
+                            properties:
+                              exact:
+                                description: The value sent by the client must match the specified value exactly.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                              regex:
+                                description: The value sent by the client must end with the specified characters.
+                                maxLength: 255
+                                minLength: 1
+                                type: string
+                            type: object
                           prefix:
-                            description: Specifies the path to match requests with
+                            description: Specifies the prefix to match requests with
                             type: string
+                          queryParameters:
+                            description: The client specified queryParameters to match on
+                            items:
+                              properties:
+                                match:
+                                  description: The HeaderMatchMethod object.
+                                  properties:
+                                    exact:
+                                      maxLength: 255
+                                      minLength: 1
+                                      type: string
+                                  type: object
+                                name:
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                            maxItems: 10
+                            minItems: 1
+                            type: array
                           scheme:
                             description: The client request scheme to match on
                             enum:
                             - http
                             - https
                             type: string
-                        required:
-                        - prefix
                         type: object
                       retryPolicy:
                         description: An object that represents a retry policy.

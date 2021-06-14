@@ -31,8 +31,7 @@ Create namespace
 kubectl create ns appmesh-system
 ```
 
-The controller runs on the worker nodes, so it needs access to the AWS App Mesh / Cloud Map resources via IAM permissions. The
-IAM permissions can either be setup via IAM roles for service account or can be attached directly to the worker node IAM roles.
+The controller runs on the worker nodes, so it needs access to the AWS App Mesh / Cloud Map resources via IAM permissions. The IAM permissions can either be setup via IAM roles for service account or can be attached directly to the worker node IAM roles.
 
 #### Setup IAM Role for Service Account
 
@@ -89,18 +88,52 @@ helm upgrade -i appmesh-controller eks/appmesh-controller \
 
 The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
-**Note:** When using IRSA, make sure the Envoy proxies have the following IAM policies attached for Envoy to authenticate with AWS App Mesh and fetch it's configuration
+**Note**
+Make sure that the Envoy proxies have the following IAM policies attached for the Envoy to authenticate with AWS App Mesh and fetch it's configuration
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
 
-#### Setup IAM permissions manually on worker nodes
-If not setting up IAM role for service account, apply the IAM policies to your worker nodes:
+There are **2 ways** you can attach the above policy to the Envoy Pod  
+#### With IRSA     
+Download the Envoy IAM polocy  
+```
+curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
+```
+
+Create an IAM policy called AWSAppMeshEnvoyIAMPolicy
+```
+aws iam create-policy \
+    --policy-name AWSAppMeshEnvoyIAMPolicy \
+    --policy-document file://envoy-iam-policy.json
+```
+
+Take note of the policy ARN that is returned
+
+If your Mesh enabled applications are already using IRSA then you can attach the above policy to the role belonging to the existing IRSA or you can edit the Trust Relationship of the existing iam role which has this envoy policy so that some other service account in your mesh can also assume this role.  
+
+If not then you can create a service account for your application namespace and use the ARN from the step above. Ensure that Application Namespace already exists
+
+```
+eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
+    --namespace <ApplicationNamespaceName to which Envoy gets Injected> \
+    --name envoy-proxy \
+    --attach-policy-arn arn:aws:iam::$AWS_ACCOUNT_ID:policy/AWSAppMeshEnvoyIAMPolicy  \
+    --override-existing-serviceaccounts \
+    --approve
+```
+
+Reference this Service Account in your application pod spec. This should be the pod which would get injected with the Envoy. Refer below example:
+```
+https://github.com/aws/aws-app-mesh-examples/blob/5a2d04227593d292d52e5e2ca638d808ebed5e70/walkthroughs/howto-k8s-fargate/v1beta2/manifest.yaml.template#L220
+``` 
+
+#### Without IRSA   
+If not setting up IAM role for service account, apply the IAM policies manually to your worker nodes:
 
 Controller IAM policy
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
 
 Envoy IAM policy
-- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
-
+- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json  
 
 Deploy appmesh-controller
 ```sh
@@ -360,3 +393,4 @@ Parameter | Description | Default
 `accountId` | AWS Account ID for the Kubernetes cluster | None
 `env` |  environment variables to be injected into the appmesh-controller pod | `{}`
 `livenessProbe` | Liveness probe settings for the controller | (see `values.yaml`)
+`podDisruptionBudget` | PodDisruptionBudget | `{}`
