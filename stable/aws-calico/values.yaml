@@ -7,7 +7,7 @@ podSecurityPolicy:
   create: false
 
 calico:
-  tag: v3.15.1
+  tag: v3.19.1
 
   typha:
     logseverity: Info #Debug, Info, Warning, Error, Fatal
@@ -56,5 +56,5 @@ calico:
     podLabels: {}
 
 autoscaler:
-  tag: "1.7.1"
-  image: k8s.gcr.io/cluster-proportional-autoscaler-amd64
+  tag: "1.8.3"
+  image: k8s.gcr.io/cpa/cluster-proportional-autoscaler-amd64

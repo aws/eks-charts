@@ -1,6 +1,10 @@
 # Calico on AWS
+**Note**: The recommended way to install calico on EKS is via tigera-opeartor instead of this helm-chart. 
+You can follow https://docs.aws.amazon.com/eks/latest/userguide/calico.html for detailed instructions.
+
 
 This chart installs Calico on AWS: https://docs.aws.amazon.com/eks/latest/userguide/calico.html
+
 
 ## Prerequisites
 
