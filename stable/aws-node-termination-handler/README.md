@@ -98,8 +98,8 @@ Parameter | Description | Default
 `checkASGTagBeforeDraining` | If true, check that the instance is tagged with "aws-node-termination-handler/managed" as the key before draining the node | `true`
 `managedAsgTag` | The tag to ensure is on a node if checkASGTagBeforeDraining is true | `aws-node-termination-handler/managed`
 `workers` | The maximum amount of parallel event processors | `10`
-`replicas` | The number of replicas in the NTH deployment when using queue-processor mode (NOTE: increasing replicas may cause duplicate webhooks since NTH pods are stateless)
- | `1`
+`replicas` | The number of replicas in the NTH deployment when using queue-processor mode (NOTE: increasing replicas may cause duplicate webhooks since NTH pods are stateless) | `1`
+`podDisruptionBudget` | Limit the disruption for controller pods, requires at least 2 controller replicas | `{}`
 
 ### AWS Node Termination Handler - IMDS Mode Configuration
 
@@ -136,7 +136,7 @@ Parameter | Description | Default
 `windowsNodeSelector` | Tells the Windows daemon set where to place the node-termination-handler pods. For example: `lifecycle: "Ec2Spot"`, `on-demand: "false"`, `aws.amazon.com/purchaseType: "spot"`, etc. Value must be a valid yaml expression. | `{}`
 `tolerations` | list of node taints to tolerate | `[ {"operator": "Exists"} ]`
 `rbac.create` | if `true`, create and use RBAC resources | `true`
-`rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
+`rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `true`
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | None
 `serviceAccount.annotations` | Specifies the annotations for ServiceAccount       | `{}`

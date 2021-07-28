@@ -5,7 +5,7 @@ metadata:
   name: {{ include "aws-node-termination-handler.fullname.windows" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "aws-node-termination-handler.labels" . | indent 4 }}
+    {{- include "aws-node-termination-handler.labels" . | nindent 4 }}
 spec:
   {{- if (or .Values.updateStrategy .Values.windowsUpdateStrategy) }}
   updateStrategy:
@@ -18,8 +18,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "aws-node-termination-handler.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- include "aws-node-termination-handler.selectorLabels" . | nindent 6 }}
       {{ include "aws-node-termination-handler.nodeSelectorTermsOs" . }}: windows
   template:
     metadata:
@@ -30,8 +29,7 @@ spec:
       {{- end }}
       {{- end }}
       labels:
-        app.kubernetes.io/name: {{ include "aws-node-termination-handler.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "aws-node-termination-handler.selectorLabels" . | nindent 8 }}
         k8s-app: aws-node-termination-handler
         {{ include "aws-node-termination-handler.nodeSelectorTermsOs" . }}: windows
       {{- range $key, $value := (mergeOverwrite (dict) .Values.podLabels .Values.windowsPodLabels) }}
@@ -154,19 +152,24 @@ spec:
             value: {{ .Values.kubernetesEventsExtraAnnotations | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- if .Values.enablePrometheusServer }}
+          {{- if or .Values.enablePrometheusServer .Values.enableProbesServer }}
           ports:
+          {{- end }}
+          {{- if .Values.enablePrometheusServer }}
           - containerPort: {{ .Values.prometheusServerPort  }}
             hostPort: {{ .Values.prometheusServerPort }}
             name: http-metrics
             protocol: TCP
           {{- end }}
           {{- if .Values.enableProbesServer }}
-          ports:
           - containerPort: {{ .Values.probesServerPort }}
             hostPort: {{ .Values.probesServerPort }}
             name: liveness-probe
             protocol: TCP
+          {{- end }}
+          {{- if .Values.enableProbesServer }}
+          livenessProbe:
+            {{- toYaml .Values.probes | nindent 12 }}
           {{- end }}
       nodeSelector:
         {{ include "aws-node-termination-handler.nodeSelectorTermsOs" . }}: windows
