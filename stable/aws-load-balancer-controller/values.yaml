@@ -6,7 +6,7 @@ replicaCount: 2
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller
-  tag: v2.2.1
+  tag: v2.2.2
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -66,6 +66,12 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+updateStrategy: {}
+  # type: RollingUpdate
+  # rollingUpdate:
+  #   maxSurge: 1
+  #   maxUnavailable: 1
 
 podAnnotations: {}
 
