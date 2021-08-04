@@ -23,7 +23,7 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
         {{- with .Values.calico.typha.podAnnotations }}
-        annotations: {{- toYaml . | nindent 10 }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
       priorityClassName: system-cluster-critical
