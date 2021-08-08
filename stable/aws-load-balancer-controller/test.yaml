@@ -74,6 +74,8 @@ enableCertManager: false
 # ingresses without ingress class annotation and ingresses of type alb
 ingressClass: alb
 
+createIngressClassResource: true
+
 # The AWS region for the kubernetes cluster. Set to use KIAM or kube2iam for example.
 region:
 
