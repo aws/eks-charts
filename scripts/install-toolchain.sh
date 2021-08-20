@@ -14,9 +14,10 @@ HELMV2_VERSION="v2.17.0"
 HELMV3_VERSION="v3.6.3"
 KUBECTL_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
 KIND_VERSION=v0.11.1
+BATS_VERSION=1.1.0
 
 ## Install kubectl
-curl -sSL "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" -o "${TOOLS_DIR}/kubectl"
+curl -sSL "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/${PLATFORM}/${ARCH}/kubectl" -o "${TOOLS_DIR}/kubectl"
 chmod +x "${TOOLS_DIR}/kubectl"
 
 ## Install kubeval
@@ -35,6 +36,10 @@ mkdir -p "${TMP_DIR}/helmv3"
 curl -sSL https://get.helm.sh/helm-${HELMV3_VERSION}-${PLATFORM}-${ARCH}.tar.gz | tar xz -C "${TMP_DIR}/helmv3"
 mv "${TMP_DIR}/helmv3/${PLATFORM}-${ARCH}/helm" "${TOOLS_DIR}/helmv3"
 rm -rf "${PLATFORM}-${ARCH}"
+
+## Install Bats
+curl -sSL https://github.com/bats-core/bats-core/archive/v${BATS_VERSION}.tar.gz | tar xz -C "${TOOLS_DIR}"
+ln -s ${TOOLS_DIR}/bats-core-${BATS_VERSION}/bin/bats ${TOOLS_DIR}/bats
 
 ## Initialize helm
 

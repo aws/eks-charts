@@ -29,9 +29,6 @@ jobs:
           name: Init Kubernetes Kind and Helm v2
           command: HELM_MODE=v2 test/lib/kind.sh
       - run:
-          name: Install BATS
-          command: test/lib/bats.sh
-      - run:
           name: Run App Mesh tests
           command: test/run.sh
 
@@ -45,9 +42,6 @@ jobs:
       - run:
           name: Install Kubernetes Kind and Helm v3
           command: HELM_MODE=v3 test/lib/kind.sh
-      - run:
-          name: Install BATS
-          command: test/lib/bats.sh
       - run:
           name: Run App Mesh tests
           command: test/run.sh

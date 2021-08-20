@@ -27,7 +27,7 @@ function installHelm() {
   fi
 }
 
-export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+export KUBECONFIG="$(kind get kubeconfig > $REPO_ROOT/build/kind-kubeconfig)"
 
 installHelm $HELM_MODE
 
