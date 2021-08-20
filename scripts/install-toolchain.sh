@@ -38,7 +38,7 @@ rm -rf "${PLATFORM}-${ARCH}"
 
 ## Initialize helm
 
-helm init --stable-repo-url https://charts.helm.sh/stable --client-only --kubeconfig="${BUILD_DIR}/.kube/kubeconfig"
+helmv3 init --stable-repo-url https://charts.helm.sh/stable --client-only --kubeconfig="${BUILD_DIR}/.kube/kubeconfig"
 
 
 ## Install kind
