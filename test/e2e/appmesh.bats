@@ -7,7 +7,8 @@ set -o errexit
 export REPO_ROOT=$(git rev-parse --show-toplevel)
 
 if [[ "${KUBECONFIG}" == "" ]]; then
-  export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+  kind get kubeconfig > $REPO_ROOT/build/kind-kubeconfig
+  export KUBECONFIG="$REPO_ROOT/build/kind-kubeconfig"
 fi
 
 namespace=appmesh-system
