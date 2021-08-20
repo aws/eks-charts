@@ -27,7 +27,7 @@ mv "${TMP_DIR}/kubeval/kubeval" "${TOOLS_DIR}/kubeval"
 ## Install helm v2
 mkdir -p "${TMP_DIR}/helmv2"
 curl -sSL  https://get.helm.sh/helm-${HELMV2_VERSION}-${PLATFORM}-${ARCH}.tar.gz | tar xz -C "${TMP_DIR}/helmv2"
-mv "${TMP_DIR}/helmv2/${PLATFORM}-${ARCH}/helm" "${TOOLS_DIR}/helm"
+mv "${TMP_DIR}/helmv2/${PLATFORM}-${ARCH}/helm" "${TOOLS_DIR}/helmv2"
 rm -rf "${PLATFORM}-${ARCH}"
 
 ## Install helm v3

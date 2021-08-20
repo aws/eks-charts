@@ -23,7 +23,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Kubernetes Kind and Helm v2
+          name: Install Toolchain
+          command: make install-toolchain
+      - run:
+          name: Init Kubernetes Kind and Helm v2
           command: HELM_MODE=v2 test/lib/kind.sh
       - run:
           name: Install BATS
@@ -36,6 +39,9 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run:
+          name: Install Toolchain
+          command: make install-toolchain
       - run:
           name: Install Kubernetes Kind and Helm v3
           command: HELM_MODE=v3 test/lib/kind.sh
