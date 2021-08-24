@@ -15,7 +15,7 @@ image:
 sidecar:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
-    tag: v1.17.2.0-prod
+    tag: v1.16.1.1-prod
     # sidecar.logLevel: Envoy log level can be info, warn, error or debug
   logLevel: info
   envoyAdminAccessPort: 9901
