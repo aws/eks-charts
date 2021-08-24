@@ -76,3 +76,7 @@ spec:
         hostPath:
           path: /dev/disk/
       terminationGracePeriodSeconds: 60
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
