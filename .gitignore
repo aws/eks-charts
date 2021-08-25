@@ -14,5 +14,6 @@
 
 bin/
 _tmp/
+build/
 
 .idea
