@@ -18,3 +18,5 @@ serviceAccount:
   name:
 
 hostNetwork: false
+
+priorityClassName: system-node-critical
