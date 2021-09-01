@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         {{- include "aws-cloudwatch-metrics.selectorLabels" . | nindent 8 }}
+      {{- if .Values.podAnnotations }}
+      annotations:
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
+      {{- end }}
     spec:
       serviceAccountName: {{ include "aws-cloudwatch-metrics.serviceAccountName" . }}
       hostNetwork: {{ .Values.hostNetwork }}
