@@ -6,4 +6,4 @@ metadata:
     {{- include "aws-cloudwatch-metrics.labels" . | nindent 4 }}
 data:
   cwagentconfig.json: |
-{{ .Values.agentConfig | indent 4 }}
+{{ tpl .Values.agentConfig $ | indent 4 }}
