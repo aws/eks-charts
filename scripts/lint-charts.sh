@@ -19,7 +19,7 @@ for d in */; do
     echo "Linting chart ${d} w/ helm v3"
     helmv3 lint ${STABLE}/${d} || FAILED_V3+=("${d}")
     echo "Linting chart ${d} w/ helm v2"
-    helm lint ${STABLE}/${d} || FAILED_V2+=("${d}")
+    helmv2 lint ${STABLE}/${d} || FAILED_V2+=("${d}")
 done
 
 if [[ "${#FAILED_V2[@]}" -eq  0 ]] && [[ "${#FAILED_V3[@]}" -eq 0 ]]; then
