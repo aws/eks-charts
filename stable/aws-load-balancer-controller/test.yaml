@@ -67,6 +67,8 @@ podAnnotations: {}
 
 podLabels: {}
 
+additionalLabels: {}
+
 # Enable cert-manager
 enableCertManager: false
 
