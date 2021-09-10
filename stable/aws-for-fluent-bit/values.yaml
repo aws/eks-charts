@@ -106,6 +106,7 @@ elasticsearch:
   port: "443"
   retryLimit: 6
   replaceDots: "On"
+  indexName: "fluent-bit"
 
 # extraOutputs: |
 #   [OUTPUT]
