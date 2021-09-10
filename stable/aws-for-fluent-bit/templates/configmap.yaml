@@ -173,8 +173,8 @@ data:
         {{- if .Values.elasticsearch.replaceDots }}
         Replace_Dots    {{ .Values.elasticsearch.replaceDots }}
         {{- end }}
-        {{- if .Values.indexName }}
-        Index           {{ .Values.indexName }}
+        {{- if .Values.elasticsearch.indexName }}
+        Index           {{ .Values.elasticsearch.indexName }}
         {{- end }}
 {{- end }}
 
