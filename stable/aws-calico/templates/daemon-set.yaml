@@ -115,12 +115,14 @@ spec:
             periodSeconds: 10
             initialDelaySeconds: 10
             failureThreshold: 6
+            timeoutSeconds: 5
           readinessProbe:
             exec:
               command:
                 - /bin/calico-node
                 - -felix-ready
             periodSeconds: 10
+            timeoutSeconds: 5
           resources:
             {{- toYaml .Values.calico.node.resources | nindent 12 }}
           volumeMounts:
