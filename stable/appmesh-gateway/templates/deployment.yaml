@@ -60,8 +60,9 @@ spec:
               - -c
               - >-
                 curl -s http://localhost:9901/server_info | grep state | grep -q LIVE
+          initialDelaySeconds: 90
         readinessProbe:
-          initialDelaySeconds: 5
+          initialDelaySeconds: 100
           tcpSocket:
             port: http-admin
         resources:
