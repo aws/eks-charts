@@ -19,6 +19,8 @@ service:
   #       Name   logfmt
   #       Format logfmt
 
+hostNetwork: false
+
 input:
   tag: "kube.*"
   path: "/var/log/containers/*.log"
