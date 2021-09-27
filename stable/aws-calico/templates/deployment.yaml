@@ -117,9 +117,9 @@ spec:
         {{- if .Values.calico.typha_autoscaler.podLabels }}
 {{ toYaml .Values.calico.typha_autoscaler.podLabels | indent 8 }}
         {{- end }}
-        {{- with .Values.calico.typha_autoscaler.podAnnotations }}
-        annotations: {{- toYaml . | nindent 10 }}
-        {{- end }}
+      {{- with .Values.calico.typha_autoscaler.podAnnotations }}
+      annotations: {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       priorityClassName: system-cluster-critical
       nodeSelector:
