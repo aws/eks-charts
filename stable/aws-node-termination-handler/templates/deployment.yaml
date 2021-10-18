@@ -26,6 +26,12 @@ spec:
         {{ $key }}: {{ $value | quote }}
       {{- end }}
     spec:
+      volumes:
+        {{- if and .Values.webhookTemplateConfigMapName .Values.webhookTemplateConfigMapKey }}
+        - name: "webhook-template"
+          configMap:
+            name: {{ .Values.webhookTemplateConfigMapName }}
+        {{- end }}
       priorityClassName: {{ .Values.priorityClassName | quote }}
       affinity:
         nodeAffinity:
@@ -60,6 +66,11 @@ spec:
             runAsUser: {{ .Values.securityContext.runAsUserID }}
             runAsGroup: {{ .Values.securityContext.runAsGroupID }}
             allowPrivilegeEscalation: false
+          volumeMounts:
+            {{- if and .Values.webhookTemplateConfigMapName .Values.webhookTemplateConfigMapKey }}
+            - name: "webhook-template"
+              mountPath: "/config/"
+            {{- end }}
           env:
           - name: NODE_NAME
             valueFrom:
@@ -94,6 +105,10 @@ spec:
           {{- end }}
           - name: WEBHOOK_HEADERS
             value: {{ .Values.webhookHeaders | quote }}
+          {{- if and .Values.webhookTemplateConfigMapName .Values.webhookTemplateConfigMapKey }}
+          - name: WEBHOOK_TEMPLATE_FILE
+            value: {{ print "/config/" .Values.webhookTemplateConfigMapKey | quote }}
+          {{- end }}
           - name: WEBHOOK_TEMPLATE
             value: {{ .Values.webhookTemplate | quote }}
           - name: DRY_RUN
@@ -152,6 +167,10 @@ spec:
             value: {{ .Values.emitKubernetesEvents | quote }}
           - name: KUBERNETES_EVENTS_EXTRA_ANNOTATIONS
             value: {{ .Values.kubernetesEventsExtraAnnotations | quote }}
+{{- range $key, $value := .Values.extraEnv }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+{{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if or .Values.enablePrometheusServer .Values.enableProbesServer }}
@@ -159,13 +178,11 @@ spec:
           {{- end }}
           {{- if .Values.enablePrometheusServer }}
           - containerPort: {{ .Values.prometheusServerPort }}
-            hostPort: {{ .Values.prometheusServerPort }}
             name: http-metrics
             protocol: TCP
           {{- end }}
           {{- if .Values.enableProbesServer }}
           - containerPort: {{ .Values.probesServerPort }}
-            hostPort: {{ .Values.probesServerPort }}
             name: liveness-probe
             protocol: TCP
           {{- end }}
