@@ -48,6 +48,7 @@ The following table lists the configurable parameters for this chart and their d
 | `init.image.pullPolicy` | Container pull policy                                   | `IfNotPresent`                      |
 | `init.image.override`   | A custom docker image to use                            | `nil`                               |
 | `init.env`              | List of init container environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options | (see `values.yaml`) |
+| `init.resources`        | Resources for the init containers                       | `{}`                                |
 | `init.securityContext`  | Init container Security context                         | `privileged: true`                  |
 | `originalMatchLabels`   | Use the original daemonset matchLabels                  | `false`                             |
 | `nameOverride`          | Override the name of the chart                          | `aws-node`                          |
