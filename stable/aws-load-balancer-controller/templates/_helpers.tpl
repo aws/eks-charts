@@ -75,14 +75,25 @@ Create the name of the service account to use
 {{/*
 Generate certificates for webhook
 */}}
-{{- define "aws-load-balancer-controller.gen-certs" -}}
+{{- define "aws-load-balancer-controller.webhook-certs" -}}
 {{- $namePrefix := ( include "aws-load-balancer-controller.namePrefix" . ) -}}
+{{- $secret := lookup "v1" "Secret" .Release.Namespace (printf "%s-tls" $namePrefix) -}}
+{{- if (and .Values.webhookTLS.caCert .Values.webhookTLS.cert .Values.webhookTLS.key) -}}
+caCert: {{ .Values.webhookTLS.caCert | b64enc }}
+clientCert: {{ .Values.webhookTLS.cert | b64enc }}
+clientKey: {{ .Values.webhookTLS.key | b64enc }}
+{{- else if and .Values.keepTLSSecret $secret -}}
+caCert: {{ index $secret.data "ca.crt" }}
+clientCert: {{ index $secret.data "tls.crt" }}
+clientKey: {{ index $secret.data "tls.key" }}
+{{- else -}}
 {{- $altNames := list ( printf "%s-%s.%s" $namePrefix "webhook-service" .Release.Namespace ) ( printf "%s-%s.%s.svc" $namePrefix "webhook-service" .Release.Namespace ) -}}
 {{- $ca := genCA "aws-load-balancer-controller-ca" 3650 -}}
 {{- $cert := genSignedCert ( include "aws-load-balancer-controller.fullname" . ) nil $altNames 3650 $ca -}}
 caCert: {{ $ca.Cert | b64enc }}
 clientCert: {{ $cert.Cert | b64enc }}
 clientKey: {{ $cert.Key | b64enc }}
+{{- end -}}
 {{- end -}}
 
 {{/*
