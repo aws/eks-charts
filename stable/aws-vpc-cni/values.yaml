@@ -17,6 +17,7 @@ init:
     DISABLE_TCP_EARLY_DEMUX: "false"
   securityContext:
     privileged: true
+  resources: {}
 
 image:
   region: us-west-2

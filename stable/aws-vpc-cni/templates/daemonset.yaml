@@ -46,8 +46,10 @@ spec:
           - name: {{ $key }}
             value: {{ $value | quote }}
 {{- end }}
+        resources:
+          {{- toYaml .Values.init.resources | nindent 10 }}
         securityContext:
-          {{- toYaml .Values.init.securityContext | nindent 12 }}
+          {{- toYaml .Values.init.securityContext | nindent 10 }}
         volumeMounts:
           - mountPath: /host/opt/cni/bin
             name: cni-bin-dir
