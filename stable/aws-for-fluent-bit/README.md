@@ -35,6 +35,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `imagePullSecrets` | Docker registry pull secret | `[]` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` |
 | `serviceAccount.name` | Name of the service account | `aws-for-fluent-bit` |
+| `serviceAccount.annotations` | Optional service account annotations | `{}` |
 | `service.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
 | `service.extraParsers` | Adding more parsers with this value | `""` |
 | `input.*` | Values for Kubernetes input | |
