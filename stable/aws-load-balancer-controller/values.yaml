@@ -13,6 +13,10 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+# -- Custom labels to add into metadata
+customLabels: {}
+  # app: aws-load-balancer-controller
+
 # The name of the Kubernetes cluster. A non-empty value is required
 clusterName: foo
 
