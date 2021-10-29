@@ -50,6 +50,8 @@ helm.sh/chart: {{ include "aws-load-balancer-controller.chart" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
+app.kubernetes.io/component: aws-controller
+app.kubernetes.io/part-of: {{ include "aws-load-balancer-controller.name" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
