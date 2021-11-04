@@ -1,6 +1,6 @@
 # Calico on AWS
 
-This chart installs Calico on AWS: https://docs.aws.amazon.com/eks/latest/userguide/calico.html
+This chart installs Calico Operator on AWS: https://docs.aws.amazon.com/eks/latest/userguide/calico.html
 
 ## Prerequisites
 
@@ -10,57 +10,28 @@ This chart installs Calico on AWS: https://docs.aws.amazon.com/eks/latest/usergu
 
 First add the EKS repository to Helm:
 
-```shell
+```shell script
 helm repo add eks https://aws.github.io/eks-charts
 ```
 
-Install the Calico CRDs:
-
-```shell
-kubectl apply -k github.com/aws/eks-charts/tree/master/stable/aws-calico/crds
+Install the Tigera Operator charts with the release name `aws-tigera-operator` and default configuration:
+```shell script
+helm install aws-tigera-operator eks/aws-tigera-operator
 ```
-
-To install the chart with the release name `aws-calico` and default configuration:
-
-```shell
-$ helm install --name aws-calico --namespace kube-system eks/aws-calico
-```
-
 To install into an EKS cluster where the CNI is already installed, you can run:
-
-```shell
-helm upgrade --install --recreate-pods --force aws-calico --namespace kube-system eks/aws-calico
+```shell script
+helm upgrade --install --recreate-pods --force aws-tigera-operator eks/aws-tigera-operator
 ```
-
-If you receive an error similar to `Error: release aws-calico failed: <resource> "aws-calico" already exists`, simply rerun the above command.
+Note:
+- The Tigera operator installs Calico CRDs.
+- The Tigera operator installs resources in the calico-system namespace. Previous aws-calico install methods use the kube-system namespace instead.
 
 ## Configuration
+The configurable parameters can be configured in `Installation`. Please refer to [Tigera Operator Installation document](https://docs.tigera.io/reference/installation/api#operator.tigera.io/v1.InstallationSpec) for
+details.
 
-The following table lists the configurable parameters for this chart and their default values.
+Alternatively, provided `values.yaml` contains the Installation where the parameters can be configured:
 
-| Parameter                              | Description                                             | Default                         |
-|----------------------------------------|---------------------------------------------------------|---------------------------------|
-| `calico.typha.image`                   | Calico Typha Image                                      | `quay.io/calico/typha`          |
-| `calico.typha.resources`               | Calico Typha Resources                                  | `requests.memory: 64Mi, requests.cpu: 50m, limits.memory: 96Mi, limits.cpu: 100m` |
-| `calico.typha.logseverity`             | Calico Typha Log Severity                               | `Info`                          |
-| `calico.typha.nodeSelector`            | Calico Typha Node Selector                              | `{ beta.kubernetes.io/os: linux }` |
-| `calico.node.extraEnv`                 | Calico Node extra ENV vars                              | `[]`                            |
-| `calico.node.image`                    | Calico Node Image                                       | `quay.io/calico/node`           |
-| `calico.node.resources`                | Calico Node Resources                                   | `requests.memory: 32Mi, requests.cpu: 20m, limits.memory: 64Mi, limits.cpu: 100m` |
-| `calico.node.logseverity`              | Calico Node Log Severity                                | `Info`                          |
-| `calico.node.nodeSelector`             | Calico Node Node Selector                               | `{ beta.kubernetes.io/os: linux }` |
-| `calico.typha_autoscaler.resources`    | Calico Typha Autoscaler Resources                       | `requests.memory: 16Mi, requests.cpu: 10m, limits.memory: 32Mi, limits.cpu: 10m` |
-| `calico.typha_autoscaler.nodeSelector` | Calico Typha Autoscaler Node Selector                   | `{ beta.kubernetes.io/os: linux }` |
-| `calico.tag`                           | Calico version                                          | `v3.8.1`                        |
-| `fullnameOverride`                     | Override the fullname of the chart                      | `calico`                        |
-| `podSecurityPolicy.create`             | Specifies whether podSecurityPolicy and related rbac objects should be created    | `false`                          |
-| `serviceAccount.name`                  | The name of the ServiceAccount to use                   | `nil`                           |
-| `serviceAccount.create`                | Specifies whether a ServiceAccount should be created    | `true`                          |
-| `autoscaler.image`                     | Cluster Proportional Autoscaler Image                   | `k8s.gcr.io/cluster-proportional-autoscaler-amd64` |
-| `autoscaler.tag`                       | Cluster Proportional Autoscaler version                 | `1.1.2`                                            |
-
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
-
-```shell
-$ helm install --name aws-calico --namespace kube-system eks/aws-calico --values values.yaml
+```shell script
+$ helm install aws-tigera-operator eks/aws-tigera-operator --values values.yaml
 ```
