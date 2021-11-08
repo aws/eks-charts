@@ -70,7 +70,7 @@ spec:
             - name: CALICO_DISABLE_FILE_LOGGING
               value: "true"
             - name: FELIX_TYPHAK8SSERVICENAME
-              value: "calico-typha"
+              value: "{{ include "aws-calico.fullname" . }}-typha"
             # Set Felix endpoint to host default action to ACCEPT.
             - name: FELIX_DEFAULTENDPOINTTOHOSTACTION
               value: "ACCEPT"
