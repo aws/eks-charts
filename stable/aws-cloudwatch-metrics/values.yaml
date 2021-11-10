@@ -18,3 +18,16 @@ serviceAccount:
   name:
 
 hostNetwork: false
+
+agentConfig: |
+  {
+    "logs": {
+      "metrics_collected": {
+        "kubernetes": {
+          "cluster_name": "{{ .Values.clusterName }}",
+          "metrics_collection_interval": 60
+        }
+      },
+      "force_flush_interval": 5
+    }
+  }
