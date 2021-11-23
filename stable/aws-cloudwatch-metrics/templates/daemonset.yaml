@@ -10,6 +10,10 @@ spec:
       {{- include "aws-cloudwatch-metrics.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      {{- if .Values.annotations }}
+      annotations:
+        {{- toYaml .Values.annotations | nindent 8 }}
+      {{- end }}
       labels:
         {{- include "aws-cloudwatch-metrics.selectorLabels" . | nindent 8 }}
     spec:
