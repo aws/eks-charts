@@ -128,13 +128,13 @@ https://github.com/aws/aws-app-mesh-examples/blob/5a2d04227593d292d52e5e2ca638d8
 
 #### Without IRSA   
 If not setting up IAM role for service account, apply the IAM policies manually to your eks worker nodes. 
-**Note:** You can use the service account for controller iam policy from above steps, but directly apply the envoy iam policy to the worker nodes.
+**Note:** You can use the service account for controller iam policy from above steps or directly apply the controller iam policy to the worker nodes as you would for the envoy iam policy.
 
 Controller IAM policy
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
 Use below command to download the policy if not already
 ```sh
-curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
 ```
 
 Envoy IAM policy
