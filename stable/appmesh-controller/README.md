@@ -127,13 +127,27 @@ https://github.com/aws/aws-app-mesh-examples/blob/5a2d04227593d292d52e5e2ca638d8
 ``` 
 
 #### Without IRSA   
-If not setting up IAM role for service account, apply the IAM policies manually to your worker nodes:
+If not setting up IAM role for service account, apply the IAM policies manually to your eks worker nodes. 
+**Note:** You can use the service account for controller iam policy from above steps or directly apply the controller iam policy to the worker nodes as you would for the envoy iam policy.
 
 Controller IAM policy
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+Use below command to download the policy if not already
+```sh
+curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+```
 
 Envoy IAM policy
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json  
+Use below command to download the policy if not already
+```sh
+curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
+```
+
+Apply the IAM policy directly to the worker nodes by replacing the `ROLE_NAME`, `<policy-name>`, and `<policy-filename>` in below command:
+```sh
+aws iam put-role-policy --role-name $ROLE_NAME --policy-name <policy-name> --policy-document file://<policy-filename>
+```
 
 Deploy appmesh-controller
 ```sh
