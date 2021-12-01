@@ -37,6 +37,11 @@ webhooks:
       operator: NotIn
       values:
       - {{ include "aws-load-balancer-controller.name" . }}
+    {{- if .Values.objectSelector.matchLabels }}
+    matchLabels:
+    {{- range $key, $value := .Values.objectSelector.matchLabels  }}
+      {{ $key }}: {{ $value }}
+    {{- end }}
   rules:
   - apiGroups:
     - ""

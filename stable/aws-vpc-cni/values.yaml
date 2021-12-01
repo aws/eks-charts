@@ -167,3 +167,7 @@ eniConfig:
 
 cri:
   hostPath: # "/var/run/containerd/containerd.sock"
+
+objectSelector:
+  matchLabels:
+    #key: value
