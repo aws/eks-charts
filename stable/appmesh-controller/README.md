@@ -145,9 +145,9 @@ Use below command to download the policy if not already
 curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
 ```
 
-Apply the IAM policy directly to the worker nodes by replacing the `NODE_INSTANCE_IAM_ROLE_NAME`, `<policy-name>`, and `<policy-filename>` in below command:
+Apply the IAM policy directly to the worker nodes by replacing the `<NODE_INSTANCE_IAM_ROLE_NAME>`, `<policy-name>`, and `<policy-filename>` in below command:
 ```sh
-aws iam put-role-policy --role-name $NODE_INSTANCE_IAM_ROLE_NAME --policy-name <policy-name> --policy-document file://<policy-filename>
+aws iam put-role-policy --role-name <NODE_INSTANCE_IAM_ROLE_NAME> --policy-name <policy-name> --policy-document file://<policy-filename>
 ``` 
 
 Deploy appmesh-controller
