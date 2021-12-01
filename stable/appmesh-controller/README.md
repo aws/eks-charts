@@ -126,9 +126,9 @@ Reference this Service Account in your application pod spec. This should be the 
 https://github.com/aws/aws-app-mesh-examples/blob/5a2d04227593d292d52e5e2ca638d808ebed5e70/walkthroughs/howto-k8s-fargate/v1beta2/manifest.yaml.template#L220
 ``` 
 
-#### Without IRSA   
-If not setting up IAM role for service account, apply the IAM policies manually to your eks worker nodes. 
-**Note:** You can use the service account for controller iam policy from above steps or directly apply the controller iam policy to the Worker Nodes (Node Instance IAM Role)
+#### Without IRSA  
+Find the Node Instance IAM Role from your worker nodes and attach below policies to it.     
+**Note** If you created service account for the controller as indicated above then you can skip attaching the Controller IAM policy to worker nodes. Instead attach only the Envoy IAM policy.
 
 Controller IAM policy
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
@@ -137,8 +137,8 @@ Use below command to download the policy if not already
 curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
 ```
 
+Envoy IAM policy  
 Attach the below envoy policy to your Worker Nodes (Node Instance IAM Role)
-Envoy IAM policy
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json  
 Use below command to download the policy if not already
 ```sh
