@@ -15,7 +15,7 @@ image:
 sidecar:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
-    tag: v1.19.1.0-prod
+    tag: v1.19.1.1-prod
     # sidecar.logLevel: Envoy log level can be info, warn, error or debug
   logLevel: info
   envoyAdminAccessPort: 9901
@@ -39,11 +39,11 @@ sidecar:
 init:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
-    tag: v3-prod
+    tag: v4-prod
 
 xray:
   image:
-    repository: amazon/aws-xray-daemon
+    repository: public.ecr.aws/xray/aws-xray-daemon
     tag: latest
 
 nameOverride: ""
@@ -120,8 +120,10 @@ tracing:
   provider: x-ray
   # tracing.address: Jaeger or Datadog agent server address (ignored for X-Ray)
   address: appmesh-jaeger.appmesh-system
-  # tracing.port: Jaeger or Datadog agent server port
+  # tracing.port: X-Ray, Jaeger or Datadog agent server port
   port: 2000
+  # tracing.samplingRate: X-Ray tracer sampling rate
+  samplingRate: 0.05
 
 stats:
   # stats.tagsEnabled: `true` if Envoy should include app-mesh tags
@@ -132,6 +134,8 @@ stats:
   statsdAddress: 127.0.0.1
   #stats.statsdPort: DogStatsD daemon port
   statsdPort: 8125
+  #stats.statsdSocketPath: DogStatsD unix domain socket path
+  statsdSocketPath: ""
 
 # Enable cert-manager
 enableCertManager: false
