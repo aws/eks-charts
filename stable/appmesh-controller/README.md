@@ -94,7 +94,7 @@ Make sure that the Envoy proxies have the following IAM policies attached for th
 
 There are **2 ways** you can attach the above policy to the Envoy Pod  
 #### With IRSA     
-Download the Envoy IAM policy
+Download the Envoy IAM polocy  
 ```
 curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
 ```
@@ -126,14 +126,29 @@ Reference this Service Account in your application pod spec. This should be the 
 https://github.com/aws/aws-app-mesh-examples/blob/5a2d04227593d292d52e5e2ca638d808ebed5e70/walkthroughs/howto-k8s-fargate/v1beta2/manifest.yaml.template#L220
 ``` 
 
-#### Without IRSA   
-If not setting up IAM role for service account, apply the IAM policies manually to your worker nodes:
+#### Without IRSA  
+Find the Node Instance IAM Role from your worker nodes and attach below policies to it.     
+**Note** If you created service account for the controller as indicated above then you can skip attaching the Controller IAM policy to worker nodes. Instead attach only the Envoy IAM policy.
 
 Controller IAM policy
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+Use below command to download the policy if not already
+```sh
+curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+```
 
-Envoy IAM policy
+Envoy IAM policy  
+Attach the below envoy policy to your Worker Nodes (Node Instance IAM Role)
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json  
+Use below command to download the policy if not already
+```sh
+curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
+```
+
+Apply the IAM policy directly to the worker nodes by replacing the `<NODE_INSTANCE_IAM_ROLE_NAME>`, `<policy-name>`, and `<policy-filename>` in below command:
+```sh
+aws iam put-role-policy --role-name <NODE_INSTANCE_IAM_ROLE_NAME> --policy-name <policy-name> --policy-document file://<policy-filename>
+``` 
 
 Deploy appmesh-controller
 ```sh
@@ -379,18 +394,16 @@ Parameter | Description | Default
 `init.image.tag` | Route manager image tag | `<VERSION>`
 `stats.tagsEnabled` |  If `true`, Envoy should include app-mesh tags | `false`
 `stats.statsdEnabled` |  If `true`, Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125 | `false`
-`stats.statsdAddress` |  DogStatsD daemon IP address. This will be overridden if `stats.statsdSocketPath` is specified | `127.0.0.1`
-`stats.statsdPort` |  DogStatsD daemon port. This will be overridden if `stats.statsdSocketPath` is specified | `8125`
-`stats.statsdSocketPath` | DogStatsD Unix domain socket path. If statsd is enabled but this value is not specified then we will use combination of <statsAddress:statsPort> as the default | None
+`stats.statsdAddress` |  DogStatsD daemon IP address | `127.0.0.1`
+`stats.statsdPort` |  DogStatsD daemon port | `8125`
 `cloudMapCustomHealthCheck.enabled` |  If `true`, CustomHealthCheck will be enabled for CloudMap Services | `false`
 `cloudMapDNS.ttl` |  Sets CloudMap DNS TTL | `300`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`
 `tracing.provider` |  The tracing provider can be x-ray, jaeger or datadog | `x-ray`
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`
 `tracing.port` |  Jaeger or Datadog agent port (ignored for X-Ray) | `9411`
-`tracing.samplingRate` | X-Ray tracer sampling rate. Value can be a decimal number between 0 and 1.00 (100%)  | `0.05`
 `enableCertManager` |  Enable Cert-Manager | `false`
-`xray.image.repository` | X-Ray image repository | `public.ecr.aws/xray/aws-xray-daemon`
+`xray.image.repository` | X-Ray image repository | `amazon/aws-xray-daemon`
 `xray.image.tag` | X-Ray image tag | `latest`
 `accountId` | AWS Account ID for the Kubernetes cluster | None
 `env` |  environment variables to be injected into the appmesh-controller pod | `{}`
