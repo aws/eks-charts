@@ -228,7 +228,9 @@ disableRestrictedSecurityGroupRules: true
 
 objectSelector:
   matchExpressions:
-  - key: app.kubernetes.io/name
-    operator: In
-    values:
-    - app-2048
+  #- key: <key>
+    #operator: <operator>
+    #values:
+    #- <value>
+  matchLabels:
+    #key: value

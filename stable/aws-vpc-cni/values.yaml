@@ -167,4 +167,3 @@ eniConfig:
 
 cri:
   hostPath: # "/var/run/containerd/containerd.sock"
-
