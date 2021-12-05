@@ -32,22 +32,17 @@ webhooks:
       values:
       - enabled
   objectSelector:
-    {{- if .Values.objectSelector.matchExpressions }}
     matchExpressions:
-    {{- range $key, $keyvalue := .Values.objectSelector.matchExpressions  }}
-    - key: {{ $key }}
-      operator: {{ $keyvalue.operator }}
+    - key: app.kubernetes.io/name
+      operator: NotIn
       values:
-      {{- range $value := $keyvalue.values  }}
-      - {{ $value }}
-      {{- end }}
-    {{- end }}
+      - {{ include "aws-load-balancer-controller.name" . }}
+    {{- if .Values.objectSelector.matchExpressions }}
+    {{- toYaml .Values.objectSelector.matchExpressions | nindent 4 }}
     {{- end }}
     {{- if .Values.objectSelector.matchLabels }}
     matchLabels:
-    {{- range $key, $value := .Values.objectSelector.matchLabels  }}
-      {{ $key }}: {{ $value }}
-    {{- end }}
+    {{- toYaml .Values.objectSelector.matchLabels | nindent 6 }}
     {{- end }}
   rules:
   - apiGroups:

@@ -168,11 +168,3 @@ eniConfig:
 cri:
   hostPath: # "/var/run/containerd/containerd.sock"
 
-objectSelector:
-  matchExpressions:
-  - key: app.kubernetes.io/name
-    operator: NotIn
-    values:
-    - {{ include "aws-load-balancer-controller.name" . }}
-  matchLabels:
-    #key: value
