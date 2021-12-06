@@ -29,3 +29,6 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `serviceAccount.create` | Whether a new service account should be created | `true` | 
 | `serviceAccount.name` | Service account to be used | | 
 | `hostNetwork` | Allow to use the network namespace and network resources of the node | `false` | 
+| `nodeSelector` | Node labels for pod assignment	 | {} | 
+| `tolerations` | Optional deployment tolerations	 | {} | 
+| `annotations` | Optional pod annotations	 | {} | 

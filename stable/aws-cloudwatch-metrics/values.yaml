@@ -18,3 +18,9 @@ serviceAccount:
   name:
 
 hostNetwork: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
