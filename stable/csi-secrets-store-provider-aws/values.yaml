@@ -1,0 +1,38 @@
+
+imagePullSecrets: []
+
+image:
+  repository: public.ecr.aws/aws-secrets-manager/secrets-store-csi-driver-provider-aws
+  tag: 1.0.r1-10-g1942553-2021.06.04.00.07-linux-amd64
+  pullPolicy: IfNotPresent
+
+nodeSelector: {}
+tolerations: []
+
+port: 8989
+
+privileged: false
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 100Mi
+  limits:
+    cpu: 50m
+    memory: 100Mi
+
+podLabels: {}
+podAnnotations: {}
+
+updateStrategy:
+  type: RollingUpdate
+
+secrets-store-csi-driver:
+  install: false
+
+## Install default service account
+rbac:
+  install: true
+  pspEnabled: false
+  serviceAccount:
+    name:
