@@ -1,0 +1,4 @@
+{{ $.Chart.Name }} has been installed. Check its status by running:
+  kubectl --namespace {{ .Release.Namespace }} get ds
+
+Visit https://github.com/aws/eks-charts/tree/master/stable/csi-secrets-store-provider-aws
