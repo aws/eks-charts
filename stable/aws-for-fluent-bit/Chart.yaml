@@ -1,7 +1,7 @@
 apiVersion: v1
 name: aws-for-fluent-bit
 description: A Helm chart to deploy aws-for-fluent-bit project
-version: 0.1.12
+version: 0.1.13
 appVersion: 2.21.5
 home: https://github.com/aws/eks-charts
 icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
