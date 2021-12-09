@@ -29,7 +29,7 @@ The following table lists the configurable parameters of the csi-secrets-store-p
 | --- | --- | --- |
 | `imagePullSecrets` | Secrets to be used when pulling images | `[]` |
 | `image.repository` | Image repository | `public.ecr.aws/aws-secrets-manager/secrets-store-csi-driver-provider-aws` |
-| `image.pullPolicy` | Image pull policy | `Always` |
+| `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `image.tag`| Image tag | `1.0.r2-2021.08.13.20.34-linux-amd64` |
 | `nodeSelector` | Node Selector for the daemonset on nodes | `{}` |
 | `tolerations` | Tolerations for the daemonset on nodes  | `[]` |
