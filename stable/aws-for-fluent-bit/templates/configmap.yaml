@@ -27,7 +27,7 @@ data:
         Refresh_Interval  {{ .Values.input.refreshInterval }}
 
 {{- if .Values.extraInputs }}
-{{ .Values.extraInputs | indent 4}}
+{{ .Values.extraInputs | indent 8}}
 {{- end }}
 
     [FILTER]
@@ -43,7 +43,7 @@ data:
         K8S-Logging.Exclude {{ .Values.filter.k8sLoggingExclude }}
 
 {{- if .Values.extraFilters }}
-{{ .Values.extraFilters | indent 4}}
+{{ .Values.extraFilters | indent 8}}
 {{- end }}
 
 {{- if .Values.cloudWatch.enabled }}
@@ -176,7 +176,7 @@ data:
 {{- end }}
 
 {{- if .Values.extraOutputs }}
-{{ .Values.extraOutputs | indent 4}}
+{{ .Values.extraOutputs | indent 8}}
 {{- end }}
 
 
