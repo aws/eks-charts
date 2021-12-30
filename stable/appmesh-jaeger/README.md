@@ -44,7 +44,7 @@ The [configuration](#configuration) section lists the parameters that can be con
 To uninstall/delete the `appmesh-jaeger` deployment:
 
 ```console
-helm delete --purge appmesh-jaeger
+helm delete appmesh-jaeger -n appmesh-system
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
