@@ -15,6 +15,10 @@ data:
         Parsers_File /fluent-bit/etc/parser_extra.conf
 {{- end }}
 
+{{- if .Values.service.extraKeys }}
+{{ .Values.service.extraKeys | indent 8}}
+{{- end }}
+
     [INPUT]
         Name              tail
         Tag               {{ .Values.input.tag }}

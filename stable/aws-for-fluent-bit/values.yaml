@@ -14,10 +14,18 @@ fullnameOverride: ""
 service:
   parsersFiles:
     - /fluent-bit/parsers/parsers.conf
+  # extraKeys: |
+  #   HTTP_Server  On
   # extraParsers: |
   #   [PARSER]
   #       Name   logfmt
   #       Format logfmt
+
+extraContainerConfig: {}
+    #    ports:
+    #    - containerPort: 2020
+    #      name: metrics
+    #      protocol: TCP
 
 input:
   tag: "kube.*"
@@ -139,7 +147,7 @@ affinity: {}
 
 annotations: {}
   # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit
-  
+
 env: []
 ## To add extra environment variables to the pods, add as below
 # env:
@@ -157,7 +165,7 @@ env: []
 #     valueFrom:
 #       fieldRef:
 #         fieldPath: spec.nodeName
-  
+
 
 volumes:
   - name: varlog
