@@ -2,6 +2,12 @@ global:
 ## Override the deployment namespace
 #   namespaceOverride:
 
+extraContainerConfig:
+    #    ports:
+    #    - containerPort: 2020
+    #      name: metrics
+    #      protocol: TCP
+
 image:
   repository: amazon/aws-for-fluent-bit
   tag: 2.13.0
