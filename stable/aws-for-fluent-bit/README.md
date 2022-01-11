@@ -94,6 +94,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `updateStrategy` | Optional update strategy | `type: RollingUpdate` |
 | `affinity` | Map of node/pod affinities | `{}` |
 | `env` | Optional List of pod environment variables for the pods | `[]` |
+| `extraContainerConfig` | Optional Extra pod configurations variables |
 | `tolerations` | Optional deployment tolerations | `[]` |
 | `nodeSelector` | Node labels for pod assignment | `{}` |
 | `annotations` | Optional pod annotations | `{}` |
