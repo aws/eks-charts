@@ -41,6 +41,10 @@ calico:
       beta.kubernetes.io/os: linux
     podAnnotations: {}
     podLabels: {}
+    updateStrategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 1
   typha_autoscaler:
     resources:
       requests:

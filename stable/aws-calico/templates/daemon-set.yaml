@@ -12,10 +12,10 @@ spec:
       {{- if .Values.calico.node.podLabels }}
 {{ toYaml .Values.calico.node.podLabels | indent 6 }}
       {{- end }}
+  {{- if .Values.calico.node.updateStrategy }}
   updateStrategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
+{{ toYaml .Values.calico.node.updateStrategy | indent 4 }}
+  {{- end }}
   template:
     metadata:
       labels:
