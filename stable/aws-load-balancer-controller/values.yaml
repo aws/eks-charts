@@ -26,6 +26,11 @@ serviceAccount:
   name:
   # Automount API credentials for a Service Account.
   automountServiceAccountToken: true
+  # List of image pull secrets to add to the Service Account.
+  # e.g.
+  # imagePullSecrets
+  # - name: docker
+  imagePullSecrets: []
 
 rbac:
   # Specifies whether rbac resources should be created
