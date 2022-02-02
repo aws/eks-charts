@@ -27,10 +27,10 @@ Note:
 - The Tigera operator installs resources in the calico-system namespace. Previous aws-calico install methods use the kube-system namespace instead.
 
 ## Configuration
-The configurable parameters can be configured in `Installation`. Please refer to [Tigera Operator Installation document](https://docs.tigera.io/reference/installation/api#operator.tigera.io/v1.InstallationSpec) for
+The configurable parameters can be configured in `installation`. Please refer to [Tigera Operator installation document](https://docs.tigera.io/reference/installation/api#operator.tigera.io/v1.InstallationSpec) for
 details.
 
-Alternatively, provided `values.yaml` contains the Installation where the parameters can be configured:
+Alternatively, provided `values.yaml` contains the installation where the parameters can be configured:
 
 ```shell script
 $ helm install aws-tigera-operator eks/aws-tigera-operator --values values.yaml

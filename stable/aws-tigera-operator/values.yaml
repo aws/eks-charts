@@ -5,4 +5,7 @@ tigeraOperator:
   image: quay.io/tigera/operator
 
 installation:
+  enabled: "true"
   kubernetesProvider: "EKS"
+
+imagePullSecrets: {}
