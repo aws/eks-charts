@@ -145,10 +145,10 @@ spec:
           {{- if or .Values.enablePrometheusServer .Values.enableProbesServer }}
           ports:
           {{- if .Values.enableProbesServer }}
-           - name: liveness-probe
-             protocol: TCP
-             containerPort: {{ .Values.probes.httpGet.port }}
-             hostPort: {{ .Values.probes.httpGet.port }}
+            - name: liveness-probe
+              protocol: TCP
+              containerPort: {{ .Values.probes.httpGet.port }}
+              hostPort: {{ .Values.probes.httpGet.port }}
           {{- end }}
           {{- if .Values.enablePrometheusServer }}
             - name: http-metrics
