@@ -33,3 +33,9 @@ webhookService:
   port: 443
   # webhookService.targetPort: Target port used by webhook service
   targetPort: 443
+
+webhookConfiguration:
+  # webhookConfiguration.failurePolicy: defines how errors from the admission webhook are handled
+  # Default failurePolicy in admissionregistration.k8s.io/v1beta1 is `Ignore`
+  # Default failurePolicy in admissionregistration.k8s.io/v1 is `Fail` 
+  failurePolicy:
