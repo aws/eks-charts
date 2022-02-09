@@ -1,0 +1,24 @@
+apiVersion: v2
+name: csi-secrets-store-provider-aws
+version: 0.0.2
+appVersion: 1.0.r2
+kubeVersion: ">=1.17.0-0"
+description: A Helm chart to install the Secrets Store CSI Driver and the AWS Key Management Service Provider inside a Kubernetes cluster.
+icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
+sources:
+  - https://github.com/aws/eks-charts/
+home: https://github.com/aws/eks-charts/
+# I put my name because I did not know who else to insert but
+# more than willingly I pass the burden and honors to someone else.
+maintainers:
+  - name: Pierluigi Lenoci
+    email: pierluigi.lenoci@gmail.com
+dependencies:
+- name: secrets-store-csi-driver
+  repository: https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
+  version: 1.0.0
+  condition: secrets-store-csi-driver.install
+keywords:
+  - eks
+  - secrets-store-csi-driver
+  - csi

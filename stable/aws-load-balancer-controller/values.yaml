@@ -6,7 +6,7 @@ replicaCount: 2
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller
-  tag: v2.3.0
+  tag: v2.3.1
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -184,6 +184,13 @@ env:
 # recommended if using the Amazon VPC CNI plugin.
 hostNetwork: false
 
+# Specifies the dnsPolicy that should be used for pods in the deployment
+#
+# This may need to be used to be changed given certain conditions. For instance, if one uses the cilium CNI
+# with certain settings, one may need to set `hostNetwork: true` and webhooks won't work unless `dnsPolicy`
+# is set to `ClusterFirstWithHostNet`. See https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
+dnsPolicy:
+
 # extraVolumeMounts are the additional volume mounts. This enables setting up IRSA on non-EKS Kubernetes cluster
 extraVolumeMounts:
   # - name: aws-iam-token
@@ -224,4 +231,4 @@ enableBackendSecurityGroup:
 backendSecurityGroup:
 
 # disableRestrictedSecurityGroupRules specifies whether to disable creating port-range restricted security group rules for traffic
-disableRestrictedSecurityGroupRules: true
+disableRestrictedSecurityGroupRules:
