@@ -1,5 +1,5 @@
 # Calico on AWS
-**Note**: The recommended way to install calico on EKS is via tigera-opeartor instead of this helm-chart. 
+**Note**: The recommended way to install calico on EKS is via tigera-opeartor instead of this helm-chart.
 You can follow https://docs.aws.amazon.com/eks/latest/userguide/calico.html for detailed instructions.
 
 
@@ -57,6 +57,7 @@ The following table lists the configurable parameters for this chart and their d
 | `calico.node.nodeSelector`               | Calico Node Node Selector                               | `{ beta.kubernetes.io/os: linux }` |
 | `calico.node.podAnnotations`             | Calico Node Pod Annotations                             | `{}`                            |
 | `calico.node.podLabels`                  | Calico Node Pod Labels                                  | `{}`                            |
+| `calico.node.updateStrategy`             | Calico Node Update Strategy                             | `type: RollingUpdate, rollingUpdate.maxUnavailable: 1` |
 | `calico.typha_autoscaler.resources`      | Calico Typha Autoscaler Resources                       | `requests.memory: 16Mi, requests.cpu: 10m, limits.memory: 32Mi, limits.cpu: 10m` |
 | `calico.typha_autoscaler.nodeSelector`   | Calico Typha Autoscaler Node Selector                   | `{ beta.kubernetes.io/os: linux }` |
 | `calico.typha_autoscaler.podAnnotations` | Calico Typha Autoscaler Pod Annotations                 | `{}`                            |
