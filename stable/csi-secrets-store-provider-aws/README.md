@@ -33,7 +33,7 @@ The following table lists the configurable parameters of the csi-secrets-store-p
 | `image.repository` | Image repository | `public.ecr.aws/aws-secrets-manager/secrets-store-csi-driver-provider-aws` |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `image.tag`| Image tag | `1.0.r2-2021.08.13.20.34-linux-amd64` |
-| `env`|  Environment variables to be passed for the daemonset | `[]` |
+| `env`|  Environment variables to be passed for the daemonset | `{}` |
 | `nodeSelector` | Node Selector for the daemonset on nodes | `{}` |
 | `tolerations` | Tolerations for the daemonset on nodes  | `[]` |
 | `ports` | Liveness and readyness tcp probe port  | `8989` |
