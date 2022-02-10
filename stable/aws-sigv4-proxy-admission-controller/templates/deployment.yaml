@@ -15,6 +15,9 @@ spec:
     metadata:
       labels:
         app: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
+      annotations:
+        # Force the pods to restart when webhook.yaml is updated. This is to ensure certificate is in sync.
+        checksum/cert: {{ include (print $.Template.BasePath "/webhook.yaml") . | sha256sum }}
     spec:
       serviceAccountName: {{ template "aws-sigv4-proxy-admission-controller.serviceAccountName" . }}
       containers:
