@@ -8,6 +8,7 @@ image:
 
 nodeSelector: {}
 tolerations: []
+env: []
 
 port: 8989
 
