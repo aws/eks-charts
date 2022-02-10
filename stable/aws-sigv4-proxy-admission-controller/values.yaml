@@ -24,6 +24,12 @@ serviceAccount:
   # serviceAccount.name: The name of the service account to create or use
   name: ""
 
+priorityClass:
+  # priorityClass.create: Whether to create a priority class or not
+  create: false
+  # priorityClass.name:  The name of the priority class to create or use 
+  name: ""
+
 rbac:
   # rbac.create: Whether to create rbac resources or not
   create: true

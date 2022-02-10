@@ -20,6 +20,9 @@ spec:
         checksum/cert: {{ include (print $.Template.BasePath "/webhook.yaml") . | sha256sum }}
     spec:
       serviceAccountName: {{ template "aws-sigv4-proxy-admission-controller.serviceAccountName" . }}
+{{- if or (.Values.priorityClass.create) (ne .Values.priorityClass.name "") }}
+      priorityClassName: {{ template "aws-sigv4-proxy-admission-controller.priorityClassName" . }}
+{{- end }}
       containers:
         - name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
