@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: {{ include "aws-node-termination-handler.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "aws-node-termination-handler.labels" . | nindent 4 }}
 spec:
@@ -45,6 +46,10 @@ spec:
       {{- end }}
       hostNetwork: {{ .Values.useHostNetwork }}
       dnsPolicy: {{ default .Values.linuxDnsPolicy .Values.dnsPolicy }}
+      {{- if .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 10 }}
+      {{- end }}
       containers:
         - name: aws-node-termination-handler
           {{- with .Values.securityContext }}
@@ -152,9 +157,9 @@ spec:
              containerPort: {{ .Values.probes.httpGet.port }}
           {{- end }}
           {{- if .Values.enablePrometheusServer }}
-            - name: http-metrics
-              protocol: TCP
-              containerPort: {{ .Values.prometheusServerPort }}
+           - name: http-metrics
+             protocol: TCP
+             containerPort: {{ .Values.prometheusServerPort }}
           {{- end }}
           {{- end }}
           {{- if .Values.enableProbesServer }}
