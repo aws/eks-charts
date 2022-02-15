@@ -15,7 +15,6 @@ service:
   parsersFiles:
     - /fluent-bit/parsers/parsers.conf
   # extraParsers: |
-  #   [PARSER]
   #       Name   logfmt
   #       Format logfmt
 
@@ -30,7 +29,6 @@ input:
   refreshInterval: 10
 
 # extraInputs: |
-#   [INPUT]
 #       Name         winlog
 #       Channels     Setup,Windows PowerShell
 #       Interval_Sec 1
@@ -46,7 +44,6 @@ filter:
   k8sLoggingExclude: "On"
 
 # extraFilters: |
-#   [FILTER]
 #       Name   grep
 #       Match  *
 #       Exclude log lvl=debug*
@@ -108,7 +105,6 @@ elasticsearch:
   replaceDots: "On"
 
 # extraOutputs: |
-#   [OUTPUT]
 #     Name file
 #     Format template
 #     Template {time} used={Mem.used} free={Mem.free} total={Mem.total}
