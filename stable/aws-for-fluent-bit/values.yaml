@@ -14,7 +14,8 @@ fullnameOverride: ""
 service:
   parsersFiles:
     - /fluent-bit/parsers/parsers.conf
-  # extraParsers: |
+  # additionalParsers: |
+  #   [PARSER]
   #       Name   logfmt
   #       Format logfmt
 
@@ -28,7 +29,8 @@ input:
   skipLongLines: "On"
   refreshInterval: 10
 
-# extraInputs: |
+# additionalInputs: |
+#   [INPUT]
 #       Name         winlog
 #       Channels     Setup,Windows PowerShell
 #       Interval_Sec 1
@@ -42,8 +44,11 @@ filter:
   keepLog: "On"
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
+  # extraParameters: |
+  #   ...
 
-# extraFilters: |
+# additionalFilters: |
+#   [FILTER]
 #       Name   grep
 #       Match  *
 #       Exclude log lvl=debug*
@@ -62,6 +67,8 @@ cloudWatch:
   autoCreateGroup: true
   endpoint:
   credentialsEndpoint: {}
+  # extraParameters: |
+  #   ...
 
 firehose:
   enabled: true
@@ -72,6 +79,8 @@ firehose:
   roleArn:
   endpoint:
   timeKey:
+  # extraParameters: |
+  #   ...
 
 kinesis:
   enabled: true
@@ -92,6 +101,8 @@ kinesis:
   experimental:
     concurrency:
     concurrencyRetries:
+  # extraParameters: |
+  #   ...
 
 elasticsearch:
   enabled: true
@@ -103,8 +114,11 @@ elasticsearch:
   port: "443"
   retryLimit: 6
   replaceDots: "On"
+  # extraParameters: |
+  #   Index = my-index
 
-# extraOutputs: |
+# additionalOutputs: |
+#   [OUTPUT]
 #     Name file
 #     Format template
 #     Template {time} used={Mem.used} free={Mem.free} total={Mem.total}
@@ -135,7 +149,7 @@ affinity: {}
 
 annotations: {}
   # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit
-  
+
 env: []
 ## To add extra environment variables to the pods, add as below
 # env:
@@ -153,7 +167,7 @@ env: []
 #     valueFrom:
 #       fieldRef:
 #         fieldPath: spec.nodeName
-  
+
 
 volumes:
   - name: varlog
