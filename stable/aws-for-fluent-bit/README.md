@@ -42,7 +42,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `extraInputs` | Append to input with this value | `""` |
 | `additionalInputs` | Adding more inputs with this value | `""` |
 | `filter.*` | Values for kubernetes filter | |
-| `extraFilters` | Append to filters with value |
+| `extraFilters` | Append to filter with value |
 | `additionalFilters` | Adding more filters with value |
 | `cloudWatch.enabled` | Whether this plugin should be enabled or not [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit) | `true` | ✔
 | `cloudWatch.match` | The log filter | `*` | ✔
@@ -57,7 +57,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `cloudWatch.autoCreateGroup` | Automatically create the log group. Valid values are "true" or "false" (case insensitive). | true |
 | `cloudWatch.endpoint` | Specify a custom endpoint for the CloudWatch Logs API. |  |
 | `cloudWatch.credentialsEndpoint` | Specify a custom HTTP endpoint to pull credentials from. [more info](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit) |  |
-| `cloudWatch.extraParameters` | Append extra outputs with value | `""` |
+| `cloudWatch.extraOutputs` | Append extra outputs with value | `""` |
 | `firehose.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-firehose-for-fluent-bit) | `true` | ✔
 | `firehose.match` | The log filter | `"*"` | ✔
 | `firehose.region` | The region which your Firehose delivery stream(s) is/are in. | `"us-east-1"` | ✔
@@ -67,7 +67,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `firehose.endpoint` | Specify a custom endpoint for the Kinesis Firehose API. | |
 | `firehose.timeKey` | Add the timestamp to the record under this key. By default the timestamp from Fluent Bit will not be added to records sent to Kinesis. | |
 | `firehose.timeKeyFormat` | strftime compliant format string for the timestamp; for example, `%Y-%m-%dT%H:%M:%S%z`. This option is used with `time_key`. | |
-| `firehose.extraParameters` | Append extra outputs with value | `""` |
+| `firehose.extraOutputs` | Append extra outputs with value | `""` |
 | `kinesis.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-streams-for-fluent-bit) | `true` | ✔
 | `kinesis.match` | The log filter | `"*"` | ✔
 | `kinesis.region` | The region which your Kinesis Data Stream is in. | `"us-east-1"` | ✔
@@ -83,7 +83,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `kinesis.timeKeyFormat` |  strftime compliant format string for the timestamp; for example, `%Y-%m-%dT%H:%M:%S%z`. This option is used with `time_key`. | |
 | `kinesis.aggregation` | Setting aggregation to `true` will enable KPL aggregation of records sent to Kinesis. This feature isn't compatible with the `partitionKey` feature.  See more about KPL aggregation [here](https://github.com/aws/amazon-kinesis-streams-for-fluent-bit#kpl-aggregation). | |
 | `kinesis.compression` | Setting `compression` to `zlib` will enable zlib compression of each record. By default this feature is disabled and records are not compressed. | |
-| `kinesis.extraParameters` | Append extra outputs with value | `""` |
+| `kinesis.extraOutputs` | Append extra outputs with value | `""` |
 | `elasticsearch.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch) | `true` | ✔
 | `elasticsearch.match` | The log filter | `"*"` | ✔
 | `elasticsearch.awsRegion` | The region which your Firehose delivery stream(s) is/are in. | `"us-east-1"` | ✔
@@ -93,7 +93,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `elasticsearch.port` | TCP Port of the target service. | 443 |
 | `elasticsearch.retryLimit` | Integer value to set the maximum number of retries allowed. N must be >= 1  | 6 |
 | `elasticsearch.replaceDots` | Enable or disable Replace_Dots  | On |
-| `elasticsearch.extraParameters` | Append extra outputs with value | `""` |
+| `elasticsearch.extraOutputs` | Append extra outputs with value | `""` |
 | `additionalOutputs` | add outputs with value | `""` |
 | `priorityClassName` | Name of Priority Class to assign pods | |
 | `updateStrategy` | Optional update strategy | `type: RollingUpdate` |

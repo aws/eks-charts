@@ -44,7 +44,7 @@ filter:
   keepLog: "On"
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
-  # extraParameters: |
+  # extraFilters: |
   #   ...
 
 # additionalFilters: |
@@ -67,7 +67,7 @@ cloudWatch:
   autoCreateGroup: true
   endpoint:
   credentialsEndpoint: {}
-  # extraParameters: |
+  # extraOutputs: |
   #   ...
 
 firehose:
@@ -79,7 +79,7 @@ firehose:
   roleArn:
   endpoint:
   timeKey:
-  # extraParameters: |
+  # extraOutputs: |
   #   ...
 
 kinesis:
@@ -101,7 +101,7 @@ kinesis:
   experimental:
     concurrency:
     concurrencyRetries:
-  # extraParameters: |
+  # extraOutputs: |
   #   ...
 
 elasticsearch:
@@ -114,7 +114,7 @@ elasticsearch:
   port: "443"
   retryLimit: 6
   replaceDots: "On"
-  # extraParameters: |
+  # extraOutputs: |
   #   Index = my-index
 
 # additionalOutputs: |
