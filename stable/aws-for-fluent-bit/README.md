@@ -36,13 +36,14 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `serviceAccount.create` | Whether a new service account should be created | `true` |
 | `serviceAccount.name` | Name of the service account | `aws-for-fluent-bit` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` |
+| `service.extraService` | Append to existing service with this value | `""` |
 | `service.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
 | `service.additionalParsers` | Adding more parsers with this value | `""` |
 | `input.*` | Values for Kubernetes input | |
-| `extraInputs` | Append to input with this value | `""` |
+| `extraInputs` | Append to existing input with this value | `""` |
 | `additionalInputs` | Adding more inputs with this value | `""` |
 | `filter.*` | Values for kubernetes filter | |
-| `extraFilters` | Append to filter with value |
+| `filter.extraFilters` | Append to existing filter with value |
 | `additionalFilters` | Adding more filters with value |
 | `cloudWatch.enabled` | Whether this plugin should be enabled or not [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit) | `true` | ✔
 | `cloudWatch.match` | The log filter | `*` | ✔

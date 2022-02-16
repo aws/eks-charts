@@ -48,7 +48,7 @@ Selector labels
 */}}
 {{- define "aws-for-fluent-bit.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "aws-for-fluent-bit.name" . }}
-app.kubernetes.io/instance: {{ include "aws-for-fluent-bit.namespace" . }}
+app.kubernetes.io/instance: {{ include "aws-for-fluent-bit.fullname" . }}
 {{- end -}}
 
 {{/*

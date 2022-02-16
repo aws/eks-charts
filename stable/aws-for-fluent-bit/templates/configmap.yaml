@@ -8,6 +8,9 @@ metadata:
 data:
   fluent-bit.conf: |
     [SERVICE]
+{{- if .Values.service.extraService }}
+{{ .Values.service.extraService | indent 8 }}
+{{- end }}
 {{- range .Values.service.parsersFiles }}
         Parsers_File {{ . }}
 {{- end }}
@@ -25,12 +28,12 @@ data:
         Mem_Buf_Limit     {{ .Values.input.memBufLimit }}
         Skip_Long_Lines   {{ .Values.input.skipLongLines }}
         Refresh_Interval  {{ .Values.input.refreshInterval }}
-{{- if .Values.extraInputs }}
-{{ .Values.extraInputs | indent 8}}
+{{- if .Values.input.extraInputs }}
+{{ .Values.input.extraInputs | indent 8 }}
 {{- end }}
 
 {{- if .Values.additionalInputs }}
-{{ .Values.additionalInputs | indent 4}}
+{{ .Values.additionalInputs | indent 4 }}
 {{- end }}
 
     [FILTER]
@@ -44,8 +47,8 @@ data:
         Keep_Log            {{ .Values.filter.keepLog }}
         K8S-Logging.Parser  {{ .Values.filter.k8sLoggingParser }}
         K8S-Logging.Exclude {{ .Values.filter.k8sLoggingExclude }}
-{{- if .Values.extraFilters }}
-{{ .Values.extraFilters | indent 8}}
+{{- if .Values.filter.extraFilters }}
+{{ .Values.filter.extraFilters | indent 8 }}
 {{- end }}
 
 {{- if .Values.additionalFilters }}
@@ -86,7 +89,7 @@ data:
         credentials_endpoint  {{ toJson .Values.cloudWatch.credentialsEndpoint }}
         {{- end -}}
         {{- if .Values.cloudWatch.extraOutputs }}
-{{ .Values.cloudWatch.extraOutputs | indent 8}}
+{{ .Values.cloudWatch.extraOutputs | indent 8 }}
         {{- end }}
 {{- end }}
 
@@ -112,7 +115,7 @@ data:
         time_key_format {{ .Values.firehose.timeKeyFormat }}
         {{- end -}}
         {{- if .Values.kinesis.extraOutputs }}
-{{ .Values.kinesis.extraOutputs | indent 8}}
+{{ .Values.kinesis.extraOutputs | indent 8 }}
         {{- end }}
 {{- end }}
 
@@ -163,7 +166,7 @@ data:
         experimental_concurrency_retries  {{ .Values.kinesis.experimental.concurrencyRetries }}
         {{- end -}}
         {{- if .Values.kinesis.extraOutputs }}
-{{ .Values.kinesis.extraOutputs | indent 8}}
+{{ .Values.kinesis.extraOutputs | indent 8 }}
         {{- end }}
 {{- end }}
 
@@ -189,16 +192,16 @@ data:
         Replace_Dots    {{ .Values.elasticsearch.replaceDots }}
         {{- end -}}
         {{- if .Values.elasticsearch.extraOutputs }}
-{{ .Values.elasticsearch.extraOutputs | indent 8}}
+{{ .Values.elasticsearch.extraOutputs | indent 8 }}
         {{- end }}
 {{- end }}
 
 {{- if .Values.additionalOutputs }}
-{{ .Values.additionalOutputs | indent 4}}
+{{ .Values.additionalOutputs | indent 4 }}
 {{- end }}
 
 
 {{- if .Values.service.extraParsers }}
   parser_extra.conf: |-
-{{ .Values.service.extraParsers | indent 4}}
+{{ .Values.service.extraParsers | indent 4 }}
 {{- end }}
