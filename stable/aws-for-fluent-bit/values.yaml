@@ -12,9 +12,16 @@ nameOverride: ""
 fullnameOverride: ""
 
 service:
+  ## Allow the service to be exposed for monitoring
+  ## https://docs.fluentbit.io/manual/administration/monitoring
+  # extraService: |
+  #   HTTP_Server  On
+  #   HTTP_Listen  0.0.0.0
+  #   HTTP_PORT    2020
   parsersFiles:
     - /fluent-bit/parsers/parsers.conf
-  # extraParsers: |
+  # additionalParsers: |
+  #   [PARSER]
   #       Name   logfmt
   #       Format logfmt
 
@@ -27,8 +34,11 @@ input:
   memBufLimit: 5MB
   skipLongLines: "On"
   refreshInterval: 10
+  # extraInputs: |
+  #   ...
 
-# extraInputs: |
+# additionalInputs: |
+#   [INPUT]
 #       Name         winlog
 #       Channels     Setup,Windows PowerShell
 #       Interval_Sec 1
@@ -42,8 +52,11 @@ filter:
   keepLog: "On"
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
+  # extraFilters: |
+  #   ...
 
-# extraFilters: |
+# additionalFilters: |
+#   [FILTER]
 #       Name   grep
 #       Match  *
 #       Exclude log lvl=debug*
@@ -62,6 +75,8 @@ cloudWatch:
   autoCreateGroup: true
   endpoint:
   credentialsEndpoint: {}
+  # extraOutputs: |
+  #   ...
 
 firehose:
   enabled: true
@@ -72,6 +87,8 @@ firehose:
   roleArn:
   endpoint:
   timeKey:
+  # extraOutputs: |
+  #   ...
 
 kinesis:
   enabled: true
@@ -92,6 +109,8 @@ kinesis:
   experimental:
     concurrency:
     concurrencyRetries:
+  # extraOutputs: |
+  #   ...
 
 elasticsearch:
   enabled: true
@@ -103,8 +122,11 @@ elasticsearch:
   port: "443"
   retryLimit: 6
   replaceDots: "On"
+  # extraOutputs: |
+  #   Index = my-index
 
-# extraOutputs: |
+# additionalOutputs: |
+#   [OUTPUT]
 #     Name file
 #     Format template
 #     Template {time} used={Mem.used} free={Mem.free} total={Mem.total}
@@ -135,7 +157,7 @@ affinity: {}
 
 annotations: {}
   # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit
-  
+
 env: []
 ## To add extra environment variables to the pods, add as below
 # env:
@@ -153,7 +175,7 @@ env: []
 #     valueFrom:
 #       fieldRef:
 #         fieldPath: spec.nodeName
-  
+
 
 volumes:
   - name: varlog
@@ -169,3 +191,27 @@ volumeMounts:
   - name: varlibdockercontainers
     mountPath: /var/lib/docker/containers
     readOnly: true
+
+
+serviceMonitor:
+  # service:
+  #   type: ClusterIP
+  #   port: 2020
+  #   targetPort: 2020
+  # When set true then use a ServiceMonitor to configure scraping
+  enabled: false
+  # Set the namespace the ServiceMonitor should be deployed
+  # namespace: monitoring
+  # Set how frequently Prometheus should scrape
+  # interval: 30s
+  # Set path of metrics, e.g /api/v1/metrics/prometheus
+  # telemetryPath: /api/v1/metrics/prometheus
+  # Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator
+  # labels:
+  # Set timeout for scrape
+  # timeout: 10s
+  # Set relabel_configs as per https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+  # relabelings: []
+  # Set of labels to transfer on the Kubernetes Service onto the target.
+  # targetLabels: []
+  # metricRelabelings: []
