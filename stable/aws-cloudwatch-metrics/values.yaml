@@ -24,3 +24,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+## Assign a PriorityClassName to pods if set
+# priorityClassName:
