@@ -32,3 +32,4 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `nodeSelector` | Node labels for pod assignment	 | {} | 
 | `tolerations` | Optional deployment tolerations	 | {} | 
 | `annotations` | Optional pod annotations	 | {} | 
+| `priorityClassName` | Optional priorityClassName	 | | 
