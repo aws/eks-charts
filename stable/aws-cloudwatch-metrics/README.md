@@ -32,3 +32,4 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `nodeSelector` | Node labels for pod assignment	 | {} | 
 | `tolerations` | Optional deployment tolerations	 | {} | 
 | `annotations` | Optional pod annotations	 | {} | 
+| `bottlerocket` | `true` if the data-plane of the EKS cluster is backed by [Bottlerocket](https://aws.amazon.com/bottlerocket/) AMIs | `false` | 

@@ -1,6 +1,6 @@
 image:
   repository: amazon/cloudwatch-agent
-  tag: 1.247345.36b249270
+  tag: 1.247350.0b251780
   pullPolicy: IfNotPresent
 
 clusterName: cluster_name
@@ -24,3 +24,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# true if the EKS cluster is using bottlerocket-backed data plane
+bottlerocket: false
