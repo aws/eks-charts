@@ -84,17 +84,6 @@ spec:
       - name: devdisk
         hostPath:
           path: /dev/disk/
-      {{- range .Values.additionalConfigVolumes }}
-      - name: {{ .name }}
-        {{- with .configMap }}
-        configMap:
-          name: {{ tpl .name $ }}
-          {{- with .items }}
-          items:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-        {{- end }}
-      {{- end }}
       terminationGracePeriodSeconds: 60
       {{- with .Values.nodeSelector }}
       nodeSelector:
