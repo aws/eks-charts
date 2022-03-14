@@ -25,9 +25,6 @@ tolerations: []
 
 affinity: {}
 
-prometheus:
-  enabled: false
-
 config:
   cwagentconfig.json: |
     {
@@ -41,9 +38,24 @@ config:
         "force_flush_interval": 5
       }
     }
-  # Provide Prometheus config YAML if prometheus.enabled is true
+
+prometheusConfig: {}
+  # # Optional: provide Prometheus config YAML here
   # prometheus.yaml: |
   #   global:
   #     scrape_interval: 1m
   #     scrape_timeout: 10s
-  #   # Add additional Prometheus config here, e.g. scrape_configs
+  #   scrape_configs:
+  #     # Add scrape configs here
+  #     [ - <scrape_config> ... ]
+  #   rule_files:
+  #     # If rules files are included here, ensure they are also included
+  #     # as additional keys of this prometheusConfig map
+  #     - prometheus_rules.yaml
+
+  # prometheus_rules.yaml: |
+  #   groups:
+  #     - name: example
+  #       rules:
+  #       - record: job:http_inprogress_requests:sum
+  #         expr: sum by (job) (http_inprogress_requests)

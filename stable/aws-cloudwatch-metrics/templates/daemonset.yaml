@@ -54,7 +54,7 @@ spec:
         - name: devdisk
           mountPath: /dev/disk
           readOnly: true
-        {{- if .Values.prometheus.enabled }}
+        {{- with .Values.prometheusConfig }}
         - name: prometheus-config
           mountPath: /etc/prometheusconfig
         {{- end }}
@@ -64,16 +64,10 @@ spec:
       - name: cwagent-config
         configMap:
           name: {{ include "aws-cloudwatch-metrics.fullname" . }}
-          items:
-          - key: cwagentconfig.json
-            path: cwagentconfig.json
-      {{- if .Values.prometheus.enabled }}
+      {{- with .Values.prometheusConfig }}
       - name: prometheus-config
         configMap:
-          name: {{ include "aws-cloudwatch-metrics.fullname" . }}
-          items:
-          - key: prometheus.yaml
-            path: prometheus.yaml
+          name: {{ include "aws-cloudwatch-metrics.fullname" $ }}-prometheus
       {{- end }}
       - name: rootfs
         hostPath:

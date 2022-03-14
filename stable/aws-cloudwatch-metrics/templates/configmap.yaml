@@ -9,3 +9,15 @@ data:
   {{$key }}: |
     {{- tpl $value $ | nindent 4 }}
 {{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "aws-cloudwatch-metrics.fullname" . }}-prometheus
+  labels:
+    {{- include "aws-cloudwatch-metrics.labels" . | nindent 4 }}
+data:
+{{- range $key, $value := .Values.prometheusConfig }}
+  {{$key }}: |
+    {{- tpl $value $ | nindent 4 }}
+{{- end }}

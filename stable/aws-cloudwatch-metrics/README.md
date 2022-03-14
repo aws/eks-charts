@@ -32,5 +32,5 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `nodeSelector` | Node labels for pod assignment	 | {} | 
 | `tolerations` | Optional deployment tolerations	 | {} | 
 | `annotations` | Optional pod annotations	 | {} | 
-| `prometheus.enabled` | Enables specifying Prometheus config. If set to `true`, include `prometheus.yaml` in `config` map.	 | `false` | 
 | `config` | Configuration for CloudWatch agent	 | See [values.yaml](./values.yaml) | ✔
+| `prometheusConfig` | Prometheus configuration for CloudWatch agent	 | {} | 
