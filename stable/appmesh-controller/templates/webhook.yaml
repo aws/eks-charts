@@ -121,7 +121,11 @@ data:
   tls.crt: {{ $tls.clientCert }}
   tls.key: {{ $tls.clientKey }}
 {{- else }}
+{{- if .Capabilities.APIVersions.Has "cert-manager.io/v1" }}
+apiVersion: cert-manager.io/v1
+{{- else }}
 apiVersion: cert-manager.io/v1alpha2
+{{- end }}
 kind: Certificate
 metadata:
   name: {{ template "appmesh-controller.fullname" . }}-serving-cert
@@ -137,7 +141,11 @@ spec:
     name: {{ template "appmesh-controller.fullname" . }}-selfsigned-issuer
   secretName: {{ template "appmesh-controller.fullname" . }}-webhook-server-cert
 ---
+{{- if .Capabilities.APIVersions.Has "cert-manager.io/v1" }}
+apiVersion: cert-manager.io/v1
+{{- else }}
 apiVersion: cert-manager.io/v1alpha2
+{{- end }}
 kind: Issuer
 metadata:
   name: {{ template "appmesh-controller.fullname" . }}-selfsigned-issuer
