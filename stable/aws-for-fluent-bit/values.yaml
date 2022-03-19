@@ -20,7 +20,7 @@ service:
   #   HTTP_PORT    2020
   parsersFiles:
     - /fluent-bit/parsers/parsers.conf
-  # additionalParsers: |
+  # extraParsers: |
   #   [PARSER]
   #       Name   logfmt
   #       Format logfmt
