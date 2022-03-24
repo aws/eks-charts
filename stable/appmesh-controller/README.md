@@ -94,7 +94,7 @@ Make sure that the Envoy proxies have the following IAM policies attached for th
 
 There are **2 ways** you can attach the above policy to the Envoy Pod  
 #### With IRSA     
-Download the Envoy IAM polocy  
+Download the Envoy IAM policy
 ```
 curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
 ```

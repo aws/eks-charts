@@ -9,7 +9,7 @@ preview: false
 
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
-  tag: v1.4.2
+  tag: v1.4.3
   pullPolicy: IfNotPresent
 
 sidecar:
