@@ -34,10 +34,10 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: CI_VERSION
-          value: "k8s/1.2.2"
+          value: "k8s/1.3.9"
         # Please don't change the mountPath
         volumeMounts:
-        - name: cwagentconfig
+        - name: cwagent-config
           mountPath: /etc/cwagentconfig
         - name: rootfs
           mountPath: /rootfs
@@ -54,12 +54,21 @@ spec:
         - name: devdisk
           mountPath: /dev/disk
           readOnly: true
+        {{- with .Values.prometheusConfig }}
+        - name: prometheus-config
+          mountPath: /etc/prometheusconfig
+        {{- end }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
       volumes:
-      - name: cwagentconfig
+      - name: cwagent-config
         configMap:
           name: {{ include "aws-cloudwatch-metrics.fullname" . }}
+      {{- with .Values.prometheusConfig }}
+      - name: prometheus-config
+        configMap:
+          name: {{ include "aws-cloudwatch-metrics.fullname" $ }}-prometheus
+      {{- end }}
       - name: rootfs
         hostPath:
           path: /

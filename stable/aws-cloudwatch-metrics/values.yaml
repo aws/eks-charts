@@ -1,6 +1,6 @@
 image:
-  repository: amazon/cloudwatch-agent
-  tag: 1.247345.36b249270
+  repository: public.ecr.aws/cloudwatch-agent/cloudwatch-agent
+  tag: 1.247350.0b251780
   pullPolicy: IfNotPresent
 
 clusterName: cluster_name
@@ -24,3 +24,38 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+config:
+  cwagentconfig.json: |
+    {
+      "logs": {
+        "metrics_collected": {
+          "kubernetes": {
+            "cluster_name": "{{ .Values.clusterName }}",
+            "metrics_collection_interval": 60
+          }
+        },
+        "force_flush_interval": 5
+      }
+    }
+
+prometheusConfig: {}
+  # # Optional: provide Prometheus config YAML here
+  # prometheus.yaml: |
+  #   global:
+  #     scrape_interval: 1m
+  #     scrape_timeout: 10s
+  #   scrape_configs:
+  #     # Add scrape configs here
+  #     [ - <scrape_config> ... ]
+  #   rule_files:
+  #     # If rules files are included here, ensure they are also included
+  #     # as additional keys of this prometheusConfig map
+  #     - prometheus_rules.yaml
+
+  # prometheus_rules.yaml: |
+  #   groups:
+  #     - name: example
+  #       rules:
+  #       - record: job:http_inprogress_requests:sum
+  #         expr: sum by (job) (http_inprogress_requests)

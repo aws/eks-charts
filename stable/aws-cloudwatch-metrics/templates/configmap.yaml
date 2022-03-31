@@ -5,15 +5,19 @@ metadata:
   labels:
     {{- include "aws-cloudwatch-metrics.labels" . | nindent 4 }}
 data:
-  cwagentconfig.json: |
-    {
-      "logs": {
-        "metrics_collected": {
-          "kubernetes": {
-            "cluster_name": "{{ .Values.clusterName }}",
-            "metrics_collection_interval": 60
-          }
-        },
-        "force_flush_interval": 5
-      }
-    }
+{{- range $key, $value := .Values.config }}
+  {{$key }}: |
+    {{- tpl $value $ | nindent 4 }}
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "aws-cloudwatch-metrics.fullname" . }}-prometheus
+  labels:
+    {{- include "aws-cloudwatch-metrics.labels" . | nindent 4 }}
+data:
+{{- range $key, $value := .Values.prometheusConfig }}
+  {{$key }}: |
+    {{- tpl $value $ | nindent 4 }}
+{{- end }}

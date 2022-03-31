@@ -22,8 +22,8 @@ helm upgrade --install aws-cloudwatch-metrics \
 
 | Parameter | Description | Default | Required |
 | - | - | - | -
-| `image.repository` | Image to deploy | `amazon/cloudwatch-agent` | ✔
-| `image.tag` | Image tag to deploy | `1.247345.36b249270`
+| `image.repository` | Image to deploy | `public.ecr.aws/cloudwatch-agent/cloudwatch-agent` | ✔
+| `image.tag` | Image tag to deploy | `1.247350.0b251780`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
 | `clusterName` | Name of your cluster | `cluster_name` | ✔
 | `serviceAccount.create` | Whether a new service account should be created | `true` | 
@@ -32,3 +32,5 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `nodeSelector` | Node labels for pod assignment	 | {} | 
 | `tolerations` | Optional deployment tolerations	 | {} | 
 | `annotations` | Optional pod annotations	 | {} | 
+| `config` | Configuration for CloudWatch agent	 | See [values.yaml](./values.yaml) | ✔
+| `prometheusConfig` | Prometheus configuration for CloudWatch agent	 | {} | 

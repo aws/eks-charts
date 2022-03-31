@@ -4,8 +4,8 @@ metadata:
   name: {{ include "aws-cloudwatch-metrics.fullname" . }}
 rules:
 - apiGroups: [""]
-  resources: ["pods", "nodes", "endpoints"]
-  verbs: ["list", "watch"]
+  resources: ["pods", "nodes", "endpoints", "services"]
+  verbs: ["get", "list", "watch"]
 - apiGroups: ["apps"]
   resources: ["replicasets"]
   verbs: ["list", "watch"]
