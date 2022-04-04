@@ -74,12 +74,7 @@ spec:
           path: /var/lib/docker
       - name: containerdsock
         hostPath:
-        {{- if .Values.bottlerocket }}
-          # https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-troubleshooting.html#ContainerInsights-troubleshooting-bottlerocket
-          path: /run/dockershim.sock
-        {{- else }}
-          path: /run/containerd/containerd.sock
-        {{- end }}
+          path: {{ .Values.containerdSockPath }}
       - name: sys
         hostPath:
           path: /sys

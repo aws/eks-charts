@@ -25,5 +25,6 @@ tolerations: []
 
 affinity: {}
 
-# true if the EKS cluster is using bottlerocket-backed data plane
-bottlerocket: false
+# For bottlerocket OS (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-troubleshooting.html#ContainerInsights-troubleshooting-bottlerocket)
+# containerdSockPath: /run/dockershim.sock 
+containerdSockPath: /run/containerd/containerd.sock
