@@ -26,47 +26,49 @@ To install into an EKS cluster where the CNI is already installed, see [this sec
 
 The following table lists the configurable parameters for this chart and their default values.
 
-| Parameter               | Description                                             | Default                             |
-| ------------------------|---------------------------------------------------------|-------------------------------------|
-| `affinity`              | Map of node/pod affinities                              | `{}`                                |
-| `cniConfig.enabled`     | Enable overriding the default 10-aws.conflist file      | `false`                             |
-| `cniConfig.fileContents`| The contents of the custom cni config file              | `nil`                               |
-| `eniConfig.create`      | Specifies whether to create ENIConfig resource(s)       | `false`                             |
-| `eniConfig.region`      | Region to use when generating ENIConfig resource names  | `us-west-2`                         |
-| `eniConfig.subnets`     | A map of AZ identifiers to config per AZ                | `nil`                               |
-| `eniConfig.subnets.id`  | The ID of the subnet within the AZ which will be used in the ENIConfig | `nil`                |
-| `eniConfig.subnets.securityGroups`  | The IDs of the security groups which will be used in the ENIConfig | `nil`        |
-| `env`                   | List of environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options | (see `values.yaml`) |
-| `fullnameOverride`      | Override the fullname of the chart                      | `aws-node`                          |
-| `image.region`          | ECR repository region to use. Should match your cluster | `us-west-2`                         |
-| `image.tag`             | Image tag                                               | `v1.7.5`                            |
-| `image.pullPolicy`      | Container pull policy                                   | `IfNotPresent`                      |
-| `image.override`        | A custom docker image to use                            | `nil`                               |
-| `imagePullSecrets`      | Docker registry pull secret                             | `[]`                                |
-| `init.image.region`     | ECR repository region to use. Should match your cluster | `us-west-2`                         |
-| `init.image.tag`        | Image tag                                               | `v1.7.5`                            |
-| `init.image.pullPolicy` | Container pull policy                                   | `IfNotPresent`                      |
-| `init.image.override`   | A custom docker image to use                            | `nil`                               |
-| `init.env`              | List of init container environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options | (see `values.yaml`) |
-| `init.securityContext`  | Init container Security context                         | `privileged: true`                  |
-| `originalMatchLabels`   | Use the original daemonset matchLabels                  | `false`                             |
-| `nameOverride`          | Override the name of the chart                          | `aws-node`                          |
-| `nodeSelector`          | Node labels for pod assignment                          | `{}`                                |
-| `podSecurityContext`    | Pod Security Context                                    | `{}`                                |
-| `podAnnotations`        | annotations to add to each pod                          | `{}`                                |
-| `podLabels`             | Labels to add to each pod                               | `{}`                                |
-| `priorityClassName`     | Name of the priorityClass                               | `system-node-critical`              |
-| `resources`             | Resources for the pods                                  | `requests.cpu: 10m`                 |
-| `securityContext`       | Container Security context                              | `capabilities: add: - "NET_ADMIN"`  |
-| `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                               |
-| `serviceAccount.create` | Specifies whether a ServiceAccount should be created    | `true`                              |
-| `serviceAccount.annotations` | Specifies the annotations for ServiceAccount       | `{}`                                |
-| `livenessProbe`         | Livenness probe settings for daemonset                  | (see `values.yaml`)                 |
-| `readinessProbe`        | Readiness probe settings for daemonset                  | (see `values.yaml`)                 |
-| `crd.create`            | Specifies whether to create the VPC-CNI CRD             | `true`                              |
-| `tolerations`           | Optional deployment tolerations                         | `[]`                                |
-| `updateStrategy`        | Optional update strategy                                | `type: RollingUpdate`               |
-| `cri.hostPath`          | Optional use alternative container runtime              | `nil`                               |
+| Parameter                          | Description                                                                                                                                 | Default                            |
+|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
+| `affinity`                         | Map of node/pod affinities                                                                                                                  | `{}`                               |
+| `cniConfig.enabled`                | Enable overriding the default 10-aws.conflist file                                                                                          | `false`                            |
+| `cniConfig.fileContents`           | The contents of the custom cni config file                                                                                                  | `nil`                              |
+| `eniConfig.create`                 | Specifies whether to create ENIConfig resource(s)                                                                                           | `false`                            |
+| `eniConfig.region`                 | Region to use when generating ENIConfig resource names                                                                                      | `us-west-2`                        |
+| `eniConfig.subnets`                | A map of AZ identifiers to config per AZ                                                                                                    | `nil`                              |
+| `eniConfig.subnets.id`             | The ID of the subnet within the AZ which will be used in the ENIConfig                                                                      | `nil`                              |
+| `eniConfig.subnets.securityGroups` | The IDs of the security groups which will be used in the ENIConfig                                                                          | `nil`                              |
+| `env`                              | List of environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options                | (see `values.yaml`)                |
+| `fullnameOverride`                 | Override the fullname of the chart                                                                                                          | `aws-node`                         |
+| `image.region`                     | ECR repository region to use. Should match your cluster                                                                                     | `us-west-2`                        |
+| `image.tag`                        | Image tag                                                                                                                                   | `v1.7.5`                           |
+| `image.pullPolicy`                 | Container pull policy                                                                                                                       | `IfNotPresent`                     |
+| `image.override`                   | A custom docker image to use                                                                                                                | `nil`                              |
+| `imagePullSecrets`                 | Docker registry pull secret                                                                                                                 | `[]`                               |
+| `init.image.region`                | ECR repository region to use. Should match your cluster                                                                                     | `us-west-2`                        |
+| `init.image.tag`                   | Image tag                                                                                                                                   | `v1.7.5`                           |
+| `init.image.pullPolicy`            | Container pull policy                                                                                                                       | `IfNotPresent`                     |
+| `init.image.override`              | A custom docker image to use                                                                                                                | `nil`                              |
+| `init.env`                         | List of init container environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options | (see `values.yaml`)                |
+| `init.securityContext`             | Init container Security context                                                                                                             | `privileged: true`                 |
+| `originalMatchLabels`              | Use the original daemonset matchLabels                                                                                                      | `false`                            |
+| `nameOverride`                     | Override the name of the chart                                                                                                              | `aws-node`                         |
+| `extraVolumes`                     | Array to add extra volumes                                                                                                                  | `[]`                               |
+| `extraVolumeMounts`                | Array to add extra mount                                                                                                                    | `[]`                               |
+| `nodeSelector`                     | Node labels for pod assignment                                                                                                              | `{}`                               |
+| `podSecurityContext`               | Pod Security Context                                                                                                                        | `{}`                               |
+| `podAnnotations`                   | annotations to add to each pod                                                                                                              | `{}`                               |
+| `podLabels`                        | Labels to add to each pod                                                                                                                   | `{}`                               |
+| `priorityClassName`                | Name of the priorityClass                                                                                                                   | `system-node-critical`             |
+| `resources`                        | Resources for the pods                                                                                                                      | `requests.cpu: 10m`                |
+| `securityContext`                  | Container Security context                                                                                                                  | `capabilities: add: - "NET_ADMIN"` |
+| `serviceAccount.name`              | The name of the ServiceAccount to use                                                                                                       | `nil`                              |
+| `serviceAccount.create`            | Specifies whether a ServiceAccount should be created                                                                                        | `true`                             |
+| `serviceAccount.annotations`       | Specifies the annotations for ServiceAccount                                                                                                | `{}`                               |
+| `livenessProbe`                    | Liveness probe settings for daemonset                                                                                                       | (see `values.yaml`)                |
+| `readinessProbe`                   | Readiness probe settings for daemonset                                                                                                      | (see `values.yaml`)                |
+| `crd.create`                       | Specifies whether to create the VPC-CNI CRD                                                                                                 | `true`                             |
+| `tolerations`                      | Optional deployment tolerations                                                                                                             | `[]`                               |
+| `updateStrategy`                   | Optional update strategy                                                                                                                    | `type: RollingUpdate`              |
+| `cri.hostPath`                     | Optional use alternative container runtime                                                                                                  | `nil`                              |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 

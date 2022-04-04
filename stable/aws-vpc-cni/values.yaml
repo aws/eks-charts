@@ -10,9 +10,9 @@ init:
   image:
     tag: v1.10.2
     region: us-west-2
-    account: "602401143452"   
+    account: "602401143452"
     pullPolicy: Always
-    domain: "amazonaws.com"  
+    domain: "amazonaws.com"
     # Set to use custom image
     # override: "repo/org/image:tag"
   env:
@@ -24,8 +24,8 @@ init:
 image:
   region: us-west-2
   tag: v1.10.2
-  account: "602401143452"   
-  domain: "amazonaws.com"  
+  account: "602401143452"
+  domain: "amazonaws.com"
   pullPolicy: Always
   # Set to use custom image
   # override: "repo/org/image:tag"
@@ -122,6 +122,9 @@ updateStrategy:
   type: RollingUpdate
   rollingUpdate:
     maxUnavailable: "10%"
+
+extraVolumes: []
+extraVolumeMounts: []
 
 nodeSelector: {}
 
