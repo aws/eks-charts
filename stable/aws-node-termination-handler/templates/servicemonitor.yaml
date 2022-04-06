@@ -3,18 +3,14 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "aws-node-termination-handler.fullname" . }}
-  {{- if .Values.serviceMonitor.namespace }}
-  namespace: {{ .Values.serviceMonitor.namespace }}
-  {{- else }}
-  namespace: {{ .Release.Namespace }}
-  {{- end }}
+  namespace: {{ default .Release.Namespace .Values.serviceMonitor.namespace }}
   labels:
     {{- include "aws-node-termination-handler.labels" . | nindent 4 }}
   {{- with .Values.serviceMonitor.labels }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  jobLabel: {{ include "aws-node-termination-handler.name" . }}
+  jobLabel: app.kubernetes.io/name
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
@@ -29,5 +25,5 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "aws-node-termination-handler.selectorLabels" . | nindent 6 }}
+      {{- include "aws-node-termination-handler.selectorLabelsDeployment" . | nindent 6 }}
 {{- end -}}
