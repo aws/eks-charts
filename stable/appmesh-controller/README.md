@@ -48,7 +48,7 @@ eksctl utils associate-iam-oidc-provider --region=$AWS_REGION \
     --approve
 ```
 
-Download the IAM policy for AWS App Mesh Kubernetes Controller 
+Download the IAM policy for AWS App Mesh Kubernetes Controller
 ```
 curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
 ```
@@ -92,8 +92,8 @@ The [configuration](#configuration) section lists the parameters that can be con
 Make sure that the Envoy proxies have the following IAM policies attached for the Envoy to authenticate with AWS App Mesh and fetch it's configuration
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
 
-There are **2 ways** you can attach the above policy to the Envoy Pod  
-#### With IRSA     
+There are **2 ways** you can attach the above policy to the Envoy Pod
+#### With IRSA
 Download the Envoy IAM policy
 ```
 curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
@@ -108,7 +108,7 @@ aws iam create-policy \
 
 Take note of the policy ARN that is returned
 
-If your Mesh enabled applications are already using IRSA then you can attach the above policy to the role belonging to the existing IRSA or you can edit the Trust Relationship of the existing iam role which has this envoy policy so that some other service account in your mesh can also assume this role.  
+If your Mesh enabled applications are already using IRSA then you can attach the above policy to the role belonging to the existing IRSA or you can edit the Trust Relationship of the existing iam role which has this envoy policy so that some other service account in your mesh can also assume this role.
 
 If not then you can create a service account for your application namespace and use the ARN from the step above. Ensure that Application Namespace already exists
 
@@ -124,10 +124,10 @@ eksctl create iamserviceaccount --cluster $CLUSTER_NAME \
 Reference this Service Account in your application pod spec. This should be the pod which would get injected with the Envoy. Refer below example:
 ```
 https://github.com/aws/aws-app-mesh-examples/blob/5a2d04227593d292d52e5e2ca638d808ebed5e70/walkthroughs/howto-k8s-fargate/v1beta2/manifest.yaml.template#L220
-``` 
+```
 
-#### Without IRSA  
-Find the Node Instance IAM Role from your worker nodes and attach below policies to it.     
+#### Without IRSA
+Find the Node Instance IAM Role from your worker nodes and attach below policies to it.
 **Note** If you created service account for the controller as indicated above then you can skip attaching the Controller IAM policy to worker nodes. Instead attach only the Envoy IAM policy.
 
 Controller IAM policy
@@ -137,9 +137,9 @@ Use below command to download the policy if not already
 curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
 ```
 
-Envoy IAM policy  
+Envoy IAM policy
 Attach the below envoy policy to your Worker Nodes (Node Instance IAM Role)
-- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json  
+- https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
 Use below command to download the policy if not already
 ```sh
 curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
@@ -148,7 +148,7 @@ curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh
 Apply the IAM policy directly to the worker nodes by replacing the `<NODE_INSTANCE_IAM_ROLE_NAME>`, `<policy-name>`, and `<policy-filename>` in below command:
 ```sh
 aws iam put-role-policy --role-name <NODE_INSTANCE_IAM_ROLE_NAME> --policy-name <policy-name> --policy-document file://<policy-filename>
-``` 
+```
 
 Deploy appmesh-controller
 ```sh
@@ -377,7 +377,7 @@ Parameter | Description | Default
 `tolerations` | list of node taints to tolerate | `[]`
 `rbac.create` | if `true`, create and use RBAC resources | `true`
 `rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
-`serviceAccount.annotations` | optional annotations to add to service account | None
+`serviceAccount.annotations` | optional annotations to add to service account | `{}`
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | None
 `sidecar.image.repository` | Envoy image repository. If you override with non-Amazon built Envoy image, you will need to test/ensure it works with the App Mesh | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`

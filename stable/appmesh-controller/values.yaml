@@ -87,7 +87,7 @@ serviceAccount:
   # serviceAccount.name: The name of the service account to create or use
   name: ""
   # serviceAccount.annotations: optional annotations to be applied to service account
-  annotations: ""
+  annotations: {}
 
 rbac:
   # rbac.create: `true` if rbac resources should be created
