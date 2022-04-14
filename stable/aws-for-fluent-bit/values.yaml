@@ -3,7 +3,7 @@ global:
 #   namespaceOverride:
 
 image:
-  repository: amazon/aws-for-fluent-bit
+  repository: public.ecr.aws/aws-observability/aws-for-fluent-bit
   tag: 2.21.5
   pullPolicy: IfNotPresent
 
