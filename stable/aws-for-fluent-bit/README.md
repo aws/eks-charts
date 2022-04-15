@@ -63,6 +63,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `firehose.match` | The log filter | `"*"` | ✔
 | `firehose.region` | The region which your Firehose delivery stream(s) is/are in. | `"us-east-1"` | ✔
 | `firehose.deliveryStream` | The name of the delivery stream that you want log records sent to. | `"my-stream"` | ✔
+| `firehose.replaceDots` | Replace dot characters in key names with the value of this option. | |
 | `firehose.dataKeys` | By default, the whole log record will be sent to Kinesis. If you specify a key name(s) with this option, then only those keys and values will be sent to Kinesis. For example, if you are using the Fluentd Docker log driver, you can specify data_keys log and only the log message will be sent to Kinesis. If you specify multiple keys, they should be comma delimited. | |
 | `firehose.roleArn` | ARN of an IAM role to assume (for cross account access). | |
 | `firehose.endpoint` | Specify a custom endpoint for the Kinesis Firehose API. | |
