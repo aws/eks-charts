@@ -1,3 +1,4 @@
+{{- if not .Values.configMapNameOverride }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -205,3 +206,4 @@ data:
   parser_extra.conf: |-
 {{ .Values.service.extraParsers | indent 4 }}
 {{- end }}
+{{- end}}
