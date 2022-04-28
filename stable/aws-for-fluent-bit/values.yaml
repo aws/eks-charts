@@ -11,6 +11,9 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+## Override configmap name. Allows providing a fully custom cm
+configMapNameOverride: ""
+
 service:
   ## Allow the service to be exposed for monitoring
   ## https://docs.fluentbit.io/manual/administration/monitoring
