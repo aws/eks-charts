@@ -11,7 +11,7 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-## Override configmap name. Allows providing a fully custom cm
+## Override configmap name. A configmap with the given name will be mounted to the pods of daemonset.
 configMapNameOverride: ""
 
 service:
