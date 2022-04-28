@@ -33,7 +33,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `image.tag` | Image tag to deploy | `2.21.5`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
 | `imagePullSecrets` | Docker registry pull secret | `[]` |
-| `configMapNameOverride` | Override configmap name. A configmap with the given name will be mounted to the pods of daemonset | `""` |
+| `existingConfigMapName` | Use an existing cm with fluent-bit configurations | `""` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` |
 | `serviceAccount.name` | Name of the service account | `aws-for-fluent-bit` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` |

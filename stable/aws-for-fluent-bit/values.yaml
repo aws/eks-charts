@@ -11,8 +11,8 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-## Override configmap name. A configmap with the given name will be mounted to the pods of daemonset.
-configMapNameOverride: ""
+## Use an existing cm with fluent-bit configurations.
+existingConfigMapName: ""
 
 service:
   ## Allow the service to be exposed for monitoring
