@@ -158,6 +158,13 @@ affinity: {}
 annotations: {}
   # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit
 
+# Specifies if aws-for-fluent-bit should be started in hostNetwork mode.
+#
+# This is required if using a custom CNI where the managed control plane nodes are unable to initiate
+# network connections to the pods, for example using Calico CNI plugin on EKS. This is not required or
+# recommended if using the Amazon VPC CNI plugin.
+hostNetwork: false
+
 env: []
 ## To add extra environment variables to the pods, add as below
 # env:
