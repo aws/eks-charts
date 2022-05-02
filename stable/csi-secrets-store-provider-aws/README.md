@@ -40,6 +40,7 @@ The following table lists the configurable parameters of the csi-secrets-store-p
 | `resources`| Resource limit for provider pods on nodes | `requests.cpu: 50m`<br>`requests.memory: 100Mi`<br>`limits.cpu: 50m`<br>`limits.memory: 100Mi` |
 | `podLabels`| Additional pod labels | `{}` |
 | `podAnnotations` | Additional pod annotations| `{}` |
+| `priorityClassName` | Indicates the importance of a Pod relative to other Pods | `""` |
 | `updateStrategy` | Configure a custom update strategy for the daemonset on nodes | `RollingUpdate`|
 | `secrets-store-csi-driver.install` | Secrets Store CSI Driver chart install | `false`
 | `rbac.install` | Install default service account | true |
