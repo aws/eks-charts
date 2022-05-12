@@ -42,7 +42,7 @@ The following table lists the configurable parameters of the csi-secrets-store-p
 | `podLabels`| Additional pod labels | `{}` |
 | `podAnnotations` | Additional pod annotations| `{}` |
 | `updateStrategy` | Configure a custom update strategy for the daemonset on nodes | `RollingUpdate`|
-| `secrets-store-csi-driver.install` | Secrets Store CSI Driver chart install | `false`
+| `secrets-store-csi-driver.install` | Secrets Store CSI Driver chart install | `true`
 | `rbac.install` | Install default service account | true |
 | `rbac.pspEnabled` | Pod Security Pods | false |
 | `rbac.serviceAccount.name` | Service account to be used. If not set and serviceAccount.create is true a name is generated using the fullname template. | |
