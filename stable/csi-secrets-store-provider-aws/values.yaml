@@ -2,8 +2,10 @@
 imagePullSecrets: []
 
 image:
-  repository: public.ecr.aws/aws-secrets-manager/secrets-store-csi-driver-provider-aws
-  tag: 1.0.r2-2021.08.13.20.34-linux-amd64
+  registry: public.ecr.aws
+  repository: aws-secrets-manager/secrets-store-csi-driver-provider-aws
+  ## defaults to app.Version
+  tag: 
   pullPolicy: IfNotPresent
 
 nodeSelector: {}
@@ -28,7 +30,7 @@ updateStrategy:
   type: RollingUpdate
 
 secrets-store-csi-driver:
-  install: false
+  install: true
 
 ## Install default service account
 rbac:

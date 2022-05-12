@@ -30,9 +30,10 @@ The following table lists the configurable parameters of the csi-secrets-store-p
 | `nameOverride` | String to override the name template with a string | `""` |
 | `fullnameOverride` | String to override the fullname template with a string | `""` |
 | `imagePullSecrets` | Secrets to be used when pulling images | `[]` |
-| `image.repository` | Image repository | `public.ecr.aws/aws-secrets-manager/secrets-store-csi-driver-provider-aws` |
+| `image.registry` | Image registry | `public.ecr.aws` |
+| `image.repository` | Image repository | `aws-secrets-manager/secrets-store-csi-driver-provider-aws` |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
-| `image.tag`| Image tag | `1.0.r2-2021.08.13.20.34-linux-amd64` |
+| `image.tag`| Image tag | `app.Version` |
 | `nodeSelector` | Node Selector for the daemonset on nodes | `{}` |
 | `tolerations` | Tolerations for the daemonset on nodes  | `[]` |
 | `ports` | Liveness and readyness tcp probe port  | `8989` |
