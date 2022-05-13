@@ -34,6 +34,7 @@ The following table lists the configurable parameters of the csi-secrets-store-p
 | `image.repository` | Image repository | `aws-secrets-manager/secrets-store-csi-driver-provider-aws` |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `image.tag`| Image tag | `.Chart.AppVersion` |
+| `priorityClassName` | Indicates the importance of a Pod relative to other Pods | `""` |
 | `nodeSelector` | Node Selector for the daemonset on nodes | `{}` |
 | `tolerations` | Tolerations for the daemonset on nodes  | `[]` |
 | `ports` | Liveness and readyness tcp probe port  | `8989` |

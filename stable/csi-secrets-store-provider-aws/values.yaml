@@ -38,3 +38,5 @@ rbac:
   pspEnabled: false
   serviceAccount:
     name:
+
+priorityClassName: ""
