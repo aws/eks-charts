@@ -60,7 +60,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `cloudWatch.credentialsEndpoint` | Specify a custom HTTP endpoint to pull credentials from. [more info](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit) |  |
 | `cloudWatch.defaultLogGroupName` | Fallback in case any variables in logGroupName fail to parse. |  |
 | `cloudWatch.defaultLogStreamName` | Fallback in case any variables in logStreamName fail to parse. |  |
-| `cloudWatch.newLogGroupTags` |Comma/equal delimited string of tags to include with auto created log groups. Example: `--set cloudWatch.newLogGroupTags="tag1=test\,tag2=test"` |  |
+| `cloudWatch.newLogGroupTags` | Comma/equal delimited string of tags to include with auto created log groups. Example: `--set cloudWatch.newLogGroupTags="tag1=test\,tag2=test"` |  |
 | `cloudWatch.extraOutputs` | Append extra outputs with value | `""` |
 | `firehose.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-firehose-for-fluent-bit) | `true` | ✔
 | `firehose.match` | The log filter | `"*"` | ✔
