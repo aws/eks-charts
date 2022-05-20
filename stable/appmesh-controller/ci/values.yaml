@@ -4,6 +4,6 @@
 accountId: 123456789
 region: us-west-2
 image:
-  repository: chinmay5j/appmesh-controller
-  tag: v1.4.0
+  repository: shivamv2392/appmesh-controller
+  tag: v1.5.0
   pullPolicy: IfNotPresent
