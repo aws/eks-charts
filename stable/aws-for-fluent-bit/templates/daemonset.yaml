@@ -30,6 +30,9 @@ spec:
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName }}
       {{- end }}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
