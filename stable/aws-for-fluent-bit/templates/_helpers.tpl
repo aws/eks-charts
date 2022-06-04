@@ -72,3 +72,10 @@ Allow the release namespace to be overridden for multi-namespace deployments in 
     {{- .Release.Namespace -}}
   {{- end -}}
 {{- end -}}
+
+{{/*
+Create the name of the configmap to use
+*/}}
+{{- define "aws-for-fluent-bit.configName" -}}
+  {{ default (include "aws-for-fluent-bit.fullname" .) .Values.existingConfigMapName }}
+{{- end -}}

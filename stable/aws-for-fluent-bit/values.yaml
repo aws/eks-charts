@@ -11,6 +11,9 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+## Use an existing cm with fluent-bit configurations.
+existingConfigMapName: ""
+
 service:
   ## Allow the service to be exposed for monitoring
   ## https://docs.fluentbit.io/manual/administration/monitoring

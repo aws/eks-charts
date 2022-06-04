@@ -52,7 +52,7 @@ spec:
       volumes:
         - name: fluentbit-config
           configMap:
-            name: {{ include "aws-for-fluent-bit.fullname" . }}
+            name: {{ include "aws-for-fluent-bit.configName" . }}
         {{- if .Values.volumes }}
         {{- toYaml .Values.volumes | nindent 8 }}
         {{- end}}
