@@ -57,36 +57,45 @@ data:
 
 {{- if .Values.cloudWatch.enabled }}
     [OUTPUT]
-        Name                  cloudwatch
-        Match                 {{ .Values.cloudWatch.match }}
-        region                {{ .Values.cloudWatch.region }}
-        log_group_name        {{ .Values.cloudWatch.logGroupName }}
+        Name                    cloudwatch
+        Match                   {{ .Values.cloudWatch.match }}
+        region                  {{ .Values.cloudWatch.region }}
+        log_group_name          {{ .Values.cloudWatch.logGroupName }}
         {{- if .Values.cloudWatch.logStreamName }}
-        log_stream_name       {{ .Values.cloudWatch.logStreamName }}
+        log_stream_name         {{ .Values.cloudWatch.logStreamName }}
         {{- end }}
         {{- if .Values.cloudWatch.logStreamPrefix }}
-        log_stream_prefix     {{ .Values.cloudWatch.logStreamPrefix }}
+        log_stream_prefix       {{ .Values.cloudWatch.logStreamPrefix }}
         {{- end }}
         {{- if .Values.cloudWatch.logKey }}
-        log_key               {{ .Values.cloudWatch.logKey }}
+        log_key                 {{ .Values.cloudWatch.logKey }}
         {{- end }}
         {{- if .Values.cloudWatch.logFormat }}
-        log_format            {{ .Values.cloudWatch.logFormat }}
+        log_format              {{ .Values.cloudWatch.logFormat }}
         {{- end }}
         {{- if .Values.cloudWatch.logRetentionDays }}
-        log_retention_days    {{ .Values.cloudWatch.logRetentionDays }}
+        log_retention_days      {{ .Values.cloudWatch.logRetentionDays }}
         {{- end }}
         {{- if .Values.cloudWatch.roleArn }}
-        role_arn              {{ .Values.cloudWatch.roleArn }}
+        role_arn                {{ .Values.cloudWatch.roleArn }}
         {{- end }}
         {{- if .Values.cloudWatch.autoCreateGroup }}
-        auto_create_group     {{ .Values.cloudWatch.autoCreateGroup }}
+        auto_create_group       {{ .Values.cloudWatch.autoCreateGroup }}
         {{- end }}
         {{- if .Values.cloudWatch.endpoint }}
-        endpoint              {{ .Values.cloudWatch.endpoint }}
+        endpoint                {{ .Values.cloudWatch.endpoint }}
         {{- end }}
         {{- if .Values.cloudWatch.credentialsEndpoint }}
-        credentials_endpoint  {{ toJson .Values.cloudWatch.credentialsEndpoint }}
+        credentials_endpoint    {{ toJson .Values.cloudWatch.credentialsEndpoint }}
+        {{- end }}
+        {{- if .Values.cloudWatch.defaultLogGroupName }}
+        default_log_group_name  {{ .Values.cloudWatch.defaultLogGroupName }}
+        {{- end }}
+        {{- if .Values.cloudWatch.defaultLogStreamName }}
+        default_log_stream_name {{ .Values.cloudWatch.defaultLogStreamName }}
+        {{- end }}
+        {{- if .Values.cloudWatch.newLogGroupTags }}
+        new_log_group_tags      {{ .Values.cloudWatch.newLogGroupTags }}
         {{- end -}}
         {{- if .Values.cloudWatch.extraOutputs }}
 {{ .Values.cloudWatch.extraOutputs | indent 8 }}

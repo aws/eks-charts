@@ -75,6 +75,9 @@ cloudWatch:
   autoCreateGroup: true
   endpoint:
   credentialsEndpoint: {}
+  defaultLogGroupName:
+  defaultLogStreamName:
+  newLogGroupTags:
   # extraOutputs: |
   #   ...
 
