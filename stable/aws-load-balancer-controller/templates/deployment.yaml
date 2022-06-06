@@ -189,6 +189,9 @@ spec:
                   - {{ include "aws-load-balancer-controller.name" . }}
               topologyKey: kubernetes.io/hostname
       {{- end }}
+      {{- if .Values.topologySpreadConstraints }}
+      topologySpreadConstraints: {{ toYaml .Values.topologySpreadConstraints | nindent 8 }}
+      {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
