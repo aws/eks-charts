@@ -5,8 +5,6 @@ metadata:
   namespace: {{ include "aws-for-fluent-bit.namespace" . }}
   labels:
     {{- include "aws-for-fluent-bit.labels" . | nindent 4 }}
-  annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 spec:
   updateStrategy:
 {{ toYaml .Values.updateStrategy | indent 4 }}
@@ -15,8 +13,9 @@ spec:
       {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- if .Values.annotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      {{- if .Values.annotations }}
         {{- toYaml .Values.annotations | nindent 8 }}
       {{- end }}
       labels:
