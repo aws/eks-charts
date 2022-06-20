@@ -56,6 +56,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `cloudWatch.logFormat` | An optional parameter that can be used to tell CloudWatch the format of the data. A value of json/emf enables CloudWatch to extract custom metrics embedded in a JSON payload. See the Embedded Metric Format. |  |
 | `cloudWatch.roleArn` | ARN of an IAM role to assume (for cross account access). |  |
 | `cloudWatch.autoCreateGroup` | Automatically create the log group. Valid values are "true" or "false" (case insensitive). | true |
+| `cloudWatch.newLogGroupTags` | Tags to include with auto created log groups. Map of key/value pairs. | {} |
 | `cloudWatch.endpoint` | Specify a custom endpoint for the CloudWatch Logs API. |  |
 | `cloudWatch.credentialsEndpoint` | Specify a custom HTTP endpoint to pull credentials from. [more info](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit) |  |
 | `cloudWatch.extraOutputs` | Append extra outputs with value | `""` |

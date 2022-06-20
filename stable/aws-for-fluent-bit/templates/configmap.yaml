@@ -82,6 +82,13 @@ data:
         {{- if .Values.cloudWatch.autoCreateGroup }}
         auto_create_group     {{ .Values.cloudWatch.autoCreateGroup }}
         {{- end }}
+        {{- if .Values.cloudWatch.newLogGroupTags }}
+        {{- $tags := list -}}
+        {{- range $key, $value := .Values.cloudWatch.newLogGroupTags -}}
+        {{- $tags = printf "%s=%s" $key $value | append $tags -}}
+        {{- end }}
+        new_log_group_tags    {{ $tags | join "," }}
+        {{- end }}
         {{- if .Values.cloudWatch.endpoint }}
         endpoint              {{ .Values.cloudWatch.endpoint }}
         {{- end }}

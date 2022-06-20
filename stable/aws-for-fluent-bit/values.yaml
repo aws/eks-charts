@@ -73,6 +73,7 @@ cloudWatch:
   logRetentionDays:
   roleArn:
   autoCreateGroup: true
+  newLogGroupTags: {}
   endpoint:
   credentialsEndpoint: {}
   # extraOutputs: |
