@@ -68,9 +68,12 @@ spec:
         - --readiness-probe-period={{ .Values.sidecar.probes.readinessProbePeriod }}
         - --envoy-admin-access-port={{ .Values.sidecar.envoyAdminAccessPort }}
         - --envoy-admin-access-log-file={{ .Values.sidecar.envoyAdminAccessLogFile }}
+        - --envoy-admin-access-enable-ipv6={{ .Values.sidecar.envoyAdminAccessEnableIPv6 }}
+        - --dual-stack-endpoint={{ .Values.sidecar.useDualStackEndpoint }}
         - --preview={{ .Values.preview }}
         - --enable-sds={{ .Values.sds.enabled }}
         - --sds-uds-path={{ .Values.sds.udsPath }}
+        - --cluster-name={{ .Values.clusterName}}
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}
@@ -88,6 +91,8 @@ spec:
         - --xray-image={{ .Values.xray.image.repository}}:{{ .Values.xray.image.tag }}
         - --xray-daemon-port={{ .Values.tracing.port }}
         - --xray-sampling-rate={{ .Values.tracing.samplingRate }}
+        - --xray-log-level={{ .Values.tracing.logLevel }}
+        - --xray-config-roleArn={{ .Values.tracing.role }}
         {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "jaeger" ) }}
         - --enable-jaeger-tracing=true

@@ -420,8 +420,6 @@ spec:
                               description: The QueryMatchMethod object.
                               properties:
                                 exact:
-                                  maxLength: 255
-                                  minLength: 1
                                   type: string
                               type: object
                             name:
@@ -650,8 +648,6 @@ spec:
                               description: The QueryMatchMethod object.
                               properties:
                                 exact:
-                                  maxLength: 255
-                                  minLength: 1
                                   type: string
                               type: object
                             name:
@@ -751,6 +747,7 @@ spec:
                 type: integer
             type: object
         type: object
+        x-kubernetes-preserve-unknown-fields: true
     served: true
     storage: true
     subresources:
@@ -828,6 +825,15 @@ spec:
                 description: The AWS IAM account ID of the service mesh owner. Required
                   if the account ID is not your own.
                 type: string
+              meshServiceDiscovery:
+                properties:
+                  ipPreference:
+                    description: The ipPreference for the mesh.
+                    enum:
+                    - IPv6_ONLY
+                    - IPv4_ONLY
+                    type: string
+                type: object
               namespaceSelector:
                 description: "NamespaceSelector selects Namespaces using labels to
                   designate mesh membership. This field follows standard label selector
@@ -916,6 +922,7 @@ spec:
                 type: integer
             type: object
         type: object
+        x-kubernetes-preserve-unknown-fields: true
     served: true
     storage: true
     subresources:
@@ -3193,8 +3200,6 @@ spec:
                                     description: The QueryMatchMethod object.
                                     properties:
                                       exact:
-                                        maxLength: 255
-                                        minLength: 1
                                         type: string
                                     type: object
                                   name:
@@ -3475,8 +3480,6 @@ spec:
                                     description: The QueryMatchMethod object.
                                     properties:
                                       exact:
-                                        maxLength: 255
-                                        minLength: 1
                                         type: string
                                     type: object
                                   name:
