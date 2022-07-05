@@ -30,11 +30,11 @@ helm install amazon-ec2-metadata-mock \
 
 Download and Install the chart archive from the latest release
 ```sh
-curl -L https://github.com/aws/amazon-ec2-metadata-mock/releases/download/v1.10.1/amazon-ec2-metadata-mock-1.10.1.tgz
+curl -L https://github.com/aws/amazon-ec2-metadata-mock/releases/download/v1.11.1/amazon-ec2-metadata-mock-1.11.1.tgz
 ```
 
 ```sh
-helm install amazon-ec2-metadata-mock amazon-ec2-metadata-mock-1.10.1.tgz \
+helm install amazon-ec2-metadata-mock amazon-ec2-metadata-mock-1.11.1.tgz \
   --namespace default
 ```
 

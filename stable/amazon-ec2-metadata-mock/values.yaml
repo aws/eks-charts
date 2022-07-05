@@ -2,7 +2,7 @@
 
 image:
   repository: "public.ecr.aws/aws-ec2/amazon-ec2-metadata-mock"
-  tag: "v1.10.1"
+  tag: "v1.11.1"
   pullPolicy: "IfNotPresent"
 
 # replicaCount defines the number of pods to replicate
