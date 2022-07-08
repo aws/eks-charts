@@ -22,7 +22,7 @@ spec:
         {{- toYaml .Values.podLabels | nindent 8 }}
         {{- end }}
       annotations:
-        prometheus.io/scrape: "true"
+        prometheus.io/scrape: "{{ .Values.prometheusScrape }}"
         prometheus.io/port: "{{ (split ":" .Values.metricsBindAddr)._1 | default 8080 }}"
         {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}

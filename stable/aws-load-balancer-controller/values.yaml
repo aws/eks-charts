@@ -259,6 +259,9 @@ objectSelector:
   matchLabels:
   #   key: value
 
+# Enable or disable annotation for prometheus.io/scrape:
+prometheusScrape: "true"
+
 serviceMonitor:
   # Specifies whether a service monitor should be created
   enabled: false
