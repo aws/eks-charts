@@ -10,4 +10,4 @@ export PATH="${TOOLS_DIR}:${PATH}"
 PACKAGE_DIR="${GIT_REPO_ROOT}/build"
 mkdir -p "${PACKAGE_DIR}"
 
-helmv3 package "${STABLE}/"* --destination "${PACKAGE_DIR}/stable"
+helmv3 package "${STABLE}/"* --destination "${PACKAGE_DIR}/stable" --dependency-update

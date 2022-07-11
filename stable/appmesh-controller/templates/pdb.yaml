@@ -1,0 +1,18 @@
+{{- if .Values.podDisruptionBudget }}
+{{- if gt (int .Values.replicaCount) 1 }}
+kind: PodDisruptionBudget
+apiVersion: policy/v1beta1
+metadata:
+  name: {{ template "appmesh-controller.fullname" . }}-pdb
+  namespace: {{ .Release.Namespace }} 
+  labels:
+{{ include "appmesh-controller.labels" . | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+      control-plane: {{ template "appmesh-controller.fullname" . }}
+      app.kubernetes.io/name: {{ include "appmesh-controller.fullname" . }}
+      app.kubernetes.io/part-of: appmesh
+{{- toYaml .Values.podDisruptionBudget | nindent 2 }}
+{{- end -}}
+{{- end -}}

@@ -39,6 +39,13 @@ helm repo add eks https://aws.github.io/eks-charts
 ### AWS SIGv4 Proxy Admission Controller
 * [aws-sigv4-proxy-admission-controller](stable/aws-sigv4-proxy-admission-controller): A helm chart for [AWS SIGv4 Proxy Admission Controller](https://github.com/aws-observability/aws-sigv4-proxy-admission-controller)
 
+### AWS Secrets Manager and Config Provider for Secret Store CSI Driver
+* [csi-secrets-store-provider-aws](stable/csi-secrets-store-provider-aws): A helm chart for [AWS Secrets Manager and Config Provider](https://github.com/aws/secrets-store-csi-driver-provider-aws)
+
+### Amazon EC2 Metadata Mock
+* [amazon-ec2-metadata-mock](stable/amazon-ec2-metadata-mock): A tool to simulate Amazon EC2 instance metadata service for local testing
+
+
 ## License
 
 This project is licensed under the Apache-2.0 License.

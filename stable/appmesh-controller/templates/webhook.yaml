@@ -37,6 +37,8 @@ webhooks:
     resources:
     - {{ $res.resource }}
   sideEffects: None
+  admissionReviewVersions:
+  - v1beta1
 {{- end }}
 - clientConfig:
     caBundle: {{ if not $.Values.enableCertManager -}}{{ $tls.caCert }}{{- else -}}Cg=={{ end }}
@@ -63,6 +65,8 @@ webhooks:
     resources:
     - pods
   sideEffects: None
+  admissionReviewVersions:
+  - v1beta1
 ---
 {{- if .Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1" }}
 apiVersion: admissionregistration.k8s.io/v1
@@ -99,6 +103,8 @@ webhooks:
     resources:
     - {{ $res.resource }}
   sideEffects: None
+  admissionReviewVersions:
+  - v1beta1
 {{- end }}
 ---
 {{- if not $.Values.enableCertManager }}
@@ -115,7 +121,11 @@ data:
   tls.crt: {{ $tls.clientCert }}
   tls.key: {{ $tls.clientKey }}
 {{- else }}
+{{- if .Capabilities.APIVersions.Has "cert-manager.io/v1" }}
+apiVersion: cert-manager.io/v1
+{{- else }}
 apiVersion: cert-manager.io/v1alpha2
+{{- end }}
 kind: Certificate
 metadata:
   name: {{ template "appmesh-controller.fullname" . }}-serving-cert
@@ -131,7 +141,11 @@ spec:
     name: {{ template "appmesh-controller.fullname" . }}-selfsigned-issuer
   secretName: {{ template "appmesh-controller.fullname" . }}-webhook-server-cert
 ---
+{{- if .Capabilities.APIVersions.Has "cert-manager.io/v1" }}
+apiVersion: cert-manager.io/v1
+{{- else }}
 apiVersion: cert-manager.io/v1alpha2
+{{- end }}
 kind: Issuer
 metadata:
   name: {{ template "appmesh-controller.fullname" . }}-selfsigned-issuer

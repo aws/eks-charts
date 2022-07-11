@@ -3,8 +3,8 @@ global:
 #   namespaceOverride:
 
 image:
-  repository: amazon/aws-for-fluent-bit
-  tag: 2.7.0
+  repository: public.ecr.aws/aws-observability/aws-for-fluent-bit
+  tag: 2.21.5
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -12,6 +12,12 @@ nameOverride: ""
 fullnameOverride: ""
 
 service:
+  ## Allow the service to be exposed for monitoring
+  ## https://docs.fluentbit.io/manual/administration/monitoring
+  # extraService: |
+  #   HTTP_Server  On
+  #   HTTP_Listen  0.0.0.0
+  #   HTTP_PORT    2020
   parsersFiles:
     - /fluent-bit/parsers/parsers.conf
   # extraParsers: |
@@ -28,8 +34,10 @@ input:
   memBufLimit: 5MB
   skipLongLines: "On"
   refreshInterval: 10
+  # extraInputs: |
+  #   ...
 
-# extraInputs: |
+# additionalInputs: |
 #   [INPUT]
 #       Name         winlog
 #       Channels     Setup,Windows PowerShell
@@ -45,8 +53,10 @@ filter:
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
   bufferSize: "32k"
+  # extraFilters: |
+  #   ...
 
-# extraFilters: |
+# additionalFilters: |
 #   [FILTER]
 #       Name   grep
 #       Match  *
@@ -66,6 +76,8 @@ cloudWatch:
   autoCreateGroup: true
   endpoint:
   credentialsEndpoint: {}
+  # extraOutputs: |
+  #   ...
 
 firehose:
   enabled: true
@@ -76,6 +88,8 @@ firehose:
   roleArn:
   endpoint:
   timeKey:
+  # extraOutputs: |
+  #   ...
 
 kinesis:
   enabled: true
@@ -84,6 +98,7 @@ kinesis:
   stream: "my-kinesis-stream-name"
   partitionKey: "container_id"
   appendNewline:
+  replaceDots:
   dataKeys:
   roleArn:
   endpoint:
@@ -95,6 +110,8 @@ kinesis:
   experimental:
     concurrency:
     concurrencyRetries:
+  # extraOutputs: |
+  #   ...
 
 elasticsearch:
   enabled: true
@@ -105,8 +122,11 @@ elasticsearch:
   tls: "On"
   port: "443"
   retryLimit: 6
+  replaceDots: "On"
+  # extraOutputs: |
+  #   Index = my-index
 
-# extraOutputs: |
+# additionalOutputs: |
 #   [OUTPUT]
 #     Name file
 #     Format template
@@ -138,3 +158,68 @@ affinity: {}
 
 annotations: {}
   # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit
+
+# Specifies if aws-for-fluent-bit should be started in hostNetwork mode.
+#
+# This is required if using a custom CNI where the managed control plane nodes are unable to initiate
+# network connections to the pods, for example using Calico CNI plugin on EKS. This is not required or
+# recommended if using the Amazon VPC CNI plugin.
+hostNetwork: false
+
+env: []
+## To add extra environment variables to the pods, add as below
+# env:
+#   - name: AWS_REGION
+#     valueFrom:
+#       configMapKeyRef:
+#         name: fluent-bit-cluster-info
+#         key: logs.region
+#   - name: CLUSTER_NAME
+#     valueFrom:
+#       configMapKeyRef:
+#         name: fluent-bit-cluster-info
+#         key: cluster.name
+#   - name: HOST_NAME
+#     valueFrom:
+#       fieldRef:
+#         fieldPath: spec.nodeName
+
+
+volumes:
+  - name: varlog
+    hostPath:
+      path: /var/log
+  - name: varlibdockercontainers
+    hostPath:
+      path: /var/lib/docker/containers
+
+volumeMounts:
+  - name: varlog
+    mountPath: /var/log
+  - name: varlibdockercontainers
+    mountPath: /var/lib/docker/containers
+    readOnly: true
+
+
+serviceMonitor:
+  # service:
+  #   type: ClusterIP
+  #   port: 2020
+  #   targetPort: 2020
+  # When set true then use a ServiceMonitor to configure scraping
+  enabled: false
+  # Set the namespace the ServiceMonitor should be deployed
+  # namespace: monitoring
+  # Set how frequently Prometheus should scrape
+  # interval: 30s
+  # Set path of metrics, e.g /api/v1/metrics/prometheus
+  # telemetryPath: /api/v1/metrics/prometheus
+  # Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator
+  # labels:
+  # Set timeout for scrape
+  # timeout: 10s
+  # Set relabel_configs as per https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+  # relabelings: []
+  # Set of labels to transfer on the Kubernetes Service onto the target.
+  # targetLabels: []
+  # metricRelabelings: []

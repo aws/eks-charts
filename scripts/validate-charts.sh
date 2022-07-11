@@ -31,7 +31,7 @@ else
         printf "%40s ❌\n" "$chart"
     done
     echo "Helm v3:"
-    for chart in "${FAILED_V2[@]}"; do
+    for chart in "${FAILED_V3[@]}"; do
         printf "%40s ❌\n" "$chart"
     done
 fi

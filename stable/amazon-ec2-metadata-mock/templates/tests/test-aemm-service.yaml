@@ -1,0 +1,57 @@
+# E2E tests to test the following post Helm chart installation:
+## a simple http request to the service
+## configmap setup, if set in the values file
+
+# The tests are run for each *values.yaml file in helm/amazon-ec2-metadata-mock/ci folder.
+# https://github.com/helm/charts/blob/master/test/README.md#providing-custom-test-values
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-helm-e2e-test"
+  annotations:
+    "helm.sh/hook": "test"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook-weight": "1" # create config-map first
+spec:
+  restartPolicy: Never
+  {{- if .Values.configMap }}
+  volumes:
+  - name: "aemm-config"
+    configMap:
+      name: {{ .Values.configMap }}
+  {{- end }}
+  containers:
+  - name: simple-service-test
+    imagePullPolicy: "{{ .Values.test.pullPolicy }}"
+    image: "{{ .Values.test.image }}:{{ .Values.test.imageTag }}"
+    command:
+    - "bash"
+    - "-c"
+    - |
+      SERVICE_NAME=$(echo {{ .Values.serviceName }} | tr '-' '_' | tr [:lower:] [:upper:])
+      HOST_VAR=$(echo "${SERVICE_NAME}_SERVICE_HOST")
+      PORT_VAR=$(echo "${SERVICE_NAME}_SERVICE_PORT")
+      ACTUAL=$(curl http://${!HOST_VAR}:${!PORT_VAR}/latest/meta-data/services/domain)
+      EXPECTED="amazonaws.com"
+      [[ "$ACTUAL" == "$EXPECTED" ]] && exit 0 || exit 1
+  {{- if .Values.configMap }}
+  - name: config-map-test
+    imagePullPolicy: "{{ .Values.test.pullPolicy }}"
+    image: "{{ .Values.test.image }}:{{ .Values.test.imageTag }}"
+    volumeMounts:
+    - name: "aemm-config"
+      mountPath: "config/{{ .Values.configMapFileName }}"
+      subPath: {{ .Values.configMapFileName }}
+      readOnly: true
+    command:
+    - "bash"
+    - "-c"
+    - |
+      SERVICE_NAME=$(echo {{ .Values.serviceName }} | tr '-' '_' | tr [:lower:] [:upper:])
+      HOST_VAR=$(echo "${SERVICE_NAME}_SERVICE_HOST")
+      PORT_VAR=$(echo "${SERVICE_NAME}_SERVICE_PORT")
+      ACTUAL=$(curl http://${!HOST_VAR}:${!PORT_VAR}/latest/meta-data/spot/termination-time)
+      EXPECTED="1994-05-15T00:00:00Z"
+      [[ "$ACTUAL" == "$EXPECTED" ]] && exit 0 || exit 1
+  {{- end }}

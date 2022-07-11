@@ -1,4 +1,3 @@
-{{- if .Values.serviceAccount.create -}}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -9,6 +8,5 @@ roleRef:
   name: {{ include "aws-cloudwatch-metrics.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "aws-cloudwatch-metrics.fullname" . }}
+  name: {{ include "aws-cloudwatch-metrics.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
-{{- end -}}

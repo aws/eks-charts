@@ -63,7 +63,7 @@ spec:
           env:
             - name: MEMORY_MAX_TRACES
               value: "{{ .Values.memory.maxTraces }}"
-            - name: COLLECTOR_ZIPKIN_HTTP_PORT
+            - name: COLLECTOR_ZIPKIN_HOST_PORT
               value: "9411"
             - name: BADGER_EPHEMERAL
               value: "false"

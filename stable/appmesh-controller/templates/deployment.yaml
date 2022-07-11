@@ -68,24 +68,31 @@ spec:
         - --readiness-probe-period={{ .Values.sidecar.probes.readinessProbePeriod }}
         - --envoy-admin-access-port={{ .Values.sidecar.envoyAdminAccessPort }}
         - --envoy-admin-access-log-file={{ .Values.sidecar.envoyAdminAccessLogFile }}
+        - --envoy-admin-access-enable-ipv6={{ .Values.sidecar.envoyAdminAccessEnableIPv6 }}
+        - --dual-stack-endpoint={{ .Values.sidecar.useDualStackEndpoint }}
         - --preview={{ .Values.preview }}
         - --enable-sds={{ .Values.sds.enabled }}
         - --sds-uds-path={{ .Values.sds.udsPath }}
+        - --cluster-name={{ .Values.clusterName}}
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}
-        {{- if kindIs "float64" .Values.cloudMapDNS.ttl }}
+        {{- if kindIs "int64" .Values.cloudMapDNS.ttl }}
         - --cloudmap-dns-ttl={{ .Values.cloudMapDNS.ttl }}
         {{- end }}
         {{- if .Values.stats.statsdEnabled }}
         - --enable-statsd=true
         - --statsd-address={{ .Values.stats.statsdAddress }}
         - --statsd-port={{ .Values.stats.statsdPort }}
+        - --statsd-socket-path={{ .Values.stats.statsdSocketPath }}
         {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
         - --enable-xray-tracing=true
         - --xray-image={{ .Values.xray.image.repository}}:{{ .Values.xray.image.tag }}
         - --xray-daemon-port={{ .Values.tracing.port }}
+        - --xray-sampling-rate={{ .Values.tracing.samplingRate }}
+        - --xray-log-level={{ .Values.tracing.logLevel }}
+        - --xray-config-roleArn={{ .Values.tracing.role }}
         {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "jaeger" ) }}
         - --enable-jaeger-tracing=true
