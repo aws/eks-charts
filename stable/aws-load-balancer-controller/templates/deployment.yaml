@@ -3,6 +3,10 @@ kind: Deployment
 metadata:
   name: {{ include "aws-load-balancer-controller.fullname" . }}
   namespace: {{ .Release.Namespace }}
+  {{- if .Values.deploymentAnnotations }}
+  annotations:
+  {{- toYaml .Values.deploymentAnnotations | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "aws-load-balancer-controller.labels" . | nindent 4 }}
 spec:
@@ -22,8 +26,10 @@ spec:
         {{- toYaml .Values.podLabels | nindent 8 }}
         {{- end }}
       annotations:
+        {{- if not .Values.serviceMonitor.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: "{{ (split ":" .Values.metricsBindAddr)._1 | default 8080 }}"
+        {{- end}}
         {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
         {{- end }}
@@ -64,6 +70,9 @@ spec:
         {{- end }}
         {{- if .Values.awsApiEndpoints }}
         - --aws-api-endpoints={{ .Values.awsApiEndpoints }}
+        {{- end }}
+        {{- if .Values.awsApiThrottle }}
+        - --aws-api-throttle={{ join "," .Values.awsApiThrottle }}
         {{- end }}
         {{- if .Values.awsMaxRetries }}
         - --aws-max-retries={{ .Values.awsMaxRetries }}
@@ -175,7 +184,7 @@ spec:
       {{- if .Values.affinity }}
       affinity:
         {{- toYaml .Values.affinity | nindent 8 }}
-      {{- else }}
+      {{- else if .Values.configureDefaultAffinity }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -195,4 +204,8 @@ spec:
       {{- end }}
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName | quote }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
       {{- end }}
