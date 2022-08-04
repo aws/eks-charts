@@ -40,3 +40,7 @@ rbac:
     name:
 
 priorityClassName: ""
+
+# -- Labels to apply to all resources
+commonLabels: {}
+# team_name: dev

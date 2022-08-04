@@ -35,6 +35,9 @@ labels:
   app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
   app: {{ template "sscdpa.name" . }}
   helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+  {{- if .Values.commonLabels}}
+  {{ toYaml .Values.commonLabels }}
+  {{- end }}
 {{- end -}}
 
 {{/*
