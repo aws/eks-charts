@@ -53,7 +53,6 @@ filter:
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
   bufferSize: "32k"
-
 # Uncomment the extraFilters to use Kubelet to get the Metadata instead of talking to API server for large clusters
 # Check this link for more details https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-use-kubelet.html
 #  extraFilters: |
@@ -64,7 +63,6 @@ filter:
 #    Kubelet_Port        10250
 #    Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
 #    Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
-
 
 # additionalFilters: |
 #   [FILTER]
