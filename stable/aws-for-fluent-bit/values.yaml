@@ -53,17 +53,18 @@ filter:
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
   bufferSize: "32k"
-  # Uncomment the following filters to Enable the Use_Kubelet feature for large clusters
-  # Check this link for more details https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-use-kubelet.html
-#  labels: "Off"
-#  annotations: "Off"
-#  useKubelet: "true"
-#  kubeletPort: "10250"
-#  KubeCA_File: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-#  KubeTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
 
-  # extraFilters: |
-  #   ...
+# Uncomment the extraFilters to use Kubelet to get the Metadata instead of talking to API server for large clusters
+# Check this link for more details https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-use-kubelet.html
+#  extraFilters: |
+#    Kube_Tag_Prefix     application.var.log.containers.
+#    Labels              Off
+#    Annotations         Off
+#    Use_Kubelet         true
+#    Kubelet_Port        10250
+#    Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+#    Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
+
 
 # additionalFilters: |
 #   [FILTER]
@@ -174,10 +175,8 @@ annotations: {}
 # network connections to the pods, for example using Calico CNI plugin on EKS. This is not required or
 # recommended if using the Amazon VPC CNI plugin.
 
-# To use Kubelet to get the Metadata instead of talking to API server then set the following
-#  hostNetwork: true
-#  dnsPolicy: ClusterFirstWithHostNet  # For Pods running with hostNetwork, you should explicitly set its DNS policy
-
+# Set hostNetwork to true and dnsPolicy to ClusterFirstWithHostNet to use Kubelet to get the Metadata for large clusters
+# Check this link for more details https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-use-kubelet.html
 hostNetwork: false
 dnsPolicy: ClusterFirst
 

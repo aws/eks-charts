@@ -48,24 +48,6 @@ data:
         K8S-Logging.Parser  {{ .Values.filter.k8sLoggingParser }}
         K8S-Logging.Exclude {{ .Values.filter.k8sLoggingExclude }}
         Buffer_Size         {{ .Values.filter.bufferSize }}
-        {{- if .Values.filter.labels }}
-        Labels       {{ .Values.filter.labels }}
-        {{- end }}
-        {{- if .Values.filter.annotations }}
-        Annotations       {{ .Values.filter.annotations }}
-        {{- end }}
-        {{- if .Values.filter.useKubelet }}
-        Use_Kubelet       {{ .Values.filter.useKubelet }}
-        {{- end }}
-        {{- if .Values.filter.kubeletPort }}
-        Kubelet_Port       {{ .Values.filter.kubeletPort }}
-        {{- end }}
-        {{- if .Values.filter.KubeCA_File }}
-        Kube_CA_File       {{ .Values.filter.KubeCA_File }}
-        {{- end }}
-        {{- if .Values.filter.KubeTokenFile }}
-        Kube_Token_File       {{ .Values.filter.KubeTokenFile }}
-        {{- end }}
 {{- if .Values.filter.extraFilters }}
 {{ .Values.filter.extraFilters | indent 8 }}
 {{- end }}
