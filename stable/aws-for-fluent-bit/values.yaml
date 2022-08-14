@@ -164,7 +164,13 @@ annotations: {}
 # This is required if using a custom CNI where the managed control plane nodes are unable to initiate
 # network connections to the pods, for example using Calico CNI plugin on EKS. This is not required or
 # recommended if using the Amazon VPC CNI plugin.
+
+# To use Kubelet to get the Metadata instead of talking to API server then set the following
+#  hostNetwork: true
+#  dnsPolicy: ClusterFirstWithHostNet  # For Pods running with hostNetwork, you should explicitly set its DNS policy
+
 hostNetwork: false
+dnsPolicy: ClusterFirst
 
 env: []
 ## To add extra environment variables to the pods, add as below
