@@ -4,7 +4,7 @@ global:
 
 image:
   repository: public.ecr.aws/aws-observability/aws-for-fluent-bit
-  tag: 2.21.5
+  tag: 2.21.6
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
