@@ -53,6 +53,15 @@ filter:
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
   bufferSize: "32k"
+  # Uncomment the following filters to Enable the Use_Kubelet feature for large clusters
+  # Check this link for more details https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-use-kubelet.html
+#  labels: "Off"
+#  annotations: "Off"
+#  useKubelet: "true"
+#  kubeletPort: "10250"
+#  KubeCA_File: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+#  KubeTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+
   # extraFilters: |
   #   ...
 
