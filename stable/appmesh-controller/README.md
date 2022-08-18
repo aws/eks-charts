@@ -390,8 +390,11 @@ Parameter | Description | Default
 `sidecar.resources.requests` | Envoy container resource requests | `requests: cpu 10m memory 32Mi`
 `sidecar.resources.limits` | Envoy container resource limits | `limits: cpu "" memory ""`
 `sidecar.lifecycleHooks.preStopDelay` | Envoy container PreStop Hook Delay Value | `20s`
+`sidecar.lifecycleHooks.postStartInterval` | Envoy container PostStart Hook Interval Value | `5s`
+`sidecar.lifecycleHooks.postStartTimeout` | Envoy container PostStart Hook Timeout Value | `180s`
 `sidecar.probes.readinessProbeInitialDelay` | Envoy container Readiness Probe Initial Delay | `1s`
 `sidecar.probes.readinessProbePeriod` | Envoy container Readiness Probe Period | `10s`
+`sidecar.waitUntilProxyReady` | Enable pod postStart hook to delay application startup until proxy is ready to accept traffic | `false`
 `init.image.repository` | Route manager image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
 `init.image.tag` | Route manager image tag | `<VERSION>`
 `stats.tagsEnabled` |  If `true`, Envoy should include app-mesh tags | `false`
