@@ -4,6 +4,85 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
+  name: backendgroups.appmesh.k8s.aws
+spec:
+  group: appmesh.k8s.aws
+  names:
+    categories:
+    - all
+    kind: BackendGroup
+    listKind: BackendGroupList
+    plural: backendgroups
+    singular: backendgroup
+  scope: Namespaced
+  versions:
+  - name: v1beta2
+    schema:
+      openAPIV3Schema:
+        description: BackendGroup is the Schema for the backendgroups API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BackendGroupSpec defines the desired state of BackendGroup
+            properties:
+              meshRef:
+                description: "A reference to k8s Mesh CR that this BackendGroup belongs to. The admission controller populates it using Meshes's selector, and prevents users from setting this field. \n Populated by the system. Read-only."
+                properties:
+                  name:
+                    description: Name is the name of Mesh CR
+                    type: string
+                  uid:
+                    description: UID is the UID of Mesh CR
+                    type: string
+                required:
+                - name
+                - uid
+                type: object
+              virtualservices:
+                description: VirtualServices defines the set of virtual services in this BackendGroup.
+                items:
+                  description: VirtualServiceReference holds a reference to VirtualService.appmesh.k8s.aws
+                  properties:
+                    name:
+                      description: Name is the name of VirtualService CR
+                      type: string
+                    namespace:
+                      description: Namespace is the namespace of VirtualService CR. If unspecified, defaults to the referencing object's namespace
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+            type: object
+          status:
+            description: BackendGroupStatus defines the observed state of BackendGroup
+            type: object
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.4.1
+  creationTimestamp: null
   name: gatewayroutes.appmesh.k8s.aws
 spec:
   group: appmesh.k8s.aws
@@ -1234,6 +1313,31 @@ spec:
                       file:
                         description: The file object to send virtual gateway access logs to.
                         properties:
+                          format:
+                            description: Structured access log output format
+                            properties:
+                              json:
+                                description: Output specified fields as a JSON object
+                                items:
+                                  properties:
+                                    key:
+                                      description: The name of the field in the JSON
+                                        object
+                                      minLength: 1
+                                      type: string
+                                    value:
+                                      description: The format string
+                                      minLength: 1
+                                      type: string
+                                  required:
+                                  - key
+                                  - value
+                                  type: object
+                                type: array
+                              text:
+                                description: Custom format string
+                                type: string
+                            type: object
                           path:
                             description: The file path to write access logs to.
                             maxLength: 255
@@ -1527,6 +1631,21 @@ spec:
                         type: object
                     type: object
                 type: object
+              backendGroups:
+                description: BackendGroups that define a set of backends the virtual node is expected to send outbound traffic to.
+                items:
+                  description: BackendGroupReference holds a reference to BackendGroup.appmesh.k8s.aws
+                  properties:
+                    name:
+                      description: Name is the name of BackendGroup CR
+                      type: string
+                    namespace:
+                      description: Namespace is the namespace of BackendGroup CR. If unspecified, defaults to the referencing object's namespace
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
               backends:
                 description: The backends that the virtual node is expected to send outbound traffic to.
                 items:
@@ -2112,6 +2231,31 @@ spec:
                       file:
                         description: The file object to send virtual node access logs to.
                         properties:
+                          format:
+                            description: Structured access log output format
+                            properties:
+                              json:
+                                description: Output specified fields as a JSON object
+                                items:
+                                  properties:
+                                    key:
+                                      description: The name of the field in the JSON
+                                        object
+                                      minLength: 1
+                                      type: string
+                                    value:
+                                      description: The format string
+                                      minLength: 1
+                                      type: string
+                                  required:
+                                  - key
+                                  - value
+                                  type: object
+                                type: array
+                              text:
+                                description: Custom format string
+                                type: string
+                            type: object
                           path:
                             description: The file path to write access logs to.
                             maxLength: 255
