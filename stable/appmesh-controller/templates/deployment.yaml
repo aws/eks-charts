@@ -56,7 +56,8 @@ spec:
         args:
         - --enable-leader-election=true
         - --log-level={{ .Values.log.level }}
-        - --sidecar-image={{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}
+        - --sidecar-image-repository={{ .Values.sidecar.image.repository }}
+        - --sidecar-image-tag={{ .Values.sidecar.image.tag }}
         - --sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
         - --sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
         - --sidecar-cpu-limits={{ .Values.sidecar.resources.limits.cpu }}
@@ -64,6 +65,8 @@ spec:
         - --init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
         - --enable-stats-tags={{ .Values.stats.tagsEnabled }}
         - --prestop-delay={{ .Values.sidecar.lifecycleHooks.preStopDelay }}
+        - --poststart-timeout={{ .Values.sidecar.lifecycleHooks.postStartTimeout }}
+        - --poststart-interval={{ .Values.sidecar.lifecycleHooks.postStartInterval }}
         - --readiness-probe-initial-delay={{ .Values.sidecar.probes.readinessProbeInitialDelay }}
         - --readiness-probe-period={{ .Values.sidecar.probes.readinessProbePeriod }}
         - --envoy-admin-access-port={{ .Values.sidecar.envoyAdminAccessPort }}
@@ -73,6 +76,7 @@ spec:
         - --preview={{ .Values.preview }}
         - --enable-sds={{ .Values.sds.enabled }}
         - --sds-uds-path={{ .Values.sds.udsPath }}
+        - --enable-backend-groups={{ .Values.enableBackendGroups }}
         - --cluster-name={{ .Values.clusterName}}
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
@@ -113,6 +117,7 @@ spec:
         - --sidecar-log-level={{ .Values.sidecar.logLevel }}
         # this must be same as livenessProbe port which can be configured 
         - --health-probe-port={{ .Values.livenessProbe.httpGet.port }}
+        - --wait-until-proxy-ready={{ .Values.sidecar.waitUntilProxyReady }}
         {{- if .Values.env }}
         env:
           {{- range $key, $value := .Values.env }}
