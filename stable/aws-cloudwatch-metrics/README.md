@@ -26,10 +26,11 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `image.tag` | Image tag to deploy | `1.247345.36b249270`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
 | `clusterName` | Name of your cluster | `cluster_name` | ✔
-| `serviceAccount.create` | Whether a new service account should be created | `true` | 
-| `serviceAccount.name` | Service account to be used | | 
-| `hostNetwork` | Allow to use the network namespace and network resources of the node | `false` | 
-| `nodeSelector` | Node labels for pod assignment	 | {} | 
-| `tolerations` | Optional deployment tolerations	 | {} | 
-| `annotations` | Optional pod annotations	 | {} | 
+| `serviceAccount.create` | Whether a new service account should be created | `true` |
+| `serviceAccount.name` | Service account to be used | |
+| `priorityClassName` | Name of Priority Class to assign pods | system-node-critical |
+| `hostNetwork` | Allow to use the network namespace and network resources of the node | `false` |
+| `nodeSelector` | Node labels for pod assignment  | {} |
+| `tolerations` | Optional deployment tolerations  | {} |
+| `annotations` | Optional pod annotations  | {} |
 | `containerdSockPath` | Path to containerd' socket | /run/containerd/containerd.sock

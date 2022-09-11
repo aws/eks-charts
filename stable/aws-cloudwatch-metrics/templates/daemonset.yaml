@@ -14,6 +14,9 @@ spec:
         {{- include "aws-cloudwatch-metrics.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "aws-cloudwatch-metrics.serviceAccountName" . }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
       hostNetwork: {{ .Values.hostNetwork }}
       containers:
       - name: {{ .Chart.Name }}
