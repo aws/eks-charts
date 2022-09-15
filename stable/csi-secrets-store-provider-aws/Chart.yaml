@@ -16,7 +16,7 @@ maintainers:
 dependencies:
 - name: secrets-store-csi-driver
   repository: https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
-  version: 1.2.4
+  version: ~1.2
   condition: secrets-store-csi-driver.install
 keywords:
   - eks

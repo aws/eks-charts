@@ -44,6 +44,8 @@ The following table lists the configurable parameters of the csi-secrets-store-p
 | `podAnnotations` | Additional pod annotations| `{}` |
 | `updateStrategy` | Configure a custom update strategy for the daemonset on nodes | `RollingUpdate`|
 | `secrets-store-csi-driver.install` | Secrets Store CSI Driver chart install | `true`
+| `secrets-store-csi-driver.syncSecret.enabled` | Enable rbac roles and bindings required for syncing to Kubernetes native secrets | `false`
 | `rbac.install` | Install default service account | true |
 | `rbac.pspEnabled` | Pod Security Pods | false |
 | `rbac.serviceAccount.name` | Service account to be used. If not set and serviceAccount.create is true a name is generated using the fullname template. | |
+| `rbac.serviceAccount.roleArn` | Amazon Resource Name (ARN) of the IAM role that you want the service account to assume. | `""` |
