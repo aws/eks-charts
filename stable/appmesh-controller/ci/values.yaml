@@ -4,6 +4,6 @@
 accountId: 123456789
 region: us-west-2
 image:
-  repository: paulyeo21/appmesh-controller
+  repository: public.ecr.aws/appmesh/appmesh-controller
   tag: v1.7.0
   pullPolicy: IfNotPresent
