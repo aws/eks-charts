@@ -23,7 +23,7 @@ Follow the [Usage](https://github.com/aws/secrets-store-csi-driver-provider-aws#
 
 The following table lists the configurable parameters of the csi-secrets-store-provider-aws chart and their default values.
 
-> Refer to [doc](https://github.com/kubernetes-sigs/secrets-store-csi-driver/tree/main/charts/secrets-store-csi-driver/README.md) for configurable parameters of the secrets-store-csi-driver chart.
+> Refer to [doc](https://github.com/kubernetes-sigs/secrets-store-csi-driver/tree/main/charts/secrets-store-csi-driver/README.md) for configurable parameters of the secrets-store-csi-driver chart. Override values inside of the secrets-store-csi-driver section.
 
 | Parameter | Description | Default |
 | --- | --- | --- |
