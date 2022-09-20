@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ template "sscdpa.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+{{ include "sscdpa.labels" . | indent 2 }}
+spec:
+  updateStrategy:
+{{ toYaml .Values.updateStrategy | indent 4 }}
+  selector:
+    matchLabels:
+      app: {{ template "sscdpa.name" . }}
+  template:
+    metadata:
+{{ include "sscdpa.labels" . | indent 6 }}
+{{- if .Values.podLabels }}
+{{- toYaml .Values.podLabels | nindent 8 }}
+{{- end }}
+{{- if .Values.podAnnotations }}
+      annotations:
+{{- toYaml .Values.podAnnotations | nindent 8 }}
+{{- end }}
+    spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      serviceAccountName: {{ template "sscdpa.serviceAccountName" . }}
+      hostNetwork: true
+      containers:
+        - name: provider-aws-installer
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - --provider-volume=/etc/kubernetes/secrets-store-csi-providers
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          {{- if .Values.privileged }}
+          securityContext:
+            privileged: true
+          {{- end }}
+          volumeMounts:
+            - mountPath: "/etc/kubernetes/secrets-store-csi-providers"
+              name: provider-vol
+            - name: mountpoint-dir
+              mountPath: /var/lib/kubelet/pods
+              mountPropagation: HostToContainer
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName | quote }}
+      {{- end }} 
+      volumes:
+        - name: provider-vol
+          hostPath:
+            path: "/etc/kubernetes/secrets-store-csi-providers"
+        - name: mountpoint-dir
+          hostPath:
+            path: /var/lib/kubelet/pods
+            type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/os: linux
+{{- if .Values.nodeSelector }}
+{{- toYaml .Values.nodeSelector | nindent 8 }}
+{{- end }}
+{{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+{{- end }}

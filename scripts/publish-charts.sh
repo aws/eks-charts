@@ -14,7 +14,7 @@ if echo "${CIRCLE_TAG}" | grep -Eq "^v[0-9]+(\.[0-9]+){2}$"; then
     git config user.name eks-bot
     git remote set-url origin ${REPOSITORY}
     git checkout gh-pages
-    mv -f $PACKAGE_DIR/stable/*.tgz .
+    mv -n $PACKAGE_DIR/stable/*.tgz .
     helmv3 repo index . --url https://aws.github.io/eks-charts
     git add .
     git commit -m "Publish stable charts ${CIRCLE_TAG}"

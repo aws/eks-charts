@@ -1,5 +1,7 @@
 # App Mesh Controller
 
+> :warning: **This controller is published in multiple repos**: Contributions to this Helm chart must be written to [aws/aws-app-mesh-controller-for-k8s Github repo.](https://github.com/aws/aws-app-mesh-controller-for-k8s/tree/master/config/helm/appmesh-controller) PRs to other repos like **aws/eks-charts** may be closed or overwritten upon next controller release.
+
 App Mesh controller Helm chart for Kubernetes
 
 **Note**: If you wish to use [App Mesh preview](https://docs.aws.amazon.com/app-mesh/latest/userguide/preview.html) features, please refer to our [preview version](https://github.com/aws/eks-charts/blob/preview/stable/appmesh-controller/README.md) instructions.
@@ -94,7 +96,7 @@ Make sure that the Envoy proxies have the following IAM policies attached for th
 
 There are **2 ways** you can attach the above policy to the Envoy Pod  
 #### With IRSA     
-Download the Envoy IAM polocy  
+Download the Envoy IAM policy
 ```
 curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
 ```
@@ -127,13 +129,28 @@ https://github.com/aws/aws-app-mesh-examples/blob/5a2d04227593d292d52e5e2ca638d8
 ``` 
 
 #### Without IRSA   
-If not setting up IAM role for service account, apply the IAM policies manually to your worker nodes:
+Find the Node Instance IAM Role from your worker nodes and attach below policies to it.
+**Note** If you created service account for the controller as indicated above then you can skip attaching the Controller IAM policy to worker nodes. Instead attach only the Envoy IAM policy.
 
 Controller IAM policy
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+Use below command to download the policy if not already
+```sh
+curl -o controller-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/controller-iam-policy.json
+```
 
 Envoy IAM policy
+Attach the below envoy policy to your Worker Nodes (Node Instance IAM Role)
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json  
+Use below command to download the policy if not already
+```sh
+curl -o envoy-iam-policy.json https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
+```
+
+Apply the IAM policy directly to the worker nodes by replacing the `<NODE_INSTANCE_IAM_ROLE_NAME>`, `<policy-name>`, and `<policy-filename>` in below command:
+```sh
+aws iam put-role-policy --role-name <NODE_INSTANCE_IAM_ROLE_NAME> --policy-name <policy-name> --policy-document file://<policy-filename>
+```
 
 Deploy appmesh-controller
 ```sh
@@ -208,7 +225,7 @@ helm upgrade -i appmesh-controller eks/appmesh-controller \
 
 This section will assist you in upgrading the appmesh-controller from <=v0.5.0 version to >=v1.0.0 version.
 
-You can either build new CRDs from scratch or migrate existing CRDs to the new schema. Please refer to the documentation [here for the new API spec](https://aws.github.io/aws-app-mesh-controller-for-k8s/reference/api_spec/). Also, you can find several examples [here](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs) with v1beta2 spec to help you get started.
+You can either build new CRDs from scratch or migrate existing CRDs to the new schema. Please refer to the documentation [here for the new API spec](https://aws.github.io/aws-app-mesh-controller-for-k8s/reference/api_spec/). Also, you can find several examples [here](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs) with v1beta2 spec to help you get started.
 
 Starting v1.0.0, Mesh resource supports namespaceSelectors, where you can either select namespace based on labels (recommended option) or select all namespaces. To select a namespace in a Mesh, you will need to define `namespaceSelector`:
 
@@ -237,7 +254,7 @@ metadata:
     appmesh.k8s.aws/sidecarInjectorWebhook: enabled
 ```
 
-For more examples, please refer to the walkthroughs [here](https://github.com/aws/aws-app-mesh-examples/tree/master/walkthroughs). If you don't find an example that fits your use-case, please read the API spec [here](https://aws.github.io/aws-app-mesh-controller-for-k8s/reference/api_spec/). If you find an issue in the documentation or the examples, please open an issue and we'll help resolve it.
+For more examples, please refer to the walkthroughs [here](https://github.com/aws/aws-app-mesh-examples/tree/main/walkthroughs). If you don't find an example that fits your use-case, please read the API spec [here](https://aws.github.io/aws-app-mesh-controller-for-k8s/reference/api_spec/). If you find an issue in the documentation or the examples, please open an issue and we'll help resolve it.
 
 ### Upgrade without preserving old App Mesh resources
 
@@ -362,7 +379,7 @@ Parameter | Description | Default
 `tolerations` | list of node taints to tolerate | `[]`
 `rbac.create` | if `true`, create and use RBAC resources | `true`
 `rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
-`serviceAccount.annotations` | optional annotations to add to service account | None
+`serviceAccount.annotations` | optional annotations to add to service account | `{}`
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | None
 `sidecar.image.repository` | Envoy image repository. If you override with non-Amazon built Envoy image, you will need to test/ensure it works with the App Mesh | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`
@@ -373,22 +390,29 @@ Parameter | Description | Default
 `sidecar.resources.requests` | Envoy container resource requests | `requests: cpu 10m memory 32Mi`
 `sidecar.resources.limits` | Envoy container resource limits | `limits: cpu "" memory ""`
 `sidecar.lifecycleHooks.preStopDelay` | Envoy container PreStop Hook Delay Value | `20s`
+`sidecar.lifecycleHooks.postStartInterval` | Envoy container PostStart Hook Interval Value | `5s`
+`sidecar.lifecycleHooks.postStartTimeout` | Envoy container PostStart Hook Timeout Value | `180s`
 `sidecar.probes.readinessProbeInitialDelay` | Envoy container Readiness Probe Initial Delay | `1s`
 `sidecar.probes.readinessProbePeriod` | Envoy container Readiness Probe Period | `10s`
+`sidecar.waitUntilProxyReady` | Enable pod postStart hook to delay application startup until proxy is ready to accept traffic | `false`
 `init.image.repository` | Route manager image repository | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager`
 `init.image.tag` | Route manager image tag | `<VERSION>`
 `stats.tagsEnabled` |  If `true`, Envoy should include app-mesh tags | `false`
 `stats.statsdEnabled` |  If `true`, Envoy should publish stats to statsd endpoint @ 127.0.0.1:8125 | `false`
-`stats.statsdAddress` |  DogStatsD daemon IP address | `127.0.0.1`
-`stats.statsdPort` |  DogStatsD daemon port | `8125`
+`stats.statsdAddress` |  DogStatsD daemon IP address. This will be overridden if `stats.statsdSocketPath` is specified | `127.0.0.1`
+`stats.statsdPort` |  DogStatsD daemon port. This will be overridden if `stats.statsdSocketPath` is specified | `8125`
+`stats.statsdSocketPath` | DogStatsD Unix domain socket path. If statsd is enabled but this value is not specified then we will use combination of <statsAddress:statsPort> as the default | None
 `cloudMapCustomHealthCheck.enabled` |  If `true`, CustomHealthCheck will be enabled for CloudMap Services | `false`
-`cloudMapDNS.ttl` |  Sets CloudMap DNS TTL | `300`
+`cloudMapDNS.ttl` |  Sets CloudMap DNS TTL. Will set value for new CloudMap services, but will not update existing CloudMap services. Existing CloudMap services can be updated using the [AWS CloudMap API](https://docs.aws.amazon.com/cloud-map/latest/api/API_UpdateService.html) | `300`
 `tracing.enabled` |  If `true`, Envoy will be configured with tracing | `false`
 `tracing.provider` |  The tracing provider can be x-ray, jaeger or datadog | `x-ray`
 `tracing.address` |  Jaeger or Datadog agent server address (ignored for X-Ray) | `appmesh-jaeger.appmesh-system`
 `tracing.port` |  Jaeger or Datadog agent port (ignored for X-Ray) | `9411`
+`tracing.samplingRate` | X-Ray tracer sampling rate. Value can be a decimal number between 0 and 1.00 (100%)  | `0.05`
+`tracing.logLevel` | X-Ray agent log level, from most verbose to least: dev, debug, info, prod(default), warn, error. | `prod`
+`tracing.role` | X-Ray agent assume the specified IAM role to upload segments to a different account  | `None`
 `enableCertManager` |  Enable Cert-Manager | `false`
-`xray.image.repository` | X-Ray image repository | `amazon/aws-xray-daemon`
+`xray.image.repository` | X-Ray image repository | `public.ecr.aws/xray/aws-xray-daemon`
 `xray.image.tag` | X-Ray image tag | `latest`
 `accountId` | AWS Account ID for the Kubernetes cluster | None
 `env` |  environment variables to be injected into the appmesh-controller pod | `{}`

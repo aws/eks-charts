@@ -51,6 +51,9 @@ helm.sh/chart: {{ include "aws-load-balancer-controller.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.additionalLabels }}
+{{ toYaml .Values.additionalLabels }}
+{{- end -}}
 {{- end -}}
 
 {{/*
@@ -73,21 +76,54 @@ Create the name of the service account to use
 {{- end -}}
 
 {{/*
+Create the name of the webhook service
+*/}}
+{{- define "aws-load-balancer-controller.webhookService" -}}
+{{- printf "%s-webhook-service" (include "aws-load-balancer-controller.namePrefix" .) -}}
+{{- end -}}
+
+{{/*
+Create the name of the webhook cert secret
+*/}}
+{{- define "aws-load-balancer-controller.webhookCertSecret" -}}
+{{- printf "%s-tls" (include "aws-load-balancer-controller.namePrefix" .) -}}
+{{- end -}}
+
+{{/*
 Generate certificates for webhook
 */}}
-{{- define "aws-load-balancer-controller.gen-certs" -}}
-{{- $namePrefix := ( include "aws-load-balancer-controller.namePrefix" . ) -}}
-{{- $altNames := list ( printf "%s-%s.%s" $namePrefix "webhook-service" .Release.Namespace ) ( printf "%s-%s.%s.svc" $namePrefix "webhook-service" .Release.Namespace ) -}}
+{{- define "aws-load-balancer-controller.webhookCerts" -}}
+{{- $serviceName := (include "aws-load-balancer-controller.webhookService" .) -}}
+{{- $secretName := (include "aws-load-balancer-controller.webhookCertSecret" .) -}}
+{{- $secret := lookup "v1" "Secret" .Release.Namespace $secretName -}}
+{{- if (and .Values.webhookTLS.caCert .Values.webhookTLS.cert .Values.webhookTLS.key) -}}
+caCert: {{ .Values.webhookTLS.caCert | b64enc }}
+clientCert: {{ .Values.webhookTLS.cert | b64enc }}
+clientKey: {{ .Values.webhookTLS.key | b64enc }}
+{{- else if and .Values.keepTLSSecret $secret -}}
+caCert: {{ index $secret.data "ca.crt" }}
+clientCert: {{ index $secret.data "tls.crt" }}
+clientKey: {{ index $secret.data "tls.key" }}
+{{- else -}}
+{{- $altNames := list (printf "%s.%s" $serviceName .Release.Namespace) (printf "%s.%s.svc" $serviceName .Release.Namespace) (printf "%s.%s.svc.cluster.local" $serviceName .Release.Namespace) -}}
 {{- $ca := genCA "aws-load-balancer-controller-ca" 3650 -}}
-{{- $cert := genSignedCert ( include "aws-load-balancer-controller.fullname" . ) nil $altNames 3650 $ca -}}
+{{- $cert := genSignedCert (include "aws-load-balancer-controller.fullname" .) nil $altNames 3650 $ca -}}
 caCert: {{ $ca.Cert | b64enc }}
 clientCert: {{ $cert.Cert | b64enc }}
 clientKey: {{ $cert.Key | b64enc }}
+{{- end -}}
 {{- end -}}
 
 {{/*
 Convert map to comma separated key=value string
 */}}
-{{- define "aws-load-balancer-controller.convert-map-to-csv" -}}
+{{- define "aws-load-balancer-controller.convertMapToCsv" -}}
 {{- range $key, $value := . -}} {{ $key }}={{ $value }}, {{- end -}}
+{{- end -}}
+
+{{/*
+Create the name of the ingressClassParams
+*/}}
+{{- define "aws-load-balancer-controller.ingressClassParamsName" -}}
+{{ default .Values.ingressClass .Values.ingressClassParams.name }}
 {{- end -}}

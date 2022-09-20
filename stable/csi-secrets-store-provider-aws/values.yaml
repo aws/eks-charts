@@ -1,0 +1,42 @@
+
+imagePullSecrets: []
+
+image:
+  registry: public.ecr.aws
+  repository: aws-secrets-manager/secrets-store-csi-driver-provider-aws
+  ## defaults to app.Version
+  tag: 
+  pullPolicy: IfNotPresent
+
+nodeSelector: {}
+tolerations: []
+
+port: 8989
+
+privileged: false
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 100Mi
+  limits:
+    cpu: 50m
+    memory: 100Mi
+
+podLabels: {}
+podAnnotations: {}
+
+updateStrategy:
+  type: RollingUpdate
+
+secrets-store-csi-driver:
+  install: true
+
+## Install default service account
+rbac:
+  install: true
+  pspEnabled: false
+  serviceAccount:
+    name:
+
+priorityClassName: ""

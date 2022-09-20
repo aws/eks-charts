@@ -63,9 +63,20 @@ tolerations: []
 
 affinity: {}
 
+# topologySpreadConstraints is a stable feature of k8s v1.19 which provides the ability to
+# control how Pods are spread across your cluster among failure-domains such as regions, zones,
+# nodes, and other user-defined topology domains.
+# 
+# more details here: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
+topologySpreadConstraints: {}
+
+deploymentAnnotations: {}
+
 podAnnotations: {}
 
 podLabels: {}
+
+additionalLabels: {}
 
 # Enable cert-manager
 enableCertManager: false
@@ -73,6 +84,10 @@ enableCertManager: false
 # The ingress class this controller will satisfy. If not specified, controller will match all
 # ingresses without ingress class annotation and ingresses of type alb
 ingressClass: alb
+
+# To use IngressClass resource instead of annotation, before you need to install the IngressClass resource pointing to controller.
+# If specified as true, the IngressClass resource will be created.
+createIngressClassResource: true
 
 # The AWS region for the kubernetes cluster. Set to use KIAM or kube2iam for example.
 region:
@@ -149,6 +164,13 @@ env:
 # network connections to the pods, for example using Calico CNI plugin on EKS. This is not required or
 # recommended if using the Amazon VPC CNI plugin.
 hostNetwork: false
+
+# Specifies the dnsPolicy that should be used for pods in the deployment
+#
+# This may need to be used to be changed given certain conditions. For instance, if one uses the cilium CNI
+# with certain settings, one may need to set `hostNetwork: true` and webhooks won't work unless `dnsPolicy`
+# is set to `ClusterFirstWithHostNet`. See https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
+dnsPolicy:
 
 # extraVolumeMounts are the additional volume mounts. This enables setting up IRSA on non-EKS Kubernetes cluster
 extraVolumeMounts:

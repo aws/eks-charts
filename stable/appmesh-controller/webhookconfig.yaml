@@ -16,3 +16,5 @@ customResources:
     resource: virtualservices
   - name: virtualgateway
     resource: virtualgateways
+  - name: backendgroup
+    resource: backendgroups
