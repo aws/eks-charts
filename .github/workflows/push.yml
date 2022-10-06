@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # actions/checkout cannot as of 2022-10-06 pull tags
-      # and we use tags for changelog building
-      - name: fetch tags too
-        run: git fetch --tags
+        with:
+          # we need to fetch tags, and not just the tags on our commit
+          # so we cannot get by with a shallow checkout
+          fetch-depth: 0
       - uses: actions/setup-go@v3
       - name: Install Toolchain
         run: make install-toolchain
