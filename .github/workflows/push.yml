@@ -1,0 +1,45 @@
+name: push
+on:
+  push:
+    branches-ignore:
+      - gh-pages
+    tags-ignore:
+      - test*
+jobs:
+  build-test-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # actions/checkout cannot as of 2022-10-06 pull tags
+      # and we use tags for changelog building
+      - name: fetch tags too
+        run: git fetch --tags
+      - uses: actions/setup-go@v3
+      - name: Install Toolchain
+        run: make install-toolchain
+      # we package BEFORE running lint unlike upstream
+      # this is due to an error that upstream seems to also have, but are ignoring:
+      # Error: An error occurred while checking for chart dependencies.
+      # You may need to run `helm dependency build` to fetch missing dependencies:
+      # found in Chart.yaml, but missing in charts/ directory: secrets-store-csi-driver
+      - name: Package stable charts
+        run: make package
+      - name: Lint and Validate Charts w/ helm v2 and v3
+        run: |
+          make verify
+      - name: Publish stable charts
+        run: make publish
+  e2e-helm:
+    needs: build-test-push
+    strategy:
+      matrix:
+        helm: [v2, v3]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Toolchain
+        run: make install-toolchain
+      - name: Init Kubernetes Kind and Helm vX
+        run: HELM_MODE=${{ matrix.helm}} test/lib/kind.sh
+      - name: Run App Mesh tests
+        run: test/run.sh
