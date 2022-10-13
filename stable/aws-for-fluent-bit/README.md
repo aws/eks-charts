@@ -105,4 +105,5 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `annotations` | Optional pod annotations | `{}` |
 | `volumes` | Volumes for the pods, provide as a list of volume objects (see values.yaml) |  volumes for /var/log and /var/lib/docker/containers are present, along with a fluentbit config volume |
 | `volumeMounts` | Volume mounts for the pods, provided as a list of volumeMount objects (see values.yaml) | volumes for /var/log and /var/lib/docker/containers are mounted, along with a fluentbit config volume |
+| `dnsPolicy` | Optional dnsPolicy | `ClusterFirst` |
 | `hostNetwork` | If true, use hostNetwork | `false` |

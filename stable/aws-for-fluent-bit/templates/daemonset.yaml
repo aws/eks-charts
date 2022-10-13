@@ -30,7 +30,10 @@ spec:
       priorityClassName: {{ .Values.priorityClassName }}
       {{- end }}
       {{- if .Values.hostNetwork }}
-      hostNetwork: true
+      hostNetwork: {{ .Values.hostNetwork }}
+      {{- end }}
+      {{- if .Values.dnsPolicy }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
