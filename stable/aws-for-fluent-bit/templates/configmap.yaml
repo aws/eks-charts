@@ -195,6 +195,9 @@ data:
         {{- if .Values.elasticsearch.extraOutputs }}
 {{ .Values.elasticsearch.extraOutputs | indent 8 }}
         {{- end }}
+        {{- if .Values.elasticsearch.indexName }}
+        Index           {{ .Values.elasticsearch.indexName }}
+        {{- end }}
 {{- end }}
 
 {{- if .Values.additionalOutputs }}
