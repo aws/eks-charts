@@ -293,8 +293,13 @@ disableRestrictedSecurityGroupRules:
 controllerConfig:
   # featureGates set of key: value pairs that describe AWS load balance controller features
   featureGates: {}
-  #  ServiceTypeLoadBalancerOnly: true
-  #  EndpointsFailOpen: true
+  # ListenerRulesTagging: true
+  # WeightedTargetGroups: true
+  # ServiceTypeLoadBalancerOnly: true
+  # EndpointsFailOpen: true
+  # EnableServiceController: true
+  # EnableIPTargetType: true
+  # SubnetsClusterTagCheck: true
 
 # objectSelector for webhook
 objectSelector:
