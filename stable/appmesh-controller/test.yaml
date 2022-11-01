@@ -10,7 +10,7 @@ clusterName: ""
 
 image:
   repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
-  tag: v1.7.0
+  tag: v1.8.0
   pullPolicy: IfNotPresent
 
 sidecar:
