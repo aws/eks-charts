@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: gcr.io/spiffe-io/spire-server
-  tag: 0.12.0
+  tag: 1.0.0
   pullPolicy: IfNotPresent
 
 nameOverride: ""
