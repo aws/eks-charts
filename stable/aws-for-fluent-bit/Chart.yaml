@@ -18,3 +18,5 @@ keywords:
   - cloudwatch
   - firehose
   - kinesis
+  - s3
+  - elasticsearch

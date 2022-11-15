@@ -95,6 +95,31 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `elasticsearch.retryLimit` | Integer value to set the maximum number of retries allowed. N must be >= 1  | 6 |
 | `elasticsearch.replaceDots` | Enable or disable Replace_Dots  | On |
 | `elasticsearch.extraOutputs` | Append extra outputs with value | `""` |
+| `s3.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/s3) | `false` | ✔
+| `s3.match` | The log filter | `"*"` | ✔
+| `s3.region` | The AWS region of your S3 bucket | `"us-east-1"` | ✔
+| `s3.bucket` | Name of the S3 Bucket | `"my-bucket-name"` | ✔
+| `s3.json_date_key` | Specify the name of the time key in the output record. To disable the time key just set the value to `false`. | |
+| `s3.json_date_format` | Specify the format of the date. Supported formats are double, epoch, iso8601 (eg: 2018-05-30T09:39:52.000681Z) and java_sql_timestamp (eg: 2018-05-30 09:39:52.000681) | |
+| `s3.total_file_size` | Specifies the size of files in S3. Maximum size is 50G, minimim is 1M | `"100M"` |
+| `s3.upload_chunk_size` | The size of each 'part' for multipart uploads. Max: 50M | |
+| `s3.upload_timeout` | Whenever this amount of time has elapsed, Fluent Bit will complete an upload and create a new file in S3. | |
+| `s3.store_dir` | Directory to locally buffer data before sending. When multipart uploads are used, data will only be buffered until the upload_chunk_size is reached. | `"/tmp/fluent-bit/s3"` |
+| `s3.s3_key_format` | Format string for keys in S3 | `"/fluent-bit-logs/$TAG/%Y/%m/%d/%H/%M/%S"` |
+| `s3.s3_key_format_tag_delimiters` | A series of characters which will be used to split the tag into 'parts' for use with the s3_key_format option. | |
+| `s3.static_file_path` | Disables behavior where UUID string is automatically appended to end of S3 key name when $UUID is not provided in s3_key_format. $UUID, time formatters, $TAG, and other dynamic key formatters all work as expected while this feature is set to true. | `false` |
+| `s3.use_put_object` | Use the S3 PutObject API, instead of the multipart upload API. When this option is on, key extension is only available when $UUID is specified in `s3_key_format` | `false` |
+| `s3.role_arn` | ARN of an IAM role to assume (ex. for cross account access). | |
+| `s3.endpoint` | Custom endpoint for the S3 API. An endpoint can contain scheme and port. | |
+| `s3.sts_endpoint` | Custom endpoint for the STS API. | |
+| `s3.canned_acl` | Predefined Canned ACL policy for S3 objects. | |
+| `s3.compression` | Compression type for S3 objects. `gzip` or `arrow`. Default: None | |
+| `s3.content_type` | A standard MIME type for the S3 object; this will be set as the Content-Type HTTP header. | |
+| `s3.send_content_md5` | Send the Content-MD5 header with PutObject and UploadPart requests, as is required when Object Lock is enabled. | `false` |
+| `s3.auto_retry_requests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. | `true` |
+| `s3.log_key` | By default, the whole log record will be sent to S3. If you specify a key name with this option, then only the value of that key will be sent to S3. For example, if you are using Docker, you can specify log_key log and only the log message will be sent to S3. | |
+| `s3.preserve_data_ordering` | Normally, when an upload request fails, there is a high chance for the last received chunk to be swapped with a later chunk, resulting in data shuffling. This feature prevents this shuffling by using a queue logic for uploads. | |
+| `s3.storage_class` | Specify the storage class for S3 objects. If this option is not specified, objects will be stored with the default 'STANDARD' storage class. | |
 | `additionalOutputs` | add outputs with value | `""` |
 | `priorityClassName` | Name of Priority Class to assign pods | |
 | `updateStrategy` | Optional update strategy | `type: RollingUpdate` |
