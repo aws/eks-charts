@@ -4,7 +4,7 @@
 
 image:
   repository: gcr.io/spiffe-io/spire-agent
-  tag: 1.2.0
+  tag: 1.3.0
   pullPolicy: IfNotPresent
 
 nameOverride: ""
