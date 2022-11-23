@@ -51,5 +51,7 @@ config:
   svidTTL: 1h
   # SPIRE Server Bind Address
   bindAddress: 0.0.0.0
-  #SPIRE Server Bind Port
+  # SPIRE Server Bind Port
   bindPort: 8081
+  # SPIRE Plugins
+  plugin: ""
