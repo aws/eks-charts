@@ -1,7 +1,7 @@
 apiVersion: v1
 name: appmesh-spire-server
 description: SPIRE Server Helm chart for AppMesh mTLS support on Kubernetes
-version: 1.0.5
+version: 1.0.6
 appVersion: 1.2.0
 home: https://github.com/aws/eks-charts
 icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
