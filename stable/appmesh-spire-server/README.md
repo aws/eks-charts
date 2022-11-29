@@ -43,6 +43,7 @@ Parameter | Description | Default
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | `spire-server`
 `config.plugin`| SPIRE Plugin(s) | `null`
+`image.tag` | SPIRE Server image version | `1.5.0`
 
 
 To add plugins to the SPIRE server according to the [documentation](https://spiffe.io/docs/latest/planning/extending/), use the following convention
@@ -57,3 +58,5 @@ config:
             }
         }       
 ```
+
+If you want to upgrade existing SPIRE to a later version without down time, be aware that the difference between SPIRE Agent and SPIRE Server CANNOT BE GREATER than 1 minor version. Also you have to upgrade 1 minor version at a time. Check this [documentation](https://github.com/spiffe/spire/blob/main/doc/upgrading.md) for more info.

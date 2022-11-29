@@ -41,3 +41,6 @@ Parameter | Description | Default
 `config.serverPort` | SPIRE Server Bind Port | `8081`
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | `spire-agent`
+`image.tag` | SPIRE Server image version | `1.5.0`
+
+If you want to upgrade existing SPIRE to a later version without down time, be aware that the difference between SPIRE Agent and SPIRE Server CANNOT BE GREATER than 1 minor version. Also you have to upgrade 1 minor version at a time. Check this [documentation](https://github.com/spiffe/spire/blob/main/doc/upgrading.md) for more info.

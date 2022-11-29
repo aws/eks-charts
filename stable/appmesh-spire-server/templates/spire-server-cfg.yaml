@@ -53,7 +53,7 @@ data:
         }
       }
       
-    {{- if .Values.config.plugin -}}
+    {{ if .Values.config.plugin }}
     {{- .Values.config.plugin | nindent 6 -}}
-    {{- end -}}
+    {{ end }}
     }
