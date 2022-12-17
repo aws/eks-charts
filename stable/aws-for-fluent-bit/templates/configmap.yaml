@@ -192,6 +192,9 @@ data:
         {{- if .Values.elasticsearch.replaceDots }}
         Replace_Dots    {{ .Values.elasticsearch.replaceDots }}
         {{- end -}}
+        {{- if .Values.elasticsearch.suppressTypeName }}
+        Suppress_Type_Name    {{ .Values.elasticsearch.suppressTypeName }}
+        {{- end -}}
         {{- if .Values.elasticsearch.extraOutputs }}
 {{ .Values.elasticsearch.extraOutputs | indent 8 }}
         {{- end }}
