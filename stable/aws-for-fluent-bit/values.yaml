@@ -131,6 +131,7 @@ elasticsearch:
   port: "443"
   retryLimit: 6
   replaceDots: "On"
+  suppressTypeName:
   # extraOutputs: |
   #   Index = my-index
 

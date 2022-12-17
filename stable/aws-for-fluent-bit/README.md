@@ -94,6 +94,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `elasticsearch.port` | TCP Port of the target service. | 443 |
 | `elasticsearch.retryLimit` | Integer value to set the maximum number of retries allowed. N must be >= 1  | 6 |
 | `elasticsearch.replaceDots` | Enable or disable Replace_Dots  | On |
+| `elasticsearch.suppressTypeName` | OpenSearch 2.0 and above needs to have type option being removed by setting Suppress_Type_Name On  | |
 | `elasticsearch.extraOutputs` | Append extra outputs with value | `""` |
 | `additionalOutputs` | add outputs with value | `""` |
 | `priorityClassName` | Name of Priority Class to assign pods | |
