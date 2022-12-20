@@ -27,8 +27,8 @@ sidecar:
   resources:
     # sidecar.resources.requests: Envoy CPU and memory requests
     requests:
-      cpu: 10m
-      memory: 32Mi
+      cpu: 512
+      memory: 64Mi
     # sidecar.resources/limits: Envoy CPU and memory limits
     limits:
       cpu: ""
