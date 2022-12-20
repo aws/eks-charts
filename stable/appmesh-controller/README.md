@@ -387,7 +387,7 @@ Parameter | Description | Default
 `sidecar.logLevel` | Envoy log level | `info`
 `sidecar.envoyAdminAccessPort` | Envoy Admin Access Port | `9901`
 `sidecar.envoyAdminAccessLogFile` | Envoy Admin Access Log File | `/tmp/envoy_admin_access.log`
-`sidecar.resources.requests` | Envoy container resource requests | `requests: cpu 10m memory 32Mi`
+`sidecar.resources.requests` | Envoy container resource requests | `requests: cpu 512 memory 64Mi`
 `sidecar.resources.limits` | Envoy container resource limits | `limits: cpu "" memory ""`
 `sidecar.lifecycleHooks.preStopDelay` | Envoy container PreStop Hook Delay Value | `20s`
 `sidecar.lifecycleHooks.postStartInterval` | Envoy container PostStart Hook Interval Value | `5s`
