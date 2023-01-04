@@ -346,6 +346,18 @@ Run the `appmesh-controller/upgrade/pre_upgrade_check.sh` script and make sure i
 
 For handling the existing custom resources and the CRDs please refer to either of the previous upgrade sections as relevant.
 
+## Running on ARM Based Instances
+The controller can run on ARM based instances. To do this you need to specify the ARM64 controller image when deploying the Helm chart.
+You can specify the ARM64 image by setting the image.tag Helm parameter to `<VERSION>-linux_arm64`
+
+For example, to run controller version 1.9.0 on ARM instances you could run the following:
+```console
+helm upgrade -i appmesh-controller eks/appmesh-controller \
+    --namespace appmesh-system \
+    --set region=$AWS_REGION \
+    --set image.tag=v1.9.0-linux_arm64
+```
+
 ## Uninstalling the Chart
 
 To uninstall/delete the `appmesh-controller` deployment:
