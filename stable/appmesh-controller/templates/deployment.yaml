@@ -73,6 +73,10 @@ spec:
         - --envoy-admin-access-log-file={{ .Values.sidecar.envoyAdminAccessLogFile }}
         - --envoy-admin-access-enable-ipv6={{ .Values.sidecar.envoyAdminAccessEnableIPv6 }}
         - --dual-stack-endpoint={{ .Values.sidecar.useDualStackEndpoint }}
+        - --fips-endpoint={{ .Values.sidecar.useFipsEndpoint }}
+        - --envoy-aws-access-key-id={{ .Values.sidecar.envoyAwsAccessKeyId }}
+        - --envoy-aws-secret-access-key={{ .Values.sidecar.envoyAwsSecretAccessKey }}
+        - --envoy-aws-session-token={{ .Values.sidecar.envoyAwsSessionToken }}
         - --preview={{ .Values.preview }}
         - --enable-sds={{ .Values.sds.enabled }}
         - --sds-uds-path={{ .Values.sds.udsPath }}

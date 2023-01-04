@@ -10,19 +10,20 @@ clusterName: ""
 
 image:
   repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
-  tag: v1.9.0
+  tag: v1.10.0
   pullPolicy: IfNotPresent
 
 sidecar:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
-    tag: v1.22.2.1-prod
+    tag: v1.24.0.0-prod
     # sidecar.logLevel: Envoy log level can be info, warn, error or debug
   logLevel: info
   envoyAdminAccessPort: 9901
   envoyAdminAccessLogFile: /tmp/envoy_admin_access.log
   envoyAdminAccessEnableIPv6: false
   useDualStackEndpoint: false
+  useFipsEndpoint: false
   resources:
     # sidecar.resources.requests: Envoy CPU and memory requests
     requests:
