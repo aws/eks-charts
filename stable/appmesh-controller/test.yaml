@@ -9,13 +9,15 @@ preview: false
 clusterName: ""
 
 image:
-  repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
+  # https://gallery.ecr.aws/appmesh/appmesh-controller
+  repository: public.ecr.aws/appmesh/appmesh-controller
   tag: v1.10.0
   pullPolicy: IfNotPresent
 
 sidecar:
   image:
-    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
+    # https://gallery.ecr.aws/appmesh/aws-appmesh-envoy
+    repository: public.ecr.aws/appmesh/aws-appmesh-envoy
     tag: v1.24.0.0-prod
     # sidecar.logLevel: Envoy log level can be info, warn, error or debug
   logLevel: info

@@ -374,7 +374,7 @@ The following tables lists the configurable parameters of the chart and their de
 
 Parameter | Description | Default
 --- | --- | ---
-`image.repository` | image repository | ` 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller`
+`image.repository` | image repository | `public.ecr.aws/appmesh/appmesh-controller`
 `image.tag` | image tag | `<VERSION>`
 `image.pullPolicy` | image pull policy | `IfNotPresent`
 `log.level` | controller log level, possible values are `info` and `debug`  | `info`
@@ -394,7 +394,7 @@ Parameter | Description | Default
 `serviceAccount.annotations` | optional annotations to add to service account | `{}`
 `serviceAccount.create` | If `true`, create a new service account | `true`
 `serviceAccount.name` | Service account to be used | None
-`sidecar.image.repository` | Envoy image repository. If you override with non-Amazon built Envoy image, you will need to test/ensure it works with the App Mesh | `840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy`
+`sidecar.image.repository` | Envoy image repository. If you override with non-Amazon built Envoy image, you will need to test/ensure it works with the App Mesh | `public.ecr.aws/appmesh/aws-appmesh-envoy`
 `sidecar.image.tag` | Envoy image tag | `<VERSION>`
 `sidecar.logLevel` | Envoy log level | `info`
 `sidecar.envoyAdminAccessPort` | Envoy Admin Access Port | `9901`
