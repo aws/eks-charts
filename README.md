@@ -27,6 +27,9 @@ helm repo add eks https://aws.github.io/eks-charts
 ### AWS CloudWatch Metrics
 * [aws-cloudwatch-metrics](stable/aws-cloudwatch-metrics): A helm chart for CloudWatch Agent to Collect Cluster Metrics
 
+### AWS EBS CSI Driver
+* [aws-ebs-csi-driver](stable/aws-ebs-csi-driver): A helm chart for Container Storage Interface (CSI) Driver which provides a CSI interface used by Container Orchestrators to manage the lifecycle of Amazon EBS volumes. https://github.com/kubernetes-sigs/aws-ebs-csi-driver
+
 ### AWS for Fluent Bit
 * [aws-for-fluent-bit](stable/aws-for-fluent-bit): A helm chart for [AWS-for-fluent-bit](https://github.com/aws/aws-for-fluent-bit)
 
