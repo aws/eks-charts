@@ -374,7 +374,7 @@ The following tables lists the configurable parameters of the chart and their de
 
 Parameter | Description | Default
 --- | --- | ---
-`image.repository` | image repository | ` 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller`
+`image.repository` | image repository | ` 840364872350.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller`
 `image.tag` | image tag | `<VERSION>`
 `image.pullPolicy` | image pull policy | `IfNotPresent`
 `log.level` | controller log level, possible values are `info` and `debug`  | `info`
