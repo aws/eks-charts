@@ -11,6 +11,10 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+rbac:
+  # rbac.pspEnabled, if `true` a restricted pod security policy is created and used
+  pspEnabled: false
+
 service:
   ## Allow the service to be exposed for monitoring
   ## https://docs.fluentbit.io/manual/administration/monitoring
