@@ -1,0 +1,31 @@
+name: release
+on:
+  push:
+    branches: [master]
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+permissions:
+  id-token: write
+  pull-requests: write
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: github.repository == 'aws/eks-charts'
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+          check-latest: true
+      - run: make install-toolchain
+      - run: make verify
+      - run: make package publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
