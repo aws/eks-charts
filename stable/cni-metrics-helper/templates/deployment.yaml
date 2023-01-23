@@ -1,0 +1,28 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ include "cni-metrics-helper.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    k8s-app: cni-metrics-helper
+spec:
+  selector:
+    matchLabels:
+      k8s-app: cni-metrics-helper
+  template:
+    metadata:
+      labels:
+        k8s-app: cni-metrics-helper
+    spec:
+      containers:
+      - env:
+{{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+{{- end }}
+{{- if .Values.resources }}
+        resources: {{ toYaml .Values.resources | nindent 10 }}
+{{- end }}
+        name: cni-metrics-helper
+        image: "{{- if .Values.image.override }}{{- .Values.image.override }}{{- else }}{{- .Values.image.account }}.dkr.ecr.{{- .Values.image.region }}.{{- .Values.image.domain }}/cni-metrics-helper:{{- .Values.image.tag }}{{- end}}"
+      serviceAccountName: {{ template "cni-metrics-helper.serviceAccountName" . }} 
