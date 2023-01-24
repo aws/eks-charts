@@ -1,5 +1,9 @@
 # csi-secrets-store-provider-aws
 
+**This Helm chart is deprecated, please switch to https://aws.github.io/secrets-store-csi-driver-provider-aws/ which is reviewed, owned and maintained by AWS.**
+
+-----------------
+
 AWS Secrets Manager and Config Provider for Secret Store CSI Driver allows you to get secret contents stored in AWS Key Management Service instance and use the Secrets Store CSI driver interface to mount them into Kubernetes pods.
 
 ### Prerequisites
