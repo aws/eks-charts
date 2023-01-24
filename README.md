@@ -40,6 +40,9 @@ helm repo add eks https://aws.github.io/eks-charts
 * [aws-sigv4-proxy-admission-controller](stable/aws-sigv4-proxy-admission-controller): A helm chart for [AWS SIGv4 Proxy Admission Controller](https://github.com/aws-observability/aws-sigv4-proxy-admission-controller)
 
 ### AWS Secrets Manager and Config Provider for Secret Store CSI Driver
+
+**This Helm chart is deprecated, please switch to https://aws.github.io/secrets-store-csi-driver-provider-aws/ which is reviewed, owned and maintained by AWS.**
+
 * [csi-secrets-store-provider-aws](stable/csi-secrets-store-provider-aws): A helm chart for [AWS Secrets Manager and Config Provider](https://github.com/aws/secrets-store-csi-driver-provider-aws)
 
 ### Amazon EC2 Metadata Mock
