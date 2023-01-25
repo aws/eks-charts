@@ -17,6 +17,8 @@ serviceAccount:
   create: true
   name:
 
+priorityClassName: system-node-critical
+
 hostNetwork: false
 
 nodeSelector: {}
@@ -26,5 +28,5 @@ tolerations: []
 affinity: {}
 
 # For bottlerocket OS (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-troubleshooting.html#ContainerInsights-troubleshooting-bottlerocket)
-# containerdSockPath: /run/dockershim.sock 
+# containerdSockPath: /run/dockershim.sock
 containerdSockPath: /run/containerd/containerd.sock
