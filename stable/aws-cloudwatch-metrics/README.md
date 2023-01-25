@@ -33,3 +33,4 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `tolerations` | Optional deployment tolerations	 | {} | 
 | `annotations` | Optional pod annotations	 | {} | 
 | `containerdSockPath` | Path to containerd' socket | /run/containerd/containerd.sock
+| `metricsCollectionInterval` | Metrics collection interval | 60 | 
