@@ -32,4 +32,5 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `nodeSelector` | Node labels for pod assignment	 | {} | 
 | `tolerations` | Optional deployment tolerations	 | {} | 
 | `annotations` | Optional pod annotations	 | {} | 
-| `containerdSockPath` | Path to containerd' socket | /run/containerd/containerd.sock
+| `containerdSockPath` | Path to containerd' socket | /run/containerd/containerd.sock |
+| `priorityClassName` | Optional priorityClassName	 | | 
