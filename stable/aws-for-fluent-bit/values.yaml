@@ -135,6 +135,36 @@ elasticsearch:
   # extraOutputs: |
   #   Index = my-index
 
+# Check the docs for more S3 config options https://docs.fluentbit.io/manual/pipeline/outputs/s3
+s3:
+  enabled: false
+  match: "*"
+  region: "us-east-1"
+  bucket: "my-bucket-name"
+  json_date_key:
+  json_date_format:
+  total_file_size:
+  upload_chunk_size:
+  upload_timeout:
+  store_dir:
+  s3_key_format:
+  s3_key_format_tag_delimiters:
+  static_file_path:
+  use_put_object:
+  role_arn:
+  endpoint:
+  sts_endpoint:
+  canned_acl:
+  compression:
+  content_type:
+  send_content_md5:
+  auto_retry_requests:
+  log_key:
+  preserve_data_ordering:
+  storage_class:
+  # extraOutputs: |
+  #   ...
+
 # additionalOutputs: |
 #   [OUTPUT]
 #     Name file
