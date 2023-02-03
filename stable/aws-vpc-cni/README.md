@@ -42,14 +42,14 @@ The following table lists the configurable parameters for this chart and their d
 | `env`                   | List of environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options | (see `values.yaml`) |
 | `fullnameOverride`      | Override the fullname of the chart                      | `aws-node`                          |
 | `image.region`          | ECR repository region to use. Should match your cluster | `us-west-2`                         |
-| `image.tag`             | Image tag                                               | `v1.12.1`                           |
+| `image.tag`             | Image tag                                               | `v1.12.2`                           |
 | `image.account`         | ECR repository account number                           | `602401143452`                      |
 | `image.domain`          | ECR repository domain                                   | `amazonaws.com`                     |
 | `image.pullPolicy`      | Container pull policy                                   | `IfNotPresent`                      |
 | `image.override`        | A custom docker image to use                            | `nil`                               |
 | `imagePullSecrets`      | Docker registry pull secret                             | `[]`                                |
 | `init.image.region`     | ECR repository region to use. Should match your cluster | `us-west-2`                         |
-| `init.image.tag`        | Image tag                                               | `v1.12.1`                           |
+| `init.image.tag`        | Image tag                                               | `v1.12.2`                           |
 | `init.image.account`    | ECR repository account number                           | `602401143452`                      |
 | `init.image.domain`     | ECR repository domain                                   | `amazonaws.com`                     |
 | `init.image.pullPolicy` | Container pull policy                                   | `IfNotPresent`                      |
@@ -91,7 +91,6 @@ WARNING: Substitute YOUR_HELM_RELEASE_NAME_HERE with the name of your helm relea
 
 set -euo pipefail
 
-# don't import the crd. Helm cant manage the lifecycle of it anyway.
 for kind in daemonSet clusterRole clusterRoleBinding serviceAccount; do
   echo "setting annotations and labels on $kind/aws-node"
   kubectl -n kube-system annotate --overwrite $kind aws-node meta.helm.sh/release-name=YOUR_HELM_RELEASE_NAME_HERE
