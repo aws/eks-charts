@@ -18,6 +18,7 @@ data:
         Parsers_File /fluent-bit/etc/parser_extra.conf
 {{- end }}
 
+{{- if .Values.input.enabled }}
     [INPUT]
         Name              tail
         Tag               {{ .Values.input.tag }}
@@ -28,6 +29,7 @@ data:
         Mem_Buf_Limit     {{ .Values.input.memBufLimit }}
         Skip_Long_Lines   {{ .Values.input.skipLongLines }}
         Refresh_Interval  {{ .Values.input.refreshInterval }}
+{{- end }}
 {{- if .Values.input.extraInputs }}
 {{ .Values.input.extraInputs | indent 8 }}
 {{- end }}
@@ -36,6 +38,7 @@ data:
 {{ .Values.additionalInputs | indent 4 }}
 {{- end }}
 
+{{- if .Values.filter.enabled }}
     [FILTER]
         Name                kubernetes
         Match               {{ .Values.filter.match }}
@@ -48,6 +51,8 @@ data:
         K8S-Logging.Parser  {{ .Values.filter.k8sLoggingParser }}
         K8S-Logging.Exclude {{ .Values.filter.k8sLoggingExclude }}
         Buffer_Size         {{ .Values.filter.bufferSize }}
+{{- end }}
+
 {{- if .Values.filter.extraFilters }}
 {{ .Values.filter.extraFilters | indent 8 }}
 {{- end }}
