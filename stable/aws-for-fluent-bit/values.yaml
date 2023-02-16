@@ -30,6 +30,7 @@ service:
   #       Format logfmt
 
 input:
+  enabled: true
   tag: "kube.*"
   path: "/var/log/containers/*.log"
   db: "/var/log/flb_kube.db"
@@ -49,6 +50,7 @@ input:
 #       DB           winlog.sqlite
 
 filter:
+  enabled: true
   match: "kube.*"
   kubeURL: "https://kubernetes.default.svc.cluster.local:443"
   mergeLog: "On"
