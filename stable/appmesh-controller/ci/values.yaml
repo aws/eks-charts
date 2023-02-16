@@ -3,7 +3,24 @@
 # This is a dummy account for CI test. Not a valid account ID
 accountId: 123456789
 region: us-west-2
+
 image:
   repository: public.ecr.aws/appmesh/appmesh-controller
   tag: v1.10.0
   pullPolicy: IfNotPresent
+
+sidecar:
+  image:
+    # https://gallery.ecr.aws/appmesh/aws-appmesh-envoy
+    repository: public.ecr.aws/appmesh/aws-appmesh-envoy
+    tag: v1.24.0.0-prod
+
+init:
+  image:
+    repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-proxy-route-manager
+    tag: v6-prod
+
+xray:
+  image:
+    repository: public.ecr.aws/xray/aws-xray-daemon
+    tag: latest
