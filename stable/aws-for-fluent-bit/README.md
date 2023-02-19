@@ -45,19 +45,25 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `filter.*` | Values for kubernetes filter | |
 | `filter.extraFilters` | Append to existing filter with value |
 | `additionalFilters` | Adding more filters with value |
-| `cloudWatch.enabled` | Whether this plugin should be enabled or not [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit) | `true` | ✔
+| `cloudWatch.enabled` | Whether this plugin should be enabled or not [details](https://docs.fluentbit.io/manual/pipeline/outputs/cloudwatch) | `true` | ✔
 | `cloudWatch.match` | The log filter | `*` | ✔
 | `cloudWatch.region` | The AWS region for CloudWatch.  | `us-east-1` | ✔
 | `cloudWatch.logGroupName` | The name of the CloudWatch Log Group that you want log records sent to. | `"/aws/eks/fluentbit-cloudwatch/logs"` | ✔
+| `cloudWatch.logGroupTemplate` | Template for Log Group name using Fluent Bit record_accessor syntax. This field is optional and if configured it overrides the logGroupName. If the template translation fails, an error is logged and the logGroupName (which is still required) is used instead. |  |
 | `cloudWatch.logStreamName` | The name of the CloudWatch Log Stream that you want log records sent to. |  |
 | `cloudWatch.logStreamPrefix` | Prefix for the Log Stream name. The tag is appended to the prefix to construct the full log stream name. Not compatible with the log_stream_name option. | `"fluentbit-"` |
+| `cloudWatch.logStreamTemplate` | Template for Log Stream name using Fluent Bit record_accessor syntax. This field is optional and if configured it overrides the other log stream options. If the template translation fails, an error is logged and the log_stream_name or log_stream_prefix are used instead (and thus one of those fields is still required to be configured). |  |
 | `cloudWatch.logKey` | By default, the whole log record will be sent to CloudWatch. If you specify a key name with this option, then only the value of that key will be sent to CloudWatch. For example, if you are using the Fluentd Docker log driver, you can specify logKey log and only the log message will be sent to CloudWatch. |  |
-| `cloudWatch.logRetentionDays` | If set to a number greater than zero, and newly create log group's retention policy is set to this many days. | |
 | `cloudWatch.logFormat` | An optional parameter that can be used to tell CloudWatch the format of the data. A value of json/emf enables CloudWatch to extract custom metrics embedded in a JSON payload. See the Embedded Metric Format. |  |
 | `cloudWatch.roleArn` | ARN of an IAM role to assume (for cross account access). |  |
 | `cloudWatch.autoCreateGroup` | Automatically create the log group. Valid values are "true" or "false" (case insensitive). | true |
+| `cloudWatch.logRetentionDays` | If set to a number greater than zero, and newly create log group's retention policy is set to this many days. | |
 | `cloudWatch.endpoint` | Specify a custom endpoint for the CloudWatch Logs API. |  |
-| `cloudWatch.credentialsEndpoint` | Specify a custom HTTP endpoint to pull credentials from. [more info](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit) |  |
+| `cloudWatch.metricNamespace` | An optional string representing the CloudWatch namespace for the metrics. |  |
+| `cloudWatch.metricDimensions` | A list of lists containing the dimension keys that will be applied to all metrics. If you have only one list of dimensions, put the values as a comma separated string. If you want to put list of lists, use the list as semicolon separated strings. |  |
+| `cloudWatch.stsEndpoint` | Specify a custom STS endpoint for the AWS STS API. |  |
+| `cloudWatch.autoRetryRequests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. This option defaults to true. |  |
+| `cloudWatch.externalId` | Specify an external ID for the STS API, can be used with the role_arn parameter if your role requires an external ID. |  |
 | `cloudWatch.extraOutputs` | Append extra outputs with value | `""` |
 | `firehose.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-firehose-for-fluent-bit) | `true` | ✔
 | `firehose.match` | The log filter | `"*"` | ✔

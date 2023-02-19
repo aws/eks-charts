@@ -4,7 +4,7 @@ global:
 
 image:
   repository: public.ecr.aws/aws-observability/aws-for-fluent-bit
-  tag: 2.21.5
+  tag: 2.31.2
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -81,17 +81,24 @@ cloudWatch:
   match: "*"
   region: "us-east-1"
   logGroupName: "/aws/eks/fluentbit-cloudwatch/logs"
+  logGroupTemplate: 
   logStreamName:
   logStreamPrefix: "fluentbit-"
+  logStreamTemplate:
   logKey:
   logFormat:
-  logRetentionDays:
   roleArn:
   autoCreateGroup: true
+  logRetentionDays:
   endpoint:
-  credentialsEndpoint: {}
+  metricNamespace: 
+  metricDimensions: 
+  stsEndpoint:
+  autoRetryRequests:
+  externalId:
   # extraOutputs: |
-  #   ...
+  #  log_format json/emf
+  #  worker 1 
 
 firehose:
   enabled: true
