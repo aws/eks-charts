@@ -14,7 +14,6 @@ fullnameOverride: ""
 rbac:
   # rbac.pspEnabled, if `true` a restricted pod security policy is created and used
   pspEnabled: false
-  
 service:
   ## Allow the service to be exposed for monitoring
   ## https://docs.fluentbit.io/manual/administration/monitoring
@@ -81,7 +80,7 @@ cloudWatch:
   match: "*"
   region: "us-east-1"
   logGroupName: "/aws/eks/fluentbit-cloudwatch/logs"
-  logGroupTemplate: 
+  logGroupTemplate:
   logStreamName:
   logStreamPrefix: "fluentbit-"
   logStreamTemplate:
@@ -91,14 +90,14 @@ cloudWatch:
   autoCreateGroup: true
   logRetentionDays:
   endpoint:
-  metricNamespace: 
-  metricDimensions: 
+  metricNamespace:
+  metricDimensions:
   stsEndpoint:
   autoRetryRequests:
   externalId:
   # extraOutputs: |
   #  log_format json/emf
-  #  worker 1 
+  #  worker 1
 
 firehose:
   enabled: true
@@ -178,7 +177,8 @@ tolerations: []
 
 affinity: {}
 
-annotations: {}
+annotations:
+  {}
   # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit
 
 # Specifies if aws-for-fluent-bit should be started in hostNetwork mode.
@@ -210,7 +210,6 @@ env: []
 #       fieldRef:
 #         fieldPath: spec.nodeName
 
-
 volumes:
   - name: varlog
     hostPath:
@@ -225,7 +224,6 @@ volumeMounts:
   - name: varlibdockercontainers
     mountPath: /var/lib/docker/containers
     readOnly: true
-
 
 serviceMonitor:
   # service:
