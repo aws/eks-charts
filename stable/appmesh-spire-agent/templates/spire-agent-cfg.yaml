@@ -19,7 +19,7 @@ data:
     plugins {
       NodeAttestor "k8s_sat" {
         plugin_data {
-          cluster = "k8s-cluster"
+          cluster = "{{ .Values.config.clusterName }}"
         }
       }
 

@@ -23,6 +23,15 @@ spec:
         - name: spire-config
           configMap:
             name: {{ template "appmesh-spire-server.fullname" . }}
+        {{- if .Values.spireControllerManager.enabled}}
+        - name: spire-controller-manager-config
+          configMap:
+            name: spire-controller-manager-config
+        - name: spire-registration-socket
+          hostPath:
+            path: /run/spire/server-sockets
+            type: DirectoryOrCreate
+        {{- end }}
       containers:
         - name: spire-server
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -48,6 +57,25 @@ spec:
             - name: spire-data
               mountPath: /run/spire/data
               readOnly: false
+          {{- if .Values.spireControllerManager.enabled }}
+            - name: spire-registration-socket
+              mountPath: /tmp/spire-server/private/
+              readOnly: false
+        - name: spire-controller-manager
+          image: "{{ .Values.spireControllerManager.repository }}:{{ .Values.spireControllerManager.tag }}"
+          imagePullPolicy: {{ .Values.spireControllerManager.pullPolicy }}
+          ports:
+            - containerPort: 9443
+          args:
+            - "--config=spire-controller-manager-config.yaml"
+          volumeMounts:
+            - name: spire-registration-socket
+              mountPath: /spire-server
+              readOnly: true
+            - name: spire-controller-manager-config
+              mountPath: /spire-controller-manager-config.yaml
+              subPath: spire-controller-manager-config.yaml
+        {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: spire-data

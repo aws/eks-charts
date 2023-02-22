@@ -43,6 +43,8 @@ rbac:
 config:
   # SPIRE Trust Domain
   trustDomain: appmesh.aws
+  # Cluster Name
+  clusterName: k8s-cluster
   ## SPIRE Agent Log Level
   logLevel: DEBUG
   # SPIRE Server Bind Address

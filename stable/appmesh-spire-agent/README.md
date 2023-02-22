@@ -36,6 +36,7 @@ The following tables lists the configurable parameters of the chart and their de
 Parameter | Description | Default
 --- | --- | ---
 `config.trustDomain` | SPIRE Trust Domain | `appmesh.aws`
+`config.clusterName` | Cluster Name | `k8s-cluster`
 `config.logLevel` | Log Level | `DEBUG`
 `config.serverAddress` | SPIRE Server Address | `spire-server`
 `config.serverPort` | SPIRE Server Bind Port | `8081`

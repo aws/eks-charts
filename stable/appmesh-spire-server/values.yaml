@@ -42,9 +42,18 @@ rbac:
   # rbac.create: `true` if rbac resources should be created
   create: true
 
+spireControllerManager:
+  enabled: true
+  repository: ghcr.io/spiffe/spire-controller-manager
+  tag: 0.2.1
+  pullPolicy: IfNotPresent
+  ignoreNamespaces: [ kube-system, kube-public, spire ]
+  
 config:
   # SPIRE Trust Domain
   trustDomain: appmesh.aws
+  # Cluster Name
+  clusterName: k8s-cluster
   ## SPIRE Server Log Level
   logLevel: DEBUG
   # SVID TTL value

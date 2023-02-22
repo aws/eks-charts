@@ -19,6 +19,17 @@ helm upgrade -i appmesh-spire-server eks/appmesh-spire-server \
 
 The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
+## SPIRE Controller Manager
+
+If you would like the SPIRE Server to dynamically register workloads within your cluster, install the following CRDs:
+
+```sh
+kubectl apply -f https://raw.githubusercontent.com/spiffe/spire-controller-manager/main/config/crd/bases/spire.spiffe.io_clusterfederatedtrustdomains.yaml
+kubectl apply -f https://raw.githubusercontent.com/spiffe/spire-controller-manager/main/config/crd/bases/spire.spiffe.io_clusterspiffeids.yaml
+```
+Reference the [spire-controller-manager documentation](https://github.com/spiffe/spire-controller-manager) to learn more. In order to control which workloads the controller manager registers, either add additional namespaces to the `spireControllerManager.ignoreNamespaces` list or deploy a [Cluster SPIFFE ID resource](https://github.com/spiffe/spire-controller-manager/blob/main/docs/clusterspiffeid-crd.md) to instruct the controller manager which pods to target for registering workloads.
+
+
 ## Uninstalling the Chart
 
 To uninstall/delete the `appmesh-spire-server` deployment:
@@ -36,6 +47,7 @@ The following tables lists the configurable parameters of the chart and their de
 Parameter | Description | Default
 --- | --- | ---
 `config.trustDomain` | SPIRE Trust Domain | `appmesh.aws`
+`config.clusterName` | Cluster Name | `k8s-cluster`
 `config.logLevel` | Log Level | `DEBUG`
 `config.svidTTL` | SVID TTL value | `1h`
 `config.bindAddress` | SPIRE Server Bind Address | `0.0.0.0`
@@ -44,6 +56,8 @@ Parameter | Description | Default
 `serviceAccount.name` | Service account to be used | `spire-server`
 `config.plugin`| SPIRE Plugin(s) | `null`
 `image.tag` | SPIRE Server image version | `1.5.0`
+`spireControllerManager.enabled` | Enable SPIRE Controller Manager | `false`
+`spireControllerManager.ignoreNamespaces` | List of namespaces for the SPIRE Controller Manager to ignore | `[kube-system, kube-public, spire]`
 
 
 To add plugins to the SPIRE server according to the [documentation](https://spiffe.io/docs/latest/planning/extending/), use the following convention
