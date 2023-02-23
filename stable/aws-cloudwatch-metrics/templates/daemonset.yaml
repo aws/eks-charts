@@ -43,12 +43,14 @@ spec:
         - name: rootfs
           mountPath: /rootfs
           readOnly: true
+        {{- if .Values.mountDockerSock }}
         - name: dockersock
           mountPath: /var/run/docker.sock
           readOnly: true
         - name: varlibdocker
           mountPath: /var/lib/docker
           readOnly: true
+        {{- end }}
         - name: containerdsock
           mountPath: /run/containerd/containerd.sock
           readOnly: true
@@ -67,12 +69,14 @@ spec:
       - name: rootfs
         hostPath:
           path: /
+      {{- if .Values.mountDockerSock }}
       - name: dockersock
         hostPath:
           path: /var/run/docker.sock
       - name: varlibdocker
         hostPath:
           path: /var/lib/docker
+      {{- end }}
       - name: containerdsock
         hostPath:
           path: {{ .Values.containerdSockPath }}

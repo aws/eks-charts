@@ -25,6 +25,10 @@ tolerations: []
 
 affinity: {}
 
+# Amazon EKS ended support for Dockershim
+# https://docs.aws.amazon.com/eks/latest/userguide/dockershim-deprecation.html
+mountDockerSock: true
+
 # For bottlerocket OS (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-troubleshooting.html#ContainerInsights-troubleshooting-bottlerocket)
 # containerdSockPath: /run/dockershim.sock
 containerdSockPath: /run/containerd/containerd.sock
