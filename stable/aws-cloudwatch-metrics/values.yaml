@@ -3,6 +3,8 @@ image:
   tag: 1.247350.0b251780
   pullPolicy: IfNotPresent
 
+imagePullSecrets: []
+
 clusterName: cluster_name
 
 resources:
