@@ -34,3 +34,4 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `annotations` | Optional pod annotations	 | {} | 
 | `containerdSockPath` | Path to containerd' socket | /run/containerd/containerd.sock |
 | `priorityClassName` | Optional priorityClassName	 | | 
+| `imagePullSecrets` | Secrets to authenticate with an image repository | [] |
