@@ -82,6 +82,8 @@ spec:
         - --sds-uds-path={{ .Values.sds.udsPath }}
         - --enable-backend-groups={{ .Values.enableBackendGroups }}
         - --cluster-name={{ .Values.clusterName}}
+        - --use-aws-dual-stack-endpoint={{ .Values.useAwsDualStackEndpoint}}
+        - --use-aws-fips-endpoint={{ .Values.useAwsFIPSEndpoint}}
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}
