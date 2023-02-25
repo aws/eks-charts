@@ -205,7 +205,7 @@ opensearch:
   bufferSize: "4k"
   pipeline:
   awsRegion: "us-east-1"
-  awsAuth: "off"
+  awsAuth: "On"
   awsStsEndpoint:
   awsRoleArn:
   awsExternalId:
