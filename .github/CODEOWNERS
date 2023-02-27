@@ -2,12 +2,7 @@
 # the repo. Unless a later match takes precedence,
 *       @bwagner5 @kishorj @fawadkhaliq @jaypipes
 
-/stable/appmesh-controller/ @achevuru @fawadkhaliq
-/stable/appmesh-gateway/ @stefanprodan
-/stable/appmesh-grafana/ @achevuru @fawadkhaliq
-/stable/appmesh-inject/ @achevuru @fawadkhaliq
-/stable/appmesh-jaeger/ @achevuru @fawadkhaliq
-/stable/appmesh-prometheus/ @achevuru @fawadkhaliq
+/stable/appmesh-*/ @aws/app-mesh-eks-admin
 
 /stable/aws-load-balancer-controller/ @kishorj @M00nF1sh
 
