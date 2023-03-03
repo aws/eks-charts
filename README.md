@@ -22,7 +22,8 @@ helm repo add eks https://aws.github.io/eks-charts
 * [aws-node-termination-handler](stable/aws-node-termination-handler): Gracefully handle EC2 instance shutdown within Kubernetes. https://github.com/aws/aws-node-termination-handler
 
 ### AWS Calico
-* [aws-calico](stable/aws-calico): Install Calico network policy enforcement on AWS
+
+**This Helm chart is deprecated**. To install Calico network policy enforcement on AWS, follow the EKS [user guide](https://docs.aws.amazon.com/eks/latest/userguide/calico.html).
 
 ### AWS CloudWatch Metrics
 * [aws-cloudwatch-metrics](stable/aws-cloudwatch-metrics): A helm chart for CloudWatch Agent to Collect Cluster Metrics
