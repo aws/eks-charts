@@ -25,6 +25,8 @@ tolerations: []
 
 affinity: {}
 
+annotations: {}
+
 # For bottlerocket OS (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-troubleshooting.html#ContainerInsights-troubleshooting-bottlerocket)
 # containerdSockPath: /run/dockershim.sock 
 containerdSockPath: /run/containerd/containerd.sock
