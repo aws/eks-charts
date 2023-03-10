@@ -348,8 +348,12 @@ data:
     [OUTPUT]
         Name                opensearch
         Match               {{ .Values.opensearch.match }}
-        AWS_Region          {{ .Values.opensearch.awsRegion }}
-        AWS_Auth            {{ .Values.opensearch.awsAuth }}
+        {{- if .Values.opensearch.awsRegion }}
+        AWS_Region                {{ .Values.opensearch.awsRegion }}
+        {{- end }}
+        {{- if .Values.opensearch.awsAuth }}
+        AWS_Auth                {{ .Values.opensearch.awsAuth }}
+        {{- end }}
         {{- if .Values.opensearch.host }}
         Host                {{ .Values.opensearch.host }}
         {{- end }}
@@ -376,6 +380,9 @@ data:
         {{- end }}
         {{- if .Values.opensearch.awsExternalId }}
         AWS_External_ID     {{ .Values.opensearch.awsExternalId }}
+        {{- end }}
+        {{- if .Values.opensearch.awsServiceName }}
+        AWS_Service_Name    {{ .Values.opensearch.awsServiceName }}
         {{- end }}
         {{- if .Values.opensearch.httpUser }}
         HTTP_User           {{ .Values.opensearch.httpUser }}

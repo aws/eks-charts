@@ -4,7 +4,7 @@ global:
 
 image:
   repository: public.ecr.aws/aws-observability/aws-for-fluent-bit
-  tag: 2.31.2
+  tag: 2.28.4
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -96,8 +96,8 @@ cloudWatchLogs:
   enabled: true
   match: "*"
   region: "us-east-1"
-  logGroupName: "/aws/eks/fluentbit-cloudwatch-native/logs"
-  logGroupTemplate: /aws/eks/fluentbit-cloudwatch-native/workload/$kubernetes['namespace_name']
+  logGroupName: "/aws/eks/fluentbit-cloudwatch/logs"
+  logGroupTemplate: /aws/eks/fluentbit-cloudwatch/workload/$kubernetes['namespace_name']
   logStreamName:
   logStreamPrefix: "fluentbit-"
   logStreamTemplate: $kubernetes['pod_name'].$kubernetes['container_name']
@@ -172,11 +172,11 @@ s3:
   jsonDateKey: "date"
   jsonDateFormat: "iso8601"
   totalFileSize: "100M"
-  uploadChunkSize: 50M
+  uploadChunkSize: 5M
   uploadTimeout: "10m"
   storeDir: "/tmp/fluent-bit/s3"
   storeDirLimitSize: 0
-  s3KeyFormat: /fluent-bit-logs/$TAG/%Y/%m/%d/%H/%M/%S
+  s3KeyFormat: /pod-logs/$TAG/%Y/%m/%d/%H/%M/%S
   s3KeyFormatTagDelimiters:
   staticFilePath: false
   usePutObject: false
@@ -209,6 +209,7 @@ opensearch:
   awsStsEndpoint:
   awsRoleArn:
   awsExternalId:
+  awsServiceName:
   httpUser:
   httpPasswd:
   index: "aws-fluent-bit"

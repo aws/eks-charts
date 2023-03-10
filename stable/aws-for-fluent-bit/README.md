@@ -30,7 +30,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | - | - | - | -
 | `global.namespaceOverride` | Override the deployment namespace | Not set (`Release.Namespace`) |
 | `image.repository` | Image to deploy | `amazon/aws-for-fluent-bit` | ✔
-| `image.tag` | Image tag to deploy | `2.21.5`
+| `image.tag` | Image tag to deploy | `2.28.4`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
 | `rbac.pspEnabled` | Whether a pod security policy should be created | `false`
 | `imagePullSecrets` | Docker registry pull secret | `[]` |
@@ -59,26 +59,26 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `cloudWatch.endpoint` | Specify a custom endpoint for the CloudWatch Logs API. |  |
 | `cloudWatch.credentialsEndpoint` | Specify a custom HTTP endpoint to pull credentials from. [more info](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit) |  |
 | `cloudWatch.extraOutputs` | Append extra outputs with value | `""` |
-| `cloudWatchLogs.enabled` | This section is used to enable new high performance plugin. The Golang plugin was named `cloudwatch`; this new high performance CloudWatch plugin is called `cloudwatch_logs` in fluent bit configuration to prevent conflicts/confusion [details](https://docs.fluentbit.io/manual/pipeline/outputs/cloudwatch) | `true` | ✔
+| `cloudWatchLogs.enabled` | This section is used to enable new high performance plugin. The Golang plugin was named `cloudwatch`; this new high performance CloudWatch plugin is called `cloudwatch_logs` in fluent bit configuration to prevent conflicts/confusion [details](https://docs.fluentbit.io/manual/pipeline/outputs/cloudwatch). For guidance on choosing go vs c plugin, please refer to [debugging guide](https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#aws-go-plugins-vs-aws-core-c-plugins) | `true` | ✔
 | `cloudWatchLogs.match` | The log filter | `*` | ✔
 | `cloudWatchLogs.region` | The AWS region for CloudWatch.  | `us-east-1` | ✔
 | `cloudWatchLogs.logGroupName` | The name of the CloudWatch Log Group that you want log records sent to. | `"/aws/eks/fluentbit-cloudwatch/logs"` | ✔
-| `cloudWatchLogs.logGroupTemplate` | Template for Log Group name using Fluent Bit record_accessor syntax. This field is optional and if configured it overrides the logGroupName. If the template translation fails, an error is logged and the logGroupName (which is still required) is used instead. |  |
+| `cloudWatchLogs.logGroupTemplate` | Template for Log Group name using Fluent Bit [record_accessor](https://docs.fluentbit.io/manual/pipeline/outputs/cloudwatch#log-stream-and-group-name-templating-using-record_accessor-syntax) syntax. This field is optional and if configured it overrides the logGroupName. If the template translation fails, an error is logged and the logGroupName (which is still required) is used instead. |  |
 | `cloudWatchLogs.logStreamName` | The name of the CloudWatch Log Stream that you want log records sent to. |  |
 | `cloudWatchLogs.logStreamPrefix` | Prefix for the Log Stream name. The tag is appended to the prefix to construct the full log stream name. Not compatible with the log_stream_name option. | `"fluentbit-"` |
 | `cloudWatchLogs.logStreamTemplate` | Template for Log Stream name using Fluent Bit record_accessor syntax. This field is optional and if configured it overrides the other log stream options. If the template translation fails, an error is logged and the log_stream_name or log_stream_prefix are used instead (and thus one of those fields is still required to be configured). |  |
-| `cloudWatchLogs.logKey` | By default, the whole log record will be sent to CloudWatch. If you specify a key name with this option, then only the value of that key will be sent to CloudWatch. For example, if you are using the Fluentd Docker log driver, you can specify logKey log and only the log message will be sent to CloudWatch. |  |
+| `cloudWatchLogs.logKey` | By default, the whole log record will be sent to CloudWatch. If you specify a key name with this option, then only the value of that key will be sent to CloudWatch. For example, if you are using the Fluentd Docker log driver, you can specify logKey log and only the log message will be sent to CloudWatch. Check the example [here](https://github.com/aws-samples/amazon-ecs-firelens-examples/tree/mainline/examples/fluent-bit/cloudwatchlogs#what-if-i-just-want-the-raw-log-line-from-the-container-to-appear-in-cloudwatch) |  |
 | `cloudWatchLogs.logFormat` | An optional parameter that can be used to tell CloudWatch the format of the data. A value of json/emf enables CloudWatch to extract custom metrics embedded in a JSON payload. See the Embedded Metric Format. |  |
 | `cloudWatchLogs.roleArn` | ARN of an IAM role to assume (for cross account access). |  |
 | `cloudWatchLogs.autoCreateGroup` | Automatically create the log group. Valid values are "true" or "false" (case insensitive). | true |
 | `cloudWatchLogs.logRetentionDays` | If set to a number greater than zero, and newly create log group's retention policy is set to this many days. | |
 | `cloudWatchLogs.endpoint` | Specify a custom endpoint for the CloudWatch Logs API. |  |
-| `cloudWatchLogs.metricNamespace` | An optional string representing the CloudWatch namespace for the metrics. |  |
+| `cloudWatchLogs.metricNamespace` | An optional string representing the CloudWatch namespace for the metrics. Please refer to [tutorial](https://docs.fluentbit.io/manual/pipeline/outputs/cloudwatch#metrics-tutorial) |  |
 | `cloudWatchLogs.metricDimensions` | A list of lists containing the dimension keys that will be applied to all metrics. If you have only one list of dimensions, put the values as a comma separated string. If you want to put list of lists, use the list as semicolon separated strings. |  |
 | `cloudWatchLogs.stsEndpoint` | Specify a custom STS endpoint for the AWS STS API. |  |
 | `cloudWatchLogs.autoRetryRequests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. This option defaults to true. |  |
 | `cloudWatchLogs.externalId` | Specify an external ID for the STS API, can be used with the role_arn parameter if your role requires an external ID. |  |
-| `cloudWatchLogs.extraOutputs` | Append extra outputs with value | `""` |
+| `cloudWatchLogs.extraOutputs` | Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add worker config like `cloudWatchLogs.extraOutputs.Workers=2`  | `""` |
 | `firehose.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-firehose-for-fluent-bit) | `true` | ✔
 | `firehose.match` | The log filter | `"*"` | ✔
 | `firehose.region` | The region which your Firehose delivery stream(s) is/are in. | `"us-east-1"` | ✔
@@ -107,7 +107,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `kinesis.extraOutputs` | Append extra outputs with value | `""` |
 | `elasticsearch.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch) | `true` | ✔
 | `elasticsearch.match` | The log filter | `"*"` | ✔
-| `elasticsearch.awsRegion` | The region in which your AWS elastic search service is/are in. | `"us-east-1"` | ✔
+| `elasticsearch.awsRegion` | The region in which your Amazon OpenSearch Service is/are in. | `"us-east-1"` | ✔
 | `elasticsearch.host` | The url of the Elastic Search endpoint you want log records sent to. | | ✔
 | `elasticsearch.awsAuth` | Enable AWS Sigv4 Authentication for Amazon ElasticSearch Service | On |
 | `elasticsearch.tls` | Enable or disable TLS support | On |
@@ -145,11 +145,11 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `s3.storageClass` | Specify the storage class for S3 objects. If this option is not specified, objects will be stored with the default 'STANDARD' storage class. |`
 | `s3.retryLimit`| Integer value to set the maximum number of retries allowed. Note: this configuration is released since version 1.9.10 and 2.0.1. For previous version, the number of retries is 5 and is not configurable. | 1
 |`s3.externalId`| Specify an external ID for the STS API, can be used with the role_arn parameter if your role requires an external ID.
-|`s3.extraOutputs`| Append extra outputs with value |`""`|
+|`s3.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add worker config like`cloudWatchLogs.extraOutputs.Workers=2`|`""`|
 |`opensearch.enabled`| Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/opensearch) |`true`| ✔
 |`opensearch.match`| The log filter |`"*"`| ✔
 |`opensearch.host`| The url of the Opensearch Search endpoint you want log records sent to. | | ✔
-|`opensearch.awsRegion`| The region in which your Opensearch search is/are in. |`"us-east-1"`| ✔
+|`opensearch.awsRegion`| The region in which your Opensearch search is/are in. |`"us-east-1"`|
 |`opensearch.awsAuth`| Enable AWS Sigv4 Authentication for Amazon ElasticSearch Service. |`"off"`|
 |`opensearch.tls`| Enable or disable TLS support | On |
 |`opensearch.port`| TCP Port of the target service. |`443`|
@@ -159,6 +159,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 |`opensearch.awsStsEndpoint`| Specify the custom sts endpoint to be used with STS API for Amazon OpenSearch Service. | |
 |`opensearch.awsRoleArn`| AWS IAM Role to assume to put records to your Amazon cluster. | |
 |`opensearch.awsExternalId`| External ID for the AWS IAM Role specified with aws_role_arn. | |
+|`opensearch.awsServiceName`| Service name to be used in AWS Sigv4 signature. For integration with Amazon OpenSearch Serverless, set to`aoss`. See the [FAQ](https://docs.fluentbit.io/manual/pipeline/outputs/opensearch#faq) section on Amazon OpenSearch Serverless for more information. To use this option: make sure you set`image.tag`to`v2.30.0`or higher. | |
 |`opensearch.httpUser`| Optional username credential for access. | |
 |`opensearch.httpPasswd`| Password for user defined in HTTP_User. | |
 |`opensearch.index`| Index name, supports [Record Accessor syntax](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/record-accessor) |`"aws-fluent-bit"`|
