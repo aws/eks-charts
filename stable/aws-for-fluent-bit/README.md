@@ -45,7 +45,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `filter.*` | Values for kubernetes filter | |
 | `filter.extraFilters` | Append to existing filter with value |
 | `additionalFilters` | Adding more filters with value |
-| `cloudWatch.enabled` | Whether this plugin should be enabled or not [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit) | `true` | ✔
+| `cloudWatch.enabled` | This is activate old golang plugin [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit). For guidance on choosing go vs c plugin, please refer to [debugging guide](https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#aws-go-plugins-vs-aws-core-c-plugins) | `true` | ✔
 | `cloudWatch.match` | The log filter | `*` | ✔
 | `cloudWatch.region` | The AWS region for CloudWatch.  | `us-east-1` | ✔
 | `cloudWatch.logGroupName` | The name of the CloudWatch Log Group that you want log records sent to. | `"/aws/eks/fluentbit-cloudwatch/logs"` | ✔
@@ -66,17 +66,17 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `cloudWatchLogs.logGroupTemplate` | Template for Log Group name using Fluent Bit [record_accessor](https://docs.fluentbit.io/manual/pipeline/outputs/cloudwatch#log-stream-and-group-name-templating-using-record_accessor-syntax) syntax. This field is optional and if configured it overrides the logGroupName. If the template translation fails, an error is logged and the logGroupName (which is still required) is used instead. |  |
 | `cloudWatchLogs.logStreamName` | The name of the CloudWatch Log Stream that you want log records sent to. |  |
 | `cloudWatchLogs.logStreamPrefix` | Prefix for the Log Stream name. The tag is appended to the prefix to construct the full log stream name. Not compatible with the log_stream_name option. | `"fluentbit-"` |
-| `cloudWatchLogs.logStreamTemplate` | Template for Log Stream name using Fluent Bit record_accessor syntax. This field is optional and if configured it overrides the other log stream options. If the template translation fails, an error is logged and the log_stream_name or log_stream_prefix are used instead (and thus one of those fields is still required to be configured). |  |
-| `cloudWatchLogs.logKey` | By default, the whole log record will be sent to CloudWatch. If you specify a key name with this option, then only the value of that key will be sent to CloudWatch. For example, if you are using the Fluentd Docker log driver, you can specify logKey log and only the log message will be sent to CloudWatch. Check the example [here](https://github.com/aws-samples/amazon-ecs-firelens-examples/tree/mainline/examples/fluent-bit/cloudwatchlogs#what-if-i-just-want-the-raw-log-line-from-the-container-to-appear-in-cloudwatch) |  |
-| `cloudWatchLogs.logFormat` | An optional parameter that can be used to tell CloudWatch the format of the data. A value of json/emf enables CloudWatch to extract custom metrics embedded in a JSON payload. See the Embedded Metric Format. |  |
+| `cloudWatchLogs.logStreamTemplate` | Template for Log Stream name using Fluent Bit [record_accessor](https://docs.fluentbit.io/manual/pipeline/outputs/cloudwatch#log-stream-and-group-name-templating-using-record_accessor-syntax) syntax. This field is optional and if configured it overrides the other log stream options. If the template translation fails, an error is logged and the log_stream_name or log_stream_prefix are used instead (and thus one of those fields is still required to be configured). |  |
+| `cloudWatchLogs.logKey` | By default, the whole log record will be sent to CloudWatch. If you specify a key name with this option, then only the value of that key will be sent to CloudWatch. For example, if you are using the Fluentd Docker log driver, you can specify logKey log and only the log message will be sent to CloudWatch. Check the example [here](https://github.com/aws-samples/amazon-ecs-firelens-examples/tree/mainline/examples/fluent-bit/cloudwatchlogs#what-if-i-just-want-the-raw-log-line-from-the-container-to-appear-in-cloudwatch). |  |
+| `cloudWatchLogs.logFormat` | An optional parameter that can be used to tell CloudWatch the format of the data. A value of json/emf enables CloudWatch to extract custom metrics embedded in a JSON payload. See the [Embedded Metric Format](https://github.com/aws-samples/amazon-ecs-firelens-examples/tree/mainline/examples/fluent-bit/cloudwatchlogs-emf). |  |
 | `cloudWatchLogs.roleArn` | ARN of an IAM role to assume (for cross account access). |  |
 | `cloudWatchLogs.autoCreateGroup` | Automatically create the log group. Valid values are "true" or "false" (case insensitive). | true |
 | `cloudWatchLogs.logRetentionDays` | If set to a number greater than zero, and newly create log group's retention policy is set to this many days. | |
 | `cloudWatchLogs.endpoint` | Specify a custom endpoint for the CloudWatch Logs API. |  |
-| `cloudWatchLogs.metricNamespace` | An optional string representing the CloudWatch namespace for the metrics. Please refer to [tutorial](https://docs.fluentbit.io/manual/pipeline/outputs/cloudwatch#metrics-tutorial) |  |
-| `cloudWatchLogs.metricDimensions` | A list of lists containing the dimension keys that will be applied to all metrics. If you have only one list of dimensions, put the values as a comma separated string. If you want to put list of lists, use the list as semicolon separated strings. |  |
+| `cloudWatchLogs.metricNamespace` | An optional string representing the CloudWatch namespace for the metrics. Please refer to [tutorial](https://docs.fluentbit.io/manual/pipeline/outputs/cloudwatch#metrics-tutorial). |  |
+| `cloudWatchLogs.metricDimensions` | A list of lists containing the dimension keys that will be applied to all metrics. If you have only one list of dimensions, put the values as a comma separated string. If you want to put list of lists, use the list as semicolon separated strings. Please refer to [tutorial](https://docs.fluentbit.io/manual/pipeline/outputs/cloudwatch#metrics-tutorial). |  |
 | `cloudWatchLogs.stsEndpoint` | Specify a custom STS endpoint for the AWS STS API. |  |
-| `cloudWatchLogs.autoRetryRequests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. This option defaults to true. |  |
+| `cloudWatchLogs.autoRetryRequests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. This option defaults to true. Please check [here]( https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#network-connection-issues) for more details |  |
 | `cloudWatchLogs.externalId` | Specify an external ID for the STS API, can be used with the role_arn parameter if your role requires an external ID. |  |
 | `cloudWatchLogs.extraOutputs` | Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add worker config like `cloudWatchLogs.extraOutputs.Workers=2`  | `""` |
 | `firehose.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-firehose-for-fluent-bit) | `true` | ✔
@@ -107,7 +107,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `kinesis.extraOutputs` | Append extra outputs with value | `""` |
 | `elasticsearch.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch) | `true` | ✔
 | `elasticsearch.match` | The log filter | `"*"` | ✔
-| `elasticsearch.awsRegion` | The region in which your Amazon OpenSearch Service is/are in. | `"us-east-1"` | ✔
+| `elasticsearch.awsRegion` | The region in which your Amazon OpenSearch Service cluster is in. | `"us-east-1"` | ✔
 | `elasticsearch.host` | The url of the Elastic Search endpoint you want log records sent to. | | ✔
 | `elasticsearch.awsAuth` | Enable AWS Sigv4 Authentication for Amazon ElasticSearch Service | On |
 | `elasticsearch.tls` | Enable or disable TLS support | On |
@@ -116,7 +116,6 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `elasticsearch.replaceDots` | Enable or disable Replace_Dots  | On |
 | `elasticsearch.suppressTypeName` | OpenSearch 2.0 and above needs to have type option being removed by setting Suppress_Type_Name On  | |
 | `elasticsearch.extraOutputs` | Append extra outputs with value | `""` |
-
 | `s3.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/s3) | `true`
 | `s3.match` | The log filter. | `"*"`
 | `s3.bucket` | S3 Bucket name. |
@@ -124,7 +123,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `s3.jsonDateKey` | Specify the name of the time key in the output record. To disable the time key just set the value to false. | `"date"`
 | `s3.jsonDateFormat` | Specify the format of the date. Supported formats are double, epoch, iso8601 (eg: 2018-05-30T09:39:52.000681Z) and java_sql_timestamp (eg: 2018-05-30 09:39:52.000681). | `"iso8601"`
 | `s3.totalFileSize` | Specifies the size of files in S3. Maximum size is 50G, minimim is 1M. | `"100M"`
-| `s3.uploadChunkSize` | The size of each 'part' for multipart uploads. Max: 50M | `50M`
+| `s3.uploadChunkSize` | The size of each 'part' for multipart uploads. Max: 50M | `5M`
 | `s3.uploadTimeout` | Whenever this amount of time has elapsed, Fluent Bit will complete an upload and create a new file in S3. For example, set this value to 60m and you will get a new file every hour. | `"10m"`
 | `s3.storeDir` | Directory to locally buffer data before sending. When multipart uploads are used, data will only be buffered until the `upload_chunk_size` is reached. S3 will also store metadata about in progress multipart uploads in this directory; this allows pending uploads to be completed even if Fluent Bit stops and restarts. It will also store the current $INDEX value if enabled in the S3 key format so that the $INDEX can keep incrementing from its previous value after Fluent Bit restarts. | `"/tmp/fluent-bit/s3"`
 | `s3.storeDirLimitSize` | The size of the limitation for disk usage in S3. Limit the amount of s3 buffers in the `store_dir` to limit disk usage. Note: Use `store_dir_limit_size` instead of `storage.total_limit_size` which can be used to other plugins, because S3 has its own buffering system. | `0`
