@@ -45,7 +45,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `filter.*` | Values for kubernetes filter | |
 | `filter.extraFilters` | Append to existing filter with value |
 | `additionalFilters` | Adding more filters with value |
-| `cloudWatch.enabled` | This is activate old golang plugin [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit). For guidance on choosing go vs c plugin, please refer to [debugging guide](https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#aws-go-plugins-vs-aws-core-c-plugins) | `true` | ✔
+| `cloudWatch.enabled` | Enable this to activate old golang plugin [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit). For guidance on choosing go vs c plugin, please refer to [debugging guide](https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#aws-go-plugins-vs-aws-core-c-plugins) | `true` | ✔
 | `cloudWatch.match` | The log filter | `*` | ✔
 | `cloudWatch.region` | The AWS region for CloudWatch.  | `us-east-1` | ✔
 | `cloudWatch.logGroupName` | The name of the CloudWatch Log Group that you want log records sent to. | `"/aws/eks/fluentbit-cloudwatch/logs"` | ✔
