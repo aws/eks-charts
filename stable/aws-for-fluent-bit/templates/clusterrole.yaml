@@ -1,4 +1,4 @@
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "aws-for-fluent-bit.fullname" . }}
@@ -7,6 +7,9 @@ rules:
     resources:
       - namespaces
       - pods
+      - pods/logs
+      - nodes
+      - nodes/proxy
     verbs: ["get", "list", "watch"]
   - apiGroups: ["policy"]
     resources: ["podsecuritypolicies"]

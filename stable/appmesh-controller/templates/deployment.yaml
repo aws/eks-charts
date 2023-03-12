@@ -56,7 +56,8 @@ spec:
         args:
         - --enable-leader-election=true
         - --log-level={{ .Values.log.level }}
-        - --sidecar-image={{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}
+        - --sidecar-image-repository={{ .Values.sidecar.image.repository }}
+        - --sidecar-image-tag={{ .Values.sidecar.image.tag }}
         - --sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
         - --sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
         - --sidecar-cpu-limits={{ .Values.sidecar.resources.limits.cpu }}
@@ -64,28 +65,44 @@ spec:
         - --init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
         - --enable-stats-tags={{ .Values.stats.tagsEnabled }}
         - --prestop-delay={{ .Values.sidecar.lifecycleHooks.preStopDelay }}
+        - --poststart-timeout={{ .Values.sidecar.lifecycleHooks.postStartTimeout }}
+        - --poststart-interval={{ .Values.sidecar.lifecycleHooks.postStartInterval }}
         - --readiness-probe-initial-delay={{ .Values.sidecar.probes.readinessProbeInitialDelay }}
         - --readiness-probe-period={{ .Values.sidecar.probes.readinessProbePeriod }}
         - --envoy-admin-access-port={{ .Values.sidecar.envoyAdminAccessPort }}
         - --envoy-admin-access-log-file={{ .Values.sidecar.envoyAdminAccessLogFile }}
+        - --envoy-admin-access-enable-ipv6={{ .Values.sidecar.envoyAdminAccessEnableIPv6 }}
+        - --dual-stack-endpoint={{ .Values.sidecar.useDualStackEndpoint }}
+        - --fips-endpoint={{ .Values.sidecar.useFipsEndpoint }}
+        - --envoy-aws-access-key-id={{ .Values.sidecar.envoyAwsAccessKeyId }}
+        - --envoy-aws-secret-access-key={{ .Values.sidecar.envoyAwsSecretAccessKey }}
+        - --envoy-aws-session-token={{ .Values.sidecar.envoyAwsSessionToken }}
         - --preview={{ .Values.preview }}
         - --enable-sds={{ .Values.sds.enabled }}
         - --sds-uds-path={{ .Values.sds.udsPath }}
+        - --enable-backend-groups={{ .Values.enableBackendGroups }}
+        - --cluster-name={{ .Values.clusterName}}
+        - --use-aws-dual-stack-endpoint={{ .Values.useAwsDualStackEndpoint}}
+        - --use-aws-fips-endpoint={{ .Values.useAwsFIPSEndpoint}}
         {{- if .Values.cloudMapCustomHealthCheck.enabled }}
         - --enable-custom-health-check=true
         {{- end }}
-        {{- if kindIs "float64" .Values.cloudMapDNS.ttl }}
+        {{- if kindIs "int64" .Values.cloudMapDNS.ttl }}
         - --cloudmap-dns-ttl={{ .Values.cloudMapDNS.ttl }}
         {{- end }}
         {{- if .Values.stats.statsdEnabled }}
         - --enable-statsd=true
         - --statsd-address={{ .Values.stats.statsdAddress }}
         - --statsd-port={{ .Values.stats.statsdPort }}
+        - --statsd-socket-path={{ .Values.stats.statsdSocketPath }}
         {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
         - --enable-xray-tracing=true
         - --xray-image={{ .Values.xray.image.repository}}:{{ .Values.xray.image.tag }}
         - --xray-daemon-port={{ .Values.tracing.port }}
+        - --xray-sampling-rate={{ .Values.tracing.samplingRate }}
+        - --xray-log-level={{ .Values.tracing.logLevel }}
+        - --xray-config-roleArn={{ .Values.tracing.role }}
         {{- end }}
         {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "jaeger" ) }}
         - --enable-jaeger-tracing=true
@@ -106,6 +123,7 @@ spec:
         - --sidecar-log-level={{ .Values.sidecar.logLevel }}
         # this must be same as livenessProbe port which can be configured 
         - --health-probe-port={{ .Values.livenessProbe.httpGet.port }}
+        - --wait-until-proxy-ready={{ .Values.sidecar.waitUntilProxyReady }}
         {{- if .Values.env }}
         env:
           {{- range $key, $value := .Values.env }}

@@ -1,0 +1,25 @@
+apiVersion: v2
+name: csi-secrets-store-provider-aws
+version: 0.0.4
+appVersion: 1.0.r2-6-gee95299-2022.04.14.21.07
+kubeVersion: ">=1.17.0-0"
+deprecated: true
+description: This Helm chart is deprecated, please switch to https://aws.github.io/secrets-store-csi-driver-provider-aws/
+icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
+sources:
+  - "https://github.com/aws/secrets-store-csi-driver-provider-aws"
+home: "https://github.com/aws/secrets-store-csi-driver-provider-aws"
+# I put my name because I did not know who else to insert but
+# more than willingly I pass the burden and honors to someone else.
+maintainers:
+  - name: Pierluigi Lenoci
+    email: pierluigi.lenoci@gmail.com
+dependencies:
+- name: secrets-store-csi-driver
+  repository: https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
+  version: 1.1
+  condition: secrets-store-csi-driver.install
+keywords:
+  - eks
+  - secrets-store-csi-driver
+  - csi

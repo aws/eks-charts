@@ -1,0 +1,3 @@
+---
+servicePort: 1550
+serviceName: "my-aemm"

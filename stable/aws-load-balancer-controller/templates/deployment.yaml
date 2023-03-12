@@ -3,6 +3,10 @@ kind: Deployment
 metadata:
   name: {{ include "aws-load-balancer-controller.fullname" . }}
   namespace: {{ .Release.Namespace }}
+  {{- if .Values.deploymentAnnotations }}
+  annotations:
+  {{- toYaml .Values.deploymentAnnotations | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "aws-load-balancer-controller.labels" . | nindent 4 }}
 spec:
@@ -10,6 +14,10 @@ spec:
   selector:
     matchLabels:
       {{- include "aws-load-balancer-controller.selectorLabels" . | nindent 6 }}
+  {{- with .Values.updateStrategy }}
+  strategy:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
   template:
     metadata:
       labels:
@@ -18,8 +26,10 @@ spec:
         {{- toYaml .Values.podLabels | nindent 8 }}
         {{- end }}
       annotations:
+        {{- if not .Values.serviceMonitor.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: "{{ (split ":" .Values.metricsBindAddr)._1 | default 8080 }}"
+        {{- end}}
         {{- if .Values.podAnnotations }}
         {{- toYaml .Values.podAnnotations | nindent 8 }}
         {{- end }}
@@ -33,7 +43,7 @@ spec:
       - name: cert
         secret:
           defaultMode: 420
-          secretName: {{ template "aws-load-balancer-controller.namePrefix" . }}-tls
+          secretName: {{ template "aws-load-balancer-controller.webhookCertSecret" . }}
       {{- with .Values.extraVolumes }}
       {{ toYaml . | nindent 6 }}
       {{- end }}
@@ -41,6 +51,9 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- if .Values.hostNetwork }}
       hostNetwork: true
+      {{- end }}
+      {{- if .Values.dnsPolicy }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
       {{- end }}
       containers:
       - name: {{ .Chart.Name }}
@@ -54,6 +67,12 @@ spec:
         {{- end }}
         {{- if .Values.vpcId }}
         - --aws-vpc-id={{ .Values.vpcId }}
+        {{- end }}
+        {{- if .Values.awsApiEndpoints }}
+        - --aws-api-endpoints={{ .Values.awsApiEndpoints }}
+        {{- end }}
+        {{- if .Values.awsApiThrottle }}
+        - --aws-api-throttle={{ join "," .Values.awsApiThrottle }}
         {{- end }}
         {{- if .Values.awsMaxRetries }}
         - --aws-max-retries={{ .Values.awsMaxRetries }}
@@ -82,6 +101,9 @@ spec:
         {{- if .Values.targetgroupbindingMaxConcurrentReconciles }}
         - --targetgroupbinding-max-concurrent-reconciles={{ .Values.targetgroupbindingMaxConcurrentReconciles }}
         {{- end }}
+        {{- if .Values.targetgroupbindingMaxExponentialBackoffDelay }}
+        - --targetgroupbinding-max-exponential-backoff-delay={{ .Values.targetgroupbindingMaxExponentialBackoffDelay }}
+        {{- end }}
         {{- if .Values.logLevel }}
         - --log-level={{ .Values.logLevel }}
         {{- end }}
@@ -94,8 +116,35 @@ spec:
         {{- if .Values.watchNamespace }}
         - --watch-namespace={{ .Values.watchNamespace }}
         {{- end }}
+        {{- if kindIs "bool" .Values.disableIngressClassAnnotation }}
+        - --disable-ingress-class-annotation={{ .Values.disableIngressClassAnnotation }}
+        {{- end }}
+        {{- if kindIs "bool" .Values.disableIngressGroupNameAnnotation }}
+        - --disable-ingress-group-name-annotation={{ .Values.disableIngressGroupNameAnnotation }}
+        {{- end }}
+        {{- if .Values.defaultSSLPolicy }}
+        - --default-ssl-policy={{ .Values.defaultSSLPolicy }}
+        {{- end }}
+        {{- if .Values.externalManagedTags }}
+        - --external-managed-tags={{ join "," .Values.externalManagedTags }}
+        {{- end }}
         {{- if .Values.defaultTags }}
-        - --default-tags={{ include "aws-load-balancer-controller.convert-map-to-csv" .Values.defaultTags | trimSuffix "," }}
+        - --default-tags={{ include "aws-load-balancer-controller.convertMapToCsv" .Values.defaultTags | trimSuffix "," }}
+        {{- end }}
+        {{- if kindIs "bool" .Values.enableEndpointSlices }}
+        - --enable-endpoint-slices={{ .Values.enableEndpointSlices }}
+        {{- end }}
+        {{- if kindIs "bool" .Values.enableBackendSecurityGroup }}
+        - --enable-backend-security-group={{ .Values.enableBackendSecurityGroup }}
+        {{- end }}
+        {{- if .Values.backendSecurityGroup }}
+        - --backend-security-group={{ .Values.backendSecurityGroup }}
+        {{- end }}
+        {{- if kindIs "bool" .Values.disableRestrictedSecurityGroupRules }}
+        - --disable-restricted-sg-rules={{ .Values.disableRestrictedSecurityGroupRules }}
+        {{- end }}
+        {{- if .Values.controllerConfig.featureGates }}
+        - --feature-gates={{ include "aws-load-balancer-controller.convertMapToCsv" .Values.controllerConfig.featureGates | trimSuffix "," }}
         {{- end }}
         {{- if .Values.env }}
         env:
@@ -135,14 +184,31 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with .Values.affinity }}
+      {{- if .Values.affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
+        {{- toYaml .Values.affinity | nindent 8 }}
+      {{- else if .Values.configureDefaultAffinity }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - {{ include "aws-load-balancer-controller.name" . }}
+              topologyKey: kubernetes.io/hostname
+      {{- end }}
+      {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName | quote }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
       {{- end }}

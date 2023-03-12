@@ -14,7 +14,6 @@ data:
       socket_path = "{{ .Values.config.socketPath }}"
       trust_bundle_path = "/run/spire/bundle/bundle.crt"
       trust_domain = "{{ .Values.config.trustDomain }}"
-      enable_sds = true
     }
 
     plugins {

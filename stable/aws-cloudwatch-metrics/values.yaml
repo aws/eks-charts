@@ -1,6 +1,6 @@
 image:
   repository: amazon/cloudwatch-agent
-  tag: 1.247345.36b249270
+  tag: 1.247350.0b251780
   pullPolicy: IfNotPresent
 
 clusterName: cluster_name
@@ -23,3 +23,15 @@ statsd:
   enabled: false
   port: 8125
   protocol: UDP
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# For bottlerocket OS (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-troubleshooting.html#ContainerInsights-troubleshooting-bottlerocket)
+# containerdSockPath: /run/dockershim.sock
+containerdSockPath: /run/containerd/containerd.sock
+
+## Assign a PriorityClassName to pods if set
+# priorityClassName:

@@ -3,15 +3,25 @@ global:
 #   namespaceOverride:
 
 image:
-  repository: amazon/aws-for-fluent-bit
-  tag: 2.13.0
+  repository: public.ecr.aws/aws-observability/aws-for-fluent-bit
+  tag: 2.21.5
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+rbac:
+  # rbac.pspEnabled, if `true` a restricted pod security policy is created and used
+  pspEnabled: false
+  
 service:
+  ## Allow the service to be exposed for monitoring
+  ## https://docs.fluentbit.io/manual/administration/monitoring
+  # extraService: |
+  #   HTTP_Server  On
+  #   HTTP_Listen  0.0.0.0
+  #   HTTP_PORT    2020
   parsersFiles:
     - /fluent-bit/parsers/parsers.conf
   # extraParsers: |
@@ -20,6 +30,7 @@ service:
   #       Format logfmt
 
 input:
+  enabled: true
   tag: "kube.*"
   path: "/var/log/containers/*.log"
   db: "/var/log/flb_kube.db"
@@ -28,8 +39,10 @@ input:
   memBufLimit: 5MB
   skipLongLines: "On"
   refreshInterval: 10
+  # extraInputs: |
+  #   ...
 
-# extraInputs: |
+# additionalInputs: |
 #   [INPUT]
 #       Name         winlog
 #       Channels     Setup,Windows PowerShell
@@ -37,6 +50,7 @@ input:
 #       DB           winlog.sqlite
 
 filter:
+  enabled: true
   match: "kube.*"
   kubeURL: "https://kubernetes.default.svc.cluster.local:443"
   mergeLog: "On"
@@ -44,8 +58,19 @@ filter:
   keepLog: "On"
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
+  bufferSize: "32k"
+# Uncomment the extraFilters to use Kubelet to get the Metadata instead of talking to API server for large clusters
+# Check this link for more details https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-use-kubelet.html
+#  extraFilters: |
+#    Kube_Tag_Prefix     application.var.log.containers.
+#    Labels              Off
+#    Annotations         Off
+#    Use_Kubelet         true
+#    Kubelet_Port        10250
+#    Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+#    Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
 
-# extraFilters: |
+# additionalFilters: |
 #   [FILTER]
 #       Name   grep
 #       Match  *
@@ -65,6 +90,8 @@ cloudWatch:
   autoCreateGroup: true
   endpoint:
   credentialsEndpoint: {}
+  # extraOutputs: |
+  #   ...
 
 firehose:
   enabled: true
@@ -75,6 +102,8 @@ firehose:
   roleArn:
   endpoint:
   timeKey:
+  # extraOutputs: |
+  #   ...
 
 kinesis:
   enabled: true
@@ -95,6 +124,8 @@ kinesis:
   experimental:
     concurrency:
     concurrencyRetries:
+  # extraOutputs: |
+  #   ...
 
 elasticsearch:
   enabled: true
@@ -106,8 +137,11 @@ elasticsearch:
   port: "443"
   retryLimit: 6
   replaceDots: "On"
+  suppressTypeName:
+  # extraOutputs: |
+  #   Index = my-index
 
-# extraOutputs: |
+# additionalOutputs: |
 #   [OUTPUT]
 #     Name file
 #     Format template
@@ -139,7 +173,18 @@ affinity: {}
 
 annotations: {}
   # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit
-  
+
+# Specifies if aws-for-fluent-bit should be started in hostNetwork mode.
+#
+# This is required if using a custom CNI where the managed control plane nodes are unable to initiate
+# network connections to the pods, for example using Calico CNI plugin on EKS. This is not required or
+# recommended if using the Amazon VPC CNI plugin.
+
+# Set hostNetwork to true and dnsPolicy to ClusterFirstWithHostNet to use Kubelet to get the Metadata for large clusters
+# Check this link for more details https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-use-kubelet.html
+hostNetwork: false
+dnsPolicy: ClusterFirst
+
 env: []
 ## To add extra environment variables to the pods, add as below
 # env:
@@ -157,7 +202,7 @@ env: []
 #     valueFrom:
 #       fieldRef:
 #         fieldPath: spec.nodeName
-  
+
 
 volumes:
   - name: varlog
@@ -173,3 +218,27 @@ volumeMounts:
   - name: varlibdockercontainers
     mountPath: /var/lib/docker/containers
     readOnly: true
+
+
+serviceMonitor:
+  # service:
+  #   type: ClusterIP
+  #   port: 2020
+  #   targetPort: 2020
+  # When set true then use a ServiceMonitor to configure scraping
+  enabled: false
+  # Set the namespace the ServiceMonitor should be deployed
+  # namespace: monitoring
+  # Set how frequently Prometheus should scrape
+  # interval: 30s
+  # Set path of metrics, e.g /api/v1/metrics/prometheus
+  # telemetryPath: /api/v1/metrics/prometheus
+  # Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator
+  # labels:
+  # Set timeout for scrape
+  # timeout: 10s
+  # Set relabel_configs as per https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+  # relabelings: []
+  # Set of labels to transfer on the Kubernetes Service onto the target.
+  # targetLabels: []
+  # metricRelabelings: []

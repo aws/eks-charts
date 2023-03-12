@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/aws/eks-charts.svg?style=svg)](https://circleci.com/gh/aws/eks-charts)
+![EKS Charts](https://github.com/aws/eks-charts/actions/workflows/ci.yaml/badge.svg)
 
 ## EKS Charts
 
@@ -22,7 +22,8 @@ helm repo add eks https://aws.github.io/eks-charts
 * [aws-node-termination-handler](stable/aws-node-termination-handler): Gracefully handle EC2 instance shutdown within Kubernetes. https://github.com/aws/aws-node-termination-handler
 
 ### AWS Calico
-* [aws-calico](stable/aws-calico): Install Calico network policy enforcement on AWS
+
+**This Helm chart is deprecated**. To install Calico network policy enforcement on AWS, follow the EKS [user guide](https://docs.aws.amazon.com/eks/latest/userguide/calico.html).
 
 ### AWS CloudWatch Metrics
 * [aws-cloudwatch-metrics](stable/aws-cloudwatch-metrics): A helm chart for CloudWatch Agent to Collect Cluster Metrics
@@ -38,6 +39,19 @@ helm repo add eks https://aws.github.io/eks-charts
 
 ### AWS SIGv4 Proxy Admission Controller
 * [aws-sigv4-proxy-admission-controller](stable/aws-sigv4-proxy-admission-controller): A helm chart for [AWS SIGv4 Proxy Admission Controller](https://github.com/aws-observability/aws-sigv4-proxy-admission-controller)
+
+### AWS Secrets Manager and Config Provider for Secret Store CSI Driver
+
+**This Helm chart is deprecated, please switch to https://aws.github.io/secrets-store-csi-driver-provider-aws/ which is reviewed, owned and maintained by AWS.**
+
+* [csi-secrets-store-provider-aws](stable/csi-secrets-store-provider-aws): A helm chart for [AWS Secrets Manager and Config Provider](https://github.com/aws/secrets-store-csi-driver-provider-aws)
+
+### Amazon EC2 Metadata Mock
+* [amazon-ec2-metadata-mock](stable/amazon-ec2-metadata-mock): A tool to simulate Amazon EC2 instance metadata service for local testing
+
+### CNI Metrics Helper
+* [cni-metrics-helper](stable/cni-metrics-helper): A helm chart for [CNI Metrics Helper](https://github.com/aws/amazon-vpc-cni-k8s/blob/master/cmd/cni-metrics-helper/README.md)
+
 
 ## License
 

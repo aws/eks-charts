@@ -13,8 +13,9 @@ spec:
       {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- if .Values.annotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      {{- if .Values.annotations }}
         {{- toYaml .Values.annotations | nindent 8 }}
       {{- end }}
       labels:
@@ -27,6 +28,12 @@ spec:
       serviceAccountName: {{ include "aws-for-fluent-bit.serviceAccountName" . }}
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: {{ .Values.hostNetwork }}
+      {{- end }}
+      {{- if .Values.dnsPolicy }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -49,7 +56,7 @@ spec:
           configMap:
             name: {{ include "aws-for-fluent-bit.fullname" . }}
         {{- if .Values.volumes }}
-        {{- toYaml .Values.volumes | nindent 8}}
+        {{- toYaml .Values.volumes | nindent 8 }}
         {{- end}}
       {{- if .Values.tolerations }}
       tolerations:

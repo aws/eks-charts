@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "amazon-ec2-metadata-mock.labels" . | indent 4 }}
+spec:
+  type: "ClusterIP"
+  selector:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.servicePort | default 1338 }}
+    targetPort: 1338

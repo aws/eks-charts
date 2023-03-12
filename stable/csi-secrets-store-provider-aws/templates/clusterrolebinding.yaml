@@ -1,0 +1,15 @@
+{{- if .Values.rbac.install }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ template "sscdpa.fullname" . }}-cluster-role-binding
+{{ include "sscdpa.labels" . | indent 2 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ template "sscdpa.fullname" . }}-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "sscdpa.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}

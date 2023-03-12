@@ -1,8 +1,8 @@
 apiVersion: v1
 name: appmesh-jaeger
 description: App Mesh Jaeger Helm chart for Kubernetes
-version: 1.0.2
-appVersion: 1.19.0
+version: 1.0.3
+appVersion: 1.29.0
 home: https://github.com/aws/eks-charts
 icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
 sources:

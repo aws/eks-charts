@@ -1,0 +1,2 @@
+# empty values.yaml file must be present for Helm chart tests to run with default values
+# https://github.com/helm/charts/blob/master/test/README.md#providing-custom-test-values
