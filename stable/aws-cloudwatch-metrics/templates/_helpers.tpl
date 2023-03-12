@@ -61,10 +61,10 @@ Create the name of the service account to use
 Create a config section for StatsD ports.
 */}}
 {{- define "aws-cloudwatch-metrics.statsdConfig" -}}
-{{- if .Values.statsd.enabled }}
+{{- if .Values.statsd.enabled -}}
 ports:
-  - containerPort: {{- .Values.statsd.port -}}
-    hostPort: {{- .Values.statsd.port -}}
-    protocol: {{- .Values.statsd.protocol -}}
+  - containerPort: {{ .Values.statsd.port }}
+    hostPort: {{ .Values.statsd.port }}
+    protocol: {{ .Values.statsd.protocol }}
 {{- end }}
 {{- end -}}
