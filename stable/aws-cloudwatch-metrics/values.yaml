@@ -19,10 +19,6 @@ serviceAccount:
 
 hostNetwork: false
 
-statsd:
-  enabled: false
-  port: 8125
-  protocol: UDP
 nodeSelector: {}
 
 tolerations: []
@@ -35,3 +31,12 @@ containerdSockPath: /run/containerd/containerd.sock
 
 ## Assign a PriorityClassName to pods if set
 # priorityClassName:
+
+statsd:
+  enabled: false
+  port: 8125
+  protocol: UDP
+  # Overrides default values in the agent configuration if set
+  # cloudwatch_namespace:
+  # metrics_aggregation_interval:
+  # metrics_collection_interval:
