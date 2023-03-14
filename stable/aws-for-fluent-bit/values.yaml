@@ -172,11 +172,11 @@ s3:
   jsonDateKey: "date"
   jsonDateFormat: "iso8601"
   totalFileSize: "100M"
-  uploadChunkSize: 5M
+  uploadChunkSize: "5M"
   uploadTimeout: "10m"
   storeDir: "/tmp/fluent-bit/s3"
   storeDirLimitSize: 0
-  s3KeyFormat: /pod-logs/$TAG/%Y/%m/%d/%H/%M/%S
+  s3KeyFormat: /pod-logs/$TAG/%Y-%m-%d/%H-%M-%S
   s3KeyFormatTagDelimiters:
   staticFilePath: false
   usePutObject: false
