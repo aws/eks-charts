@@ -130,12 +130,12 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `s3.s3KeyFormat` | Format string for keys in S3. This option supports UUID (`$UUID`), strftime time formatters, `$INDEX`, a syntax for selecting parts of the Fluent log tag using `$TAG`/`$TAG[n]` inspired by the rewrite_tag filter. Check [S3 Key Format and Tag Delimiters](https://docs.fluentbit.io/manual/pipeline/outputs/s3#s3-key-format-and-tag-delimiters) documentation for more details. | `"/pod-logs/$TAG/%Y-%m-%d/%H-%M-%S"`
 | `s3.s3KeyFormatTagDelimiters` | A series of characters which will be used to split the tag into 'parts' for use with the s3_key_format option. See the in depth examples and tutorial in the [documentation](https://docs.fluentbit.io/manual/pipeline/outputs/s3/). |
 | `s3.staticFilePath` | Disables behavior where UUID string is automatically appended to end of S3 key name when $UUID is not provided in s3_key_format. $UUID, time formatters, $TAG, and other dynamic key formatters all work as expected while this feature is set to true. | `false`
-| `s3.usePutObject` | Use the S3 PutObject API, instead of the multipart upload API. When this option is on, key extension is only available when $UUID is specified in s3_key_format. | `false`
+| `s3.usePutObject` | Use the S3 PutObject API, instead of the multipart upload API. Check [documentation](https://docs.fluentbit.io/manual/pipeline/outputs/s3) for more details. | `false`
 | `s3.roleArn` | ARN of an IAM role to assume (ex. for cross account access). |
 | `s3.endpoint` | Custom endpoint for the S3 API. An endpoint can contain scheme and port. |
 | `s3.stsEndpoint` | Custom endpoint for the STS API. |
 | `s3.cannedAcl` | Predefined Canned ACL policy for S3 objects. |
-| `s3.compression` | Compression type for S3 objects. `arrow` is enabled by `aws-for-fluent-bit` image used in this chart. |
+| `s3.compression` | Compression type for S3 objects. `gzip` is default setting. `arrow` is enabled by `aws-for-fluent-bit` image used in this chart. |
 | `s3.contentType` | A standard MIME type for the S3 object; this will be set as the Content-Type HTTP header. |
 | `s3.sendContentMd5` | Send the Content-MD5 header with PutObject and UploadPart requests, as is required when Object Lock is enabled. | `false`
 | `s3.autoRetryRequests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. | `true`
