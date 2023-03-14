@@ -45,7 +45,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `filter.*` | Values for kubernetes filter | |
 | `filter.extraFilters` | Append to existing filter with value |
 | `additionalFilters` | Adding more filters with value |
-| `cloudWatch.enabled` | Enable this to activate old golang plugin [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit). For guidance on choosing go vs c plugin, please refer to [debugging guide](https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#aws-go-plugins-vs-aws-core-c-plugins) | `true` | ✔
+| `cloudWatch.enabled` | Enable this to activate old golang plugin [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit). For guidance on choosing go vs c plugin, please refer to [debugging guide](https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#aws-go-plugins-vs-aws-core-c-plugins) | `false` | ✔
 | `cloudWatch.match` | The log filter | `*` | ✔
 | `cloudWatch.region` | The AWS region for CloudWatch.  | `us-east-1` | ✔
 | `cloudWatch.logGroupName` | The name of the CloudWatch Log Group that you want log records sent to. | `"/aws/eks/fluentbit-cloudwatch/logs"` | ✔
@@ -79,7 +79,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `cloudWatchLogs.autoRetryRequests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. This option defaults to true. Please check [here]( https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#network-connection-issues) for more details |  |
 | `cloudWatchLogs.externalId` | Specify an external ID for the STS API, can be used with the role_arn parameter if your role requires an external ID. |  |
 | `cloudWatchLogs.extraOutputs` | Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like`cloudWatchLogs.extraOutputs.net.dns.mode=2`. | `""` |
-| `firehose.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-firehose-for-fluent-bit) | `true` | ✔
+| `firehose.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-firehose-for-fluent-bit) | `false` | ✔
 | `firehose.match` | The log filter | `"*"` | ✔
 | `firehose.region` | The region which your Firehose delivery stream(s) is/are in. | `"us-east-1"` | ✔
 | `firehose.deliveryStream` | The name of the delivery stream that you want log records sent to. | `"my-stream"` | ✔
@@ -89,7 +89,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `firehose.timeKey` | Add the timestamp to the record under this key. By default the timestamp from Fluent Bit will not be added to records sent to Kinesis. | |
 | `firehose.timeKeyFormat` | strftime compliant format string for the timestamp; for example, `%Y-%m-%dT%H:%M:%S%z`. This option is used with `time_key`. | |
 | `firehose.extraOutputs` | Append extra outputs with value | `""` |
-| `kinesis.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-streams-for-fluent-bit) | `true` | ✔
+| `kinesis.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-streams-for-fluent-bit) | `false` | ✔
 | `kinesis.match` | The log filter | `"*"` | ✔
 | `kinesis.region` | The region which your Kinesis Data Stream is in. | `"us-east-1"` | ✔
 | `kinesis.stream` | The name of the Kinesis Data Stream that you want log records sent to. | `"my-kinesis-stream-name"` | ✔
@@ -105,7 +105,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `kinesis.aggregation` | Setting aggregation to `true` will enable KPL aggregation of records sent to Kinesis. This feature isn't compatible with the `partitionKey` feature.  See more about KPL aggregation [here](https://github.com/aws/amazon-kinesis-streams-for-fluent-bit#kpl-aggregation). | |
 | `kinesis.compression` | Setting `compression` to `zlib` will enable zlib compression of each record. By default this feature is disabled and records are not compressed. | |
 | `kinesis.extraOutputs` | Append extra outputs with value | `""` |
-| `elasticsearch.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch) | `true` | ✔
+| `elasticsearch.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch) | `false` | ✔
 | `elasticsearch.match` | The log filter | `"*"` | ✔
 | `elasticsearch.awsRegion` | The region in which your Amazon OpenSearch Service cluster is in. | `"us-east-1"` | ✔
 | `elasticsearch.host` | The url of the Elastic Search endpoint you want log records sent to. | | ✔
@@ -116,7 +116,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `elasticsearch.replaceDots` | Enable or disable Replace_Dots  | On |
 | `elasticsearch.suppressTypeName` | OpenSearch 2.0 and above needs to have type option being removed by setting Suppress_Type_Name On  | |
 | `elasticsearch.extraOutputs` | Append extra outputs with value | `""` |
-| `s3.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/s3) | `true`
+| `s3.enabled` | Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/s3) | `false`
 | `s3.match` | The log filter. | `"*"`
 | `s3.bucket` | S3 Bucket name. |
 | `s3.region` | The AWS region of your S3 bucket. | `"us-east-1"`
@@ -145,7 +145,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `s3.retryLimit`| Integer value to set the maximum number of retries allowed. Note: this configuration is released since version 1.9.10 and 2.0.1. For previous version, the number of retries is 5 and is not configurable. |`1`|
 |`s3.externalId`| Specify an external ID for the STS API, can be used w ith the role_arn parameter if your role requires an external ID.
 |`s3.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like`s3.extraOutputs.net.dns.mode=2`. | |
-|`opensearch.enabled`| Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/opensearch) |`true`| ✔
+|`opensearch.enabled`| Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/opensearch) |`false`| ✔
 |`opensearch.match`| The log filter |`"*"`| ✔
 |`opensearch.host`| The url of the Opensearch Search endpoint you want log records sent to. | | ✔
 |`opensearch.awsRegion`| The region in which your Opensearch search is/are in. |`"us-east-1"`|
