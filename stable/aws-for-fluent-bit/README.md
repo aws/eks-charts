@@ -123,7 +123,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `s3.jsonDateKey` | Specify the name of the time key in the output record. To disable the time key just set the value to false. | `"date"`
 | `s3.jsonDateFormat` | Specify the format of the date. Supported formats are double, epoch, iso8601 (eg: 2018-05-30T09:39:52.000681Z) and java_sql_timestamp (eg: 2018-05-30 09:39:52.000681). | `"iso8601"`
 | `s3.totalFileSize` | Specifies the size of files in S3. Maximum size is 50G, minimim is 1M. | `"100M"`
-| `s3.uploadChunkSize` | The size of each 'part' for multipart uploads. Max: 50M | `"5M"`
+| `s3.uploadChunkSize` | The size of each 'part' for multipart uploads. Max: 50M | `"6M"`
 | `s3.uploadTimeout` | Whenever this amount of time has elapsed, Fluent Bit will complete an upload and create a new file in S3. For example, set this value to 60m and you will get a new file every hour. | `"10m"`
 | `s3.storeDir` | Directory to locally buffer data before sending. When multipart uploads are used, data will only be buffered until the `upload_chunk_size` is reached. S3 will also store metadata about in progress multipart uploads in this directory; this allows pending uploads to be completed even if Fluent Bit stops and restarts. It will also store the current $INDEX value if enabled in the S3 key format so that the $INDEX can keep incrementing from its previous value after Fluent Bit restarts. | `"/tmp/fluent-bit/s3"`
 | `s3.storeDirLimitSize` | The size of the limitation for disk usage in S3. Limit the amount of s3 buffers in the `store_dir` to limit disk usage. Note: Use `store_dir_limit_size` instead of `storage.total_limit_size` which can be used to other plugins, because S3 has its own buffering system. | `0`
