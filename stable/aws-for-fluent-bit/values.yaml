@@ -117,7 +117,7 @@ cloudWatchLogs:
   #  worker 1
 
 firehose:
-  enabled: true
+  enabled: false
   match: "*"
   region: "us-east-1"
   deliveryStream: "my-stream"
@@ -129,7 +129,7 @@ firehose:
   #   ...
 
 kinesis:
-  enabled: true
+  enabled: false
   match: "*"
   region: "us-east-1"
   stream: "my-kinesis-stream-name"
@@ -151,7 +151,7 @@ kinesis:
   #   ...
 
 elasticsearch:
-  enabled: true
+  enabled: false
   match: "*"
   host:
   awsRegion: "us-east-1"
@@ -165,7 +165,7 @@ elasticsearch:
   #   Index = my-index
 
 s3:
-  enabled: true
+  enabled: false
   match: "*"
   bucket:
   region: "us-east-1"
@@ -196,7 +196,7 @@ s3:
   # extraOutputs: |
 
 opensearch:
-  enabled: true
+  enabled: false
   match: "*"
   host:
   port: "443"
