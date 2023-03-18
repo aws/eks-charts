@@ -78,7 +78,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `cloudWatchLogs.stsEndpoint` | Specify a custom STS endpoint for the AWS STS API. |  |
 | `cloudWatchLogs.autoRetryRequests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. This option defaults to true. Please check [here]( https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#network-connection-issues) for more details |  |
 | `cloudWatchLogs.externalId` | Specify an external ID for the STS API, can be used with the role_arn parameter if your role requires an external ID. |  |
-| `cloudWatchLogs.extraOutputs` | Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like`cloudWatchLogs.extraOutputs.net.dns.mode=TCP`. | `""` |
+| `cloudWatchLogs.extraOutputs` | Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like `cloudWatchLogs.extraOutputs.net.dns.mode=TCP`. | `""` |
 | `firehose.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-firehose-for-fluent-bit) | `false` | ✔
 | `firehose.match` | The log filter | `"*"` | ✔
 | `firehose.region` | The region which your Firehose delivery stream(s) is/are in. | `"us-east-1"` | ✔
@@ -135,16 +135,16 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `s3.endpoint` | Custom endpoint for the S3 API. An endpoint can contain scheme and port. |
 | `s3.stsEndpoint` | Custom endpoint for the STS API. |
 | `s3.cannedAcl` | Predefined Canned ACL policy for S3 objects. |
-| `s3.compression` | Compression type for S3 objects. `gzip` is default setting. `arrow` is enabled by `aws-for-fluent-bit` image used in this chart. |
+| `s3.compression` | Compression type for S3 objects. AWS distro `aws-for-fluent-bit` supports `gzip` & `arrow`. |
 | `s3.contentType` | A standard MIME type for the S3 object; this will be set as the Content-Type HTTP header. |
 | `s3.sendContentMd5` | Send the Content-MD5 header with PutObject and UploadPart requests, as is required when Object Lock is enabled. | `false`
-| `s3.autoRetryRequests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. | `true`
+| `s3.autoRetryRequests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. This option defaults to true. Please check [here]( https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#network-connection-issues) for more details. | `true`
 | `s3.logKey` | By default, the whole log record will be sent to S3. If you specify a key name with this option, then only the value of that key will be sent to S3. For example, if you are using Docker, you can specify `log_key log` and only the log message will be sent to S3. |
 | `s3.preserveDataOrdering` | Normally, when an upload request fails, there is a high chance for the last received chunk to be swapped with a later chunk, resulting in data shuffling. This feature prevents this shuffling by using a queue logic for uploads. | `true`
 | `s3.storageClass` | Specify the storage class for S3 objects. If this option is not specified, objects will be stored with the default 'STANDARD' storage class. | |
 | `s3.retryLimit`| Integer value to set the maximum number of retries allowed. Note: this configuration is released since version 1.9.10 and 2.0.1. For previous version, the number of retries is 5 and is not configurable. |`1`|
 |`s3.externalId`| Specify an external ID for the STS API, can be used w ith the role_arn parameter if your role requires an external ID.
-|`s3.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like`s3.extraOutputs.net.dns.mode=TCP`. | |
+|`s3.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like `s3.extraOutputs.net.dns.mode=TCP`. | |
 |`opensearch.enabled`| Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/opensearch) |`false`| ✔
 |`opensearch.match`| The log filter |`"*"`| ✔
 |`opensearch.host`| The url of the Opensearch Search endpoint you want log records sent to. | | ✔
@@ -180,7 +180,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 |`opensearch.currentTimeIndex`| Use current time for index generation instead of message record |`"Off"`|
 |`opensearch.logstashPrefixKey`| When included: the value in the record that belongs to the key will be looked up and over-write the Logstash_Prefix for index generation. If the key/value is not found in the record then the Logstash_Prefix option will act as a fallback. Nested keys are not supported (if desired, you can use the nest filter plugin to remove nesting) | |
 |`opensearch.suppressTypeName`| When enabled, mapping types is removed and Type option is ignored. |`"Off"`|
-|`opensearch.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like`opensearch.extraOutputs.net.dns.mode=TCP`. |`""`|
+|`opensearch.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like `opensearch.extraOutputs.net.dns.mode=TCP`. |`""`|
 |`additionalOutputs`| add outputs with value |`""`|
 |`priorityClassName`| Name of Priority Class to assign pods | |
 |`updateStrategy`| Optional update strategy |`type: RollingUpdate`|
