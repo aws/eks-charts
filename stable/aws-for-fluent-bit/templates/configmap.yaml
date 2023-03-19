@@ -99,6 +99,62 @@ data:
         {{- end }}
 {{- end }}
 
+{{- if .Values.cloudWatchLogs.enabled }}
+    [OUTPUT]
+        Name                  cloudwatch_logs
+        Match                 {{ .Values.cloudWatchLogs.match }}
+        region                {{ .Values.cloudWatchLogs.region }}
+        log_group_name        {{ .Values.cloudWatchLogs.logGroupName }}
+        {{- if .Values.cloudWatchLogs.logGroupTemplate }}
+        log_group_template    {{ .Values.cloudWatchLogs.logGroupTemplate }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.logStreamName }}
+        log_stream_name       {{ .Values.cloudWatchLogs.logStreamName }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.logStreamPrefix }}
+        log_stream_prefix     {{ .Values.cloudWatchLogs.logStreamPrefix }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.logStreamTemplate }}
+        log_stream_template   {{ .Values.cloudWatchLogs.logStreamTemplate }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.logKey }}
+        log_key               {{ .Values.cloudWatchLogs.logKey }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.logFormat }}
+        log_format            {{ .Values.cloudWatchLogs.logFormat }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.roleArn }}
+        role_arn              {{ .Values.cloudWatchLogs.roleArn }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.autoCreateGroup }}
+        auto_create_group     {{ .Values.cloudWatchLogs.autoCreateGroup }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.logRetentionDays }}
+        log_retention_days    {{ .Values.cloudWatchLogs.logRetentionDays }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.endpoint }}
+        endpoint              {{ .Values.cloudWatchLogs.endpoint }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.metricNamespace }}
+        metric_namespace      {{ .Values.cloudWatchLogs.metricNamespace }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.metricDimensions }}
+        metric_dimensions     {{ .Values.cloudWatchLogs.metricDimensions }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.stsEndpoint }}
+        sts_endpoint          {{ .Values.cloudWatchLogs.stsEndpoint }}
+        {{- end }}
+        {{- if .Values.cloudWatchLogs.autoRetryRequests }}
+        auto_retry_requests   {{ .Values.cloudWatchLogs.autoRetryRequests }}
+        {{- end -}}
+        {{- if .Values.cloudWatchLogs.externalId }}
+        external_id           {{  .Values.cloudWatchLogs.externalId }}
+        {{- end -}}
+        {{- if .Values.cloudWatchLogs.extraOutputs }}
+{{ .Values.cloudWatchLogs.extraOutputs | indent 8 }}
+        {{- end }}
+{{- end }}
+
 {{- if .Values.firehose.enabled }}
     [OUTPUT]
         Name            firehose
@@ -205,10 +261,200 @@ data:
         {{- end }}
 {{- end }}
 
+{{- if .Values.s3.enabled }}
+    [OUTPUT]
+        Name                          s3
+        Match                         {{ .Values.s3.match }}
+        bucket                        {{ .Values.s3.bucket }}
+        region                        {{ .Values.s3.region }}
+        {{- if .Values.s3.jsonDateKey }}
+        json_date_key                 {{ .Values.s3.jsonDateKey }}
+        {{- end }}
+        {{- if .Values.s3.jsonDateFormat }}
+        json_date_format              {{ .Values.s3.jsonDateFormat }}
+        {{- end }}
+        {{- if .Values.s3.totalFileSize }}
+        total_file_size               {{ .Values.s3.totalFileSize }}
+        {{- end }}
+        {{- if .Values.s3.uploadChunkSize }}
+        upload_chunk_size             {{ .Values.s3.uploadChunkSize }}
+        {{- end }}
+        {{- if .Values.s3.uploadTimeout }}
+        upload_timeout                {{ .Values.s3.uploadTimeout }}
+        {{- end }}
+        {{- if .Values.s3.storeDir }}
+        store_dir                     {{ .Values.s3.storeDir }}
+        {{- end }}
+        {{- if .Values.s3.storeDirLimitSize }}
+        store_dir_limit_size          {{ .Values.s3.storeDirLimitSize }}
+        {{- end }}
+        {{- if .Values.s3.s3KeyFormat }}
+        s3_key_format                 {{ .Values.s3.s3KeyFormat }}
+        {{- end }}
+        {{- if .Values.s3.s3KeyFormatTagDelimiters }}
+        s3_key_format_tag_delimiters  {{ .Values.s3.s3KeyFormatTagDelimiters }}
+        {{- end }}
+        {{- if .Values.s3.staticFilePath }}
+        static_file_path              {{ .Values.s3.staticFilePath }}
+        {{- end }}
+        {{- if .Values.s3.usePutObject }}
+        use_put_object                {{ .Values.s3.usePutObject }}
+        {{- end }}
+        {{- if .Values.s3.roleArn }}
+        role_arn                      {{ .Values.s3.roleArn }}
+        {{- end }}
+        {{- if .Values.s3.endpoint }}
+        endpoint                      {{ .Values.s3.endpoint }}
+        {{- end }}
+        {{- if .Values.s3.stsEndpoint }}
+        sts_endpoint                  {{ .Values.s3.stsEndpoint }}
+        {{- end }}
+        {{- if .Values.s3.cannedAcl }}
+        canned_acl                    {{ .Values.s3.cannedAcl }}
+        {{- end }}
+        {{- if .Values.s3.compression }}
+        compression                   {{ .Values.s3.compression }}
+        {{- end }}
+        {{- if .Values.s3.contentType }}
+        content_type                  {{ .Values.s3.contentType }}
+        {{- end }}
+        {{- if .Values.s3.sendContentMd5 }}
+        send_content_md5              {{ .Values.s3.sendContentMd5 }}
+        {{- end }}
+        {{- if .Values.s3.autoRetryRequests }}
+        auto_retry_requests           {{ .Values.s3.autoRetryRequests }}
+        {{- end }}
+        {{- if .Values.s3.logKey }}
+        log_key                       {{ .Values.s3.logKey }}
+        {{- end }}
+        {{- if .Values.s3.preserveDataOrdering }}
+        preserve_data_ordering        {{ .Values.s3.preserveDataOrdering }}
+        {{- end }}
+        {{- if .Values.s3.storageClass }}
+        storage_class                 {{ .Values.s3.storageClass }}
+        {{- end }}
+        {{- if .Values.s3.retryLimit }}
+        retry_limit                   {{ .Values.s3.retryLimit }}
+        {{- end }}
+        {{- if .Values.s3.externalId }}
+        external_id                   {{ .Values.s3.externalId }}
+        {{- end }}
+        {{- if .Values.s3.extraOutputs }}
+{{ .Values.s3.extraOutputs | indent 8 }}
+        {{- end }}
+{{- end }}
+
+{{- if .Values.opensearch.enabled }}
+    [OUTPUT]
+        Name                opensearch
+        Match               {{ .Values.opensearch.match }}
+        {{- if .Values.opensearch.awsRegion }}
+        AWS_Region                {{ .Values.opensearch.awsRegion }}
+        {{- end }}
+        {{- if .Values.opensearch.awsAuth }}
+        AWS_Auth                {{ .Values.opensearch.awsAuth }}
+        {{- end }}
+        {{- if .Values.opensearch.host }}
+        Host                {{ .Values.opensearch.host }}
+        {{- end }}
+        {{- if .Values.opensearch.port }}
+        Port                {{ .Values.opensearch.port }}
+        {{- end }}
+        {{- if .Values.opensearch.tls }}
+        tls                {{ .Values.opensearch.tls }}
+        {{- end }}
+        {{- if .Values.opensearch.path }}
+        Path                {{ .Values.opensearch.path }}
+        {{- end }}
+        {{- if .Values.opensearch.bufferSize }}
+        Buffer_Size         {{ .Values.opensearch.bufferSize }}
+        {{- end }}
+        {{- if .Values.opensearch.pipeline }}
+        Pipeline            {{ .Values.opensearch.pipeline }}
+        {{- end }}
+        {{- if .Values.opensearch.awsStsEndpoint }}
+        AWS_STS_Endpoint    {{ .Values.opensearch.awsStsEndpoint }}
+        {{- end }}
+        {{- if .Values.opensearch.awsRoleArn }}
+        AWS_Role_ARN        {{ .Values.opensearch.awsRoleArn }}
+        {{- end }}
+        {{- if .Values.opensearch.awsExternalId }}
+        AWS_External_ID     {{ .Values.opensearch.awsExternalId }}
+        {{- end }}
+        {{- if .Values.opensearch.awsServiceName }}
+        AWS_Service_Name    {{ .Values.opensearch.awsServiceName }}
+        {{- end }}
+        {{- if .Values.opensearch.httpUser }}
+        HTTP_User           {{ .Values.opensearch.httpUser }}
+        {{- end }}
+        {{- if .Values.opensearch.httpPasswd }}
+        HTTP_Passwd         {{ .Values.opensearch.httpPasswd }}
+        {{- end }}
+        {{- if .Values.opensearch.index }}
+        Index               {{ .Values.opensearch.index }}
+        {{- end }}
+        {{- if .Values.opensearch.type }}
+        Type                {{ .Values.opensearch.type }}
+        {{- end }}
+        {{- if .Values.opensearch.logstashFormat }}
+        Logstash_Format     {{ .Values.opensearch.logstashFormat }}
+        {{- end }}
+        {{- if .Values.opensearch.logstashPrefix }}
+        Logstash_Prefix     {{ .Values.opensearch.logstashPrefix }}
+        {{- end }}
+        {{- if .Values.opensearch.logstashDateFormat }}
+        Logstash_DateFormat {{ .Values.opensearch.logstashDateFormat }}
+        {{- end }}
+        {{- if .Values.opensearch.timeKey }}
+        Time_Key            {{ .Values.opensearch.timeKey }}
+        {{- end }}
+        {{- if .Values.opensearch.timeKeyFormat }}
+        Time_Key_Format     {{ .Values.opensearch.timeKeyFormat }}
+        {{- end }}
+        {{- if .Values.opensearch.timeKeyNanos }}
+        Time_Key_Nanos      {{ .Values.opensearch.timeKeyNanos }}
+        {{- end }}
+        {{- if .Values.opensearch.includeTagKey }}
+        Include_Tag_Key     {{ .Values.opensearch.includeTagKey }}
+        {{- end }}
+        {{- if .Values.opensearch.tagKey }}
+        Tag_Key             {{ .Values.opensearch.tagKey }}
+        {{- end }}
+        {{- if .Values.opensearch.generateId }}
+        Generate_ID         {{ .Values.opensearch.generateId }}
+        {{- end }}
+        {{- if .Values.opensearch.idKey }}
+        Id_Key              {{ .Values.opensearch.idKey }}
+        {{- end }}
+        {{- if .Values.opensearch.writeOperation }}
+        Write_Operation     {{ .Values.opensearch.writeOperation }}
+        {{- end }}
+        {{- if .Values.opensearch.replaceDots }}
+        Replace_Dots        {{ .Values.opensearch.replaceDots }}
+        {{- end }}
+        {{- if .Values.opensearch.traceOutput }}
+        Trace_Output        {{ .Values.opensearch.traceOutput }}
+        {{- end }}
+        {{- if .Values.opensearch.traceError }}
+        Trace_Error         {{ .Values.opensearch.traceError }}
+        {{- end }}
+        {{- if .Values.opensearch.currentTimeIndex }}
+        Current_Time_Index  {{ .Values.opensearch.currentTimeIndex }}
+        {{- end }}
+        {{- if .Values.opensearch.logstashPrefixKey }}
+        Logstash_Prefix_Key {{ .Values.opensearch.logstashPrefixKey }}
+        {{- end }}
+        {{- if .Values.opensearch.suppressTypeName }}
+        Suppress_Type_Name  {{ .Values.opensearch.suppressTypeName }}
+        {{- end }}
+        {{- if .Values.opensearch.extraOutputs }}
+{{ .Values.opensearch.extraOutputsIndent_8 }}
+        {{- end }}
+{{- end }}
+
 {{- if .Values.additionalOutputs }}
 {{ .Values.additionalOutputs | indent 4 }}
 {{- end }}
-
 
 {{- if .Values.service.extraParsers }}
   parser_extra.conf: |-
