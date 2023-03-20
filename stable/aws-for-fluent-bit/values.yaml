@@ -11,6 +11,18 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+podSecurityContext: {}
+# runAsUser: 1000
+# runAsGroup: 1000
+# runAsNonRoot: true
+# seccompProfile:
+#   type: RuntimeDefault
+containerSecurityContext: {}
+# allowPrivilegeEscalation: false
+# capabilities: 
+#   Drop:
+#   - ALL
+
 rbac:
   # rbac.pspEnabled, if `true` a restricted pod security policy is created and used
   pspEnabled: false
