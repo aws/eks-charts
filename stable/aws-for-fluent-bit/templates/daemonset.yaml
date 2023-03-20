@@ -26,6 +26,10 @@ spec:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "aws-for-fluent-bit.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}      
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName }}
       {{- end }}
@@ -39,6 +43,10 @@ spec:
         - name: {{ .Chart.Name }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}          
           {{- if .Values.env }}
           env:
             {{- toYaml .Values.env | nindent 12 }}

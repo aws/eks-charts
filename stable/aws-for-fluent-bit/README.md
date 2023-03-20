@@ -32,6 +32,8 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `image.repository` | Image to deploy | `amazon/aws-for-fluent-bit` | ✔
 | `image.tag` | Image tag to deploy | `2.21.5`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
+| `podSecurityContext` | Security Context for pod | `{}` | 
+| `containerSecurityContext` | Security Context for container | `{}` | 
 | `rbac.pspEnabled` | Whether a pod security policy should be created | `false`
 | `imagePullSecrets` | Docker registry pull secret | `[]` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` |
