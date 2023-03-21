@@ -20,7 +20,7 @@ podSecurityContext: {}
 containerSecurityContext: {}
 # allowPrivilegeEscalation: false
 # capabilities: 
-#   Drop:
+#   drop:
 #   - ALL
 
 rbac:
