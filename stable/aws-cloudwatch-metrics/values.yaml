@@ -16,6 +16,7 @@ resources:
 serviceAccount:
   create: true
   name:
+  annotations: {}
 
 hostNetwork: false
 
