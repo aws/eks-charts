@@ -66,5 +66,5 @@ ports:
   - containerPort: {{ .Values.statsd.port }}
     hostPort: {{ .Values.statsd.port }}
     protocol: {{ .Values.statsd.protocol }}
-{{- end }}
+{{- end -}}
 {{- end -}}
