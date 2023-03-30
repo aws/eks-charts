@@ -15,5 +15,25 @@ data:
           }
         },
         "force_flush_interval": 5
+{{- if .Values.statsd.enabled }}
+      },
+      "metrics": {
+        {{- if .Values.statsd.cloudwatch_namespace }}
+        "namespace": "{{- .Values.statsd.cloudwatch_namespace -}}",
+        {{- end }}
+        "metrics_collected": {
+          "statsd": {
+              {{- if .Values.statsd.metrics_aggregation_interval }}
+              "metrics_aggregation_interval": {{ .Values.statsd.metrics_aggregation_interval }},
+              {{- end }}
+              {{- if .Values.statsd.metrics_collection_interval }}
+              "metrics_collection_interval": {{ .Values.statsd.metrics_collection_interval }},
+              {{- end }}
+              "service_address": ":{{- .Values.statsd.port -}}"
+          }
+        }
       }
+{{- else }}
+      }
+{{- end }}
     }

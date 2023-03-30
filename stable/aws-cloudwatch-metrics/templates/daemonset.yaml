@@ -19,6 +19,7 @@ spec:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- include "aws-cloudwatch-metrics.statsdConfig" . | nindent 8 -}}
         # Please don't change below envs
         env:
         - name: HOST_IP
