@@ -6,7 +6,7 @@ replicaCount: 2
 
 image:
   repository: public.ecr.aws/eks/aws-load-balancer-controller
-  tag: v2.4.7
+  tag: v2.5.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -126,8 +126,12 @@ ingressClassParams:
     #   matchLabels:
     # group:
     # scheme:
+    # subnets:
     # ipAddressType:
     # tags:
+    # loadBalancerAttributes:
+    # - key:
+    #   value:
 
 # To use IngressClass resource instead of annotation, before you need to install the IngressClass resource pointing to controller.
 # If specified as true, the IngressClass resource will be created.
@@ -149,8 +153,14 @@ awsApiThrottle:
 # Maximum retries for AWS APIs (default 10)
 awsMaxRetries:
 
-
-
+# Default target type. Used as the default value of the "alb.ingress.kubernetes.io/target-type" and
+# "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" annotations.
+# Possible values are "ip" and "instance"
+# The value "ip" should be used for ENI-based CNIs, such as the Amazon VPC CNI,
+# Calico with encapsulation disabled, or Cilium with masquerading disabled.
+# The value "instance" should be used for overlay-based CNIs, such as Calico in VXLAN or IPIP mode or
+# Cilium with masquerading enabled.
+defaultTargetType: instance
 
 # If enabled, targetHealth readiness gate will get injected to the pod spec for the matching endpoint pods (default true)
 enablePodReadinessGateInject:
@@ -328,3 +338,6 @@ clusterSecretsPermissions:
 # ingressClassConfig contains configurations specific to the ingress class
 ingressClassConfig:
   default: false
+
+# enableServiceMutatorWebhook allows you enable the webhook which makes this controller the default for all new services of type LoadBalancer
+enableServiceMutatorWebhook: true
