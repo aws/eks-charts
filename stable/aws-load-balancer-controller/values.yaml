@@ -6,7 +6,7 @@ replicaCount: 2
 
 image:
   repository: public.ecr.aws/eks/aws-load-balancer-controller
-  tag: v2.5.0
+  tag: v2.5.1
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -303,8 +303,14 @@ disableRestrictedSecurityGroupRules:
 controllerConfig:
   # featureGates set of key: value pairs that describe AWS load balance controller features
   featureGates: {}
-  #  ServiceTypeLoadBalancerOnly: true
-  #  EndpointsFailOpen: true
+  # ListenerRulesTagging: false
+  # WeightedTargetGroups: false
+  # ServiceTypeLoadBalancerOnly: false
+  # EndpointsFailOpen: true
+  # EnableServiceController: false
+  # EnableIPTargetType: false
+  # SubnetsClusterTagCheck: false
+  # NLBHealthCheckAdvancedConfig: false
 
 # objectSelector for webhook
 objectSelector:
