@@ -5,7 +5,7 @@ metadata:
   name: {{ include "aws-node-termination-handler.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "aws-node-termination-handler.labels" . | nindent 4 }}
+    {{- include "aws-node-termination-handler.labelsDaemonset" . | nindent 4 }}
 spec:
   {{- with .Values.updateStrategy }}
   updateStrategy:
@@ -81,6 +81,8 @@ spec:
               value: {{ .Values.logLevel | quote }}
             - name: JSON_LOGGING
               value: {{ .Values.jsonLogging | quote }}
+            - name: LOG_FORMAT_VERSION
+              value: {{ .Values.logFormatVersion | quote }}
             - name: ENABLE_PROMETHEUS_SERVER
               value: {{ .Values.enablePrometheusServer | quote }}
             - name: PROMETHEUS_SERVER_PORT
@@ -151,6 +153,9 @@ spec:
               value: "false"
             - name: UPTIME_FROM_FILE
               value: {{ .Values.procUptimeFile | quote }}
+            {{- with .Values.extraEnv }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- if or .Values.enablePrometheusServer .Values.enableProbesServer }}
           ports:
           {{- if .Values.enableProbesServer }}

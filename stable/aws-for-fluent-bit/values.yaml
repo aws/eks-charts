@@ -3,14 +3,29 @@ global:
 #   namespaceOverride:
 
 image:
-  repository: amazon/aws-for-fluent-bit
-  tag: 2.21.5
+  repository: public.ecr.aws/aws-observability/aws-for-fluent-bit
+  tag: 2.28.4
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+podSecurityContext: {}
+# runAsUser: 1000
+# runAsGroup: 1000
+# runAsNonRoot: true
+# seccompProfile:
+#   type: RuntimeDefault
+containerSecurityContext: {}
+# allowPrivilegeEscalation: false
+# capabilities: 
+#   drop:
+#   - ALL
+
+rbac:
+  # rbac.pspEnabled, if `true` a restricted pod security policy is created and used
+  pspEnabled: false
 service:
   ## Allow the service to be exposed for monitoring
   ## https://docs.fluentbit.io/manual/administration/monitoring
@@ -20,12 +35,13 @@ service:
   #   HTTP_PORT    2020
   parsersFiles:
     - /fluent-bit/parsers/parsers.conf
-  # additionalParsers: |
+  # extraParsers: |
   #   [PARSER]
   #       Name   logfmt
   #       Format logfmt
 
 input:
+  enabled: true
   tag: "kube.*"
   path: "/var/log/containers/*.log"
   db: "/var/log/flb_kube.db"
@@ -45,6 +61,7 @@ input:
 #       DB           winlog.sqlite
 
 filter:
+  enabled: true
   match: "kube.*"
   kubeURL: "https://kubernetes.default.svc.cluster.local:443"
   mergeLog: "On"
@@ -52,8 +69,17 @@ filter:
   keepLog: "On"
   k8sLoggingParser: "On"
   k8sLoggingExclude: "On"
-  # extraFilters: |
-  #   ...
+  bufferSize: "32k"
+# Uncomment the extraFilters to use Kubelet to get the Metadata instead of talking to API server for large clusters
+# Check this link for more details https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-use-kubelet.html
+#  extraFilters: |
+#    Kube_Tag_Prefix     application.var.log.containers.
+#    Labels              Off
+#    Annotations         Off
+#    Use_Kubelet         true
+#    Kubelet_Port        10250
+#    Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+#    Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
 
 # additionalFilters: |
 #   [FILTER]
@@ -62,7 +88,7 @@ filter:
 #       Exclude log lvl=debug*
 
 cloudWatch:
-  enabled: true
+  enabled: false
   match: "*"
   region: "us-east-1"
   logGroupName: "/aws/eks/fluentbit-cloudwatch/logs"
@@ -78,8 +104,32 @@ cloudWatch:
   # extraOutputs: |
   #   ...
 
-firehose:
+cloudWatchLogs:
   enabled: true
+  match: "*"
+  region: "us-east-1"
+  logGroupName: "/aws/eks/fluentbit-cloudwatch/logs"
+  logGroupTemplate: /aws/eks/fluentbit-cloudwatch/workload/$kubernetes['namespace_name']
+  logStreamName:
+  logStreamPrefix: "fluentbit-"
+  logStreamTemplate: $kubernetes['pod_name'].$kubernetes['container_name']
+  logKey:
+  logFormat:
+  roleArn:
+  autoCreateGroup: true
+  logRetentionDays:
+  endpoint:
+  metricNamespace:
+  metricDimensions:
+  stsEndpoint:
+  autoRetryRequests:
+  externalId:
+  # extraOutputs: |
+  #  log_format json/emf
+  #  worker 1
+
+firehose:
+  enabled: false
   match: "*"
   region: "us-east-1"
   deliveryStream: "my-stream"
@@ -92,7 +142,7 @@ firehose:
   #   ...
 
 kinesis:
-  enabled: true
+  enabled: false
   match: "*"
   region: "us-east-1"
   stream: "my-kinesis-stream-name"
@@ -114,7 +164,7 @@ kinesis:
   #   ...
 
 elasticsearch:
-  enabled: true
+  enabled: false
   match: "*"
   host:
   awsRegion: "us-east-1"
@@ -123,8 +173,78 @@ elasticsearch:
   port: "443"
   retryLimit: 6
   replaceDots: "On"
+  suppressTypeName:
   # extraOutputs: |
   #   Index = my-index
+
+s3:
+  enabled: false
+  match: "*"
+  bucket:
+  region: "us-east-1"
+  jsonDateKey: "date"
+  jsonDateFormat: "iso8601"
+  totalFileSize: "100M"
+  uploadChunkSize: "6M"
+  uploadTimeout: "10m"
+  storeDir: "/tmp/fluent-bit/s3"
+  storeDirLimitSize: 0
+  s3KeyFormat: /pod-logs/$TAG/%Y-%m-%d/%H-%M-%S
+  s3KeyFormatTagDelimiters:
+  staticFilePath: false
+  usePutObject: false
+  roleArn:
+  endpoint:
+  stsEndpoint:
+  cannedAcl:
+  compression:
+  contentType:
+  sendContentMd5: false
+  autoRetryRequests: true
+  logKey:
+  preserveDataOrdering: true
+  storageClass:
+  retryLimit: 1
+  externalId:
+  # extraOutputs: |
+
+opensearch:
+  enabled: false
+  match: "*"
+  host:
+  port: "443"
+  tls: "on"
+  path: ""
+  bufferSize: "5m"
+  pipeline:
+  awsRegion: "us-east-1"
+  awsAuth: "On"
+  awsStsEndpoint:
+  awsRoleArn:
+  awsExternalId:
+  awsServiceName:
+  httpUser:
+  httpPasswd:
+  index: "aws-fluent-bit"
+  type: "_doc"
+  logstashFormat: "off"
+  logstashPrefix: "logstash"
+  logstashDateFormat: "%Y.%m.%d"
+  timeKey: "@timestamp"
+  timeKeyFormat: "%Y-%m-%dT%H:%M:%S"
+  timeKeyNanos: "Off"
+  includeTagKey: "Off"
+  tagKey: "_flb-key"
+  generateId: "Off"
+  idKey:
+  writeOperation: "create"
+  replaceDots: "Off"
+  traceOutput: "Off"
+  traceError: "Off"
+  currentTimeIndex: "Off"
+  logstashPrefixKey:
+  suppressTypeName: "On"
+  # extraOutputs: |
 
 # additionalOutputs: |
 #   [OUTPUT]
@@ -156,8 +276,20 @@ tolerations: []
 
 affinity: {}
 
-annotations: {}
+annotations:
+  {}
   # iam.amazonaws.com/role: arn:aws:iam::123456789012:role/role-for-fluent-bit
+
+# Specifies if aws-for-fluent-bit should be started in hostNetwork mode.
+#
+# This is required if using a custom CNI where the managed control plane nodes are unable to initiate
+# network connections to the pods, for example using Calico CNI plugin on EKS. This is not required or
+# recommended if using the Amazon VPC CNI plugin.
+
+# Set hostNetwork to true and dnsPolicy to ClusterFirstWithHostNet to use Kubelet to get the Metadata for large clusters
+# Check this link for more details https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-use-kubelet.html
+hostNetwork: false
+dnsPolicy: ClusterFirst
 
 env: []
 ## To add extra environment variables to the pods, add as below
@@ -177,7 +309,6 @@ env: []
 #       fieldRef:
 #         fieldPath: spec.nodeName
 
-
 volumes:
   - name: varlog
     hostPath:
@@ -192,7 +323,6 @@ volumeMounts:
   - name: varlibdockercontainers
     mountPath: /var/lib/docker/containers
     readOnly: true
-
 
 serviceMonitor:
   # service:

@@ -1,0 +1,19 @@
+apiVersion: v2
+name: cni-metrics-helper
+version: 0.1.18
+appVersion: v1.12.6
+description: A Helm chart for the AWS VPC CNI Metrics Helper
+icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
+home: https://github.com/aws/amazon-vpc-cni-k8s
+sources:
+  - https://github.com/aws/amazon-vpc-cni-k8s
+keywords:
+  - eks
+  - cni
+  - networking
+  - vpc
+maintainers:
+  - name: Jayanth Varavani
+    url: https://github.com/jayanthvn
+    email: jayanthvn@users.noreply.github.com
+engine: gotpl

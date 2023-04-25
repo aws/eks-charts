@@ -23,7 +23,7 @@ serviceAccount:
 rbac:
   # Specifies whether RBAC resources should be created
   create: true
-  # Specifies if PodSecurityPolicy resources should be created
+  # Specifies if PodSecurityPolicy resources should be created. PodSecurityPolicy will not be created when Kubernetes version is 1.25 or later.
   pspEnabled: true
 
 customLabels: {}
@@ -66,6 +66,9 @@ probes:
 # Set the log level
 logLevel: info
 
+# Set the log format version
+logFormatVersion: 1
+
 # Log messages in JSON format
 jsonLogging: false
 
@@ -99,6 +102,9 @@ nodeTerminationGracePeriod: 120
 
 # emitKubernetesEvents If true, Kubernetes events will be emitted when interruption events are received and when actions are taken on Kubernetes nodes. In IMDS Processor mode a default set of annotations with all the node metadata gathered from IMDS will be attached to each event
 emitKubernetesEvents: false
+
+# completeLifecycleActionDelaySeconds will pause for the configured duration after draining the node before completing the EC2 Autoscaling lifecycle action. This may be helpful if Pods on the node have Persistent Volume Claims.
+completeLifecycleActionDelaySeconds: -1
 
 # kubernetesEventsExtraAnnotations A comma-separated list of key=value extra annotations to attach to all emitted Kubernetes events
 # Example: "first=annotation,sample.annotation/number=two"
@@ -170,14 +176,20 @@ queueURL: ""
 # The maximum amount of parallel event processors to handle concurrent events
 workers: 10
 
-# If true, check that the instance is tagged with "aws-node-termination-handler/managed" as the key before draining the node
+# [DEPRECATED] Use checkTagBeforeDraining instead
 checkASGTagBeforeDraining: true
 
-# The tag to ensure is on a node if checkASGTagBeforeDraining is true
+# If true, check that the instance is tagged with "aws-node-termination-handler/managed" as the key before draining the node
+checkTagBeforeDraining: true
+
+# [DEPRECATED] Use managedTag instead
 managedAsgTag: "aws-node-termination-handler/managed"
 
-# If true, assume that ASG tags will be appear on the ASG's instances
-assumeAsgTagPropagation: false
+# The tag to ensure is on a node if checkTagBeforeDraining is true
+managedTag: "aws-node-termination-handler/managed"
+
+# If true, fetch node name through Kubernetes node spec ProviderID instead of AWS event PrivateDnsHostname.
+useProviderId: false
 
 # ---------------------------------------------------------------------------------------------------------------------
 # IMDS Mode
@@ -247,22 +259,22 @@ daemonsetTolerations:
 linuxTolerations: []
 windowsTolerations: []
 
-# If the probes server is running for the Daemonset
+# If the probes server is running.
 enableProbesServer: false
 
 # Total number of times to try making the metadata request before failing.
 metadataTries: 3
 
-# enableSpotInterruptionDraining If false, do not drain nodes when the spot interruption termination notice is received
+# enableSpotInterruptionDraining If false, do not drain nodes when the spot interruption termination notice is received. Only used in IMDS mode.
 enableSpotInterruptionDraining: true
 
-# enableScheduledEventDraining [EXPERIMENTAL] If true, drain nodes before the maintenance window starts for an EC2 instance scheduled event
-enableScheduledEventDraining: false
+# enableScheduledEventDraining If false, do not drain nodes before the maintenance window starts for an EC2 instance scheduled event. Only used in IMDS mode.
+enableScheduledEventDraining: true
 
-# enableRebalanceMonitoring If true, cordon nodes when the rebalance recommendation notice is received
+# enableRebalanceMonitoring If true, cordon nodes when the rebalance recommendation notice is received. Only used in IMDS mode.
 enableRebalanceMonitoring: false
 
-# enableRebalanceDraining If true, drain nodes when the rebalance recommendation notice is received
+# enableRebalanceDraining If true, drain nodes when the rebalance recommendation notice is received. Only used in IMDS mode.
 enableRebalanceDraining: false
 
 # ---------------------------------------------------------------------------------------------------------------------

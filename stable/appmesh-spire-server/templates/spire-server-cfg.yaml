@@ -9,7 +9,7 @@ data:
     server {
       bind_address = "{{ .Values.config.bindAddress }}"
       bind_port = "{{ .Values.config.bindPort }}"
-      registration_uds_path = "/tmp/spire-registration.sock"
+      socket_path = "/tmp/spire-server/private/api.sock"
       trust_domain = "{{ .Values.config.trustDomain }}"
       data_dir = "/run/spire/data"
       log_level = "{{ .Values.config.logLevel }}"
@@ -36,14 +36,10 @@ data:
           clusters = {
             "k8s-cluster" = {
               use_token_review_api_validation = true
-              service_account_whitelist = ["spire:spire-agent"]
+              service_account_allow_list = ["spire:spire-agent"]
             }
           }
         }
-      }
-
-      NodeResolver "noop" {
-        plugin_data {}
       }
 
       KeyManager "disk" {
@@ -56,4 +52,8 @@ data:
         plugin_data {
         }
       }
+      
+    {{ if .Values.config.plugin }}
+    {{- .Values.config.plugin | nindent 6 -}}
+    {{ end }}
     }

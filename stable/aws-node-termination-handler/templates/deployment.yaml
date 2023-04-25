@@ -5,7 +5,7 @@ metadata:
   name: {{ include "aws-node-termination-handler.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "aws-node-termination-handler.labels" . | nindent 4 }}
+    {{- include "aws-node-termination-handler.labelsDeployment" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
   {{- with .Values.strategy }}
@@ -78,16 +78,24 @@ spec:
               value: {{ .Values.logLevel | quote }}
             - name: JSON_LOGGING
               value: {{ .Values.jsonLogging | quote }}
+            - name: LOG_FORMAT_VERSION
+              value: {{ .Values.logFormatVersion | quote }}
             - name: ENABLE_PROMETHEUS_SERVER
               value: {{ .Values.enablePrometheusServer | quote }}
             - name: PROMETHEUS_SERVER_PORT
               value: {{ .Values.prometheusServerPort | quote }}
+            # [DEPRECATED] Use CHECK_TAG_BEFORE_DRAINING instead
             - name: CHECK_ASG_TAG_BEFORE_DRAINING
               value: {{ .Values.checkASGTagBeforeDraining | quote }}
+            - name: CHECK_TAG_BEFORE_DRAINING
+              value: {{ .Values.checkTagBeforeDraining | quote }}
+            # [DEPRECATED] Use MANAGED_TAG instead
             - name: MANAGED_ASG_TAG
               value: {{ .Values.managedAsgTag | quote }}
-            - name: ASSUME_ASG_TAG_PROPAGATION
-              value: {{ .Values.assumeAsgTagPropagation | quote }}
+            - name: MANAGED_TAG
+              value: {{ .Values.managedTag | quote }}
+            - name: USE_PROVIDER_ID
+              value: {{ .Values.useProviderId | quote }}
             - name: DRY_RUN
               value: {{ .Values.dryRun | quote }}
             - name: CORDON_ONLY
@@ -106,6 +114,8 @@ spec:
               value: {{ .Values.nodeTerminationGracePeriod | quote }}
             - name: EMIT_KUBERNETES_EVENTS
               value: {{ .Values.emitKubernetesEvents | quote }}
+            - name: COMPLETE_LIFECYCLE_ACTION_DELAY_SECONDS
+              value: {{ .Values.completeLifecycleActionDelaySeconds | quote }}
             {{- with .Values.kubernetesEventsExtraAnnotations }}
             - name: KUBERNETES_EVENTS_EXTRA_ANNOTATIONS
               value: {{ . | quote }}
@@ -136,14 +146,6 @@ spec:
             - name: WEBHOOK_TEMPLATE
               value: {{ .Values.webhookTemplate | quote }}
             {{- end }}
-            - name: ENABLE_SPOT_INTERRUPTION_DRAINING
-              value: "false"
-            - name: ENABLE_SCHEDULED_EVENT_DRAINING
-              value: "false"
-            - name: ENABLE_REBALANCE_MONITORING
-              value: "false"
-            - name: ENABLE_REBALANCE_DRAINING
-              value: "false"
             - name: ENABLE_SQS_TERMINATION_DRAINING
               value: "true"
             {{- with .Values.awsRegion }}

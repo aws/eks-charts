@@ -1,5 +1,9 @@
 # csi-secrets-store-provider-aws
 
+**This Helm chart is deprecated, please switch to https://aws.github.io/secrets-store-csi-driver-provider-aws/ which is reviewed, owned and maintained by AWS.**
+
+-----------------
+
 AWS Secrets Manager and Config Provider for Secret Store CSI Driver allows you to get secret contents stored in AWS Key Management Service instance and use the Secrets Store CSI driver interface to mount them into Kubernetes pods.
 
 ### Prerequisites
@@ -30,9 +34,11 @@ The following table lists the configurable parameters of the csi-secrets-store-p
 | `nameOverride` | String to override the name template with a string | `""` |
 | `fullnameOverride` | String to override the fullname template with a string | `""` |
 | `imagePullSecrets` | Secrets to be used when pulling images | `[]` |
-| `image.repository` | Image repository | `public.ecr.aws/aws-secrets-manager/secrets-store-csi-driver-provider-aws` |
+| `image.registry` | Image registry | `public.ecr.aws` |
+| `image.repository` | Image repository | `aws-secrets-manager/secrets-store-csi-driver-provider-aws` |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
-| `image.tag`| Image tag | `1.0.r2-2021.08.13.20.34-linux-amd64` |
+| `image.tag`| Image tag | `.Chart.AppVersion` |
+| `priorityClassName` | Indicates the importance of a Pod relative to other Pods | `""` |
 | `nodeSelector` | Node Selector for the daemonset on nodes | `{}` |
 | `tolerations` | Tolerations for the daemonset on nodes  | `[]` |
 | `ports` | Liveness and readyness tcp probe port  | `8989` |
@@ -41,7 +47,7 @@ The following table lists the configurable parameters of the csi-secrets-store-p
 | `podLabels`| Additional pod labels | `{}` |
 | `podAnnotations` | Additional pod annotations| `{}` |
 | `updateStrategy` | Configure a custom update strategy for the daemonset on nodes | `RollingUpdate`|
-| `secrets-store-csi-driver.install` | Secrets Store CSI Driver chart install | `false`
+| `secrets-store-csi-driver.install` | Secrets Store CSI Driver chart install | `true`
 | `rbac.install` | Install default service account | true |
 | `rbac.pspEnabled` | Pod Security Pods | false |
 | `rbac.serviceAccount.name` | Service account to be used. If not set and serviceAccount.create is true a name is generated using the fullname template. | |

@@ -26,5 +26,17 @@ tolerations: []
 affinity: {}
 
 # For bottlerocket OS (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-troubleshooting.html#ContainerInsights-troubleshooting-bottlerocket)
-# containerdSockPath: /run/dockershim.sock 
+# containerdSockPath: /run/dockershim.sock
 containerdSockPath: /run/containerd/containerd.sock
+
+## Assign a PriorityClassName to pods if set
+# priorityClassName:
+
+statsd:
+  enabled: false
+  port: 8125
+  protocol: UDP
+  # Overrides default values in the agent configuration if set
+  # cloudwatch_namespace:
+  # metrics_aggregation_interval:
+  # metrics_collection_interval:

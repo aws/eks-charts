@@ -7,6 +7,9 @@ rules:
     resources:
       - namespaces
       - pods
+      - pods/logs
+      - nodes
+      - nodes/proxy
     verbs: ["get", "list", "watch"]
   - apiGroups: ["policy"]
     resources: ["podsecuritypolicies"]

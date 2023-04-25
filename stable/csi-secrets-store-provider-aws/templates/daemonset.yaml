@@ -29,7 +29,7 @@ spec:
       hostNetwork: true
       containers:
         - name: provider-aws-installer
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - --provider-volume=/etc/kubernetes/secrets-store-csi-providers
@@ -45,6 +45,9 @@ spec:
             - name: mountpoint-dir
               mountPath: /var/lib/kubelet/pods
               mountPropagation: HostToContainer
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName | quote }}
+      {{- end }} 
       volumes:
         - name: provider-vol
           hostPath:
