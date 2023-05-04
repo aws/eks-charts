@@ -17,7 +17,7 @@ if echo "${VERSION}" | grep -Eq "^v[0-9]+(\.[0-9]+){2}$"; then
     git config pull.rebase false
     git checkout gh-pages
     mv -n $PACKAGE_DIR/stable/*.tgz .
-    helmv3 repo index . --url https://aws.github.io/eks-charts
+    helmv3 repo index --merge index.yaml . --url https://aws.github.io/eks-charts
     git add .
     git commit -m "Publish stable charts ${VERSION}"
     git push origin gh-pages
