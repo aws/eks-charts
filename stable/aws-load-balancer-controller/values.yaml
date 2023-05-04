@@ -99,8 +99,9 @@ podLabels: {}
 additionalLabels: {}
 
 # Enable cert-manager
-enableCertManager: false
-certManagerApiVersion: "cert-manager.io/v1"
+enableCertManager: true
+# Select the apiVersion cert-manager uses
+certManagerApiVersion: "v1"
 
 # The name of the Kubernetes cluster. A non-empty value is required
 clusterName:
