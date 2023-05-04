@@ -99,7 +99,7 @@ podLabels: {}
 additionalLabels: {}
 
 # Enable cert-manager
-enableCertManager: true
+enableCertManager: false
 # Select the apiVersion cert-manager uses
 certManagerApiVersion: "v1"
 
