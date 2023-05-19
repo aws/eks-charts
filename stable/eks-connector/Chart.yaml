@@ -1,0 +1,5 @@
+apiVersion: v2
+appVersion: "0.0.4"
+description: EKS Connector is a client-side agent which connects any Kubernetes cluster to AWS.
+name: eks-connector
+version: 0.1.0

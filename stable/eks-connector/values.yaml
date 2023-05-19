@@ -1,0 +1,29 @@
+eks:
+  # !!!! NOTICE !!!!
+  # Follow the instructions below to retrieve your "activationCode" and "activationId"
+  # https://docs.aws.amazon.com/eks/latest/userguide/connecting-cluster.html#connector-connecting
+  activationCode:
+  activationId:
+  # Should be a legit AWS region, such as "us-west-2"
+  agentRegion:
+
+replicaCount: 2
+
+images:
+  eksConnector:
+    pullPolicy: IfNotPresent
+    repository: public.ecr.aws/eks-connector/eks-connector
+    # Overrides the image tag whose default is the chart appVersion:
+    tag: ""
+
+  ssmAgent:
+    pullPolicy: IfNotPresent
+    repository: public.ecr.aws/amazon-ssm-agent/amazon-ssm-agent
+    tag: "3.1.1927.0"
+
+# Fill in the following properties to override the secrets related setting.
+secretOverrides:
+  # The prefix of secret name to persist eks-connector state
+  prefix:
+  # The namespace of secret to persist eks-connector state
+  namespace:

@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: eks-connector-agent
+data:
+  amazon-ssm-agent.json: |
+    {
+      "Profile": {
+        "KeyAutoRotateDays": 7
+      },
+      "Agent": {
+        "ContainerMode": true
+      },
+      "Identity": {
+        "ConsumptionOrder": [
+          "OnPrem"
+        ]
+      }
+    }
+  seelog.xml: |
+    <seelog type="adaptive" mininterval="2000000" maxinterval="100000000" critmsgcount="500" minlevel="info">
+        <exceptions>
+            <exception filepattern="test*" minlevel="error"/>
+        </exceptions>
+        <outputs formatid="fmtinfo">
+            <console formatid="fmtinfo"/>
+            <rollingfile type="size" filename="/var/log/amazon/ssm/amazon-ssm-agent.log" maxsize="30000000" maxrolls="5"/>
+            <filter levels="error,critical" formatid="fmterror">
+                <console formatid="fmterror"/>
+                <rollingfile type="size" filename="/var/log/amazon/ssm/errors.log" maxsize="10000000" maxrolls="5"/>
+            </filter>
+        </outputs>
+        <formats>
+            <format id="fmterror" format="%Date %Time %LEVEL [%FuncShort @ %File.%Line] %Msg%n"/>
+            <format id="fmtdebug" format="%Date %Time %LEVEL [%FuncShort @ %File.%Line] %Msg%n"/>
+            <format id="fmtinfo" format="%Date %Time %LEVEL %Msg%n"/>
+        </formats>
+    </seelog>

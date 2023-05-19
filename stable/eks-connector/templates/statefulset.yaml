@@ -1,0 +1,155 @@
+{{- if not .Values.eks.activationId }}
+{{- fail "eks.activationId must be set." }}
+{{- end }}
+{{- if not .Values.eks.activationId }}
+{{- fail "eks.activationCode must be set." }}
+{{- end }}
+{{- if not .Values.eks.agentRegion }}
+{{- fail "eks.agentRegion must be set." }}
+{{- end }}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: eks-connector
+  labels:
+    app: eks-connector
+spec:
+  replicas: {{ .replicaCount }}
+  selector:
+    matchLabels:
+      app: eks-connector
+  serviceName: eks-connector
+  template:
+    metadata:
+      labels:
+        app: eks-connector
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - eks-connector
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - env:
+            - name: AWS_EC2_METADATA_DISABLED
+              value: "true"
+          {{- with .Values.images.ssmAgent }}
+          image: {{ .repository }}:{{ .tag }}
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
+          name: connector-agent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+                - DAC_OVERRIDE
+              drop:
+                - ALL
+          volumeMounts:
+            - name: eks-agent-config
+              mountPath: /etc/amazon/ssm/amazon-ssm-agent.json
+              subPath: amazon-ssm-agent.json
+            - name: eks-agent-config
+              mountPath: /etc/amazon/ssm/seelog.xml
+              subPath: seelog.xml
+            - name: eks-agent-vault
+              mountPath: /var/lib/amazon/ssm/Vault
+            - name: eks-connector-shared
+              mountPath: /var/eks/shared
+        - args:
+            - server
+            - --state.secretNamespace={{ .Values.secretOverrides.namespace | default .Release.Namespace }}
+            {{- if .Values.secretOverrides.prefix }}
+            - --state.secretNamePrefix={{ .Values.secretOverrides.prefix }}
+            {{- end }}
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          {{- with .Values.images.eksConnector }}
+          image: {{ .repository }}:{{ .tag | default $.Chart.AppVersion }}
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
+          name: connector-proxy
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+                - DAC_OVERRIDE
+              drop:
+                - ALL
+          volumeMounts:
+            - name: eks-agent-vault
+              mountPath: /var/lib/amazon/ssm/Vault
+            - name: eks-connector-shared
+              mountPath: /var/eks/shared
+            - name: service-account-token
+              mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      initContainers:
+        - args:
+            - init
+            - --activation.code={{ .Values.eks.activationCode }}
+            - --activation.id={{ .Values.eks.activationId }}
+            - --agent.region={{ .Values.eks.agentRegion }}
+            - --state.secretNamespace={{ .Values.secretOverrides.namespace | default .Release.Namespace }}
+            {{- if .Values.secretOverrides.prefix }}
+            - --state.secretNamePrefix={{ .Values.secretOverrides.prefix }}
+            {{- end }}
+          env:
+            - name: EKS_ACTIVATION_CODE
+              valueFrom:
+                secretKeyRef:
+                  name: eks-connector-activation-config
+                  key: code
+            - name: EKS_ACTIVATION_ID
+              value: {{ .Values.eks.activationId | quote }}
+            - name: EKS_AGENT_REGION
+              value: {{ .Values.eks.agentRegion }}
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          {{- with .Values.images.eksConnector }}
+          image: {{ .repository }}:{{ .tag | default $.Chart.AppVersion }}
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
+          name: connector-init
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+                - DAC_OVERRIDE
+              drop:
+                - ALL
+          volumeMounts:
+            - name: eks-agent-vault
+              mountPath: /var/lib/amazon/ssm/Vault
+            - name: service-account-token
+              mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      serviceAccountName: eks-connector
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+      volumes:
+        - name: eks-agent-config
+          configMap:
+            name: eks-connector-agent
+        - name: eks-agent-vault
+          emptyDir: { }
+        - name: eks-connector-shared
+          emptyDir: { }
+        - name: service-account-token
+          secret:
+            secretName: eks-connector-token
