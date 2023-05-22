@@ -148,7 +148,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `s3.preserveDataOrdering` | Normally, when an upload request fails, there is a high chance for the last received chunk to be swapped with a later chunk, resulting in data shuffling. This feature prevents this shuffling by using a queue logic for uploads. | `true`
 | `s3.storageClass` | Specify the storage class for S3 objects. If this option is not specified, objects will be stored with the default 'STANDARD' storage class. | |
 | `s3.retryLimit`| Integer value to set the maximum number of retries allowed. Note: this configuration is released since version 1.9.10 and 2.0.1. For previous version, the number of retries is 5 and is not configurable. |`1`|
-| `s3.externalId`| Specify an external ID for the STS API, can be used w ith the role_arn parameter if your role requires an external ID.
+| `s3.externalId`| Specify an external ID for the STS API, can be used with the role_arn parameter if your role requires an external ID.
 | `s3.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like `s3.extraOutputs.net.dns.mode=TCP`. | |
 | `opensearch.enabled`| Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/opensearch) |`false`| ✔
 | `opensearch.match`| The log filter |`"*"`| ✔
