@@ -8,9 +8,7 @@ metadata:
 {{ toYaml .Values.serviceMonitor.labels | indent 4}}
 {{- end }}
   name: {{ include "aws-for-fluent-bit.fullname" . }}
-{{- if .Values.serviceMonitor.namespace }}
-  namespace: {{ .Values.serviceMonitor.namespace }}
-{{- end }}
+  namespace: {{ include "aws-for-fluent-bit.namespace" . }}
 spec:
   endpoints:
   - port: monitor-agent

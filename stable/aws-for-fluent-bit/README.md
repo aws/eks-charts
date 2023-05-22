@@ -38,9 +38,12 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `imagePullSecrets` | Docker registry pull secret | `[]` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` |
 | `serviceAccount.name` | Name of the service account | `aws-for-fluent-bit` |
-| `service.extraService` | Append to existing service with this value | `""` |
-| `service.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
-| `service.extraParsers` | Adding more parsers with this value | `""` |
+| `service.type`| Type of service to be created - options are ClusterIP, NodePort, LoadBalancer |`ClusterIP`|
+| `service.port`| TCP port of the serviceMonitor service. | 2020 |
+| `service.targetPort`| TCP targetPort for service to connect to fluent-bit. | 2020 |
+| `config.extraService` | Append to existing service with this value | HTTP_Server  On <br> HTTP_Listen  0.0.0.0 <br> HTTP_PORT    2020 <br> Health_Check On <br> HC_Errors_Count 5 <br> HC_Retry_Failure_Count 5 <br> HC_Period 5 |
+| `config.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
+| `config.extraParsers` | Adding more parsers with this value | `""` |
 | `input.*` | Values for Kubernetes input | |
 | `extraInputs` | Append to existing input with this value | `""` |
 | `additionalInputs` | Adding more inputs with this value | `""` |
@@ -145,53 +148,63 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `s3.preserveDataOrdering` | Normally, when an upload request fails, there is a high chance for the last received chunk to be swapped with a later chunk, resulting in data shuffling. This feature prevents this shuffling by using a queue logic for uploads. | `true`
 | `s3.storageClass` | Specify the storage class for S3 objects. If this option is not specified, objects will be stored with the default 'STANDARD' storage class. | |
 | `s3.retryLimit`| Integer value to set the maximum number of retries allowed. Note: this configuration is released since version 1.9.10 and 2.0.1. For previous version, the number of retries is 5 and is not configurable. |`1`|
-|`s3.externalId`| Specify an external ID for the STS API, can be used w ith the role_arn parameter if your role requires an external ID.
-|`s3.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like `s3.extraOutputs.net.dns.mode=TCP`. | |
-|`opensearch.enabled`| Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/opensearch) |`false`| ✔
-|`opensearch.match`| The log filter |`"*"`| ✔
-|`opensearch.host`| The url of the Opensearch Search endpoint you want log records sent to. | | ✔
-|`opensearch.awsRegion`| The region in which your Opensearch search is/are in. |`"us-east-1"`|
-|`opensearch.awsAuth`| Enable AWS Sigv4 Authentication for Amazon Opensearch Service. |`"On"`|
-|`opensearch.tls`| Enable or disable TLS support | `"On"` |
-|`opensearch.port`| TCP Port of the target service. |`443`|
-|`opensearch.path`| OpenSearch accepts new data on HTTP query path "/_bulk". But it is also possible to serve OpenSearch behind a reverse proxy on a subpath. This option defines such path on the fluent-bit side. It simply adds a path prefix in the indexing HTTP POST URI. | |
-|`opensearch.bufferSize`| Specify the buffer size used to read the response from the OpenSearch HTTP service. |`"5m"`|
-|`opensearch.pipeline`| OpenSearch allows to setup filters called pipelines. This option allows to define which pipeline the database should use. For performance reasons is strongly suggested to do parsing and filtering on Fluent Bit side, avoid pipelines. | |
-|`opensearch.awsStsEndpoint`| Specify the custom sts endpoint to be used with STS API for Amazon OpenSearch Service. | |
-|`opensearch.awsRoleArn`| AWS IAM Role to assume to put records to your Amazon cluster. | |
-|`opensearch.awsExternalId`| External ID for the AWS IAM Role specified with aws_role_arn. | |
-|`opensearch.awsServiceName`| Service name to be used in AWS Sigv4 signature. For integration with Amazon OpenSearch Serverless, set to`aoss`. See the [FAQ](https://docs.fluentbit.io/manual/pipeline/outputs/opensearch#faq) section on Amazon OpenSearch Serverless for more information. To use this option: make sure you set`image.tag`to`v2.30.0`or higher. | |
-|`opensearch.httpUser`| Optional username credential for access. | |
-|`opensearch.httpPasswd`| Password for user defined in HTTP_User. | |
-|`opensearch.index`| Index name, supports [Record Accessor syntax](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/record-accessor) |`"aws-fluent-bit"`|
-|`opensearch.type`| Type name |`"_doc"`|
-|`opensearch.logstashFormat`| Enable Logstash format compatibility. This option takes a boolean value: True/False, On/Off |`"on"`|
-|`opensearch.logstashPrefix`| When Logstash_Format is enabled, the Index name is composed using a prefix and the date, e.g: If Logstash_Prefix is equals to 'mydata' your index will become 'mydata-YYYY.MM.DD'. The last string appended belongs to the date when the data is being generated. |`"logstash"`|
-|`opensearch.logstashDateFormat`| Time format (based on strftime) to generate the second part of the Index name. |`"%Y.%m.%d"`|
-|`opensearch.timeKey`| When Logstash_Format is enabled, each record will get a new timestamp field. The Time_Key property defines the name of that field. |`"@timestamp"`|
-|`opensearch.timeKeyFormat`| When Logstash_Format is enabled, this property defines the format of the timestamp. |`"%Y-%m-%dT%H:%M:%S"`|
-|`opensearch.timeKeyNanos`| When Logstash_Format is enabled, enabling this property sends nanosecond precision timestamps. |`"Off"`|
-|`opensearch.includeTagKey`| When enabled, it append the Tag name to the record. |`"Off"`|
-|`opensearch.tagKey`| When Include_Tag_Key is enabled, this property defines the key name for the tag. |`"_flb-key"`|
-|`opensearch.generateId`| When enabled, generate _id for outgoing records. This prevents duplicate records when retrying. |`"Off"`|
-|`opensearch.idKey`| If set, _id will be the value of the key from incoming record and Generate_ID option is ignored. | |
-|`opensearch.writeOperation`| Operation to use to write in bulk requests. |`"create"`|
-|`opensearch.replaceDots`| When enabled, replace field name dots with underscore. |`"Off"`|
-|`opensearch.traceOutput`| When enabled print the OpenSearch API calls to stdout (for diag only) |`"Off"`|
-|`opensearch.traceError`| When enabled print the OpenSearch API calls to stdout when OpenSearch returns an error (for diag only). |`"Off"`|
-|`opensearch.currentTimeIndex`| Use current time for index generation instead of message record |`"Off"`|
-|`opensearch.logstashPrefixKey`| When included: the value in the record that belongs to the key will be looked up and over-write the Logstash_Prefix for index generation. If the key/value is not found in the record then the Logstash_Prefix option will act as a fallback. Nested keys are not supported (if desired, you can use the nest filter plugin to remove nesting) | |
-|`opensearch.suppressTypeName`| When enabled, mapping types is removed and Type option is ignored. |`"Off"`|
-|`opensearch.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like `opensearch.extraOutputs.net.dns.mode=TCP`. |`""`|
-|`additionalOutputs`| add outputs with value |`""`|
-|`priorityClassName`| Name of Priority Class to assign pods | |
-|`updateStrategy`| Optional update strategy |`type: RollingUpdate`|
-|`affinity`| Map of node/pod affinities |`{}`|
-|`env`| Optional List of pod environment variables for the pods |`[]`|
-|`tolerations`| Optional deployment tolerations |`[]`|
-|`nodeSelector`| Node labels for pod assignment |`{}`|
-|`annotations`| Optional pod annotations |`{}`|
-|`volumes`| Volumes for the pods, provide as a list of volume objects (see values.yaml) |  volumes for /var/log and /var/lib/docker/containers are present, along with a fluentbit config volume |
-|`volumeMounts`| Volume mounts for the pods, provided as a list of volumeMount objects (see values.yaml) | volumes for /var/log and /var/lib/docker/containers are mounted, along with a fluentbit config volume |
-|`dnsPolicy`| Optional dnsPolicy |`ClusterFirst`|
-|`hostNetwork`| If true, use hostNetwork |`false` |
+| `s3.externalId`| Specify an external ID for the STS API, can be used w ith the role_arn parameter if your role requires an external ID.
+| `s3.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like `s3.extraOutputs.net.dns.mode=TCP`. | |
+| `opensearch.enabled`| Whether this plugin should be enabled or not, [details](https://docs.fluentbit.io/manual/pipeline/outputs/opensearch) |`false`| ✔
+| `opensearch.match`| The log filter |`"*"`| ✔
+| `opensearch.host`| The url of the Opensearch Search endpoint you want log records sent to. | | ✔
+| `opensearch.awsRegion`| The region in which your Opensearch search is/are in. |`"us-east-1"`|
+| `opensearch.awsAuth`| Enable AWS Sigv4 Authentication for Amazon Opensearch Service. |`"On"`|
+| `opensearch.tls`| Enable or disable TLS support | `"On"` |
+| `opensearch.port`| TCP Port of the target service. |`443`|
+| `opensearch.path`| OpenSearch accepts new data on HTTP query path "/_bulk". But it is also possible to serve OpenSearch behind a reverse proxy on a subpath. This option defines such path on the fluent-bit side. It simply adds a path prefix in the indexing HTTP POST URI. | |
+| `opensearch.bufferSize`| Specify the buffer size used to read the response from the OpenSearch HTTP service. |`"5m"`|
+| `opensearch.pipeline`| OpenSearch allows to setup filters called pipelines. This option allows to define which pipeline the database should use. For performance reasons is strongly suggested to do parsing and filtering on Fluent Bit side, avoid pipelines. | |
+| `opensearch.awsStsEndpoint`| Specify the custom sts endpoint to be used with STS API for Amazon OpenSearch Service. | |
+| `opensearch.awsRoleArn`| AWS IAM Role to assume to put records to your Amazon cluster. | |
+| `opensearch.awsExternalId`| External ID for the AWS IAM Role specified with aws_role_arn. | |
+| `opensearch.awsServiceName`| Service name to be used in AWS Sigv4 signature. For integration with Amazon OpenSearch Serverless, set to`aoss`. See the [FAQ](https://docs.fluentbit.io/manual/pipeline/outputs/opensearch#faq) section on Amazon OpenSearch Serverless for more information. To use this option: make sure you set`image.tag`to`v2.30.0`or higher. | |
+| `opensearch.httpUser`| Optional username credential for access. | |
+| `opensearch.httpPasswd`| Password for user defined in HTTP_User. | |
+| `opensearch.index`| Index name, supports [Record Accessor syntax](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/record-accessor) |`"aws-fluent-bit"`|
+| `opensearch.type`| Type name |`"_doc"`|
+| `opensearch.logstashFormat`| Enable Logstash format compatibility. This option takes a boolean value: True/False, On/Off |`"on"`|
+| `opensearch.logstashPrefix`| When Logstash_Format is enabled, the Index name is composed using a prefix and the date, e.g: If Logstash_Prefix is equals to 'mydata' your index will become 'mydata-YYYY.MM.DD'. The last string appended belongs to the date when the data is being generated. |`"logstash"`|
+| `opensearch.logstashDateFormat`| Time format (based on strftime) to generate the second part of the Index name. |`"%Y.%m.%d"`|
+| `opensearch.timeKey`| When Logstash_Format is enabled, each record will get a new timestamp field. The Time_Key property defines the name of that field. |`"@timestamp"`|
+| `opensearch.timeKeyFormat`| When Logstash_Format is enabled, this property defines the format of the timestamp. |`"%Y-%m-%dT%H:%M:%S"`|
+| `opensearch.timeKeyNanos`| When Logstash_Format is enabled, enabling this property sends nanosecond precision timestamps. |`"Off"`|
+| `opensearch.includeTagKey`| When enabled, it append the Tag name to the record. |`"Off"`|
+| `opensearch.tagKey`| When Include_Tag_Key is enabled, this property defines the key name for the tag. |`"_flb-key"`|
+| `opensearch.generateId`| When enabled, generate _id for outgoing records. This prevents duplicate records when retrying. |`"Off"`|
+| `opensearch.idKey`| If set, _id will be the value of the key from incoming record and Generate_ID option is ignored. | |
+| `opensearch.writeOperation`| Operation to use to write in bulk requests. |`"create"`|
+| `opensearch.replaceDots`| When enabled, replace field name dots with underscore. |`"Off"`|
+| `opensearch.traceOutput`| When enabled print the OpenSearch API calls to stdout (for diag only) |`"Off"`|
+| `opensearch.traceError`| When enabled print the OpenSearch API calls to stdout when OpenSearch returns an error (for diag only). |`"Off"`|
+| `opensearch.currentTimeIndex`| Use current time for index generation instead of message record |`"Off"`|
+| `opensearch.logstashPrefixKey`| When included: the value in the record that belongs to the key will be looked up and over-write the Logstash_Prefix for index generation. If the key/value is not found in the record then the Logstash_Prefix option will act as a fallback. Nested keys are not supported (if desired, you can use the nest filter plugin to remove nesting) | |
+| `opensearch.suppressTypeName`| When enabled, mapping types is removed and Type option is ignored. |`"Off"`|
+| `opensearch.extraOutputs`| Append extra outputs with value. This section helps you extend current chart implementation with ability to add extra parameters. For example, you can add [network](https://docs.fluentbit.io/manual/administration/networking) config like `opensearch.extraOutputs.net.dns.mode=TCP`. |`""`|
+| `additionalOutputs`| add outputs with value |`""`|
+| `priorityClassName`| Name of Priority Class to assign pods | |
+| `updateStrategy`| Optional update strategy |`type: RollingUpdate`|
+| `affinity`| Map of node/pod affinities |`{}`|
+| `env`| Optional List of pod environment variables for the pods |`[]`|
+| `livenessProbe`| Optional yaml to define liveness probe |httpGet:<br> &nbsp;&nbsp; path: /api/v1/health <br> &nbsp;&nbsp; port: 2020 <br> &nbsp;&nbsp; scheme: HTTP <br> failureThreshold: 2 <br> initialDelaySeconds: 30 <br> timeoutSeconds: 10 |
+| `readinessProbe`| Optional yaml to define readiness probe |`{}`|
+| `serviceMonitor.enabled`| Whether serviceMonitor should be enabled or not, [details](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/getting-started.md) |`false`| ✔ |`[]`|
+| `serviceMonitor.interval`| Set how frequently Prometheus should scrape |`30s`|
+| `serviceMonitor.telemetryPath`| Set path to scrape metrics from |`/api/v1/metrics/prometheus`|
+| `serviceMonitor.labels`| Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator |`[]`|
+| `serviceMonitor.timeout`| Set timeout for scrape |`10s`|
+| `serviceMonitor.relabelings`| Set relabel_configs as per [details](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) |`[]`|
+| `serviceMonitor.targetLabels`| Set of labels to transfer on the Kubernetes Service onto the target. |`[]`|
+| `serviceMonitor.metricRelabelings`| MetricRelabelConfigs to apply to samples before ingestion. |`[]`|
+| `tolerations`| Optional deployment tolerations |`[]`|
+| `nodeSelector`| Node labels for pod assignment |`{}`|
+| `annotations`| Optional pod annotations |`{}`|
+| `volumes`| Volumes for the pods, provide as a list of volume objects (see values.yaml) |  volumes for /var/log and /var/lib/docker/containers are present, along with a fluentbit config volume |
+| `volumeMounts`| Volume mounts for the pods, provided as a list of volumeMount objects (see values.yaml) | volumes for /var/log and /var/lib/docker/containers are mounted, along with a fluentbit config volume |
+| `dnsPolicy`| Optional dnsPolicy |`ClusterFirst`|
+| `hostNetwork`| If true, use hostNetwork |`false` |

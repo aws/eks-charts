@@ -8,13 +8,13 @@ metadata:
 data:
   fluent-bit.conf: |
     [SERVICE]
-{{- if .Values.service.extraService }}
-{{ .Values.service.extraService | indent 8 }}
+{{- if .Values.config.extraService }}
+{{ .Values.config.extraService | indent 8 }}
 {{- end }}
-{{- range .Values.service.parsersFiles }}
+{{- range .Values.config.parsersFiles }}
         Parsers_File {{ . }}
 {{- end }}
-{{- if .Values.service.extraParsers }}
+{{- if .Values.config.extraParsers }}
         Parsers_File /fluent-bit/etc/parser_extra.conf
 {{- end }}
 
@@ -456,7 +456,7 @@ data:
 {{ .Values.additionalOutputs | indent 4 }}
 {{- end }}
 
-{{- if .Values.service.extraParsers }}
+{{- if .Values.config.extraParsers }}
   parser_extra.conf: |-
-{{ .Values.service.extraParsers | indent 4 }}
+{{ .Values.config.extraParsers | indent 4 }}
 {{- end }}
