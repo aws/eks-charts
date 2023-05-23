@@ -8,10 +8,10 @@ metadata:
 spec:
   ports:
   - name: monitor-agent
-    port: {{ .Values.service.port }}
+    port: {{ .Values.k8sService.port }}
     protocol: TCP
-    targetPort: {{ .Values.service.targetPort }}
+    targetPort: {{ .Values.k8sService.targetPort }}
   selector:
     {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
-  type: {{ .Values.service.type }}
+  type: {{ .Values.k8sService.type }}
