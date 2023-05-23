@@ -61,6 +61,12 @@ helm repo add eks https://aws.github.io/eks-charts
 
 * [cni-metrics-helper](stable/cni-metrics-helper): A helm chart for [CNI Metrics Helper](https://github.com/aws/amazon-vpc-cni-k8s/blob/master/cmd/cni-metrics-helper/README.md)
 
+
+### AWS EKS Connector
+
+* [aws-eks-connector](https://github.com/aws/amazon-eks-connector): A helm chart for connecting/registering customer's own cluster to AWS EKS console.
+
+
 ## License
 
 This project is licensed under the Apache-2.0 License.
