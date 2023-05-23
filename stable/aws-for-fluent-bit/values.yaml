@@ -27,14 +27,12 @@ rbac:
   # rbac.pspEnabled, if `true` a restricted pod security policy is created and used
   pspEnabled: false
 
-# To enable .Values.livenessProbe or .Values.readinessProbe you will need to enable this section
-# Specifically the Health_Check enables the health check endpoint for fluent-bit
-service:
+k8sService:
   type: ClusterIP
   port: 2020
   targetPort: 2020
 
-config:
+service:
   ## Allow the service to be exposed for monitoring
   ## https://docs.fluentbit.io/manual/administration/monitoring
   extraService: |
