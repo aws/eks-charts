@@ -91,6 +91,15 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `firehose.timeKey` | Add the timestamp to the record under this key. By default the timestamp from Fluent Bit will not be added to records sent to Kinesis. | |
 | `firehose.timeKeyFormat` | strftime compliant format string for the timestamp; for example, `%Y-%m-%dT%H:%M:%S%z`. This option is used with `time_key`. | |
 | `firehose.extraOutputs` | Append extra outputs with value | `""` |
+| `kinesis_streams.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-streams-for-fluent-bit) | `false` | ✔
+| `kinesis_streams.region` | The AWS region. | ✔
+| `kinesis_streams.stream` | The name of the Kinesis Streams Delivery Stream that you want log records send to. | ✔
+| `kinesis_streams.sts_endpoint` | Custom endpoint for the STS API. `kinesis_streams.sts_endpoint`. | |
+| `kinesis_streams.time_key` | Add the timestamp to the record under this key. By default the timestamp from Fluent Bit will not be added to records sent to Kinesis. | |
+| `kinesis_streams.time_key_format` |  strftime compliant format string for the timestamp; for example, the default is `%Y-%m-%dT%H:%M:%S`. Supports millisecond precision with `%3N` and supports nanosecond precision with `%9N` and `%L`; for example, adding `%3N` to support millisecond `%Y-%m-%dT%H:%M:%S.%3N`. This option is used with `time_key`. | |
+| `kinesis_streams.log_key` | By default, the whole log record will be sent to Kinesis. If you specify a key name with this option, then only the value of that key will be sent to Kinesis. For example, if you are using the Fluentd Docker log driver, you can specify `log_key` `log` and only the log message will be sent to Kinesis. | |
+| `kinesis_streams.auto_retry_requests` | Immediately retry failed requests to AWS services once. This option does not affect the normal Fluent Bit retry mechanism with backoff. Instead, it enables an immediate retry with no delay for networking errors, which may help improve throughput when there are transient/random networking issues. This option defaults to `true`. | |
+| `kinesis_streams.external_id` | Specify an external ID for the STS API, can be used with the role_arn parameter if your role requries an external ID. | |
 | `kinesis.enabled` | Whether this plugin should be enabled or not, [details](https://github.com/aws/amazon-kinesis-streams-for-fluent-bit) | `false` | ✔
 | `kinesis.match` | The log filter | `"*"` | ✔
 | `kinesis.region` | The region which your Kinesis Data Stream is in. | `"us-east-1"` | ✔
