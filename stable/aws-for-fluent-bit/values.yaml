@@ -173,7 +173,7 @@ kinesis_streams:
   time_key:
   time_key_format:
   external_id:
-  auto_retry_requests:  
+  auto_retry_requests:
   log_key: 
 
 elasticsearch:
