@@ -12,13 +12,13 @@ useAwsFIPSEndpoint: false
 
 image:
   repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/amazon/appmesh-controller
-  tag: v1.11.0
+  tag: v1.12.1
   pullPolicy: IfNotPresent
 
 sidecar:
   image:
     repository: 840364872350.dkr.ecr.us-west-2.amazonaws.com/aws-appmesh-envoy
-    tag: v1.25.1.0-prod
+    tag: v1.25.4.0-prod
     # sidecar.logLevel: Envoy log level can be info, warn, error or debug
   logLevel: info
   envoyAdminAccessPort: 9901
