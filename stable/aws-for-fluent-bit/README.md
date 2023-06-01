@@ -91,7 +91,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `firehose.timeKey` | Add the timestamp to the record under this key. By default the timestamp from Fluent Bit will not be added to records sent to Kinesis. | |
 | `firehose.timeKeyFormat` | strftime compliant format string for the timestamp; for example, `%Y-%m-%dT%H:%M:%S%z`. This option is used with `time_key`. | |
 | `firehose.extraOutputs` | Append extra outputs with value | `""` |
-| `kinesis_streams.enabled` | It has all the core features of the [aws/amazon-kinesis-streams-for-fluent-bit](https://github.com/aws/amazon-kinesis-streams-for-fluent-bit) Golang Fluent Bit plugin released in 2019. The Golang plugin was named `kinesis`; this new high performance and highly efficient kinesis plugin is called `kinesis_streams` to prevent conflicts/confusion, [details](https://docs.fluentbit.io/manual/pipeline/outputs/kinesis) | `false` | ✔
+| `kinesis_streams.enabled` | It has all the core features of the [details](https://github.com/aws/amazon-kinesis-streams-for-fluent-bit) Golang Fluent Bit plugin released in 2019. The Golang plugin was named `kinesis`; this new high performance and highly efficient kinesis plugin is called `kinesis_streams` to prevent conflicts/confusion, [details](https://docs.fluentbit.io/manual/pipeline/outputs/kinesis) | `false` | ✔
 | `kinesis_streams.region` | The AWS region. | ✔
 | `kinesis_streams.stream` | The name of the Kinesis Streams Delivery Stream that you want log records send to. | ✔
 | `kinesis_streams.endpoint` | Specify a custom endpoint for the Kinesis Streams API. | |
