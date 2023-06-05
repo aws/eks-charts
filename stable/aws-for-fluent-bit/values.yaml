@@ -34,6 +34,7 @@ k8sService:
 
 service:
   ## Allow the service to be exposed for monitoring
+  ## For liveness check to work, Health_Check must be set to On
   ## https://docs.fluentbit.io/manual/administration/monitoring
   extraService: |
     HTTP_Server  On
@@ -334,6 +335,7 @@ volumeMounts:
     mountPath: /var/lib/docker/containers
     readOnly: true
 
+# For livenessProbe to work - service.extraService must also enable Health_Check On
 livenessProbe:
   httpGet:
     path: /api/v1/health
