@@ -480,7 +480,7 @@ data:
         Suppress_Type_Name  {{ .Values.opensearch.suppressTypeName }}
         {{- end }}
         {{- if .Values.opensearch.extraOutputs }}
-{{ .Values.opensearch.extraOutputsIndent_8 }}
+{{ .Values.opensearch.extraOutputs | indent 8 }}
         {{- end }}
 {{- end }}
 
