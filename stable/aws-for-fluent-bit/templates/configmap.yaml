@@ -446,7 +446,7 @@ data:
         {{- end }}
         {{- if .Values.opensearch.suppressTypeName }}
         Suppress_Type_Name  {{ .Values.opensearch.suppressTypeName }}
-        {{- end }}
+        {{- end -}}
         {{- if .Values.opensearch.extraOutputs }}
 {{ .Values.opensearch.extraOutputs | indent 8 }}
         {{- end }}
