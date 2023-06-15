@@ -27,11 +27,6 @@ rbac:
   # rbac.pspEnabled, if `true` a restricted pod security policy is created and used
   pspEnabled: false
 
-k8sService:
-  type: ClusterIP
-  port: 2020
-  targetPort: 2020
-
 service:
   ## Allow the service to be exposed for monitoring
   ## For liveness check to work, Health_Check must be set to On
@@ -355,6 +350,10 @@ readinessProbe: {}
   # timeoutSeconds: 10
 
 serviceMonitor:
+  service: 
+    type: ClusterIP
+    port: 2020
+    targetPort: 2020
   ## When set true then use a ServiceMonitor to configure scraping
   enabled: false
   interval: 30s

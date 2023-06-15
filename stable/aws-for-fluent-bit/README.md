@@ -38,9 +38,6 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `imagePullSecrets` | Docker registry pull secret | `[]` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` |
 | `serviceAccount.name` | Name of the service account | `aws-for-fluent-bit` |
-| `k8sService.type`| Type of service to be created - options are ClusterIP, NodePort, LoadBalancer |`ClusterIP`|
-| `k8sService.port`| TCP port of the serviceMonitor service. | 2020 |
-| `k8sService.targetPort`| TCP targetPort for service to connect to fluent-bit. | 2020 |
 | `service.extraService` | Append to existing service with this value | HTTP_Server  On <br> HTTP_Listen  0.0.0.0 <br> HTTP_PORT    2020 <br> Health_Check On <br> HC_Errors_Count 5 <br> HC_Retry_Failure_Count 5 <br> HC_Period 5 |
 | `service.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
 | `service.extraParsers` | Adding more parsers with this value | `""` |
@@ -193,6 +190,9 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `env`| Optional List of pod environment variables for the pods |`[]`|
 | `livenessProbe`| Optional yaml to define liveness probe, [details](https://docs.fluentbit.io/manual/administration/monitoring#health-check-for-fluent-bit) |httpGet:<br> &nbsp;&nbsp; path: /api/v1/health <br> &nbsp;&nbsp; port: 2020 <br> &nbsp;&nbsp; scheme: HTTP <br> failureThreshold: 2 <br> initialDelaySeconds: 30 <br> timeoutSeconds: 10 |
 | `readinessProbe`| Optional yaml to define readiness probe |`{}`|
+| `serviceMonitor.service.type`| Type of service to be created - options are ClusterIP, NodePort, LoadBalancer |`ClusterIP`|
+| `serviceMonitor.service.port`| TCP port of the serviceMonitor service. | 2020 |
+| `serviceMonitor.service.targetPort`| TCP targetPort for service to connect to fluent-bit. | 2020 |
 | `serviceMonitor.enabled`| Whether serviceMonitor should be enabled or not, [details](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/getting-started.md) |`false`| ✔ |`[]`|
 | `serviceMonitor.interval`| Set how frequently Prometheus should scrape |`30s`|
 | `serviceMonitor.telemetryPath`| Set path to scrape metrics from |`/api/v1/metrics/prometheus`|
