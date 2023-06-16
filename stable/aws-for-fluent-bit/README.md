@@ -188,12 +188,12 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `updateStrategy`| Optional update strategy |`type: RollingUpdate`|
 | `affinity`| Map of node/pod affinities |`{}`|
 | `env`| Optional List of pod environment variables for the pods |`[]`|
-| `livenessProbe`| Optional yaml to define liveness probe, [details](https://docs.fluentbit.io/manual/administration/monitoring#health-check-for-fluent-bit) |httpGet:<br> &nbsp;&nbsp; path: /api/v1/health <br> &nbsp;&nbsp; port: 2020 <br> &nbsp;&nbsp; scheme: HTTP <br> failureThreshold: 2 <br> initialDelaySeconds: 30 <br> timeoutSeconds: 10 |
+| `livenessProbe`| Optional yaml to define liveness probe - In order for liveness probe to work correctly defaults have been set in `service.extraService`, [details](https://docs.fluentbit.io/manual/administration/monitoring#health-check-for-fluent-bit) |httpGet:<br> &nbsp;&nbsp; path: /api/v1/health <br> &nbsp;&nbsp; port: 2020 <br> &nbsp;&nbsp; scheme: HTTP <br> failureThreshold: 2 <br> initialDelaySeconds: 30 <br> timeoutSeconds: 10 |
 | `readinessProbe`| Optional yaml to define readiness probe |`{}`|
-| `serviceMonitor.service.type`| Type of service to be created - options are ClusterIP, NodePort, LoadBalancer |`ClusterIP`|
-| `serviceMonitor.service.port`| TCP port of the serviceMonitor service. | 2020 |
-| `serviceMonitor.service.targetPort`| TCP targetPort for service to connect to fluent-bit. | 2020 |
 | `serviceMonitor.enabled`| Whether serviceMonitor should be enabled or not, [details](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/getting-started.md) |`false`| ✔ |`[]`|
+| `serviceMonitor.service.type`| Type of service to be created - options are ClusterIP, NodePort, LoadBalancer, ExternalName - [details](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) |`ClusterIP`|
+| `serviceMonitor.service.port`| Incoming TCP port of the kubernetes service - Traffic is routed from this port to the targetPort to gain access to the application -  By default and for convenience, the targetPort is set to the same value as the port field. [details](https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service) | 2020 |
+| `serviceMonitor.service.targetPort`| TCP targetPort for service to connect to fluent-bit. | 2020 |
 | `serviceMonitor.interval`| Set how frequently Prometheus should scrape |`30s`|
 | `serviceMonitor.telemetryPath`| Set path to scrape metrics from |`/api/v1/metrics/prometheus`|
 | `serviceMonitor.labels`| Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator |`[]`|
