@@ -18,7 +18,7 @@ helm repo add eks https://aws.github.io/eks-charts
 To install the chart with the release name `aws-vpc-cni` and default configuration:
 
 ```shell
-$ helm install --name aws-vpc-cni --namespace kube-system eks/aws-vpc-cni
+$ helm install aws-vpc-cni --namespace kube-system eks/aws-vpc-cni
 ```
 
 To install into an EKS cluster where the CNI is already installed, see [this section below](#adopting-the-existing-aws-node-resources-in-an-eks-cluster)
@@ -41,17 +41,19 @@ The following table lists the configurable parameters for this chart and their d
 | `eniConfig.subnets.securityGroups`  | The IDs of the security groups which will be used in the ENIConfig | `nil`        |
 | `env`                   | List of environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options | (see `values.yaml`) |
 | `fullnameOverride`      | Override the fullname of the chart                      | `aws-node`                          |
-| `image.region`          | ECR repository region to use. Should match your cluster | `us-west-2`                         |
-| `image.tag`             | Image tag                                               | `v1.12.6`                           |
-| `image.account`         | ECR repository account number                           | `602401143452`                      |
+| `image.tag`             | Image tag                                               | `v1.13.0`                           |
 | `image.domain`          | ECR repository domain                                   | `amazonaws.com`                     |
+| `image.region`          | ECR repository region to use. Should match your cluster | `us-west-2`                         |
+| `image.endpoint`        | ECR repository endpoint to use.                         | `ecr`                               |
+| `image.account`         | ECR repository account number                           | `602401143452`                      |
 | `image.pullPolicy`      | Container pull policy                                   | `IfNotPresent`                      |
 | `image.override`        | A custom docker image to use                            | `nil`                               |
 | `imagePullSecrets`      | Docker registry pull secret                             | `[]`                                |
-| `init.image.region`     | ECR repository region to use. Should match your cluster | `us-west-2`                         |
-| `init.image.tag`        | Image tag                                               | `v1.12.6`                           |
-| `init.image.account`    | ECR repository account number                           | `602401143452`                      |
+| `init.image.tag`        | Image tag                                               | `v1.13.0`                           |
 | `init.image.domain`     | ECR repository domain                                   | `amazonaws.com`                     |
+| `init.image.region`     | ECR repository region to use. Should match your cluster | `us-west-2`                         |
+| `init.image.endpoint`   | ECR repository endpoint to use.                         | `ecr`                               |
+| `init.image.account`    | ECR repository account number                           | `602401143452`                      |
 | `init.image.pullPolicy` | Container pull policy                                   | `IfNotPresent`                      |
 | `init.image.override`   | A custom docker image to use                            | `nil`                               |
 | `init.env`              | List of init container environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options | (see `values.yaml`) |
@@ -65,20 +67,20 @@ The following table lists the configurable parameters for this chart and their d
 | `podAnnotations`        | annotations to add to each pod                          | `{}`                                |
 | `podLabels`             | Labels to add to each pod                               | `{}`                                |
 | `priorityClassName`     | Name of the priorityClass                               | `system-node-critical`              |
-| `resources`             | Resources for the pods                                  | `requests.cpu: 10m`                 |
+| `resources`             | Resources for containers in pod                         | `requests.cpu: 25m`                 |
 | `securityContext`       | Container Security context                              | `capabilities: add: - "NET_ADMIN" - "NET_RAW"`  |
 | `serviceAccount.name`   | The name of the ServiceAccount to use                   | `nil`                               |
 | `serviceAccount.create` | Specifies whether a ServiceAccount should be created    | `true`                              |
 | `serviceAccount.annotations` | Specifies the annotations for ServiceAccount       | `{}`                                |
 | `livenessProbe`         | Livenness probe settings for daemonset                  | (see `values.yaml`)                 |
 | `readinessProbe`        | Readiness probe settings for daemonset                  | (see `values.yaml`)                 |
-| `tolerations`           | Optional deployment tolerations                         | `[]`                                |
+| `tolerations`           | Optional deployment tolerations                         | `[{"operator": "Exists"}]`          |
 | `updateStrategy`        | Optional update strategy                                | `type: RollingUpdate`               |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 
 ```shell
-$ helm install --name aws-vpc-cni --namespace kube-system eks/aws-vpc-cni --values values.yaml
+$ helm install aws-vpc-cni --namespace kube-system eks/aws-vpc-cni --values values.yaml
 ```
 
 ## Adopting the existing aws-node resources in an EKS cluster

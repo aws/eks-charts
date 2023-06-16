@@ -8,12 +8,14 @@ nameOverride: aws-node
 
 init:
   image:
-    tag: v1.12.6
+    tag: v1.13.0
+    domain: amazonaws.com
     region: us-west-2
+    endpoint: ecr
     account: "602401143452"
     pullPolicy: Always
-    domain: "amazonaws.com"
     # Set to use custom image
+    override:
     # override: "repo/org/image:tag"
   env:
     DISABLE_TCP_EARLY_DEMUX: "false"
@@ -22,12 +24,14 @@ init:
     privileged: true
 
 image:
+  tag: v1.13.0
+  domain: amazonaws.com
   region: us-west-2
-  tag: v1.12.6
+  endpoint: ecr
   account: "602401143452"
-  domain: "amazonaws.com"
   pullPolicy: Always
   # Set to use custom image
+  override:
   # override: "repo/org/image:tag"
 
 # The CNI supports a number of environment variable settings
@@ -122,7 +126,8 @@ updateStrategy:
 
 nodeSelector: {}
 
-tolerations: []
+tolerations:
+  - operator: Exists
 
 affinity:
   nodeAffinity:
