@@ -30,7 +30,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | - | - | - | -
 | `global.namespaceOverride` | Override the deployment namespace | Not set (`Release.Namespace`) |
 | `image.repository` | Image to deploy | `amazon/aws-for-fluent-bit` | ✔
-| `image.tag` | Image tag to deploy | `2.28.4`
+| `image.tag` | Image tag to deploy | `stable` |
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
 | `podSecurityContext` | Security Context for pod | `{}` | 
 | `containerSecurityContext` | Security Context for container | `{}` | 
