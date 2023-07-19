@@ -80,11 +80,13 @@ kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/
 
 #### Installing cert-manager
 
-If you are setting `enableCertManager: true` you need to have installed cert-manager and it's CRDs before installing this chart; to install [cert-manager](https://artifacthub.io/packages/helm/cert-manager/cert-manager) follow the installation guide.
+If you are setting `certManager.enabled: true` you need to have installed cert-manager and it's CRDs before installing this chart; to install [cert-manager](https://artifacthub.io/packages/helm/cert-manager/cert-manager) follow the installation guide.
 
 The controller helm chart requires the cert-manager with apiVersion `cert-manager.io/v1`.
 
 Set `cluster.dnsDomain` (default: `cluster.local`) to the actual DNS domain of your cluster to include the FQDN in requested TLS certificates.
+
+It is possible to set your own (Cluster)Issuer by supplying an `issuerRef`.
 
 #### Installing the Prometheus Operator
 
@@ -241,7 +243,8 @@ The default values set by the application itself can be confirmed [here](https:/
 | `replicaCount`                                 | Number of controller pods to run, only one will be active due to leader election                                                                                                                                       | `2`                                               |
 | `podDisruptionBudget`                          | Limit the disruption for controller pods. Require at least 2 controller replicas and 3 worker nodes                                                                                                                    | `{}`                                              |
 | `updateStrategy`                               | Defines the update strategy for the deployment                                                                                                                                                                         | `{}`                                              |
-| `enableCertManager`                            | If enabled, cert-manager issues the webhook certificates instead of the helm template, requires cert-manager and it's CRDs to be installed                                                                             | `false`                                           |
+| `certManager.enabled`                          | If enabled, cert-manager issues the webhook certificates instead of the helm template, requires cert-manager and it's CRDs to be installed                                                                             | `false`                                           |
+| `certManager.issuerRef`                        | Reuse an existing (Cluster)Issuer already available in the cluster by specifying the `issuerRef`                                                                             | None                                           |
 | `enableEndpointSlices`                         | If enabled, controller uses k8s EndpointSlices instead of Endpoints for IP targets                                                                                                                                     | `false`                                           |
 | `enableBackendSecurityGroup`                   | If enabled, controller uses shared security group for backend traffic                                                                                                                                                  | `true`                                            |
 | `backendSecurityGroup`                         | Backend security group to use instead of auto created one if the feature is enabled                                                                                                                                    | ``                                                |
