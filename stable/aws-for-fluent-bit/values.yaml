@@ -169,6 +169,20 @@ kinesis:
   # extraOutputs: |
   #   ...
 
+kinesis_streams:
+  enabled: false
+  match: "*"
+  region: "us-east-1"
+  stream: "my-kinesis-stream-name"
+  role_arn:
+  endpoint:
+  sts_endpoint:
+  time_key:
+  time_key_format:
+  external_id:
+  auto_retry_requests:
+  log_key: 
+
 elasticsearch:
   enabled: false
   match: "*"

@@ -232,6 +232,38 @@ data:
         {{- end }}
 {{- end }}
 
+{{- if .Values.kinesis_streams.enabled }}
+    [OUTPUT]
+        Name            kinesis_streams
+        Match           {{ .Values.kinesis_streams.match }}
+        region          {{ .Values.kinesis_streams.region }}
+        stream          {{ .Values.kinesis_streams.stream }}
+        {{- if .Values.kinesis_streams.role_arn }}
+        role_arn        {{ .Values.kinesis_streams.role_arn }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.endpoint }}
+        endpoint        {{ .Values.kinesis_streams.endpoint }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.sts_endpoint }}
+        sts_endpoint    {{ .Values.kinesis_streams.sts_endpoint }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.time_key }}
+        time_key        {{ .Values.kinesis_streams.time_key }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.time_key_format }}
+        time_key_format {{ .Values.kinesis_streams.time_key_format }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.external_id }}
+        time_key_format {{ .Values.kinesis_streams.external_id }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.auto_retry_requests }}
+        time_key_format {{ .Values.kinesis_streams.auto_retry_requests }}
+        {{- end }}
+        {{- if .Values.kinesis_streames.log_key }}
+        log_key         {{ .Values.kinesis_streams.log_key }}
+        {{- end }}
+{{- end }}
+
 {{- if .Values.elasticsearch.enabled }}
     [OUTPUT]
         Name            es
