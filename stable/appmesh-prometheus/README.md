@@ -107,12 +107,16 @@ Parameter | Description | Default
 `nodeSelector` | node labels for pod assignment | `{}`
 `tolerations` | list of node taints to tolerate | `[]`
 `rbac.create` | if `true`, create and use RBAC resources | `true`
-`rbac.pspEnabled` | If `true`, create and use a restricted pod security policy | `false`
-`serviceAccount.create` | If `true`, create a new service account | `true`
-`serviceAccount.name` | Service account to be used | None
-`retention` |  When to remove old data | `6h`
-`scrapeInterval` |  Interval between consecutive scrapes | `5s`
-`persistentVolumeClaim.claimName` |  Specify an existing volume claim to be used for Prometheus data | None
+`rbac.pspEnabled` | if `true`, create and use a restricted pod security policy | `false`
+`serviceAccount.create` | if `true`, create a new service account | `true`
+`serviceAccount.name` | service account to be used | None
+`retention` |  when to remove old data | `6h`
+`scrapeInterval` |  interval between consecutive scrapes | `5s`
+`persistentVolumeClaim.claimName` |  specify an existing volume claim to be used for Prometheus data | None
+`remoteWrite.enabled` | if `true`, write prometheus metrics to an external location | `false`
+`remoteWrite.url` | the url of the endpoint to send samples to | None
+`remoteWrite.bearer_token` | bearer token | None
+
 
 ## Troubleshooting
 
