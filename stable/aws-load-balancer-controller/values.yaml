@@ -99,7 +99,11 @@ podLabels: {}
 additionalLabels: {}
 
 # Enable cert-manager
-enableCertManager: false
+certManager:
+  enabled: false
+  # issuerRef:
+  #   name: "issuer"
+  #   kind: "ClusterIssuer"
 
 # The name of the Kubernetes cluster. A non-empty value is required
 clusterName:

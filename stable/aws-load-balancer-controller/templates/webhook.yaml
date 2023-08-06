@@ -3,7 +3,7 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-{{- if $.Values.enableCertManager }}
+{{- if $.Values.certManager.enabled }}
   annotations:
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ template "aws-load-balancer-controller.namePrefix" . }}-serving-cert
 {{- end }}
@@ -12,7 +12,7 @@ metadata:
     {{- include "aws-load-balancer-controller.labels" . | nindent 4 }}
 webhooks:
 - clientConfig:
-    {{ if not $.Values.enableCertManager -}}
+    {{ if not $.Values.certManager.enabled -}}
     caBundle: {{ $tls.caCert }}
     {{ end }}
     service:
@@ -58,7 +58,7 @@ webhooks:
   sideEffects: None
 {{- if .Values.enableServiceMutatorWebhook }}
 - clientConfig:
-    {{ if not $.Values.enableCertManager -}}
+    {{ if not $.Values.certManager.enabled -}}
     caBundle: {{ $tls.caCert }}
     {{ end }}
     service:
@@ -87,7 +87,7 @@ webhooks:
   sideEffects: None
 {{- end }}
 - clientConfig:
-    {{ if not $.Values.enableCertManager -}}
+    {{ if not $.Values.certManager.enabled -}}
     caBundle: {{ $tls.caCert }}
     {{ end }}
     service:
@@ -113,7 +113,7 @@ webhooks:
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-{{- if $.Values.enableCertManager }}
+{{- if $.Values.certManager.enabled }}
   annotations:
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ template "aws-load-balancer-controller.namePrefix" . }}-serving-cert
 {{- end }}
@@ -122,7 +122,7 @@ metadata:
     {{- include "aws-load-balancer-controller.labels" . | nindent 4 }}
 webhooks:
 - clientConfig:
-    {{ if not $.Values.enableCertManager -}}
+    {{ if not $.Values.certManager.enabled -}}
     caBundle: {{ $tls.caCert }}
     {{ end }}
     service:
@@ -151,7 +151,7 @@ webhooks:
     - ingressclassparams
   sideEffects: None
 - clientConfig:
-    {{ if not $.Values.enableCertManager -}}
+    {{ if not $.Values.certManager.enabled -}}
     caBundle: {{ $tls.caCert }}
     {{ end }}
     service:
@@ -174,7 +174,7 @@ webhooks:
     - targetgroupbindings
   sideEffects: None
 - clientConfig:
-    {{ if not $.Values.enableCertManager -}}
+    {{ if not $.Values.certManager.enabled -}}
     caBundle: {{ $tls.caCert }}
     {{ end }}
     service:
@@ -198,7 +198,7 @@ webhooks:
     - ingresses
   sideEffects: None
 ---
-{{- if not $.Values.enableCertManager }}
+{{- if not $.Values.certManager.enabled }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -224,10 +224,15 @@ spec:
   - {{ template "aws-load-balancer-controller.webhookService" . }}.{{ .Release.Namespace }}.svc
   - {{ template "aws-load-balancer-controller.webhookService" . }}.{{ .Release.Namespace }}.svc.{{ .Values.cluster.dnsDomain }}
   issuerRef:
+    {{- if .Values.certManager.issuerRef }}
+    {{- toYaml .Values.certManager.issuerRef | nindent 4 }}
+    {{- else }}
     kind: Issuer
     name: {{ template "aws-load-balancer-controller.namePrefix" . }}-selfsigned-issuer
+    {{- end }}
   secretName: {{ template "aws-load-balancer-controller.webhookCertSecret" . }}
 ---
+{{- if not $.Values.certManager.issuerRef -}}
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
@@ -237,4 +242,5 @@ metadata:
 {{ include "aws-load-balancer-controller.labels" . | indent 4 }}
 spec:
   selfSigned: {}
+{{- end }}
 {{- end }}
