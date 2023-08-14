@@ -1,7 +1,7 @@
 {{- if .Values.podDisruptionBudget }}
 {{- if gt (int .Values.replicaCount) 1 }}
 kind: PodDisruptionBudget
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 metadata:
   name: {{ template "appmesh-controller.fullname" . }}-pdb
   namespace: {{ .Release.Namespace }} 
