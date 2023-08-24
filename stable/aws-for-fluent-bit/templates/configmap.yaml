@@ -259,7 +259,7 @@ data:
         {{- if .Values.kinesis_streams.auto_retry_requests }}
         time_key_format {{ .Values.kinesis_streams.auto_retry_requests }}
         {{- end }}
-        {{- if .Values.kinesis_streames.log_key }}
+        {{- if .Values.kinesis_streams.log_key }}
         log_key         {{ .Values.kinesis_streams.log_key }}
         {{- end }}
 {{- end }}
