@@ -30,6 +30,9 @@ spec:
     relabelings:
 {{ toYaml .Values.serviceMonitor.relabelings | indent 4 }}
 {{- end }}
+{{- with .Values.serviceMonitor.extraEndpoints }}
+    {{- toYaml . | nindent 2 }}
+{{- end }}
   jobLabel: {{ default "app.kubernetes.io/instance" .Values.serviceMonitor.jobLabel }}
   namespaceSelector:
     matchNames:

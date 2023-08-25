@@ -368,6 +368,11 @@ serviceMonitor:
     type: ClusterIP
     port: 2020
     targetPort: 2020
+    extraPorts: {}
+      # - port: 2021
+      #   targetPort: 2021
+      #   protocol: TCP
+      #   name: metrics
   ## When set true then use a ServiceMonitor to configure scraping
   enabled: false
   interval: 30s
@@ -379,3 +384,9 @@ serviceMonitor:
   relabelings: []
   targetLabels: []
   metricRelabelings: []
+  extraEndpoints: {}
+    # - port: metrics
+    #   path: /metrics
+    #   interval: 30s
+    #   scrapeTimeout: 10s
+    #   scheme: http

@@ -11,6 +11,14 @@ spec:
     port: {{ .Values.serviceMonitor.service.port }}
     protocol: TCP
     targetPort: {{ .Values.serviceMonitor.service.targetPort }}
+{{- if .Values.serviceMonitor.service.extraPorts }}
+  {{- range .Values.serviceMonitor.service.extraPorts }}
+  - name: {{ .name }}
+    targetPort: {{ .targetPort }}
+    protocol: {{ .protocol }}
+    port: {{ .port }}
+  {{- end }}
+{{- end }}
   selector:
     {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
