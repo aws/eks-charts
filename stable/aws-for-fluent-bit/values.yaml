@@ -368,7 +368,7 @@ serviceMonitor:
     type: ClusterIP
     port: 2020
     targetPort: 2020
-    extraPorts: {}
+    extraPorts: []
       # - port: 2021
       #   targetPort: 2021
       #   protocol: TCP
@@ -384,7 +384,7 @@ serviceMonitor:
   relabelings: []
   targetLabels: []
   metricRelabelings: []
-  extraEndpoints: {}
+  extraEndpoints: []
     # - port: metrics
     #   path: /metrics
     #   interval: 30s
