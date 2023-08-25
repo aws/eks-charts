@@ -213,7 +213,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `serviceMonitor.relabelings`| Set relabel_configs as per [details](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) |`[]`|
 | `serviceMonitor.targetLabels`| Set of labels to transfer on the Kubernetes Service onto the target. |`[]`|
 | `serviceMonitor.metricRelabelings`| MetricRelabelConfigs to apply to samples before ingestion. |`[]`|
-| `serviceMonitor.extraEndpoints`| Extra endpoints on the fluen-bit service for the serviceMonitor to monitor |`[]`|
+| `serviceMonitor.extraEndpoints`| Extra endpoints on the fluent-bit service for the serviceMonitor to monitor |`[]`|
 | `tolerations`| Optional deployment tolerations |`[]`|
 | `nodeSelector`| Node labels for pod assignment |`{}`|
 | `annotations`| Optional pod annotations |`{}`|
