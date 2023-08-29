@@ -36,7 +36,7 @@ rules:
   - apiGroups: ["networking.k8s.aws"]
     resources:
       - policyendpoints
-    verbs: ["create", "delete", "get", "patch", "list", "update", "watch"]
+    verbs: ["get", "patch", "list", "watch"]
   - apiGroups: ["networking.k8s.aws"]
     resources:
       - policyendpoints/status
