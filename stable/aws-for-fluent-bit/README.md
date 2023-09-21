@@ -205,6 +205,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `serviceMonitor.service.type`| Type of service to be created - options are ClusterIP, NodePort, LoadBalancer, ExternalName - [details](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) |`ClusterIP`|
 | `serviceMonitor.service.port`| Incoming TCP port of the kubernetes service - Traffic is routed from this port to the targetPort to gain access to the application -  By default and for convenience, the targetPort is set to the same value as the port field. [details](https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service) | 2020 |
 | `serviceMonitor.service.targetPort`| TCP targetPort for service to connect to fluent-bit. | 2020 |
+| `serviceMonitor.service.extraPorts`| Extra ports to expose on fluent-bit service | `[]` |
 | `serviceMonitor.interval`| Set how frequently Prometheus should scrape |`30s`|
 | `serviceMonitor.telemetryPath`| Set path to scrape metrics from |`/api/v1/metrics/prometheus`|
 | `serviceMonitor.labels`| Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator |`[]`|
@@ -212,6 +213,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `serviceMonitor.relabelings`| Set relabel_configs as per [details](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) |`[]`|
 | `serviceMonitor.targetLabels`| Set of labels to transfer on the Kubernetes Service onto the target. |`[]`|
 | `serviceMonitor.metricRelabelings`| MetricRelabelConfigs to apply to samples before ingestion. |`[]`|
+| `serviceMonitor.extraEndpoints`| Extra endpoints on the fluent-bit service for the serviceMonitor to monitor |`[]`|
 | `tolerations`| Optional deployment tolerations |`[]`|
 | `nodeSelector`| Node labels for pod assignment |`{}`|
 | `annotations`| Optional pod annotations |`{}`|

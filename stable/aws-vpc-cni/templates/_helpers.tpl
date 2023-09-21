@@ -77,3 +77,28 @@ The aws-vpc-cni image to use
 {{- printf "%s.dkr.%s.%s.%s/amazon-k8s-cni:%s" .Values.image.account .Values.image.endpoint .Values.image.region .Values.image.domain .Values.image.tag }}
 {{- end }}
 {{- end }}
+
+{{/*
+The aws-network-policy-agent image to use
+*/}}
+{{- define "aws-vpc-cni.nodeAgentImage" -}}
+{{- if .Values.nodeAgent.image.override }}
+{{- .Values.nodeAgent.image.override }}
+{{- else }}
+{{- printf "%s.dkr.%s.%s.%s/amazon/aws-network-policy-agent:%s" .Values.nodeAgent.image.account .Values.nodeAgent.image.endpoint .Values.nodeAgent.image.region .Values.nodeAgent.image.domain .Values.nodeAgent.image.tag }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+The aws-network-policy-agent port to bind to for metrics
+*/}}
+{{- define "aws-vpc-cni.nodeAgentMetricsBindAddr" -}}
+{{- printf ":%s" .Values.nodeAgent.metricsBindAddr }}
+{{- end -}}
+
+{{/*
+The aws-network-policy-agent port to bind to for health probes
+*/}}
+{{- define "aws-vpc-cni.nodeAgentHealthProbeBindAddr" -}}
+{{- printf ":%s" .Values.nodeAgent.healthProbeBindAddr }}
+{{- end -}}
