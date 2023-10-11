@@ -4,6 +4,7 @@ image:
   pullPolicy: IfNotPresent
 
 clusterName: cluster_name
+imagePullSecrets: []
 
 resources:
   limits:
