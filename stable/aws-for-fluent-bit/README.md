@@ -42,7 +42,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `service.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
 | `service.extraParsers` | Adding more parsers with this value | `""` |
 | `input.*` | Values for Kubernetes input | |
-| `extraInputs` | Append to existing input with this value | `""` |
+| `input.extraInputs` | Append to existing input with this value | `""` |
 | `additionalInputs` | Adding more inputs with this value | `""` |
 | `filter.*` | Values for kubernetes filter | |
 | `filter.extraFilters` | Append to existing filter with value |
