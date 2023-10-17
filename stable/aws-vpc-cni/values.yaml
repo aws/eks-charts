@@ -85,6 +85,11 @@ env:
 # You can then annotate and label the original aws-node resources and 'adopt' them into a helm release
 originalMatchLabels: false
 
+# this flag enables you to not instanciate the amazon-vpc-cni configmap which is handy if you have several
+# instances of the chart in your cluster
+amazonVpcCniConfig:
+  enabled: true
+
 enableWindowsIpam: "false"
 enableNetworkPolicy: "false"
 

@@ -9,6 +9,7 @@ binaryData:
   10-aws.conflist: {{ .Values.cniConfig.fileContents | b64enc }}
 {{- end -}}
 ---
+{{- if .Values.amazonVpcCniConfig.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -19,3 +20,4 @@ metadata:
 data:
   enable-windows-ipam: {{ .Values.enableWindowsIpam | quote }}
   enable-network-policy-controller: {{ .Values.enableNetworkPolicy | quote }}
+{{- end -}}
