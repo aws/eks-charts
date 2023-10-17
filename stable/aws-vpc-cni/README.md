@@ -32,6 +32,7 @@ The following table lists the configurable parameters for this chart and their d
 | Parameter               | Description                                             | Default                             |
 | ------------------------|---------------------------------------------------------|-------------------------------------|
 | `affinity`              | Map of node/pod affinities                              | `{}`                                |
+| `amazonVpcCniConfig.enabled` | Enable disabling the creation of amazon-vpc-cni config  | `true`                         |
 | `cniConfig.enabled`     | Enable overriding the default 10-aws.conflist file      | `false`                             |
 | `cniConfig.fileContents`| The contents of the custom cni config file              | `nil`                               |
 | `eniConfig.create`      | Specifies whether to create ENIConfig resource(s)       | `false`                             |
