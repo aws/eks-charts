@@ -24,8 +24,15 @@ data:
         Tag               {{ .Values.input.tag }}
         Path              {{ .Values.input.path }}
         DB                {{ .Values.input.db }}
+        {{- if .Values.input.parser }}
         Parser            {{ .Values.input.parser }}
+        {{- end }}
+        {{- if .Values.input.dockerMode }}
         Docker_Mode       {{ .Values.input.dockerMode }}
+        {{- end }}
+        {{- if .Values.input.multilineParser }}
+        multiline.parser  {{ .Values.input.multilineParser }}
+        {{- end }}
         Mem_Buf_Limit     {{ .Values.input.memBufLimit }}
         Skip_Long_Lines   {{ .Values.input.skipLongLines }}
         Refresh_Interval  {{ .Values.input.refreshInterval }}
