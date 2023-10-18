@@ -41,7 +41,14 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `service.extraService` | Append to existing service with this value | HTTP_Server  On <br> HTTP_Listen  0.0.0.0 <br> HTTP_PORT    2020 <br> Health_Check On <br> HC_Errors_Count 5 <br> HC_Retry_Failure_Count 5 <br> HC_Period 5 |
 | `service.parsersFiles` | List of available parser files | `/fluent-bit/parsers/parsers.conf` |
 | `service.extraParsers` | Adding more parsers with this value | `""` |
-| `input.*` | Values for Kubernetes input | |
+| `input.enabled` | Enable the tail input to collect kubernetes pod logs | `true` |
+| `input.tag` | The tag pattern for pod logs | `kube.*` |
+| `input.path` | Path pattern for pod logs | `/var/log/containers/*.log` |
+| `input.db` | DB to track file offsets and files read | `/var/log/flb_kube.db` |
+| `input.multilineParser` | Specify one more or more [multiline parsers](https://docs.fluentbit.io/manual/pipeline/inputs/tail#multiline-and-containers-v1.8). Only the first that matches is applied; therefore, use this field to parse docker or cri log format, and then use the [multiline filter](https://docs.fluentbit.io/manual/pipeline/filters/multiline-stacktrace) if additional [custom multiline parsing](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/multiline-parsing) rules need to be applied. | `docker, cri` |
+| `input.memBufLimit` | Limit the [buffer memory](https://github.com/aws-samples/amazon-ecs-firelens-examples/tree/mainline/examples/fluent-bit/oomkill-prevention) used by the tail input. | `5MB` |
+| `input.skipLongLines` | `On` means that long lines will be skipped [instead of the entire log file](https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#tail-input-skipping-file) | `On` |
+| `input.refreshInterval` | The interval to refresh the list of watched files in seconds. | `10` |
 | `extraInputs` | Append to existing input with this value | `""` |
 | `additionalInputs` | Adding more inputs with this value | `""` |
 | `filter.*` | Values for kubernetes filter | |
