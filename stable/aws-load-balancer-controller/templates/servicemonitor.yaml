@@ -1,3 +1,4 @@
+{{- if .Capabilities.APIVersions.Has "monitoring.coreos.com/v1" }}
 {{- if.Values.serviceMonitor.enabled -}}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -32,4 +33,5 @@ spec:
       {{- with .Values.serviceMonitor.interval }}
       interval: {{ . }}
       {{- end }}
+{{- end -}}
 {{- end -}}
