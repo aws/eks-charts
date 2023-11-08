@@ -27,7 +27,7 @@ Follow the [Usage](https://github.com/aws/secrets-store-csi-driver-provider-aws#
 
 The following table lists the configurable parameters of the csi-secrets-store-provider-aws chart and their default values.
 
-> Refer to [doc](https://github.com/kubernetes-sigs/secrets-store-csi-driver/tree/main/charts/secrets-store-csi-driver/README.md) for configurable parameters of the secrets-store-csi-driver chart.
+> Refer to [doc](https://github.com/kubernetes-sigs/secrets-store-csi-driver/tree/main/charts/secrets-store-csi-driver/README.md) for configurable parameters of the secrets-store-csi-driver chart. Override values inside of the secrets-store-csi-driver section.
 
 | Parameter | Description | Default |
 | --- | --- | --- |
@@ -51,3 +51,4 @@ The following table lists the configurable parameters of the csi-secrets-store-p
 | `rbac.install` | Install default service account | true |
 | `rbac.pspEnabled` | Pod Security Pods | false |
 | `rbac.serviceAccount.name` | Service account to be used. If not set and serviceAccount.create is true a name is generated using the fullname template. | |
+| `rbac.serviceAccount.roleArn` | Amazon Resource Name (ARN) of the IAM role that you want the service account to assume. | `""` |
