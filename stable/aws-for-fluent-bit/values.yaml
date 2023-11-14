@@ -115,10 +115,10 @@ cloudWatchLogs:
   match: "*"
   region: "us-east-1"
   logGroupName: "/aws/eks/fluentbit-cloudwatch/logs"
-  logGroupTemplate: /aws/eks/fluentbit-cloudwatch/workload/$kubernetes['namespace_name']
+  logGroupTemplate: # /aws/eks/fluentbit-cloudwatch/workload/$kubernetes['namespace_name']
   logStreamName:
   logStreamPrefix: "fluentbit-"
-  logStreamTemplate: $kubernetes['pod_name'].$kubernetes['container_name']
+  logStreamTemplate: # $kubernetes['pod_name'].$kubernetes['container_name']
   logKey:
   logFormat:
   roleArn:
