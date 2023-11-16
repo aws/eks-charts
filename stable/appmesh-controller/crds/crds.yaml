@@ -3914,7 +3914,6 @@ spec:
                           type: object
                       required:
                       - action
-                      - match
                       type: object
                   required:
                   - name
