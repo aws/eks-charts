@@ -17,6 +17,9 @@ data:
 {{- if .Values.service.extraParsers }}
         Parsers_File /fluent-bit/etc/parser_extra.conf
 {{- end }}
+{{- if .Values.service.multilineParsers }}
+        Parsers_File /fluent-bit/etc/parsers_multiline.conf
+{{- end }}
 
 {{- if .Values.input.enabled }}
     [INPUT]
@@ -498,4 +501,9 @@ data:
 {{- if .Values.service.extraParsers }}
   parser_extra.conf: |-
 {{ .Values.service.extraParsers | indent 4 }}
+{{- end }}
+
+{{- if .Values.service.multilineParsers }}
+  parsers_multiline.conf: |-
+{{ .Values.service.multilineParsers | indent 4 }}
 {{- end }}
