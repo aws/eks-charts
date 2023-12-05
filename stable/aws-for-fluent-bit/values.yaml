@@ -10,6 +10,7 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+extraLabels: {}
 
 podSecurityContext: {}
 # runAsUser: 1000
