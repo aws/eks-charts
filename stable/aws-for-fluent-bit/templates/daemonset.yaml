@@ -19,7 +19,7 @@ spec:
         {{- toYaml .Values.annotations | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 8 }}
+        {{- include "aws-for-fluent-bit.labels" . | nindent 8 }}
     spec:
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
