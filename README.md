@@ -61,6 +61,9 @@ helm repo add eks https://aws.github.io/eks-charts
 
 * [cni-metrics-helper](stable/cni-metrics-helper): A helm chart for [CNI Metrics Helper](https://github.com/aws/amazon-vpc-cni-k8s/blob/master/cmd/cni-metrics-helper/README.md)
 
+### EKS EFA Plugin
+* [aws-efa-k8s-device-plugin](stable/aws-efa-k8s-device-plugin): A helm chart for the [Elastic Fabric Adapter](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html) plugin, which automatically discovers and mounts EFA devices into pods that request them
+
 ## License
 
 This project is licensed under the Apache-2.0 License.

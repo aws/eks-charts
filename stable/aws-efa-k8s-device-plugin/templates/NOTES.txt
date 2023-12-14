@@ -1,0 +1,1 @@
+EFA device plugin is installed, it can be requested as `vpc.amazonaws.com/efa` resource.
