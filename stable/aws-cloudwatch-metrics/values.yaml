@@ -5,6 +5,9 @@ image:
 
 clusterName: cluster_name
 
+enhancedContainerInsights:
+  enabled: true
+
 resources:
   limits:
     cpu: 200m
