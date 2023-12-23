@@ -32,6 +32,7 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `nodeSelector` | Node labels for pod assignment	 | {} |
 | `tolerations` | Optional deployment tolerations	 | {} |
 | `annotations` | Optional pod annotations	 | {} |
+| `mountDockerSock` | Whether to mount /var/run/docker.sock or not | `true` |
 | `containerdSockPath` | Path to containerd' socket | /run/containerd/containerd.sock |
 | `priorityClassName` | Optional priorityClassName	 | |
 | `statsd.enabled` | Whether the cloudwatch agent should listen for statsd metrics	 | `false` |
