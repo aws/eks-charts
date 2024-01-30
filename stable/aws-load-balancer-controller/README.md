@@ -78,7 +78,7 @@ If migrating from ALB ingress controller, grant [additional IAM permissions](htt
 - Additional IAM permissions required, ensure you have granted the [required IAM permissions](https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json).
 - CRDs need to be updated as follows
 ```shell script
-kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master"
+kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
 ```
 - you can run helm upgrade without uninstalling the old chart completely
 
@@ -106,7 +106,7 @@ helm repo add eks https://aws.github.io/eks-charts
 Install the TargetGroupBinding CRDs:
 
 ```shell script
-kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master"
+kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
 ```
 
 Install the AWS Load Balancer controller, if using iamserviceaccount
