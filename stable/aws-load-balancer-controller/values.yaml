@@ -190,6 +190,9 @@ metricsBindAddr: ""
 # The TCP port the Webhook server binds to. (default 9443)
 webhookBindPort:
 
+# Pass additional arguments to the command
+additionalArgs: []
+
 # webhookTLS specifies TLS cert/key for the webhook
 webhookTLS:
   caCert:

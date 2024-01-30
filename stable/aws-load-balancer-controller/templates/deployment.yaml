@@ -155,6 +155,9 @@ spec:
         {{- if ne .Values.defaultTargetType "instance" }}
         - --default-target-type={{ .Values.defaultTargetType }}
         {{- end }}
+        {{- range .Values.additionalArgs }}
+        - {{ . }}
+        {{- end }}
         {{- if .Values.env }}
         env:
         {{- range $key, $value := .Values.env }}
