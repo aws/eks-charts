@@ -11,6 +11,7 @@ metadata:
     {{- include "aws-load-balancer-controller.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
       {{- include "aws-load-balancer-controller.selectorLabels" . | nindent 6 }}
@@ -155,11 +156,27 @@ spec:
         {{- if ne .Values.defaultTargetType "instance" }}
         - --default-target-type={{ .Values.defaultTargetType }}
         {{- end }}
-        {{- if .Values.env }}
+        {{- if or .Values.env .Values.envSecretName }}
         env:
+        {{- if .Values.env}}
         {{- range $key, $value := .Values.env }}
         - name: {{ $key }}
           value: "{{ $value }}"
+        {{- end }}
+        {{- end }}
+        {{- if .Values.envSecretName  }}
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.envSecretName }}
+              key: key_id
+              optional: true
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.envSecretName }}
+              key: access_key
+              optional: true
         {{- end }}
         {{- end }}
         securityContext:
@@ -184,6 +201,10 @@ spec:
           {{- toYaml .Values.resources | nindent 10 }}
         {{- with .Values.livenessProbe }}
         livenessProbe:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.readinessProbe }}
+        readinessProbe:
           {{- toYaml . | nindent 10 }}
         {{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}

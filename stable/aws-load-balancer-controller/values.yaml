@@ -4,14 +4,22 @@
 
 replicaCount: 2
 
+revisionHistoryLimit: 10
+
 image:
   repository: public.ecr.aws/eks/aws-load-balancer-controller
-  tag: v2.6.2
+  tag: v2.7.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -227,10 +235,10 @@ disableIngressClassAnnotation:
 # disableIngressGroupNameAnnotation disables the usage of alb.ingress.kubernetes.io/group.name annotation, false by default
 disableIngressGroupNameAnnotation:
 
-# tolerateNonExistentBackendService permits rules which specify backend services that don't exist, true by default
+# tolerateNonExistentBackendService permits rules which specify backend services that don't exist, true by default (When enabled, it will return 503 error if backend service not exist)
 tolerateNonExistentBackendService:
 
-# tolerateNonExistentBackendAction permits rules which specify backend actions that don't exist, true by default
+# tolerateNonExistentBackendAction permits rules which specify backend actions that don't exist, true by default (When enabled, it will return 503 error if backend action not exist)
 tolerateNonExistentBackendAction:
 
 # defaultSSLPolicy specifies the default SSL policy to use for TLS/HTTPS listeners
@@ -246,12 +254,26 @@ livenessProbe:
   initialDelaySeconds: 30
   timeoutSeconds: 10
 
+# readiness probe configuration for the controller
+readinessProbe:
+  failureThreshold: 2
+  httpGet:
+    path: /readyz
+    port: 61779
+    scheme: HTTP
+  successThreshold: 1
+  initialDelaySeconds: 10
+  timeoutSeconds: 10
+
 # Environment variables to set for aws-load-balancer-controller pod.
 # We strongly discourage programming access credentials in the controller environment. You should setup IRSA or
 # comparable solutions like kube2iam, kiam etc instead.
 env:
   # ENV_1: ""
   # ENV_2: ""
+
+# Use Environment variables credentials from Secret (aws-secret) for aws-load-balancer-controller pod similarly as The EBS CSI Driver does.
+# envSecretName: aws-secret
 
 # Specifies if aws-load-balancer-controller should be started in hostNetwork mode.
 #
@@ -321,6 +343,7 @@ controllerConfig:
   # EnableIPTargetType: true
   # SubnetsClusterTagCheck: true
   # NLBHealthCheckAdvancedConfig: true
+  # ALBSingleSubnet: false
 
 # objectSelector for webhook
 objectSelector:
