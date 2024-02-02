@@ -1,6 +1,6 @@
 image:
   repository: amazon/cloudwatch-agent
-  tag: 1.247350.0b251780
+  tag: 1.247360.0b252689
   pullPolicy: IfNotPresent
 
 clusterName: cluster_name
