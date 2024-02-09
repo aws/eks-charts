@@ -96,7 +96,10 @@ If you are setting `serviceMonitor.enabled: true` you need to have installed the
 
 ## Installing the Chart
 **Note**: You need to uninstall aws-alb-ingress-controller. Please refer to the [upgrade](#Upgrade) section below before you proceed.
+
 **Note**: Starting chart version 1.4.1, you need to explicitly set `clusterSecretsPermissions.allowAllSecrets` to true to grant the controller permission to access all secrets for OIDC feature. We recommend configuring access to individual secrets resource separately [[link](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/examples/secrets_access/)].
+
+**Note**: To ensure compatibility, we recommend installing the AWS Load Balancer controller image version with its compatible Helm chart version. Use the ```helm search repo eks/aws-load-balancer-controller --versions``` command to find the compatible versions.
 
 Add the EKS repository to Helm:
 ```shell script
@@ -264,3 +267,5 @@ The default values set by the application itself can be confirmed [here](https:/
 | `controllerConfig.featureGates`                | set of `key: value` pairs that describe AWS load balance controller features                                                                                                                                           | `{}`                                              |
 | `ingressClassConfig.default`                   | If `true`, the ingressclass will be the default class of the cluster.                                                                                                                                                  | `false`                                           |
 | `enableServiceMutatorWebhook`                 | If `false`, disable the Service Mutator webhook which makes all new services of type LoadBalancer reconciled by the lb controller                                                                                                                                              | `true`                                           |
+| `autoscaling`                 | If `autoscaling.enabled=true`, enable the HPA on the controller mainly to survive load induced failure by the calls to the `aws-load-balancer-webhook-service`. Please keep in mind that the controller pods have `priorityClassName: system-cluster-critical`, enabling HPA may lead to the eviction of other low-priority pods in the node                                                                                                                                              | `false`                                           |
+| `serviceTargetENISGTags`                 | set of `key=value` pairs of AWS tags in addition to cluster name for finding the target ENI security group to which to add inbound rules from NLBs                                                                                                                                            | None                                          |
