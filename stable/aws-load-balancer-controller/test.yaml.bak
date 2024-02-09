@@ -4,8 +4,6 @@
 
 replicaCount: 2
 
-revisionHistoryLimit: 10
-
 image:
   repository: public.ecr.aws/eks/aws-load-balancer-controller
   tag: v2.7.0
@@ -14,17 +12,6 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
-# AWS LBC only has 1 main working pod, other pods are just standby
-# the purpose of enable hpa is to survive load induced failure by the calls to the aws-load-balancer-webhook-service
-# since the calls from kube-apiserver are sent round-robin to all replicas, and the failure policy on those webhooks is Fail
-# if the pods become overloaded and do not respond within the timeout that could block the creation of pods, targetgroupbindings or ingresses
-# Please keep in mind that the controller pods have `priorityClassName: system-cluster-critical`, enabling HPA may lead to the eviction of other low-priority pods in the node
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 5
-  targetCPUUtilizationPercentage: 80
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -38,7 +25,7 @@ serviceAccount:
   automountServiceAccountToken: true
   # List of image pull secrets to add to the Service Account.
   imagePullSecrets:
-    # - name: docker
+  # - name: docker
 
 rbac:
   # Specifies whether rbac resources should be created
@@ -58,17 +45,13 @@ securityContext:
 # Time period for the controller pod to do a graceful shutdown
 terminationGracePeriodSeconds: 10
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 # priorityClassName specifies the PriorityClass to indicate the importance of controller pods
 # ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/#priorityclass
@@ -92,11 +75,11 @@ configureDefaultAffinity: true
 # more details here: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
 topologySpreadConstraints: {}
 
-updateStrategy: {}
-  # type: RollingUpdate
-  # rollingUpdate:
-  #   maxSurge: 1
-  #   maxUnavailable: 1
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
 
 # serviceAnnotations contains annotations to be added to the provisioned webhook service resource
 serviceAnnotations: {}
@@ -115,12 +98,12 @@ additionalLabels: {}
 enableCertManager: false
 
 # The name of the Kubernetes cluster. A non-empty value is required
-clusterName:
+clusterName: test-cluster
 
 # cluster contains configurations specific to the kubernetes cluster
 cluster:
-    # Cluster DNS domain (required for requesting TLS certificates)
-    dnsDomain: cluster.local
+  # Cluster DNS domain (required for requesting TLS certificates)
+  dnsDomain: cluster.local
 
 # The ingress class this controller will satisfy. If not specified, controller will match all
 # ingresses without ingress class annotation and ingresses of type alb
@@ -132,23 +115,15 @@ ingressClassParams:
   # The name of ingressClassParams resource will be referred in ingressClass
   name:
   spec: {}
-    # Due to dependency issue, the validation webhook ignores this particular ingressClassParams resource.
-    # We recommend creating ingressClassParams resources separately after installing this chart and the
-    # controller is functional.
-    #
-    # You can set the specifications in the `helm install` command through `--set` or `--set-string`
-    # If you do want to specify in the values.yaml, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'spec:'
-    #
+    # You always can set specifications in `helm install` command through `--set` or `--set-string`
+    # If you do want to specify specifications in values.yaml, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'spec:'.
     # namespaceSelector:
     #   matchLabels:
     # group:
     # scheme:
     # ipAddressType:
-    # tags:
-    # loadBalancerAttributes:
-    # - key:
-    #   value:
+  # tags:
 
 # To use IngressClass resource instead of annotation, before you need to install the IngressClass resource pointing to controller.
 # If specified as true, the IngressClass resource will be created.
@@ -170,14 +145,8 @@ awsApiThrottle:
 # Maximum retries for AWS APIs (default 10)
 awsMaxRetries:
 
-# Default target type. Used as the default value of the "alb.ingress.kubernetes.io/target-type" and
-# "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" annotations.
-# Possible values are "ip" and "instance"
-# The value "ip" should be used for ENI-based CNIs, such as the Amazon VPC CNI,
-# Calico with encapsulation disabled, or Cilium with masquerading disabled.
-# The value "instance" should be used for overlay-based CNIs, such as Calico in VXLAN or IPIP mode or
-# Cilium with masquerading enabled.
-defaultTargetType: instance
+
+
 
 # If enabled, targetHealth readiness gate will get injected to the pod spec for the matching endpoint pods (default true)
 enablePodReadinessGateInject:
@@ -211,10 +180,10 @@ webhookTLS:
 
 # array of namespace selectors for the webhook
 webhookNamespaceSelectors:
-# - key: elbv2.k8s.aws/pod-readiness-gate-inject
-#   operator: In
-#   values:
-#   - enabled
+  - key: elbv2.k8s.aws/pod-readiness-gate-inject
+    operator: In
+    values:
+      - enabled
 
 # keepTLSSecret specifies whether to reuse existing TLS secret for chart upgrade
 keepTLSSecret: true
@@ -228,7 +197,7 @@ targetgroupbindingMaxConcurrentReconciles:
 # Maximum duration of exponential backoff for targetGroupBinding reconcile failures
 targetgroupbindingMaxExponentialBackoffDelay:
 
-# Period at which the controller forces the repopulation of its local object stores. (default 10h0m0s)
+# Period at which the controller forces the repopulation of its local object stores. (default 1h0m0s)
 syncPeriod:
 
 # Namespace the controller watches for updates to Kubernetes objects, If empty, all namespaces are watched.
@@ -259,26 +228,12 @@ livenessProbe:
   initialDelaySeconds: 30
   timeoutSeconds: 10
 
-# readiness probe configuration for the controller
-readinessProbe:
-  failureThreshold: 2
-  httpGet:
-    path: /readyz
-    port: 61779
-    scheme: HTTP
-  successThreshold: 1
-  initialDelaySeconds: 10
-  timeoutSeconds: 10
-
 # Environment variables to set for aws-load-balancer-controller pod.
 # We strongly discourage programming access credentials in the controller environment. You should setup IRSA or
 # comparable solutions like kube2iam, kiam etc instead.
 env:
-  # ENV_1: ""
-  # ENV_2: ""
-
-# Use Environment variables credentials from Secret (aws-secret) for aws-load-balancer-controller pod similarly as The EBS CSI Driver does.
-# envSecretName: aws-secret
+# ENV_1: ""
+# ENV_2: ""
 
 # Specifies if aws-load-balancer-controller should be started in hostNetwork mode.
 #
@@ -296,30 +251,30 @@ dnsPolicy:
 
 # extraVolumeMounts are the additional volume mounts. This enables setting up IRSA on non-EKS Kubernetes cluster
 extraVolumeMounts:
-  # - name: aws-iam-token
-  #   mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
-  #   readOnly: true
+  - name: aws-iam-token
+    mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+    readOnly: true
 
 # extraVolumes for the extraVolumeMounts. Useful to mount a projected service account token for example.
 extraVolumes:
-  # - name: aws-iam-token
-  #   projected:
-  #     defaultMode: 420
-  #     sources:
-  #     - serviceAccountToken:
-  #         audience: sts.amazonaws.com
-  #         expirationSeconds: 86400
-  #         path: token
+  - name: aws-iam-token
+    projected:
+      defaultMode: 420
+      sources:
+        - serviceAccountToken:
+            audience: sts.amazonaws.com
+            expirationSeconds: 86400
+            path: token
 
 # defaultTags are the tags to apply to all AWS resources managed by this controller
-defaultTags: {}
-  # default_tag1: value1
-  # default_tag2: value2
+defaultTags:
+  default_tag1: value1
+  default_tag2: value2
 
 # podDisruptionBudget specifies the disruption budget for the controller pods.
 # Disruption budget will be configured only when the replicaCount is greater than 1
-podDisruptionBudget: {}
-#  maxUnavailable: 1
+podDisruptionBudget:
+  maxUnavailable: 1
 
 # externalManagedTags is the list of tag keys on AWS resources that will be managed externally
 externalManagedTags: []
@@ -340,15 +295,8 @@ disableRestrictedSecurityGroupRules:
 controllerConfig:
   # featureGates set of key: value pairs that describe AWS load balance controller features
   featureGates: {}
-  # ListenerRulesTagging: true
-  # WeightedTargetGroups: true
-  # ServiceTypeLoadBalancerOnly: false
-  # EndpointsFailOpen: true
-  # EnableServiceController: true
-  # EnableIPTargetType: true
-  # SubnetsClusterTagCheck: true
-  # NLBHealthCheckAdvancedConfig: true
-  # ALBSingleSubnet: false
+  #  ServiceTypeLoadBalancerOnly: true
+  #  EndpointsFailOpen: true
 
 # objectSelector for webhook
 objectSelector:
@@ -382,9 +330,3 @@ clusterSecretsPermissions:
 # ingressClassConfig contains configurations specific to the ingress class
 ingressClassConfig:
   default: false
-
-# enableServiceMutatorWebhook allows you enable the webhook which makes this controller the default for all new services of type LoadBalancer
-enableServiceMutatorWebhook: true
-
-# serviceTargetENISGTags specifies AWS tags, in addition to the cluster tags, for finding the target ENI SG to which to add inbound rules from NLBs.
-serviceTargetENISGTags:
