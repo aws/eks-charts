@@ -1,7 +1,7 @@
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/aws-efa-k8s-device-plugin
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.4.4"
+  tag: "v0.4.5"
 securityContext:
   allowPrivilegeEscalation: false
   capabilities:
