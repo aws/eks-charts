@@ -8,9 +8,7 @@ metadata:
 {{ toYaml .Values.serviceMonitor.labels | indent 4}}
 {{- end }}
   name: {{ include "aws-for-fluent-bit.fullname" . }}
-{{- if .Values.serviceMonitor.namespace }}
-  namespace: {{ .Values.serviceMonitor.namespace }}
-{{- end }}
+  namespace: {{ include "aws-for-fluent-bit.namespace" . }}
 spec:
   endpoints:
   - port: monitor-agent
@@ -31,6 +29,9 @@ spec:
 {{- if .Values.serviceMonitor.relabelings }}
     relabelings:
 {{ toYaml .Values.serviceMonitor.relabelings | indent 4 }}
+{{- end }}
+{{- with .Values.serviceMonitor.extraEndpoints }}
+    {{- toYaml . | nindent 2 }}
 {{- end }}
   jobLabel: {{ default "app.kubernetes.io/instance" .Values.serviceMonitor.jobLabel }}
   namespaceSelector:

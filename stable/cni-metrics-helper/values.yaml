@@ -4,14 +4,15 @@ nameOverride: cni-metrics-helper
 
 image:
   region: us-west-2
-  tag: v1.12.2
+  tag: v1.16.3
   account: "602401143452"
-  domain: "amazonaws.com"   
+  domain: "amazonaws.com"
   # Set to use custom image
   # override: "repo/org/image:tag"
 
 env:
   USE_CLOUDWATCH: "true"
+  USE_PROMETHEUS: "false"
   AWS_CLUSTER_ID: ""
   AWS_VPC_K8S_CNI_LOGLEVEL: "INFO"
 
@@ -27,3 +28,11 @@ serviceAccount:
     # eks.amazonaws.com/role-arn: arn:aws:iam::AWS_ACCOUNT_ID:role/IAM_ROLE_NAME  
 
 resources: {}
+
+revisionHistoryLimit: 10
+
+podSecurityContext: {}
+
+containerSecurityContext: {}
+
+podAnnotations: {}

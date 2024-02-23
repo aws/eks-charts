@@ -143,3 +143,9 @@ data:
         source_labels:
         - __meta_kubernetes_pod_name
         target_label: kubernetes_pod_name
+
+    {{- if .Values.remote_write.enabled }}
+    remote_write:
+      - url: "{{ .Values.remote_write.endpoint }}"
+        bearer_token: "{{ .Values.remote_write.bearer_token }}"
+    {{- end }}

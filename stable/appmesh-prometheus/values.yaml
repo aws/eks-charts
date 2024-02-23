@@ -48,3 +48,8 @@ rbac:
 persistentVolumeClaim:
   # persistentVolumeClaim.claimName: Specify an existing volume claim to be used for Prometheus data
   claimName: ""
+
+remote_write:
+  enabled: false
+  endpoint: ""
+  bearer_token: ""
