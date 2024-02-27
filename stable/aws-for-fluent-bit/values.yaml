@@ -4,7 +4,7 @@ global:
 
 image:
   repository: public.ecr.aws/aws-observability/aws-for-fluent-bit
-  tag: 2.31.11
+  tag: 2.31.12.20231011
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -52,8 +52,7 @@ input:
   tag: "kube.*"
   path: "/var/log/containers/*.log"
   db: "/var/log/flb_kube.db"
-  parser: docker
-  dockerMode: "On"
+  multilineParser: "docker, cri"
   memBufLimit: 5MB
   skipLongLines: "On"
   refreshInterval: 10
@@ -116,10 +115,10 @@ cloudWatchLogs:
   match: "*"
   region: "us-east-1"
   logGroupName: "/aws/eks/fluentbit-cloudwatch/logs"
-  logGroupTemplate: /aws/eks/fluentbit-cloudwatch/workload/$kubernetes['namespace_name']
+  logGroupTemplate: # /aws/eks/fluentbit-cloudwatch/workload/$kubernetes['namespace_name']
   logStreamName:
   logStreamPrefix: "fluentbit-"
-  logStreamTemplate: $kubernetes['pod_name'].$kubernetes['container_name']
+  logStreamTemplate: # $kubernetes['pod_name'].$kubernetes['container_name']
   logKey:
   logFormat:
   roleArn:
