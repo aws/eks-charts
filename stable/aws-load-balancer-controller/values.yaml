@@ -369,6 +369,18 @@ serviceMonitor:
   interval: 1m
   # Namespace to create the service monitor in
   namespace:
+  # If set override the _Prometheus_ default scrape timeout.
+  scrapeTimeout:
+  # If set overrides the _Prometheus_ default scheme.
+  scheme:
+  # Configure the `ServiceMonitor` [TLS config](https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#tlsconfig).
+  tlsConfig: {}
+  # Provide a bearer token file for the `ServiceMonitor`.
+  bearerTokenFile:
+  # [Relabel configs](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) to apply to samples before ingestion.
+  relabelings: []
+  # [Metric relabel configs](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs) to apply to samples before ingestion.
+  metricRelabelings: []
 
 # clusterSecretsPermissions lets you configure RBAC permissions for secret resources
 # Access to secrets resource is required only if you use the OIDC feature, and instead of
