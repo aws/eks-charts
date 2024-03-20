@@ -65,6 +65,21 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
+Pod labels
+*/}}
+{{- define "aws-load-balancer-controller.podLabels" -}}
+helm.sh/chart: {{ include "aws-load-balancer-controller.chart" . }}
+{{ include "aws-load-balancer-controller.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "aws-load-balancer-controller.serviceAccountName" -}}
