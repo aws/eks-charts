@@ -49,6 +49,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `input.memBufLimit` | Limit the [buffer memory](https://github.com/aws-samples/amazon-ecs-firelens-examples/tree/mainline/examples/fluent-bit/oomkill-prevention) used by the tail input. | `5MB` |
 | `input.skipLongLines` | `On` means that long lines will be skipped [instead of the entire log file](https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#tail-input-skipping-file) | `On` |
 | `input.refreshInterval` | The interval to refresh the list of watched files in seconds. | `10` |
+| `extraLabels` | Dict of Kubernetes labels to add to the defaults shipped by this chart | `{}` |
 | `extraInputs` | Append to existing input with this value | `""` |
 | `additionalInputs` | Adding more inputs with this value | `""` |
 | `filter.*` | Values for kubernetes filter | |
