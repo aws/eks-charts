@@ -352,5 +352,5 @@ serviceMutatorWebhook:
       # key: value
   # which operations trigger the webhook
   operations:
-    - CREATE
-    # - UPDATE
+  - CREATE
+  # - UPDATE

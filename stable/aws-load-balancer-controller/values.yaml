@@ -406,7 +406,7 @@ serviceMutatorWebhook:
       # key: value
   # which operations trigger the webhook
   operations:
-    - CREATE
+  - CREATE
     # - UPDATE
 
 # serviceTargetENISGTags specifies AWS tags, in addition to the cluster tags, for finding the target ENI SG to which to add inbound rules from NLBs.
