@@ -56,7 +56,7 @@ webhooks:
     resources:
     - pods
   sideEffects: None
-{{- if or .Values.enableServiceMutatorWebhook .Values.serviceMutatorWebhook.enabled }}
+{{- if and .Values.enableServiceMutatorWebhook .Values.serviceMutatorWebhook.enabled }}
 - clientConfig:
     {{ if not $.Values.enableCertManager -}}
     caBundle: {{ $tls.caCert }}
