@@ -48,7 +48,7 @@ The following table lists the configurable parameters for this chart and their d
 | `minimumWindowsIPTarget`| Minimum IP target value for Windows prefix delegation   | `3`                                 |
 | `branchENICooldown`     | Number of seconds that branch ENIs remain in cooldown   | `60`                                |
 | `fullnameOverride`      | Override the fullname of the chart                      | `aws-node`                          |
-| `image.tag`             | Image tag                                               | `v1.16.3`                           |
+| `image.tag`             | Image tag                                               | `v1.18.0`                           |
 | `image.domain`          | ECR repository domain                                   | `amazonaws.com`                     |
 | `image.region`          | ECR repository region to use. Should match your cluster | `us-west-2`                         |
 | `image.endpoint`        | ECR repository endpoint to use.                         | `ecr`                               |
@@ -56,7 +56,7 @@ The following table lists the configurable parameters for this chart and their d
 | `image.pullPolicy`      | Container pull policy                                   | `IfNotPresent`                      |
 | `image.override`        | A custom docker image to use                            | `nil`                               |
 | `imagePullSecrets`      | Docker registry pull secret                             | `[]`                                |
-| `init.image.tag`        | Image tag                                               | `v1.16.3`                           |
+| `init.image.tag`        | Image tag                                               | `v1.18.0`                           |
 | `init.image.domain`     | ECR repository domain                                   | `amazonaws.com`                     |
 | `init.image.region`     | ECR repository region to use. Should match your cluster | `us-west-2`                         |
 | `init.image.endpoint`   | ECR repository endpoint to use.                         | `ecr`                               |
@@ -69,7 +69,7 @@ The following table lists the configurable parameters for this chart and their d
 | `originalMatchLabels`   | Use the original daemonset matchLabels                  | `false`                             |
 | `nameOverride`          | Override the name of the chart                          | `aws-node`                          |
 | `nodeAgent.enabled`     | If the Node Agent container should be created           | `true`                              |
-| `nodeAgent.image.tag`   | Image tag for Node Agent                                | `v1.0.8`                            |
+| `nodeAgent.image.tag`   | Image tag for Node Agent                                | `v1.1.0`                            |
 | `nodeAgent.image.domain`| ECR repository domain                                   | `amazonaws.com`                     |
 | `nodeAgent.image.region`| ECR repository region to use. Should match your cluster | `us-west-2`                         |
 | `nodeAgent.image.endpoint`   | ECR repository endpoint to use.                    | `ecr`                               |
@@ -108,9 +108,8 @@ $ helm install aws-vpc-cni --namespace kube-system eks/aws-vpc-cni --values valu
 
 ## Adopting the existing aws-node resources in an EKS cluster
 
-If you do not want to delete the existing aws-node resources in your cluster that run the aws-vpc-cni and then install this helm chart, you can adopt the resources into a release instead. Refer to the script below to import existing resources into helm. Once you have annotated and labeled all the resources this chart specifies, enable the `originalMatchLabels` flag. If you have been careful this should not diff and leave all the resources unmodified and now under management of helm.
+If you do not want to delete the existing aws-node resources in your cluster that run the aws-vpc-cni and then install this helm chart, you can adopt the resources into a release instead. Refer to the script below to import existing resources into helm. Once you have annotated and labeled all the resources this chart specifies, enable the `originalMatchLabels` flag. If you have been careful, this should not diff and leave all the resources unmodified and now under management of helm.
 
-WARNING: Substitute YOUR_HELM_RELEASE_NAME_HERE with the name of your helm release.
 ```
 #!/usr/bin/env bash
 
@@ -118,15 +117,18 @@ set -euo pipefail
 
 for kind in daemonSet clusterRole clusterRoleBinding serviceAccount; do
   echo "setting annotations and labels on $kind/aws-node"
-  kubectl -n kube-system annotate --overwrite $kind aws-node meta.helm.sh/release-name=YOUR_HELM_RELEASE_NAME_HERE
+  kubectl -n kube-system annotate --overwrite $kind aws-node meta.helm.sh/release-name=aws-vpc-cni
   kubectl -n kube-system annotate --overwrite $kind aws-node meta.helm.sh/release-namespace=kube-system
   kubectl -n kube-system label --overwrite $kind aws-node app.kubernetes.io/managed-by=Helm
 done
 
-kubectl -n kube-system annotate --overwrite configmap amazon-vpc-cni meta.helm.sh/release-name=YOUR_HELM_RELEASE_NAME_HERE
+kubectl -n kube-system annotate --overwrite configmap amazon-vpc-cni meta.helm.sh/release-name=aws-vpc-cni
 kubectl -n kube-system annotate --overwrite configmap amazon-vpc-cni meta.helm.sh/release-namespace=kube-system
 kubectl -n kube-system label --overwrite configmap amazon-vpc-cni app.kubernetes.io/managed-by=Helm
 
+Kubernetes recommends using server-side apply for more control over the field manager. After adopting the chart resources, you can run the following command to apply the chart:
+```
+helm template aws-vpc-cni --include-crds --namespace kube-system eks/aws-vpc-cni --set originalMatchLabels=true | kubectl apply --server-side --force-conflicts --field-manager Helm -f -
 ```
 
 ## Migrate from Helm v2 to Helm v3
