@@ -57,7 +57,7 @@ spec:
       dnsPolicy: {{ .Values.dnsPolicy }}
       {{- end }}
       containers:
-      - name: {{ .Chart.Name }}
+      - name: {{ include "aws-load-balancer-controller.fullname" . }}
         args:
         - --cluster-name={{ required "Chart cannot be installed without a valid clusterName!" .Values.clusterName }}
         {{- if .Values.ingressClass }}
