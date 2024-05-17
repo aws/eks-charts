@@ -54,6 +54,12 @@ spec:
           spec:
             description: IngressClassParamsSpec defines the desired state of IngressClassParams
             properties:
+              certificateArn:
+                description: CertificateArn specifies the ARN of the certificates
+                  for all Ingresses that belong to IngressClass with this IngressClassParams.
+                items:
+                  type: string
+                type: array
               group:
                 description: Group defines the IngressGroup for all Ingresses that
                   belong to IngressClass with this IngressClassParams.
@@ -76,6 +82,7 @@ spec:
                 enum:
                 - ipv4
                 - dualstack
+                - dualstack-without-public-ipv4
                 type: string
               loadBalancerAttributes:
                 description: LoadBalancerAttributes define the custom attributes to
@@ -586,6 +593,10 @@ spec:
                 enum:
                 - instance
                 - ip
+                type: string
+              vpcID:
+                description: VpcID is the VPC of the TargetGroup. If unspecified,
+                  it will be automatically inferred.
                 type: string
             required:
             - serviceRef
