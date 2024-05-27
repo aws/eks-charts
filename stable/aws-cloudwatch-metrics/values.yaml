@@ -1,9 +1,12 @@
 image:
   repository: amazon/cloudwatch-agent
-  tag: 1.247350.0b251780
+  tag: 1.300032.2b361
   pullPolicy: IfNotPresent
 
 clusterName: cluster_name
+
+enhancedContainerInsights:
+  enabled: true
 
 resources:
   limits:
