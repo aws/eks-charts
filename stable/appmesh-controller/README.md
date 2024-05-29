@@ -449,3 +449,5 @@ Parameter | Description | Default
 `env` |  environment variables to be injected into the appmesh-controller pod | `{}`
 `livenessProbe` | Liveness probe settings for the controller | (see `values.yaml`)
 `podDisruptionBudget` | PodDisruptionBudget | `{}`
+`tlsMinVersion` | Minimum TLS version for the controller webhook server as shown in [here](https://github.com/kubernetes/component-base/blob/master/cli/flag/ciphersuites_flag.go#L114) | `VersionTLS12`
+`tlsCipherSuite` | Comma delimited TLS cipher suites for the controller webhook server as shown [here](https://pkg.go.dev/crypto/tls#pkg-constants) | None
