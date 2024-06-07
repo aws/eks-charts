@@ -63,6 +63,8 @@ The following table lists the configurable parameters for this chart and their d
 | revisionHistoryLimit         | The number of revisions to keep                               | 10                 |
 | podSecurityContext           | SecurityContext to set on the pod                             | {}                 |
 | containerSecurityContext     | SecurityContext to set on the container                       | {}                 |
+| tolerations                  | Tolerations for pod assignment                                | []                 |
+| affinity                     | Affinity for pod assignment                                   | {}                 |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install` or provide a YAML file containing the values for the above parameters:
 
