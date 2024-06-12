@@ -1,0 +1,14 @@
+namespace: default
+EksGatekeeper: ignore
+image: 
+  repository: 758878116931.dkr.ecr.us-west-2.amazonaws.com/k8s/kube-bench
+  #repository: aquasec/kube-bench
+  release: latest
+  imagePullSecrets:
+    name: container-registry-ci
+    enabled: false
+benchmark: eks-1.0
+logRetention:
+  daily: 7
+  hourly: 23
+
