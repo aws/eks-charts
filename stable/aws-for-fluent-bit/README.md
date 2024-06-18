@@ -208,6 +208,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `env`| Optional List of pod environment variables for the pods |`[]`|
 | `livenessProbe`| Optional yaml to define liveness probe - In order for liveness probe to work correctly defaults have been set in `service.extraService`, [details](https://docs.fluentbit.io/manual/administration/monitoring#health-check-for-fluent-bit) |httpGet:<br> &nbsp;&nbsp; path: /api/v1/health <br> &nbsp;&nbsp; port: 2020 <br> &nbsp;&nbsp; scheme: HTTP <br> failureThreshold: 2 <br> initialDelaySeconds: 30 <br> timeoutSeconds: 10 |
 | `readinessProbe`| Optional yaml to define readiness probe |`{}`|
+| `revisionHistoryLimit`| Number of revisions to keep | 10 |
 | `serviceMonitor.enabled`| Whether serviceMonitor should be enabled or not, [details](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/getting-started.md) |`false`| ✔ |`[]`|
 | `serviceMonitor.service.type`| Type of service to be created - options are ClusterIP, NodePort, LoadBalancer, ExternalName - [details](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) |`ClusterIP`|
 | `serviceMonitor.service.port`| Incoming TCP port of the kubernetes service - Traffic is routed from this port to the targetPort to gain access to the application -  By default and for convenience, the targetPort is set to the same value as the port field. [details](https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service) | 2020 |
