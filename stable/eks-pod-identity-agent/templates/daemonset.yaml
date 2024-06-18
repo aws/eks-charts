@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "eks-pod-identity-agent.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eks-pod-identity-agent.labels" . | nindent 4 }}
+spec:
+  updateStrategy:
+    {{- toYaml .Values.updateStrategy | nindent 4 }}
+  selector:
+    matchLabels:
+      {{- include "eks-pod-identity-agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "eks-pod-identity-agent.selectorLabels" . | nindent 8 }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      priorityClassName: {{ .Values.priorityClassName }}
+      hostNetwork: true
+      terminationGracePeriodSeconds: 30
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.init.create }}
+      initContainers:
+        - name: {{ .Chart.Name }}-init
+          image: {{ include "eks-pod-identity-agent.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: {{ .Values.init.command }}
+          {{- if .Values.init.additionalArgs }}
+          args:
+            {{- range $key, $value := .Values.init.additionalArgs }}
+            - {{ $key | quote }}
+            - {{ $value | quote }}
+            {{- end }}
+          {{- end }}
+          securityContext:
+            privileged: true
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ include "eks-pod-identity-agent.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: {{ .Values.agent.command }}
+          args:
+            - "--port"
+            - "80"
+            - "--cluster-name"
+            - {{ .Values.clusterName | quote }}
+            - "--probe-port"
+            - {{ .Values.agent.probePort | quote }}
+            {{- range $key, $value := .Values.agent.additionalArgs }}
+            - {{ $key | quote }}
+            - {{ $value | quote }}
+            {{- end }}
+          ports:
+            - containerPort: 80
+              protocol: TCP
+              name: proxy
+            - containerPort: {{ .Values.agent.probePort }}
+              protocol: TCP
+              name: probes-port
+          env:
+          {{- range $key, $value := .Values.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
+          securityContext:
+            capabilities:
+              add:
+                - CAP_NET_BIND_SERVICE
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.agent.livenessEndpoint }}
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              host: localhost
+              path: {{ .Values.agent.livenessEndpoint }}
+              port: probes-port
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          {{- end }}
+          {{- if .Values.agent.readinessEndpoint }}
+          readinessProbe:
+            failureThreshold: 30
+            httpGet:
+              host: localhost
+              path: {{ .Values.agent.readinessEndpoint }}
+              port: probes-port
+              scheme: HTTP
+            initialDelaySeconds: 1
+            timeoutSeconds: 10
+          {{- end }}
