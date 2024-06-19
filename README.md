@@ -64,6 +64,9 @@ helm repo add eks https://aws.github.io/eks-charts
 ### EKS EFA Plugin
 * [aws-efa-k8s-device-plugin](stable/aws-efa-k8s-device-plugin): A helm chart for the [Elastic Fabric Adapter](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html) plugin, which automatically discovers and mounts EFA devices into pods that request them
 
+### EKS Pod Identity Agent
+* [eks-pod-identity-agent](stable/eks-pod-identity-agent/): A helm chart for the [EKS pod identity agent](https://github.com/aws/eks-pod-identity-agent/tree/main)
+
 ## License
 
 This project is licensed under the Apache-2.0 License.
