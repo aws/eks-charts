@@ -283,6 +283,8 @@ resources:
     cpu: 50m
     memory: 50Mi
 
+revisionHistoryLimit: 10
+
 ## Assign a PriorityClassName to pods if set
 # priorityClassName: system-node-critical
 
