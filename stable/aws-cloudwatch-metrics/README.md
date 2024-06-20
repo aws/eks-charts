@@ -25,6 +25,7 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `image.repository` | Image to deploy | `amazon/cloudwatch-agent` | ✔
 | `image.tag` | Image tag to deploy | `1.247345.36b249270`
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
+| `env` | Environment variables to be passed for the daemonset | {} |
 | `clusterName` | Name of your cluster | `cluster_name` | ✔
 | `enhancedContainerInsights` | EKS cluster with enhanced monitoring | `true` | 
 | `serviceAccount.create` | Whether a new service account should be created | `true` |

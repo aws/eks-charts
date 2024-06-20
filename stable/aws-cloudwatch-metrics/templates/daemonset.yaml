@@ -22,6 +22,10 @@ spec:
         {{- include "aws-cloudwatch-metrics.statsdConfig" . | nindent 8 -}}
         # Please don't change below envs
         env:
+        {{- range $key, $value := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
         - name: HOST_IP
           valueFrom:
             fieldRef:
