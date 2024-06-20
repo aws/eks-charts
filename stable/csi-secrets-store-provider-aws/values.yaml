@@ -38,5 +38,6 @@ rbac:
   pspEnabled: false
   serviceAccount:
     name:
+    roleArn: ""
 
 priorityClassName: ""
