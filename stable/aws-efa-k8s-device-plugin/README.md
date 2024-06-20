@@ -19,7 +19,7 @@ helm install efa ./aws-efa-k8s-device-plugin -n kube-system
 
 # Configuration
 
-Paramter | Description | Default
+Parameter | Description | Default
 --- | --- | ---
 `image.repository` | EFA image repository | `602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/aws-efa-k8s-device-plugin`
 `image.tag` | EFA image tag | `v0.5.2`
