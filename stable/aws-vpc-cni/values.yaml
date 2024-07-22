@@ -215,12 +215,11 @@ serviceAnnotations: {}
 
 serviceMonitor:
   # Specifies whether a service monitor should be created
-  enabled: true
+  enabled: false
   # Namespace to create the service monitor in
   namespace:
   # Labels to add to the service monitor
-  additionalLabels:
-    release: prom-op
+  additionalLabels: {}
   # Prometheus scrape interval
   interval: 1m
   # Prometheus scrape timeout
