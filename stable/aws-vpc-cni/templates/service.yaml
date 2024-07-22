@@ -1,0 +1,20 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aws-vpc-cni.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  {{- with .Values.serviceAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+{{ include "aws-vpc-cni.labels" . | indent 4 }}
+spec:
+  ports:
+    - port: 61678
+      name: metrics
+      targetPort: metrics
+  selector:
+    k8s-app: aws-node
+{{- end }}

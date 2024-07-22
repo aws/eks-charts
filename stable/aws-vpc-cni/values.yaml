@@ -210,3 +210,22 @@ eniConfig:
     #   id: subnet-789
     #   securityGroups:
     #   - sg-789
+
+serviceAnnotations: {}
+
+serviceMonitor:
+  # Specifies whether a service monitor should be created
+  enabled: true
+  # Namespace to create the service monitor in
+  namespace:
+  # Labels to add to the service monitor
+  additionalLabels:
+    release: prom-op
+  # Prometheus scrape interval
+  interval: 1m
+  # Prometheus scrape timeout
+  scrapeTimeout:
+  # Relabelings to apply to samples before ingestion
+  relabelings:
+  # Metric relabelings to apply to samples before ingestion
+  metricRelabelings:
