@@ -8,7 +8,7 @@ nameOverride: aws-node
 
 init:
   image:
-    tag: v1.16.3
+    tag: v1.18.2
     domain: amazonaws.com
     region: us-west-2
     endpoint: ecr
@@ -27,7 +27,7 @@ init:
 nodeAgent:
   enabled: true
   image:
-    tag: v1.0.8
+    tag: v1.1.2
     domain: amazonaws.com
     region: us-west-2
     endpoint: ecr
@@ -43,6 +43,7 @@ nodeAgent:
     privileged: true
   enableCloudWatchLogs: "false"
   enablePolicyEventLogs: "false"
+  networkPolicyAgentLogFileLocation: "/var/log/aws-routed-eni/network-policy-agent.log"
   enableIpv6: "false"
   metricsBindAddr: "8162"
   healthProbeBindAddr: "8163"
@@ -50,7 +51,7 @@ nodeAgent:
   resources: {}
 
 image:
-  tag: v1.16.3
+  tag: v1.18.2
   domain: amazonaws.com
   region: us-west-2
   endpoint: ecr
@@ -83,7 +84,9 @@ env:
   DISABLE_NETWORK_RESOURCE_PROVISIONING: "false"
   ENABLE_IPv4: "true"
   ENABLE_IPv6: "false"
-  VPC_CNI_VERSION: "v1.16.3"
+  ENABLE_SUBNET_DISCOVERY: "true"
+  VPC_CNI_VERSION: "v1.18.2"
+  NETWORK_POLICY_ENFORCING_MODE: "standard"
 
 # this flag enables you to use the match label that was present in the original daemonset deployed by EKS
 # You can then annotate and label the original aws-node resources and 'adopt' them into a helm release

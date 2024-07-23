@@ -8,9 +8,10 @@ revisionHistoryLimit: 10
 
 image:
   repository: public.ecr.aws/eks/aws-load-balancer-controller
-  tag: v2.7.1
+  tag: v2.8.1
   pullPolicy: IfNotPresent
 
+runtimeClassName: ""
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -119,8 +120,8 @@ clusterName:
 
 # cluster contains configurations specific to the kubernetes cluster
 cluster:
-    # Cluster DNS domain (required for requesting TLS certificates)
-    dnsDomain: cluster.local
+  # Cluster DNS domain (required for requesting TLS certificates)
+  dnsDomain: cluster.local
 
 # The ingress class this controller will satisfy. If not specified, controller will match all
 # ingresses without ingress class annotation and ingresses of type alb
@@ -209,7 +210,7 @@ webhookTLS:
   cert:
   key:
 
-# array of namespace selectors for the webhook
+# array of namespace selectors for the pod mutator webhook
 webhookNamespaceSelectors:
 # - key: elbv2.k8s.aws/pod-readiness-gate-inject
 #   operator: In
@@ -280,8 +281,13 @@ env:
 # Use Environment variables credentials from Secret (aws-secret) for aws-load-balancer-controller pod similarly as The EBS CSI Driver does.
 # envSecretName: aws-secret
 
+# Use envFrom to set environment variables from a Secret or ConfigMap
+envFrom: 
+  # valueFrom:
+  #   - secretKeyRef:
+  #       name: aws-load-balancer-controller
+
 # Specifies if aws-load-balancer-controller should be started in hostNetwork mode.
-#
 # This is required if using a custom CNI where the managed control plane nodes are unable to initiate
 # network connections to the pods, for example using Calico CNI plugin on EKS. This is not required or
 # recommended if using the Amazon VPC CNI plugin.
@@ -350,6 +356,9 @@ controllerConfig:
   # NLBHealthCheckAdvancedConfig: true
   # ALBSingleSubnet: false
 
+certDiscovery:
+  allowedCertificateAuthorityARNs: "" # empty means all CAs are in scope
+
 # objectSelector for webhook
 objectSelector:
   matchExpressions:
@@ -363,12 +372,18 @@ objectSelector:
 serviceMonitor:
   # Specifies whether a service monitor should be created
   enabled: false
-  # Labels to add to the service account
+  # Namespace to create the service monitor in
+  namespace:
+  # Labels to add to the service monitor
   additionalLabels: {}
   # Prometheus scrape interval
   interval: 1m
-  # Namespace to create the service monitor in
-  namespace:
+  # Prometheus scrape timeout
+  scrapeTimeout:
+  # Relabelings to apply to samples before ingestion
+  relabelings:
+  # Metric relabelings to apply to samples before ingestion
+  metricRelabelings:
 
 # clusterSecretsPermissions lets you configure RBAC permissions for secret resources
 # Access to secrets resource is required only if you use the OIDC feature, and instead of
@@ -386,5 +401,29 @@ ingressClassConfig:
 # enableServiceMutatorWebhook allows you enable the webhook which makes this controller the default for all new services of type LoadBalancer
 enableServiceMutatorWebhook: true
 
+# serviceMutatorWebhook contains configurations specific to the service mutator webhook
+serviceMutatorWebhookConfig:
+  # whether or not to fail the service creation if the webhook fails
+  failurePolicy: Fail
+  # limit webhook to only mutate services matching the objectSelector
+  objectSelector:
+    matchExpressions: []
+    # - key: <key>
+    #   operator: <operator>
+    #   values:
+    #   - <value>
+    matchLabels: {}
+      # key: value
+  # which operations trigger the webhook
+  operations:
+  - CREATE
+    # - UPDATE
+
 # serviceTargetENISGTags specifies AWS tags, in addition to the cluster tags, for finding the target ENI SG to which to add inbound rules from NLBs.
 serviceTargetENISGTags:
+
+# Specifies the class of load balancer to use for services. This affects how services are provisioned if type LoadBalancer is used (default service.k8s.aws/nlb)
+loadBalancerClass:
+
+# creator will disable helm default labels, so you can only add yours
+# creator: "me"
