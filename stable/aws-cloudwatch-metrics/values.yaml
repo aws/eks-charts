@@ -8,6 +8,8 @@ clusterName: cluster_name
 enhancedContainerInsights:
   enabled: true
 
+env: {}
+
 resources:
   limits:
     cpu: 200m
