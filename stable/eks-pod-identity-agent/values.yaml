@@ -1,0 +1,82 @@
+# Default values for eks-pod-identity-agent.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: "kubernetes.io/os"
+              operator: In
+              values:
+                - linux
+            - key: "kubernetes.io/arch"
+              operator: In
+              values:
+                - amd64
+                - arm64
+            - key: "eks.amazonaws.com/compute-type"
+              operator: NotIn
+              values:
+                - fargate
+
+agent:
+  additionalArgs:
+  command: "['/go-runner', '/eks-pod-identity-agent', 'server']"
+  livenessEndpoint: /healthz
+  probePort: 2703
+  readinessEndpoint: /readyz
+
+clusterName: EKS_CLUSTER_NAME
+
+env:
+  AWS_REGION: AWS_REGION_NAME
+
+fullnameOverride: "eks-pod-identity-agent"
+
+image:
+  containerRegistry: "602401143452.dkr.ecr.us-west-2.amazonaws.com"
+  pullPolicy: Always
+  region: us-west-2
+  tag: 0.1.10
+
+  # Set to use custom image
+  # override: "repo/org/image:tag"
+  override:
+
+imagePullSecrets: []
+
+init:
+  additionalArgs:
+  command: "['/go-runner', '/eks-pod-identity-agent', 'initialize']"
+  # Specifies whether initContainer should be created
+  create: true
+
+nameOverride: "eks-pod-identity-agent"
+
+nodeSelector: {}
+
+podAnnotations: {}
+
+priorityClassName: system-node-critical
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+tolerations:
+  - operator: Exists
+
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: "10%"
