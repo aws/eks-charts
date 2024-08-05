@@ -126,8 +126,10 @@ done
 kubectl -n kube-system annotate --overwrite configmap amazon-vpc-cni meta.helm.sh/release-name=aws-vpc-cni
 kubectl -n kube-system annotate --overwrite configmap amazon-vpc-cni meta.helm.sh/release-namespace=kube-system
 kubectl -n kube-system label --overwrite configmap amazon-vpc-cni app.kubernetes.io/managed-by=Helm
+```
 
 Kubernetes recommends using server-side apply for more control over the field manager. After adopting the chart resources, you can run the following command to apply the chart:
+
 ```
 helm template aws-vpc-cni --include-crds --namespace kube-system eks/aws-vpc-cni --set originalMatchLabels=true | kubectl apply --server-side --force-conflicts --field-manager Helm -f -
 ```
