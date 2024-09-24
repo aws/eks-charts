@@ -27,6 +27,7 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
 | `clusterName` | Name of your cluster | `cluster_name` | ✔
 | `enhancedContainerInsights` | EKS cluster with enhanced monitoring | `true` | 
+| `metricsCollectionInterval` | agent collection interval | `60`
 | `serviceAccount.create` | Whether a new service account should be created | `true` |
 | `serviceAccount.name` | Service account to be used | |
 | `hostNetwork` | Allow to use the network namespace and network resources of the node | `false` |
