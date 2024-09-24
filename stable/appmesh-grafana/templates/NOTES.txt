@@ -1,1 +1,0 @@
-AWS App Mesh Grafana installed!

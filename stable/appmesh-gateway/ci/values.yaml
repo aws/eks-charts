@@ -1,7 +1,0 @@
-# CI testing values for appmesh-gateway
-
-region: us-west-2
-image:
-  repository: envoyproxy/envoy
-  tag: v1.14.2
-  pullPolicy: IfNotPresent

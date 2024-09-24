@@ -10,14 +10,17 @@ helm repo add eks https://aws.github.io/eks-charts
 
 ### App Mesh
 
-* [appmesh-controller](stable/appmesh-controller): App Mesh controller Helm chart for Kubernetes
-* [appmesh-prometheus](stable/appmesh-prometheus): App Mesh Prometheus Helm chart for Kubernetes
-* [appmesh-grafana](stable/appmesh-grafana): App Mesh Grafana Helm chart for Kubernetes
-* [appmesh-jaeger](stable/appmesh-jaeger): App Mesh Jaeger Helm chart for Kubernetes
-* [appmesh-spire-server](stable/appmesh-spire-server): App Mesh SPIRE Server Helm chart for Kubernetes
-* [appmesh-spire-agent](stable/appmesh-spire-agent): App Mesh SPIRE Agent Helm chart for Kubernetes
-* [appmesh-gateway](stable/appmesh-gateway): App Mesh Gateway Helm chart for Kubernetes
-* [appmesh-inject](stable/appmesh-inject)(**deprecated**): App Mesh inject Helm chart for Kubernetes
+> [!WARNING]
+> The following Helm charts are deprecated following the announcement of discontinued support for [AWS AppMesh](https://aws.amazon.com/blogs/containers/migrating-from-aws-app-mesh-to-amazon-ecs-service-connect/)
+
+* `appmesh-controller`: App Mesh controller Helm chart for Kubernetes
+* `appmesh-prometheus`: App Mesh Prometheus Helm chart for Kubernetes
+* `appmesh-grafana`: App Mesh Grafana Helm chart for Kubernetes
+* `appmesh-jaeger`: App Mesh Jaeger Helm chart for Kubernetes
+* `appmesh-spire-server`: App Mesh SPIRE Server Helm chart for Kubernetes
+* `appmesh-spire-agent`: App Mesh SPIRE Agent Helm chart for Kubernetes
+* `appmesh-gateway`: App Mesh Gateway Helm chart for Kubernetes
+* `appmesh-inject`: App Mesh inject Helm chart for Kubernetes
 
 ### AWS Node Termination Handler
 
@@ -25,7 +28,8 @@ helm repo add eks https://aws.github.io/eks-charts
 
 ### AWS Calico
 
-**This Helm chart is deprecated**. To install Calico network policy enforcement on AWS, follow the EKS [user guide](https://docs.aws.amazon.com/eks/latest/userguide/calico.html).
+> [!WARNING]
+> This Helm chart is deprecated. To install Calico network policy enforcement on AWS, follow the EKS [user guide](https://docs.aws.amazon.com/eks/latest/userguide/calico.html).
 
 ### AWS CloudWatch Metrics
 
