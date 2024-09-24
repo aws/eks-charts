@@ -8,6 +8,7 @@ metadata:
 spec:
   updateStrategy:
 {{ toYaml .Values.updateStrategy | indent 4 }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
       {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 6 }}
