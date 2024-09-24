@@ -124,6 +124,9 @@ spec:
         # this must be same as livenessProbe port which can be configured 
         - --health-probe-port={{ .Values.livenessProbe.httpGet.port }}
         - --wait-until-proxy-ready={{ .Values.sidecar.waitUntilProxyReady }}
+        # TLS configuration
+        - --tls-min-version={{ .Values.tlsMinVersion }}
+        - --tls-cipher-suite={{ .Values.tlsCipherSuite }}
         {{- if .Values.env }}
         env:
           {{- range $key, $value := .Values.env }}

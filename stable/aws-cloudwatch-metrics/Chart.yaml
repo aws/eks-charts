@@ -1,8 +1,8 @@
 apiVersion: v1
 name: aws-cloudwatch-metrics
 description: A Helm chart to deploy aws-cloudwatch-metrics project
-version: 0.0.9
-appVersion: "1.247350"
+version: 0.0.11
+appVersion: "1.300032.2b361"
 home: https://github.com/aws/eks-charts
 icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
 sources:

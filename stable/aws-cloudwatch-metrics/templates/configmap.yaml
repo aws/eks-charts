@@ -11,6 +11,7 @@ data:
         "metrics_collected": {
           "kubernetes": {
             "cluster_name": "{{ .Values.clusterName }}",
+            "enhanced_container_insights": {{ .Values.enhancedContainerInsights.enabled }},
             "metrics_collection_interval": 60
           }
         },
