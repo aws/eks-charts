@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "appmesh-controller.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    control-plane: {{ template "appmesh-controller.fullname" . }}
+{{ include "appmesh-controller.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      control-plane: {{ template "appmesh-controller.fullname" . }}
+      {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 6 }}
+      {{- end }}
+  template:
+    metadata:
+      labels:
+        control-plane: {{ template "appmesh-controller.fullname" . }}
+        app.kubernetes.io/name: {{ include "appmesh-controller.fullname" . }}
+        app.kubernetes.io/part-of: appmesh
+        {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+        {{- end }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        {{- if .Values.podAnnotations }}
+{{ toYaml .Values.podAnnotations | indent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ template "appmesh-controller.serviceAccountName" . }}
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: {{ template "appmesh-controller.fullname" . }}-webhook-server-cert
+      containers:
+      - name: controller
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 9443
+          name: webhook-server
+          protocol: TCP
+        - containerPort: 8080
+          name: metrics-server
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: cert
+          readOnly: true
+        command:
+        - /controller
+        args:
+        - --enable-leader-election=true
+        - --log-level={{ .Values.log.level }}
+        - --sidecar-image-repository={{ .Values.sidecar.image.repository }}
+        - --sidecar-image-tag={{ .Values.sidecar.image.tag }}
+        - --sidecar-cpu-requests={{ .Values.sidecar.resources.requests.cpu }}
+        - --sidecar-memory-requests={{ .Values.sidecar.resources.requests.memory }}
+        - --sidecar-cpu-limits={{ .Values.sidecar.resources.limits.cpu }}
+        - --sidecar-memory-limits={{ .Values.sidecar.resources.limits.memory }}
+        - --init-image={{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}
+        - --enable-stats-tags={{ .Values.stats.tagsEnabled }}
+        - --prestop-delay={{ .Values.sidecar.lifecycleHooks.preStopDelay }}
+        - --poststart-timeout={{ .Values.sidecar.lifecycleHooks.postStartTimeout }}
+        - --poststart-interval={{ .Values.sidecar.lifecycleHooks.postStartInterval }}
+        - --readiness-probe-initial-delay={{ .Values.sidecar.probes.readinessProbeInitialDelay }}
+        - --readiness-probe-period={{ .Values.sidecar.probes.readinessProbePeriod }}
+        - --envoy-admin-access-port={{ .Values.sidecar.envoyAdminAccessPort }}
+        - --envoy-admin-access-log-file={{ .Values.sidecar.envoyAdminAccessLogFile }}
+        - --envoy-admin-access-enable-ipv6={{ .Values.sidecar.envoyAdminAccessEnableIPv6 }}
+        - --dual-stack-endpoint={{ .Values.sidecar.useDualStackEndpoint }}
+        - --fips-endpoint={{ .Values.sidecar.useFipsEndpoint }}
+        - --envoy-aws-access-key-id={{ .Values.sidecar.envoyAwsAccessKeyId }}
+        - --envoy-aws-secret-access-key={{ .Values.sidecar.envoyAwsSecretAccessKey }}
+        - --envoy-aws-session-token={{ .Values.sidecar.envoyAwsSessionToken }}
+        - --preview={{ .Values.preview }}
+        - --enable-sds={{ .Values.sds.enabled }}
+        - --sds-uds-path={{ .Values.sds.udsPath }}
+        - --enable-backend-groups={{ .Values.enableBackendGroups }}
+        - --cluster-name={{ .Values.clusterName}}
+        - --use-aws-dual-stack-endpoint={{ .Values.useAwsDualStackEndpoint}}
+        - --use-aws-fips-endpoint={{ .Values.useAwsFIPSEndpoint}}
+        {{- if .Values.cloudMapCustomHealthCheck.enabled }}
+        - --enable-custom-health-check=true
+        {{- end }}
+        {{- if kindIs "int64" .Values.cloudMapDNS.ttl }}
+        - --cloudmap-dns-ttl={{ .Values.cloudMapDNS.ttl }}
+        {{- end }}
+        {{- if .Values.stats.statsdEnabled }}
+        - --enable-statsd=true
+        - --statsd-address={{ .Values.stats.statsdAddress }}
+        - --statsd-port={{ .Values.stats.statsdPort }}
+        - --statsd-socket-path={{ .Values.stats.statsdSocketPath }}
+        {{- end }}
+        {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "x-ray" ) }}
+        - --enable-xray-tracing=true
+        - --xray-image={{ .Values.xray.image.repository}}:{{ .Values.xray.image.tag }}
+        - --xray-daemon-port={{ .Values.tracing.port }}
+        - --xray-sampling-rate={{ .Values.tracing.samplingRate }}
+        - --xray-log-level={{ .Values.tracing.logLevel }}
+        - --xray-config-roleArn={{ .Values.tracing.role }}
+        {{- end }}
+        {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "jaeger" ) }}
+        - --enable-jaeger-tracing=true
+        - --jaeger-address={{ .Values.tracing.address }}
+        - --jaeger-port={{ .Values.tracing.port }}
+        {{- end }}
+        {{- if and .Values.tracing.enabled ( eq .Values.tracing.provider "datadog" ) }}
+        - --enable-datadog-tracing=true
+        - --datadog-address={{ .Values.tracing.address }}
+        - --datadog-port={{ .Values.tracing.port }}
+        {{- end }}
+        {{- if .Values.region }}
+        - --aws-region={{ .Values.region }}
+        {{- end }}
+        {{- if .Values.accountId }}
+        - --aws-account-id={{ .Values.accountId }}
+        {{- end }}
+        - --sidecar-log-level={{ .Values.sidecar.logLevel }}
+        # this must be same as livenessProbe port which can be configured 
+        - --health-probe-port={{ .Values.livenessProbe.httpGet.port }}
+        - --wait-until-proxy-ready={{ .Values.sidecar.waitUntilProxyReady }}
+        # TLS configuration
+        - --tls-min-version={{ .Values.tlsMinVersion }}
+        - --tls-cipher-suite={{ .Values.tlsCipherSuite }}
+        {{- if .Values.env }}
+        env:
+          {{- range $key, $value := .Values.env }}
+          - name: {{ $key }}
+            value: {{ $value }}
+          {{- end }}
+        {{- end}}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 10 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
