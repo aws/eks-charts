@@ -48,7 +48,7 @@ The following table lists the configurable parameters for this chart and their d
 | `minimumWindowsIPTarget`| Minimum IP target value for Windows prefix delegation   | `3`                                 |
 | `branchENICooldown`     | Number of seconds that branch ENIs remain in cooldown   | `60`                                |
 | `fullnameOverride`      | Override the fullname of the chart                      | `aws-node`                          |
-| `image.tag`             | Image tag                                               | `v1.18.4`                           |
+| `image.tag`             | Image tag                                               | `v1.18.5`                           |
 | `image.domain`          | ECR repository domain                                   | `amazonaws.com`                     |
 | `image.region`          | ECR repository region to use. Should match your cluster | `us-west-2`                         |
 | `image.endpoint`        | ECR repository endpoint to use.                         | `ecr`                               |
@@ -56,7 +56,7 @@ The following table lists the configurable parameters for this chart and their d
 | `image.pullPolicy`      | Container pull policy                                   | `IfNotPresent`                      |
 | `image.override`        | A custom docker image to use                            | `nil`                               |
 | `imagePullSecrets`      | Docker registry pull secret                             | `[]`                                |
-| `init.image.tag`        | Image tag                                               | `v1.18.4`                           |
+| `init.image.tag`        | Image tag                                               | `v1.18.5`                           |
 | `init.image.domain`     | ECR repository domain                                   | `amazonaws.com`                     |
 | `init.image.region`     | ECR repository region to use. Should match your cluster | `us-west-2`                         |
 | `init.image.endpoint`   | ECR repository endpoint to use.                         | `ecr`                               |
@@ -126,10 +126,8 @@ done
 kubectl -n kube-system annotate --overwrite configmap amazon-vpc-cni meta.helm.sh/release-name=aws-vpc-cni
 kubectl -n kube-system annotate --overwrite configmap amazon-vpc-cni meta.helm.sh/release-namespace=kube-system
 kubectl -n kube-system label --overwrite configmap amazon-vpc-cni app.kubernetes.io/managed-by=Helm
-```
 
 Kubernetes recommends using server-side apply for more control over the field manager. After adopting the chart resources, you can run the following command to apply the chart:
-
 ```
 helm template aws-vpc-cni --include-crds --namespace kube-system eks/aws-vpc-cni --set originalMatchLabels=true | kubectl apply --server-side --force-conflicts --field-manager Helm -f -
 ```
