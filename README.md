@@ -21,7 +21,8 @@ helm repo add eks https://aws.github.io/eks-charts
 
 ### AWS Node Termination Handler
 
-* [aws-node-termination-handler](stable/aws-node-termination-handler): Gracefully handle EC2 instance shutdown within Kubernetes. <https://github.com/aws/aws-node-termination-handler>
+> [!WARNING]
+> This Helm chart is now deprecated. Please see the current chart located in the [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler/tree/main/config/helm/aws-node-termination-handler) repository which is now published on [Public ECR](https://gallery.ecr.aws/aws-ec2/helm/aws-node-termination-handler)
 
 ### AWS Calico
 
