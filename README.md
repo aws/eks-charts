@@ -1,6 +1,4 @@
-![EKS Charts](https://github.com/aws/eks-charts/actions/workflows/ci.yaml/badge.svg)
-
-## EKS Charts
+# EKS Charts
 
 Add the EKS repository to Helm:
 
@@ -24,10 +22,6 @@ helm repo add eks https://aws.github.io/eks-charts
 > [!WARNING]
 > This Helm chart is now deprecated. Please see the current chart located in the [aws-node-termination-handler](https://github.com/aws/aws-node-termination-handler/tree/main/config/helm/aws-node-termination-handler) repository which is now published on [Public ECR](https://gallery.ecr.aws/aws-ec2/helm/aws-node-termination-handler)
 
-### AWS Calico
-
-**This Helm chart is deprecated**. To install Calico network policy enforcement on AWS, follow the EKS [user guide](https://docs.aws.amazon.com/eks/latest/userguide/calico.html).
-
 ### AWS CloudWatch Metrics
 
 * [aws-cloudwatch-metrics](stable/aws-cloudwatch-metrics): A helm chart for CloudWatch Agent to Collect Cluster Metrics
@@ -50,9 +44,8 @@ helm repo add eks https://aws.github.io/eks-charts
 
 ### AWS Secrets Manager and Config Provider for Secret Store CSI Driver
 
-**This Helm chart is deprecated, please switch to <https://aws.github.io/secrets-store-csi-driver-provider-aws/> which is reviewed, owned and maintained by AWS.**
-
-* [csi-secrets-store-provider-aws](stable/csi-secrets-store-provider-aws): A helm chart for [AWS Secrets Manager and Config Provider](https://github.com/aws/secrets-store-csi-driver-provider-aws)
+> [!WARNING]
+> This Helm chart is deprecated, please switch to [AWS Secrets Manager and Config Provider](https://github.com/aws/secrets-store-csi-driver-provider-aws) which is reviewed, owned and maintained by AWS
 
 ### Amazon EC2 Metadata Mock
 
@@ -62,7 +55,8 @@ helm repo add eks https://aws.github.io/eks-charts
 
 * [cni-metrics-helper](stable/cni-metrics-helper): A helm chart for [CNI Metrics Helper](https://github.com/aws/amazon-vpc-cni-k8s/blob/master/cmd/cni-metrics-helper/README.md)
 
-### EKS EFA Plugin
+### EKS EFA K8s Device Plugin
+
 * [aws-efa-k8s-device-plugin](stable/aws-efa-k8s-device-plugin): A helm chart for the [Elastic Fabric Adapter](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html) plugin, which automatically discovers and mounts EFA devices into pods that request them
 
 ## License
