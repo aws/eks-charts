@@ -49,7 +49,8 @@ helm repo add eks https://aws.github.io/eks-charts
 
 ### Amazon EC2 Metadata Mock
 
-* [amazon-ec2-metadata-mock](stable/amazon-ec2-metadata-mock): A tool to simulate Amazon EC2 instance metadata service for local testing
+> [!WARNING]
+> This Helm chart is now deprecated. Please see the current chart located in the [amazon-ec2-metadata-mock](https://github.com/aws/amazon-ec2-metadata-mock/tree/main/helm) repository which is now published on [Public ECR](https://gallery.ecr.aws/aws-ec2/helm/amazon-ec2-metadata-mock)
 
 ### CNI Metrics Helper
 

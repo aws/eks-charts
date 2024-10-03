@@ -1,5 +1,0 @@
----
-image:
-  repository: "amazon-ec2-metadata-mock"
-  tag: "test-latest"
-  pullPolicy: "Never"
