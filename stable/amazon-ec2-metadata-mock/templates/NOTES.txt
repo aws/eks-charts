@@ -1,5 +1,0 @@
-{{ .Release.Name }} has been {{- if .Release.IsInstall }} installed {{ else }} updated. {{- end}}
-
-Some useful commands:
-kubectl get pods --namespace {{ .Release.Namespace }}
-kubectl port-forward service/amazon-ec2-metadata-mock 1338

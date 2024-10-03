@@ -1,7 +1,0 @@
-# ClusterRole without any permissions for AEMM
-
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: {{ include "amazon-ec2-metadata-mock.fullname" . }}
-rules: [] # empty rules array to disallow all permissions for AEMM
