@@ -32,7 +32,8 @@ helm repo add eks https://aws.github.io/eks-charts
 
 ### AWS Load Balancer Controller
 
-* [aws-load-balancer-controller](stable/aws-load-balancer-controller): A helm chart for [AWS Load Balancer Controller](https://github.com/kubernetes-sigs/aws-load-balancer-controller)
+> [!WARNING]
+> This Helm chart is now deprecated. Please see the current chart located in the [aws-load-balancer-controller](https://github.com/kubernetes-sigs/aws-load-balancer-controller/tree/main/helm/aws-load-balancer-controller) repository which is now published on [Public ECR](https://gallery.ecr.aws/aws-ec2/helm/aws-node-termination-handler)
 
 ### AWS VPC CNI
 
