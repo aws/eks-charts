@@ -1,0 +1,38 @@
+tlsSecretName: pod-identity-webhook
+annotationPrefix: eks.amazonaws.com
+tokenAudience: sts.amazonaws.com
+
+replicas: 3
+
+image:
+  repository: amazon/amazon-eks-pod-identity-webhook
+  tag: "c0431e1"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 2000m
+    memory: 1Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+priorityClassName: ""
+
+podAnnotations: {}
+
+serviceAccount:
+  # serviceAccount.create: Whether to create a service account or not
+  create: true
+  # serviceAccount.name: The name of the service account to create or use
+  name: ""
