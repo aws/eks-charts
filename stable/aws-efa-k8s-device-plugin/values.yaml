@@ -35,7 +35,9 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - m7i.48xlarge
     - m7i.metal-48xl
     - c5n.9xlarge
+    - ml.c5n.9xlarge
     - c5n.18xlarge
+    - ml.c5n.18xlarge
     - c5n.metal
     - c6a.48xlarge
     - c6a.metal
@@ -97,10 +99,15 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - g4dn.16xlarge
     - g4dn.metal
     - g5.8xlarge
+    - ml.g5.8xlarge
     - g5.12xlarge
+    - ml.g5.12xlarge
     - g5.16xlarge
+    - ml.g5.16xlarge
     - g5.24xlarge
+    - ml.g5.24xlarge
     - g5.48xlarge
+    - ml.g5.48xlarge
     - g6.8xlarge
     - g6.12xlarge
     - g6.16xlarge
@@ -115,11 +122,17 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - inf1.24xlarge
     - p3dn.24xlarge
     - p4d.24xlarge
+    - ml.p4d.24xlarge
     - p4de.24xlarge
+    - ml.p4de.24xlarge
     - p5.48xlarge
+    - ml.p5.48xlarge
     - p5e.48xlarge
+    - ml.p5e.48xlarge
     - trn1.32xlarge
+    - ml.trn1.32xlarge
     - trn1n.32xlarge
+    - ml.trn1n.32xlarge
     - vt1.24xlarge
     - hpc6a.48xlarge
     - hpc6id.32xlarge
@@ -147,6 +160,10 @@ tolerations: []
 # - key: aws.amazon.com/efa
 #   operator: Exists
 #   effect: NoSchedule
+  - key: sagemaker.amazonaws.com/node-health-status
+    operator: Equal
+    effect: NoSchedule
+    value: Unschedulable
 additionalPodAnnotations: {}
 additionalPodLabels: {}
 nameOverride: ""
