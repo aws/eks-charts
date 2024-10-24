@@ -156,7 +156,7 @@ resources:
      memory:  20Mi
 nodeSelector: {}
 #  efa: present
-tolerations: []
+tolerations:
 # - key: aws.amazon.com/efa
 #   operator: Exists
 #   effect: NoSchedule
