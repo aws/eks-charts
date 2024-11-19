@@ -21,6 +21,9 @@ spec:
       labels:
         {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 8 }}
     spec:
+      {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}

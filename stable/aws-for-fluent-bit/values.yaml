@@ -47,6 +47,8 @@ service:
   #       Name   logfmt
   #       Format logfmt
 
+hostNetwork: false
+
 input:
   enabled: true
   tag: "kube.*"
