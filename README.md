@@ -28,7 +28,8 @@ helm repo add eks https://aws.github.io/eks-charts
 
 ### AWS for Fluent Bit
 
-* [aws-for-fluent-bit](stable/aws-for-fluent-bit): A helm chart for [AWS-for-fluent-bit](https://github.com/aws/aws-for-fluent-bit)
+> [!WARNING]
+> This Helm chart is now deprecated. Please see the current chart located in the [AWS-for-fluent-bit](https://github.com/aws/aws-for-fluent-bit) repository which is now published on Public ECR
 
 ### AWS Load Balancer Controller
 
