@@ -4,7 +4,8 @@
 
 /stable/appmesh-*/ @aws/app-mesh-eks-admin
 
-/stable/aws-load-balancer-controller/ @M00nF1sh
+/stable/aws-load-balancer-controller/ @aws/eks-networking
 
-/stable/aws-calico/ @jayanthvn
-/stable/aws-vpc-cni/ @jayanthvn
+/stable/aws-efa-k8s-device-plugin/ @aws/eks-networking
+/stable/aws-vpc-cni/ @aws/eks-networking
+/stable/cni-metrics-helper/ @aws/eks-networking
