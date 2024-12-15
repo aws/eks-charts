@@ -24,6 +24,9 @@ helm repo add eks https://aws.github.io/eks-charts
 
 ### AWS CloudWatch Metrics
 
+> [!WARNING]
+> This Helm chart is now deprecated. Please see the current chart located in the [aws-cloudwatch-metrics](stable/aws-cloudwatch-metrics) repository which is now published on Public ECR
+
 * [aws-cloudwatch-metrics](stable/aws-cloudwatch-metrics): A helm chart for CloudWatch Agent to Collect Cluster Metrics
 
 ### AWS for Fluent Bit
