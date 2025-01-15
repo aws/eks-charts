@@ -24,8 +24,15 @@ data:
         Tag               {{ .Values.input.tag }}
         Path              {{ .Values.input.path }}
         DB                {{ .Values.input.db }}
+        {{- if .Values.input.parser }}
         Parser            {{ .Values.input.parser }}
+        {{- end }}
+        {{- if .Values.input.dockerMode }}
         Docker_Mode       {{ .Values.input.dockerMode }}
+        {{- end }}
+        {{- if .Values.input.multilineParser }}
+        multiline.parser  {{ .Values.input.multilineParser }}
+        {{- end }}
         Mem_Buf_Limit     {{ .Values.input.memBufLimit }}
         Skip_Long_Lines   {{ .Values.input.skipLongLines }}
         Refresh_Interval  {{ .Values.input.refreshInterval }}
@@ -229,6 +236,38 @@ data:
         {{- end -}}
         {{- if .Values.kinesis.extraOutputs }}
 {{ .Values.kinesis.extraOutputs | indent 8 }}
+        {{- end }}
+{{- end }}
+
+{{- if .Values.kinesis_streams.enabled }}
+    [OUTPUT]
+        Name            kinesis_streams
+        Match           {{ .Values.kinesis_streams.match }}
+        region          {{ .Values.kinesis_streams.region }}
+        stream          {{ .Values.kinesis_streams.stream }}
+        {{- if .Values.kinesis_streams.role_arn }}
+        role_arn        {{ .Values.kinesis_streams.role_arn }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.endpoint }}
+        endpoint        {{ .Values.kinesis_streams.endpoint }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.sts_endpoint }}
+        sts_endpoint    {{ .Values.kinesis_streams.sts_endpoint }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.time_key }}
+        time_key        {{ .Values.kinesis_streams.time_key }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.time_key_format }}
+        time_key_format {{ .Values.kinesis_streams.time_key_format }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.external_id }}
+        time_key_format {{ .Values.kinesis_streams.external_id }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.auto_retry_requests }}
+        time_key_format {{ .Values.kinesis_streams.auto_retry_requests }}
+        {{- end }}
+        {{- if .Values.kinesis_streams.log_key }}
+        log_key         {{ .Values.kinesis_streams.log_key }}
         {{- end }}
 {{- end }}
 
@@ -446,9 +485,9 @@ data:
         {{- end }}
         {{- if .Values.opensearch.suppressTypeName }}
         Suppress_Type_Name  {{ .Values.opensearch.suppressTypeName }}
-        {{- end }}
+        {{- end -}}
         {{- if .Values.opensearch.extraOutputs }}
-{{ .Values.opensearch.extraOutputsIndent_8 }}
+{{ .Values.opensearch.extraOutputs | indent 8 }}
         {{- end }}
 {{- end }}
 

@@ -1,3 +1,0 @@
----
-configMap: "test-aemm-configmap"
-configMapFileName: "test-aemm-config.yaml"

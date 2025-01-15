@@ -91,6 +91,25 @@ helm upgrade -i appmesh-controller eks/appmesh-controller \
 The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 **Note**
+If you want to start the controller in the EKS private cluster, enable the app mesh and service discovery VPC endpoints to the linked private subnet first. Also accountId is a required field now as `--set accountId=$AWS_ACCOUNT_ID`.   
+If you want to enable X-ray tracing in private cluster, enable the X-ray VPC endpoint. Also, ECR VPC endpoint [does not support public repository](https://docs.aws.amazon.com/AmazonECR/latest/userguide/vpc-endpoints.html). Controller uses `public.ecr.aws/xray/aws-xray-daemon:latest` by default, so you need to pull this image to local and [push it into your personal ECR repository](https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html). Set it when deploying the controller like:
+```
+helm upgrade -i appmesh-controller eks/appmesh-controller \
+    --namespace appmesh-system \
+    --set region=$AWS_REGION \
+    --set serviceAccount.create=false \
+    --set serviceAccount.name=appmesh-controller \
+    --set accountId=$AWS_ACCOUNT_ID \
+    --set log.level=debug \
+    --set tracing.enabled=true \
+    --set tracing.provider=x-ray \
+    --set xray.image.repository={your-account-id}.dkr.ecr.{your-region}.amazonaws.com/{your-repository} \
+    --set xray.image.tag={your-xray-daemon-image-tag} 
+```
+Verify if the X-ray daemon being injected successfully when binding application deployment with virtual node/gateway.   
+More troubleshooting please see: https://docs.aws.amazon.com/eks/latest/userguide/private-clusters.html 
+
+**Note**
 Make sure that the Envoy proxies have the following IAM policies attached for the Envoy to authenticate with AWS App Mesh and fetch it's configuration
 - https://raw.githubusercontent.com/aws/aws-app-mesh-controller-for-k8s/master/config/iam/envoy-iam-policy.json
 
@@ -430,3 +449,5 @@ Parameter | Description | Default
 `env` |  environment variables to be injected into the appmesh-controller pod | `{}`
 `livenessProbe` | Liveness probe settings for the controller | (see `values.yaml`)
 `podDisruptionBudget` | PodDisruptionBudget | `{}`
+`tlsMinVersion` | Minimum TLS version for the controller webhook server as shown in [here](https://github.com/kubernetes/component-base/blob/master/cli/flag/ciphersuites_flag.go#L114) | `VersionTLS12`
+`tlsCipherSuite` | Comma delimited TLS cipher suites for the controller webhook server as shown [here](https://pkg.go.dev/crypto/tls#pkg-constants) | None

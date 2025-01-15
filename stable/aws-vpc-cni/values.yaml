@@ -8,26 +8,57 @@ nameOverride: aws-node
 
 init:
   image:
-    tag: v1.12.6
+    tag: v1.19.2
+    domain: amazonaws.com
     region: us-west-2
+    endpoint: ecr
     account: "602401143452"
     pullPolicy: Always
-    domain: "amazonaws.com"
     # Set to use custom image
+    override:
     # override: "repo/org/image:tag"
   env:
     DISABLE_TCP_EARLY_DEMUX: "false"
     ENABLE_IPv6: "false"
   securityContext:
     privileged: true
+  resources: {}
+
+nodeAgent:
+  enabled: true
+  image:
+    tag: v1.1.6
+    domain: amazonaws.com
+    region: us-west-2
+    endpoint: ecr
+    account: "602401143452"
+    pullPolicy: Always
+    # Set to use custom image
+    override:
+    # override: "repo/org/image:tag"
+  securityContext:
+    capabilities:
+      add:
+      - "NET_ADMIN"
+    privileged: true
+  enableCloudWatchLogs: "false"
+  enablePolicyEventLogs: "false"
+  networkPolicyAgentLogFileLocation: "/var/log/aws-routed-eni/network-policy-agent.log"
+  enableIpv6: "false"
+  metricsBindAddr: "8162"
+  healthProbeBindAddr: "8163"
+  conntrackCacheCleanupPeriod: 300
+  resources: {}
 
 image:
+  tag: v1.19.2
+  domain: amazonaws.com
   region: us-west-2
-  tag: v1.12.6
+  endpoint: ecr
   account: "602401143452"
-  domain: "amazonaws.com"
   pullPolicy: Always
   # Set to use custom image
+  override:
   # override: "repo/org/image:tag"
 
 # The CNI supports a number of environment variable settings
@@ -53,10 +84,45 @@ env:
   DISABLE_NETWORK_RESOURCE_PROVISIONING: "false"
   ENABLE_IPv4: "true"
   ENABLE_IPv6: "false"
+  ENABLE_SUBNET_DISCOVERY: "true"
+  VPC_CNI_VERSION: "v1.19.2"
+  NETWORK_POLICY_ENFORCING_MODE: "standard"
+
+# Add env from configMap or from secrets
+# - name: ENV_VAR1
+#   valueFrom:
+#     configMapKeyRef:
+#       name: example-config
+#       key: ENV_VAR1
+# - name: ENV_VAR2
+#   valueFrom:
+#     configMapKeyRef:
+#       name: example-config
+#       key: ENV_VAR2
+# - name: SECRET_VAR1
+#   valueFrom:
+#     secretKeyRef:
+#       name: example-secret
+#       key: SECRET_VAR1
+extraEnv: []
+
 
 # this flag enables you to use the match label that was present in the original daemonset deployed by EKS
 # You can then annotate and label the original aws-node resources and 'adopt' them into a helm release
 originalMatchLabels: false
+
+# Settings for aws-vpc-cni ConfigMap
+# - Network Policy settings
+enableNetworkPolicy: "false"
+# - Windows settings
+enableWindowsIpam: "false"
+# - Windows Prefix Delegation settings
+enableWindowsPrefixDelegation: "false"
+warmWindowsPrefixTarget: 0
+warmWindowsIPTarget: 1
+minimumWindowsIPTarget: 3
+# - Security Groups for Pods settings
+branchENICooldown: 60
 
 cniConfig:
   enabled: false
@@ -122,7 +188,8 @@ updateStrategy:
 
 nodeSelector: {}
 
-tolerations: []
+tolerations:
+  - operator: Exists
 
 affinity:
   nodeAffinity:
@@ -142,6 +209,8 @@ affinity:
               operator: NotIn
               values:
                 - fargate
+                - hybrid
+                - auto
 
 eniConfig:
   # Specifies whether ENIConfigs should be created

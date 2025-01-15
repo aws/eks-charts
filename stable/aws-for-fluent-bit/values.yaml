@@ -4,7 +4,7 @@ global:
 
 image:
   repository: public.ecr.aws/aws-observability/aws-for-fluent-bit
-  tag: 2.28.4
+  tag: 2.32.2.20240516
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -26,13 +26,20 @@ containerSecurityContext: {}
 rbac:
   # rbac.pspEnabled, if `true` a restricted pod security policy is created and used
   pspEnabled: false
+
 service:
   ## Allow the service to be exposed for monitoring
+  ## For liveness check to work, Health_Check must be set to On
   ## https://docs.fluentbit.io/manual/administration/monitoring
-  # extraService: |
-  #   HTTP_Server  On
-  #   HTTP_Listen  0.0.0.0
-  #   HTTP_PORT    2020
+  extraService: |
+    HTTP_Server  On
+    HTTP_Listen  0.0.0.0
+    HTTP_PORT    2020
+    Health_Check On 
+    HC_Errors_Count 5 
+    HC_Retry_Failure_Count 5 
+    HC_Period 5 
+
   parsersFiles:
     - /fluent-bit/parsers/parsers.conf
   # extraParsers: |
@@ -45,8 +52,7 @@ input:
   tag: "kube.*"
   path: "/var/log/containers/*.log"
   db: "/var/log/flb_kube.db"
-  parser: docker
-  dockerMode: "On"
+  multilineParser: "docker, cri"
   memBufLimit: 5MB
   skipLongLines: "On"
   refreshInterval: 10
@@ -109,10 +115,10 @@ cloudWatchLogs:
   match: "*"
   region: "us-east-1"
   logGroupName: "/aws/eks/fluentbit-cloudwatch/logs"
-  logGroupTemplate: /aws/eks/fluentbit-cloudwatch/workload/$kubernetes['namespace_name']
+  logGroupTemplate: # /aws/eks/fluentbit-cloudwatch/workload/$kubernetes['namespace_name']
   logStreamName:
   logStreamPrefix: "fluentbit-"
-  logStreamTemplate: $kubernetes['pod_name'].$kubernetes['container_name']
+  logStreamTemplate: # $kubernetes['pod_name'].$kubernetes['container_name']
   logKey:
   logFormat:
   roleArn:
@@ -161,6 +167,20 @@ kinesis:
     concurrencyRetries:
   # extraOutputs: |
   #   ...
+
+kinesis_streams:
+  enabled: false
+  match: "*"
+  region: "us-east-1"
+  stream: "my-kinesis-stream-name"
+  role_arn:
+  endpoint:
+  sts_endpoint:
+  time_key:
+  time_key_format:
+  external_id:
+  auto_retry_requests:
+  log_key: 
 
 elasticsearch:
   enabled: false
@@ -323,25 +343,49 @@ volumeMounts:
     mountPath: /var/lib/docker/containers
     readOnly: true
 
-serviceMonitor:
-  # service:
-  #   type: ClusterIP
+# For livenessProbe to work - service.extraService must also enable Health_Check On
+livenessProbe:
+  httpGet:
+    path: /api/v1/health
+    port: 2020
+    scheme: HTTP
+  failureThreshold: 2
+  initialDelaySeconds: 30
+  timeoutSeconds: 10
+
+readinessProbe: {}
+  # httpGet:
+  #   path: /api/v1/health
   #   port: 2020
-  #   targetPort: 2020
-  # When set true then use a ServiceMonitor to configure scraping
+  #   scheme: HTTP
+  # failureThreshold: 2
+  # initialDelaySeconds: 30
+  # timeoutSeconds: 10
+
+serviceMonitor:
+  service: 
+    type: ClusterIP
+    port: 2020
+    targetPort: 2020
+    extraPorts: []
+      # - port: 2021
+      #   targetPort: 2021
+      #   protocol: TCP
+      #   name: metrics
+  ## When set true then use a ServiceMonitor to configure scraping
   enabled: false
-  # Set the namespace the ServiceMonitor should be deployed
-  # namespace: monitoring
-  # Set how frequently Prometheus should scrape
-  # interval: 30s
-  # Set path of metrics, e.g /api/v1/metrics/prometheus
-  # telemetryPath: /api/v1/metrics/prometheus
-  # Set labels for the ServiceMonitor, use this to define your scrape label for Prometheus Operator
-  # labels:
-  # Set timeout for scrape
-  # timeout: 10s
-  # Set relabel_configs as per https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
-  # relabelings: []
-  # Set of labels to transfer on the Kubernetes Service onto the target.
-  # targetLabels: []
-  # metricRelabelings: []
+  interval: 30s
+  telemetryPath: /api/v1/metrics/prometheus
+  labels:
+    # app: example-application
+    # teamname: example
+  timeout: 10s
+  relabelings: []
+  targetLabels: []
+  metricRelabelings: []
+  extraEndpoints: []
+    # - port: metrics
+    #   path: /metrics
+    #   interval: 30s
+    #   scrapeTimeout: 10s
+    #   scheme: http

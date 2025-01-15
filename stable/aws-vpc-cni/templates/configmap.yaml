@@ -5,6 +5,22 @@ metadata:
   name: {{ include "aws-vpc-cni.fullname" . }}
   labels:
 {{ include "aws-vpc-cni.labels" . | indent 4 }}
-data:
+binaryData:
   10-aws.conflist: {{ .Values.cniConfig.fileContents | b64enc }}
-{{- end -}}
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: amazon-vpc-cni
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "aws-vpc-cni.labels" . | indent 4 }}
+data:
+  enable-windows-ipam: {{ .Values.enableWindowsIpam | quote }}
+  enable-network-policy-controller: {{ .Values.enableNetworkPolicy | quote }}
+  enable-windows-prefix-delegation: {{ .Values.enableWindowsPrefixDelegation | quote }}
+  warm-prefix-target: {{ .Values.warmWindowsPrefixTarget | quote }}
+  warm-ip-target: {{ .Values.warmWindowsIPTarget | quote }}
+  minimum-ip-target: {{ .Values.minimumWindowsIPTarget | quote }}
+  branch-eni-cooldown: {{ .Values.branchENICooldown | quote }}
