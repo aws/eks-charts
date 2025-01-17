@@ -1,16 +1,11 @@
 # These owners will be the default owners for everything in
 # the repo. Unless a later match takes precedence,
-*       @bwagner5 @kishorj @fawadkhaliq @jaypipes
+*       @dims
 
 /stable/appmesh-*/ @aws/app-mesh-eks-admin
 
-/stable/aws-load-balancer-controller/ @kishorj @M00nF1sh
+/stable/aws-load-balancer-controller/ @aws/eks-networking
 
-/stable/aws-calico/ @jayanthvn
-/stable/aws-vpc-cni/ @jayanthvn
-
-/stable/aws-node-termination-handler/ @bwagner5
-
-/stable/aws-sigv4-proxy-admission-controller/ @alanprot @alolita
-
-/stable/aws-for-fluent-bit/ @PettitWesley @hossain-rayhan
+/stable/aws-efa-k8s-device-plugin/ @aws/eks-networking
+/stable/aws-vpc-cni/ @aws/eks-networking
+/stable/cni-metrics-helper/ @aws/eks-networking
