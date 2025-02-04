@@ -181,6 +181,8 @@ kinesis_streams:
   external_id:
   auto_retry_requests:
   log_key: 
+  # extraOutputs: |
+  #   ...
 
 elasticsearch:
   enabled: false

@@ -269,6 +269,9 @@ data:
         {{- if .Values.kinesis_streams.log_key }}
         log_key         {{ .Values.kinesis_streams.log_key }}
         {{- end }}
+        {{- if .Values.kinesis_streams.extraOutputs }}
+{{ .Values.kinesis_streams.extraOutputs | indent 8 }}
+        {{- end }}
 {{- end }}
 
 {{- if .Values.elasticsearch.enabled }}
