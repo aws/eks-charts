@@ -8,7 +8,7 @@ nameOverride: aws-node
 
 init:
   image:
-    tag: v1.19.3
+    tag: v1.19.4
     domain: amazonaws.com
     region: us-west-2
     endpoint: ecr
@@ -27,7 +27,7 @@ init:
 nodeAgent:
   enabled: true
   image:
-    tag: v1.2.0
+    tag: v1.2.1
     domain: amazonaws.com
     region: us-west-2
     endpoint: ecr
@@ -51,7 +51,7 @@ nodeAgent:
   resources: {}
 
 image:
-  tag: v1.19.3
+  tag: v1.19.4
   domain: amazonaws.com
   region: us-west-2
   endpoint: ecr
@@ -85,7 +85,7 @@ env:
   ENABLE_IPv4: "true"
   ENABLE_IPv6: "false"
   ENABLE_SUBNET_DISCOVERY: "true"
-  VPC_CNI_VERSION: "v1.19.3"
+  VPC_CNI_VERSION: "v1.19.4"
   NETWORK_POLICY_ENFORCING_MODE: "standard"
 
 # Add env from configMap or from secrets
@@ -231,3 +231,17 @@ eniConfig:
     #   id: subnet-789
     #   securityGroups:
     #   - sg-789
+
+podMonitor:
+  # Create Prometheus podMonitor 
+  create: false
+  # Annotations to add to the Prometheus podMonitor
+  annotations: {}
+  # Labels to add to the Prometheus podMonitor
+  labels: {}
+  # The interval to scrape metrics.
+  interval: 30s
+  # The timeout before a metrics scrape fails.
+  scrapeTimeout: 30s
+  # relabelings to apply to the podMonitor
+  relabelings: []
