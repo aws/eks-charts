@@ -8,7 +8,7 @@ revisionHistoryLimit: 10
 
 image:
   repository: public.ecr.aws/eks/aws-load-balancer-controller
-  tag: v2.12.0
+  tag: v2.13.0
   pullPolicy: IfNotPresent
 
 runtimeClassName: ""
@@ -114,6 +114,11 @@ additionalLabels: {}
 
 # Enable cert-manager
 enableCertManager: false
+
+# Overrideable variables when enableCertManager is set to true
+certManager:
+  duration:
+  renewBefore:
 
 # The name of the Kubernetes cluster. A non-empty value is required
 clusterName:
@@ -345,6 +350,9 @@ enableEndpointSlices:
 
 # enableBackendSecurityGroup enables shared security group for backend traffic (default true)
 enableBackendSecurityGroup:
+
+# enableManageBackendSecurityGroupRules enables controller manages security group rules (default false)
+enableManageBackendSecurityGroupRules:
 
 # backendSecurityGroup specifies backend security group id (default controller auto create backend security group)
 backendSecurityGroup:
