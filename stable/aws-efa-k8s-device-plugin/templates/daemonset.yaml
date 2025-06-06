@@ -28,6 +28,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      automountServiceAccountToken: false
       tolerations:
         - key: CriticalAddonsOnly
           operator: Exists
