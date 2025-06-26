@@ -11,11 +11,11 @@ data:
 {{- if .Values.service.extraService }}
 {{ .Values.service.extraService | indent 8 }}
 {{- end }}
-{{- range .Values.service.parsersFiles }}
-        Parsers_File {{ . }}
-{{- end }}
 {{- if .Values.service.extraParsers }}
         Parsers_File /fluent-bit/etc/parser_extra.conf
+{{- end }}
+{{- range .Values.service.parsersFiles }}
+        Parsers_File {{ . }}
 {{- end }}
 
 {{- if .Values.input.enabled }}
