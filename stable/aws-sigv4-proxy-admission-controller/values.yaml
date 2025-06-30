@@ -28,6 +28,9 @@ rbac:
   # rbac.create: Whether to create rbac resources or not
   create: true
 
+# failurePolicy: Defines how unrecognized errors and timeout errors from the admission webhook are handled. Allowed values are Ignore or Fail.
+failurePolicy: Ignore
+
 webhookService:
   # webhookService.port: Incoming port used by webhook service
   port: 443
