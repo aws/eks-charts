@@ -3,10 +3,10 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "v0.5.8"
 securityContext:
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop: ["ALL"]
+  allowPrivilegeEscalation: true
+  privileged: true
   runAsNonRoot: false
+  runAsUser: 0
 supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types
   keys:
     - "node.kubernetes.io/instance-type"

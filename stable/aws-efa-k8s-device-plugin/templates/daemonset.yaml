@@ -74,6 +74,8 @@ spec:
               mountPath: /var/lib/kubelet/device-plugins
             - name: infiniband-volume
               mountPath: /dev/infiniband/
+            - name: neuron-tools
+              mountPath: /opt/aws/neuron/
       volumes:
         - name: device-plugin
           hostPath:
@@ -81,3 +83,7 @@ spec:
         - name: infiniband-volume
           hostPath:
             path: /dev/infiniband/
+        - name: neuron-tools
+          hostPath:
+            path: /opt/aws/neuron/
+            type: DirectoryOrCreate
