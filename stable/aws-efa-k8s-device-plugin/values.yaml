@@ -157,6 +157,8 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - trn1n.32xlarge
     - trn2.48xlarge
     - trn2u.48xlarge
+    - trn2-ac.24xlarge
+    - trn2u-ac.24xlarge
     - vt1.24xlarge
     - hpc6a.48xlarge
     - hpc6id.32xlarge
