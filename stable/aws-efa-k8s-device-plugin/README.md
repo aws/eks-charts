@@ -1,5 +1,5 @@
 # AWS EFA Kubernetes Device Plugin
-This chart installs the AWS EFA Kubernetes Device Plugin daemonset with privileged security context for EFA device management and neuron instance support.
+This chart installs the AWS EFA Kubernetes Device Plugin daemonset
 
 ## Prerequisites
 - Helm v3
