@@ -1,12 +1,12 @@
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/aws-efa-k8s-device-plugin
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.5.8"
+  tag: "v0.5.9"
 securityContext:
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop: ["ALL"]
+  allowPrivilegeEscalation: true
+  privileged: true
   runAsNonRoot: false
+  runAsUser: 0
 supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types
   keys:
     - "node.kubernetes.io/instance-type"
