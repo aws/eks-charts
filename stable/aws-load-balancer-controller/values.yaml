@@ -117,6 +117,8 @@ enableCertManager: false
 
 # Overrideable variables when enableCertManager is set to true
 certManager:
+  extraIssuerRef:
+    # group: cert-manager.io
   duration:
   renewBefore:
 
