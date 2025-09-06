@@ -182,6 +182,8 @@ resources:
      memory:  20Mi
 nodeSelector: {}
 #  efa: present
+updateStrategy:
+  type: RollingUpdate
 tolerations: []
 # - key: aws.amazon.com/efa
 #   operator: Exists

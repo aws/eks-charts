@@ -34,4 +34,5 @@ Parameter | Description | Default
 `nameOverride` | Override the name of the chart | `""`
 `fullnameOverride` | Override the full name of the chart | `""`
 `imagePullSecrets` | Docker registry pull secret | `[]`
+`updateStrategy` | Update strategy for deployment set | `type: RollingUpdate`
 
