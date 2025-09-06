@@ -8,8 +8,10 @@ spec:
   selector:
     matchLabels:
       name:  {{ include "aws-efa-k8s-device-plugin.fullname" . }}
+  {{- with .Values.updateStrategy }}
   updateStrategy:
-    type: RollingUpdate
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   template:
     metadata:
       {{- if .Values.additionalPodAnnotations }}
