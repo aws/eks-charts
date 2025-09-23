@@ -236,6 +236,9 @@ spec:
   issuerRef:
     kind: Issuer
     name: {{ template "aws-load-balancer-controller.namePrefix" . }}-selfsigned-issuer
+    {{- with .Values.certManager.extraIssuerRef }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   secretName: {{ template "aws-load-balancer-controller.webhookCertSecret" . }}
   {{- with .Values.certManager -}}
   {{ if .duration }}
