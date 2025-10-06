@@ -20,7 +20,7 @@ if echo "${VERSION}" | grep -Eq "^v[0-9]+(\.[0-9]+){2}$"; then
     set -x
     git config pull.rebase false
     git checkout gh-pages
-    mv -n $PACKAGE_DIR/stable/*.tgz .
+    mv -n $PACKAGE_DIR/stable/*.tgz . || echo 'Ignoring mv failure'
     helm repo index . --url https://aws.github.io/eks-charts
     git add .
     git commit -m "Publish stable charts ${VERSION}"
