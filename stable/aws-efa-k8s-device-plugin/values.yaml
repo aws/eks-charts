@@ -28,6 +28,7 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - c7g.16xlarge
     - c7g.metal
     - c7gd.16xlarge
+    - c7gd.metal
     - c7gn.16xlarge
     - c7gn.metal
     - c7i.48xlarge
@@ -40,8 +41,18 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - c8gd.48xlarge
     - c8gd.metal-24xl
     - c8gd.metal-48xl
+    - c8gn.16xlarge
+    - c8gn.24xlarge
+    - c8gn.48xlarge
+    - c8gn.metal-24xl
+    - c8gn.metal-48xl
+    - c8i.48xlarge
+    - c8i.96xlarge
+    - c8i.metal-48xl
+    - c8i.metal-96xl
     - dl1.24xlarge
     - dl2q.24xlarge
+    - f2.48xlarge
     - g4dn.12xlarge
     - g4dn.16xlarge
     - g4dn.8xlarge
@@ -77,9 +88,14 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - i4g.16xlarge
     - i4i.32xlarge
     - i4i.metal
+    - i7i.24xlarge
+    - i7i.48xlarge
+    - i7i.metal-48xl
     - i7ie.48xlarge
     - i7ie.metal-48xl
     - i8g.48xlarge
+    - i8ge.48xlarge
+    - i8ge.metal-48xl
     - im4gn.16xlarge
     - inf1.24xlarge
     - m5dn.24xlarge
@@ -103,8 +119,11 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - m7g.16xlarge
     - m7g.metal
     - m7gd.16xlarge
+    - m7gd.metal
     - m7i.48xlarge
     - m7i.metal-48xl
+    - m8a.48xlarge
+    - m8a.metal-48xl
     - m8g.24xlarge
     - m8g.48xlarge
     - m8g.metal-24xl
@@ -113,13 +132,19 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - m8gd.48xlarge
     - m8gd.metal-24xl
     - m8gd.metal-48xl
+    - m8i.48xlarge
+    - m8i.96xlarge
+    - m8i.metal-48xl
+    - m8i.metal-96xl
     - p3dn.24xlarge
     - p4d.24xlarge
     - p4de.24xlarge
     - p5.48xlarge
+    - p5.4xlarge
     - p5e.48xlarge
     - p5en.48xlarge
     - p6-b200.48xlarge
+    - p6-b300.48xlarge
     - p6e-gb200.36xlarge
     - r5dn.24xlarge
     - r5dn.metal
@@ -140,24 +165,46 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - r7g.16xlarge
     - r7g.metal
     - r7gd.16xlarge
+    - r7gd.metal
     - r7i.48xlarge
     - r7i.metal-48xl
     - r7iz.32xlarge
     - r7iz.metal-32xl
+    - r8a.48xlarge
+    - r8a.metal-48xl
     - r8g.24xlarge
     - r8g.48xlarge
     - r8g.metal-24xl
     - r8g.metal-48xl
+    - r8gb.16xlarge
+    - r8gb.24xlarge
+    - r8gb.metal-24xl
     - r8gd.24xlarge
     - r8gd.48xlarge
     - r8gd.metal-24xl
     - r8gd.metal-48xl
+    - r8gn.16xlarge
+    - r8gn.24xlarge
+    - r8gn.48xlarge
+    - r8gn.metal-24xl
+    - r8gn.metal-48xl
+    - r8i.48xlarge
+    - r8i.96xlarge
+    - r8i.metal-48xl
+    - r8i.metal-96xl
     - trn1.32xlarge
     - trn1n.32xlarge
     - trn2-ac.24xlarge
+    - trn2.3xlarge
     - trn2.48xlarge
     - trn2u-ac.24xlarge
     - trn2u.48xlarge
+    - u7i-12tb.224xlarge
+    - u7i-6tb.112xlarge
+    - u7i-8tb.112xlarge
+    - u7in-16tb.224xlarge
+    - u7in-24tb.224xlarge
+    - u7in-32tb.224xlarge
     - vt1.24xlarge
     - x2idn.32xlarge
     - x2idn.metal
@@ -177,9 +224,9 @@ resources:
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
-   requests:
-     cpu:     10m
-     memory:  20Mi
+  requests:
+    cpu: 10m
+    memory: 20Mi
 nodeSelector: {}
 #  efa: present
 updateStrategy:
