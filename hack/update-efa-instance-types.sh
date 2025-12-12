@@ -10,13 +10,12 @@ EFA_CHART_DIRECTORY="${PROJECT_ROOT}/stable/aws-efa-k8s-device-plugin"
 CHART_FILE="${EFA_CHART_DIRECTORY}/Chart.yaml"
 if git diff --quiet --exit-code -- "$CHART_FILE" || \
    ! git diff "$CHART_FILE" | grep -q '^[-+]version:'; then
-    # Increment a minor version if version hasn't already been incremented
-    yq -i '
-      .version |= (
-        . as $v
-        | ($v | sub("^v"; "") | split(".") | .[2] = ((.[2] | tonumber) + 1) | "v" + (join(".")))
-      )
-    ' "$CHART_FILE"
+    # Increment patch version if version hasn't already been incremented
+    VERSION=$(yq eval '.version' "$CHART_FILE")
+    BARE="${VERSION#v}"
+    IFS='.' read -r MAJOR MINOR PATCH <<< "$BARE"
+    NEW_VERSION="v${MAJOR}.${MINOR}.$((PATCH + 1))"
+    yq eval -i ".version = \"${NEW_VERSION}\"" "$CHART_FILE"
 else
     echo "Version already changed; skipping increment"
 fi
@@ -47,14 +46,8 @@ for REGION in "${REGIONS[@]}"; do
   ALL_TYPES+=("${TYPES[@]}")
 done
 
-# Deduplicate + sort + extract JSON
-export NEW_VALUES=$(printf "%s\n" "${ALL_TYPES[@]}" \
-  | sort -u \
-  | jq -R . \
-  | jq -s .)
+# Deduplicate + sort, then build a yq array expression
+YQ_ARRAY=$(printf '%s\n' "${ALL_TYPES[@]}" | sort -u | sed 's/.*/"&"/' | paste -sd, -)
 
-yq 'env(NEW_VALUES)' <<< '{}'
-
-yq -i '.supportedInstanceLabels.values = env(NEW_VALUES) 
-       | .supportedInstanceLabels.values style=""
-       | .supportedInstanceLabels.values[] style=""' "${EFA_CHART_DIRECTORY}/values.yaml"
+VALUES_FILE="${EFA_CHART_DIRECTORY}/values.yaml"
+yq eval -i ".supportedInstanceLabels.values = [${YQ_ARRAY}]" "$VALUES_FILE"
