@@ -17,7 +17,7 @@ spec:
   - additionalPrinterColumns:
     - description: The Global Accelerator name
       jsonPath: .spec.name
-      name: NAME
+      name: ACCELERATOR-NAME
       type: string
     - description: The Global Accelerator DNS name
       jsonPath: .status.dnsName
@@ -264,6 +264,9 @@ spec:
                         - fromPort
                         - toPort
                         type: object
+                        x-kubernetes-validations:
+                        - message: FromPort must be less than or equal to ToPort
+                          rule: self.fromPort <= self.toPort
                       maxItems: 10
                       minItems: 1
                       type: array
