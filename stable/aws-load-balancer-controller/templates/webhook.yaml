@@ -85,7 +85,7 @@ webhooks:
         values:
           - {{ include "aws-load-balancer-controller.name" . }}
     {{- if .Values.objectSelector.matchExpressions }}
-    {{- toYaml .Values.objectSelector.matchExpressions | nindent 4 }}
+    {{- toYaml .Values.objectSelector.matchExpressions | nindent 6 }}
     {{- end }}
     {{- if .Values.objectSelector.matchLabels }}
     matchLabels:
