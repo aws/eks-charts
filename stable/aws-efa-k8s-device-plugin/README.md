@@ -22,7 +22,7 @@ helm install efa ./aws-efa-k8s-device-plugin -n kube-system
 Parameter | Description | Default
 --- | --- | ---
 `image.repository` | EFA image repository | `602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/aws-efa-k8s-device-plugin`
-`image.tag` | EFA image tag | `v0.5.8`
+`image.tag` | EFA image tag | `v0.5.13`
 `securityContext` | EFA plugin security context | `allowPrivilegeEscalation: true, privileged: true, runAsNonRoot: false, runAsUser: 0`
 `supportedInstanceLabels.keys` | Kubernetes key to interpret as instance type | `nodes.kubernetes.io/instance-type`
 `supportedInstanceLabels.values` | List of instances which currently support EFA devices | `see https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types`
