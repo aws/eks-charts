@@ -56,6 +56,7 @@ The following table lists the configurable parameters for this chart and their d
 | `image.pullPolicy`      | Container pull policy                                   | `IfNotPresent`                      |
 | `image.overrideRepository` | Repository override for the image (does not change the tag) | `nil`                        |
 | `image.override`        | A custom docker image to use                            | `nil`                               |
+| `image.name`            | Image name (can be customized for private registries or custom builds) | `amazon-k8s-cni`                    |
 | `imagePullSecrets`      | Docker registry pull secret                             | `[]`                                |
 | `init.image.tag`        | Image tag                                               | `v1.21.1`                           |
 | `init.image.domain`     | ECR repository domain                                   | `amazonaws.com`                     |
@@ -65,6 +66,7 @@ The following table lists the configurable parameters for this chart and their d
 | `init.image.pullPolicy` | Container pull policy                                   | `IfNotPresent`                      |
 | `init.image.overrideRepository` | Repository override for the image (does not change the tag) | `nil`                   |
 | `init.image.override`   | A custom docker image to use                            | `nil`                               |
+| `init.image.name`       | Image name (can be customized for private registries or custom builds) | `amazon-k8s-cni-init`               |
 | `init.env`              | List of init container environment variables. See [here](https://github.com/aws/amazon-vpc-cni-k8s#cni-configuration-variables) for options | (see `values.yaml`) |
 | `init.securityContext`  | Init container Security context                         | `privileged: true`                  |
 | `init.resources`        | Init container resources, will defualt to .Values.resources if not set | `{}`                 |
@@ -79,6 +81,7 @@ The following table lists the configurable parameters for this chart and their d
 | `nodeAgent.image.pullPolicy` | Container pull policy                              | `IfNotPresent`                      |
 | `nodeAgent.image.overrideRepository` | Repository override for the image (does not change the tag) | `nil`              |
 | `nodeAgent.image.override`   | A custom docker image to use                       | `nil`                               |
+| `nodeAgent.image.name`       | Image name (can be customized for private registries or custom builds) | `amazon/aws-network-policy-agent`   |
 | `nodeAgent.securityContext`  | Node Agent container Security context              | `capabilities: add: - "NET_ADMIN" privileged: true` |
 | `nodeAgent.enableCloudWatchLogs`  | Enable CW logging for Node Agent              | `false`                             |
 | `nodeAgent.networkPolicyAgentLogFileLocation`  | Log File location of Network Policy Agent | `/var/log/aws-routed-eni/network-policy-agent.log` |

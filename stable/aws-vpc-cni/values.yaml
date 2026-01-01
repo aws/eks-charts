@@ -14,6 +14,7 @@ init:
     endpoint: ecr
     account: "602401143452"
     pullPolicy: Always
+    name: "amazon-k8s-cni-init"
     # Set to use custom image
     overrideRepository:
     # overrideRepository: "repo/org/image"
@@ -35,6 +36,7 @@ nodeAgent:
     endpoint: ecr
     account: "602401143452"
     pullPolicy: Always
+    name: "amazon/aws-network-policy-agent"
     # Set to use custom image
     overrideRepository:
     # overrideRepository: "repo/org/image"
@@ -62,6 +64,7 @@ image:
   endpoint: ecr
   account: "602401143452"
   pullPolicy: Always
+  name: "amazon-k8s-cni"
   # Set to use custom image
   overrideRepository:
   # overrideRepository: "repo/org/image"
