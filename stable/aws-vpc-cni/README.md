@@ -34,6 +34,8 @@ The following table lists the configurable parameters for this chart and their d
 | `affinity`              | Map of node/pod affinities                              | `{}`                                |
 | `cniConfig.enabled`     | Enable overriding the default 10-aws.conflist file      | `false`                             |
 | `cniConfig.fileContents`| The contents of the custom cni config file              | `nil`                               |
+| `configMap.enabled`     | Enable configMap deployment                             | `true`                              |
+| `configMap.nameOverride`| Overrides configMap name                                | `amazon-vpc-cni`                    |
 | `eniConfig.create`      | Specifies whether to create ENIConfig resource(s)       | `false`                             |
 | `eniConfig.region`      | Region to use when generating ENIConfig resource names  | `us-west-2`                         |
 | `eniConfig.subnets`     | A map of AZ identifiers to config per AZ                | `nil`                               |

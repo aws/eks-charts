@@ -137,6 +137,10 @@ cniConfig:
   enabled: false
   fileContents: ""
 
+configMap:
+  enabled: true
+  nameOverride: ""
+
 imagePullSecrets: []
 
 fullnameOverride: "aws-node"
@@ -242,7 +246,7 @@ eniConfig:
     #   - sg-789
 
 podMonitor:
-  # Create Prometheus podMonitor 
+  # Create Prometheus podMonitor
   create: false
   # Annotations to add to the Prometheus podMonitor
   annotations: {}
