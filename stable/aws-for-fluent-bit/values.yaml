@@ -23,6 +23,9 @@ containerSecurityContext: {}
 #   drop:
 #   - ALL
 
+# Time period for the pod to do a graceful shutdown
+terminationGracePeriodSeconds: 0
+
 rbac:
   # rbac.pspEnabled, if `true` a restricted pod security policy is created and used
   pspEnabled: false
