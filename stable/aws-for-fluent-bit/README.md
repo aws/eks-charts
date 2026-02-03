@@ -34,7 +34,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `image.pullPolicy` | Pull policy for the image | `IfNotPresent` | ✔
 | `podSecurityContext` | Security Context for pod | `{}` | 
 | `containerSecurityContext` | Security Context for container | `{}` | 
-| `rbac.pspEnabled` | Whether a pod security policy should be created | `false`
+| `rbac.pspEnabled` | **[DEPRECATED]** Whether a pod security policy should be created. PSP was removed in Kubernetes 1.25. See the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/) for migration guidance | `false`
 | `imagePullSecrets` | Docker registry pull secret | `[]` |
 | `serviceAccount.create` | Whether a new service account should be created | `true` |
 | `serviceAccount.name` | Name of the service account | `aws-for-fluent-bit` |

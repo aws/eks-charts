@@ -4,7 +4,7 @@ global:
 
 image:
   repository: public.ecr.aws/aws-observability/aws-for-fluent-bit
-  tag: 2.32.2.20240516
+  tag: 3.2.1
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -24,7 +24,10 @@ containerSecurityContext: {}
 #   - ALL
 
 rbac:
-  # rbac.pspEnabled, if `true` a restricted pod security policy is created and used
+  # DEPRECATED: PodSecurityPolicy was removed in Kubernetes 1.25.
+  # This setting has no effect on Kubernetes 1.25+.
+  # Migrate to Pod Security Standards (PSS) / Pod Security Admission instead.
+  # See: https://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/
   pspEnabled: false
 
 service:
