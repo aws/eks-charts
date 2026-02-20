@@ -9,10 +9,11 @@ binaryData:
   10-aws.conflist: {{ .Values.cniConfig.fileContents | b64enc }}
 {{- end }}
 ---
+{{- if .Values.configMap.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: amazon-vpc-cni
+  name: {{ .Values.configMap.nameOverride | default "amazon-vpc-cni-settings" }}
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "aws-vpc-cni.labels" . | indent 4 }}
@@ -24,3 +25,4 @@ data:
   warm-ip-target: {{ .Values.warmWindowsIPTarget | quote }}
   minimum-ip-target: {{ .Values.minimumWindowsIPTarget | quote }}
   branch-eni-cooldown: {{ .Values.branchENICooldown | quote }}
+{{- end }}
