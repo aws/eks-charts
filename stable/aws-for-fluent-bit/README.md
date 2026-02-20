@@ -184,7 +184,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `opensearch.httpPasswd`| Password for user defined in HTTP_User. | |
 | `opensearch.index`| Index name, supports [Record Accessor syntax](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/record-accessor) |`"aws-fluent-bit"`|
 | `opensearch.type`| Type name |`"_doc"`|
-| `opensearch.logstashFormat`| Enable Logstash format compatibility. This option takes a boolean value: True/False, On/Off |`"on"`|
+| `opensearch.logstashFormat`| Enable Logstash format compatibility. This option takes a boolean value: True/False, On/Off |`"off"`|
 | `opensearch.logstashPrefix`| When Logstash_Format is enabled, the Index name is composed using a prefix and the date, e.g: If Logstash_Prefix is equals to 'mydata' your index will become 'mydata-YYYY.MM.DD'. The last string appended belongs to the date when the data is being generated. |`"logstash"`|
 | `opensearch.logstashDateFormat`| Time format (based on strftime) to generate the second part of the Index name. |`"%Y.%m.%d"`|
 | `opensearch.timeKey`| When Logstash_Format is enabled, each record will get a new timestamp field. The Time_Key property defines the name of that field. |`"@timestamp"`|
