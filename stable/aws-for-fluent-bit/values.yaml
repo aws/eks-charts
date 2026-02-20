@@ -54,6 +54,7 @@ input:
   enabled: true
   tag: "kube.*"
   path: "/var/log/containers/*.log"
+  pathKey:
   db: "/var/log/flb_kube.db"
   multilineParser: "docker, cri"
   memBufLimit: 5MB
