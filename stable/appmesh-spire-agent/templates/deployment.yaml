@@ -23,6 +23,7 @@ spec:
       initContainers:
         - name: init
           image: "{{ .Values.initContainers.image }}"
+          imagePullPolicy: {{ .Values.initContainers.pullPolicy }}
           args:
             - -t
             - "30"
