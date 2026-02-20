@@ -168,6 +168,9 @@ data:
         Match           {{ .Values.firehose.match }}
         region          {{ .Values.firehose.region }}
         delivery_stream {{ .Values.firehose.deliveryStream }}
+        {{- if .Values.kinesis.replaceDots }}
+        replace_dots    {{ .Values.kinesis.replaceDots }}
+        {{- end }}
         {{- if .Values.firehose.dataKeys }}
         data_keys       {{ .Values.firehose.dataKeys }}
         {{- end }}
