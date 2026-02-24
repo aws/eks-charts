@@ -8,7 +8,7 @@ revisionHistoryLimit: 10
 
 image:
   repository: public.ecr.aws/eks/aws-load-balancer-controller
-  tag: v3.0.0
+  tag: v3.1.0
   pullPolicy: IfNotPresent
 
 runtimeClassName: ""
@@ -238,6 +238,9 @@ webhookTLS:
   caCert:
   cert:
   key:
+
+# keepTLSSecret specifies whether to reuse existing TLS secret for chart upgrade when cert-manager is not being used
+keepTLSSecret: false
 
 # array of namespace selectors for the pod mutator webhook
 webhookNamespaceSelectors:
