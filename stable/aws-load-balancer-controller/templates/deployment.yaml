@@ -152,7 +152,7 @@ spec:
         - --external-managed-tags={{ join "," .Values.externalManagedTags }}
         {{- end }}
         {{- if .Values.defaultTags }}
-        - --default-tags={{ include "aws-load-balancer-controller.convertMapToCsv" .Values.defaultTags | trimSuffix "," }}
+        - "--default-tags={{ include "aws-load-balancer-controller.convertMapToCsv" .Values.defaultTags | trimSuffix "," }}"
         {{- end }}
         {{- if kindIs "bool" .Values.enableEndpointSlices }}
         - --enable-endpoint-slices={{ .Values.enableEndpointSlices }}
