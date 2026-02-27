@@ -311,6 +311,8 @@ daemonSetAnnotations: {}
 # serviceAnnotations contains annotations for the monitoring Service resource
 serviceAnnotations: {}
 
+podLabels: {}
+
 # Specifies if aws-for-fluent-bit should be started in hostNetwork mode.
 #
 # This is required if using a custom CNI where the managed control plane nodes are unable to initiate
