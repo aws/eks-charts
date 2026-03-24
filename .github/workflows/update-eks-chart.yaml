@@ -28,7 +28,7 @@ jobs:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
       - name: Run ./hack/update-efa-instance-types.sh
         run: |
-              YQ_VERSION=v4.2.0
+              YQ_VERSION=v4.52.4
               YQ_PLATFORM=linux_amd64
               wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_${YQ_PLATFORM} -O /usr/local/bin/yq &&\
                 chmod +x /usr/local/bin/yq
