@@ -22,3 +22,5 @@ rules:
   resources: ["configmaps"]
   resourceNames: ["cwagent-clusterleader"]
   verbs: ["get","update"]
+- nonResourceURLs: ["/metrics"]
+  verbs: ["get"]
