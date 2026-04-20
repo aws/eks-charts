@@ -57,10 +57,18 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - c8i.96xlarge
     - c8i.metal-48xl
     - c8i.metal-96xl
+    - c8ib.48xlarge
+    - c8ib.96xlarge
+    - c8ib.metal-48xl
+    - c8ib.metal-96xl
     - c8id.48xlarge
     - c8id.96xlarge
     - c8id.metal-48xl
     - c8id.metal-96xl
+    - c8in.48xlarge
+    - c8in.96xlarge
+    - c8in.metal-48xl
+    - c8in.metal-96xl
     - dl1.24xlarge
     - dl2q.24xlarge
     - f2.48xlarge
