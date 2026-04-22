@@ -1,0 +1,13 @@
+aws-dranet has been deployed as a DaemonSet in the {{ .Release.Namespace }} namespace.
+
+dranet is a Kubernetes DRA (Dynamic Resource Allocation) network driver that
+discovers and publishes EFA devices on each node. It enables workloads to 
+request them through the Kubernetes DRA API.
+
+To verify the DaemonSet is running:
+
+  kubectl get daemonset {{ include "aws-dranet.fullname" . }} -n {{ .Release.Namespace }}
+
+To check the resource slices published by dranet:
+
+  kubectl get resourceslices
