@@ -57,10 +57,18 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - c8i.96xlarge
     - c8i.metal-48xl
     - c8i.metal-96xl
+    - c8ib.48xlarge
+    - c8ib.96xlarge
+    - c8ib.metal-48xl
+    - c8ib.metal-96xl
     - c8id.48xlarge
     - c8id.96xlarge
     - c8id.metal-48xl
     - c8id.metal-96xl
+    - c8in.48xlarge
+    - c8in.96xlarge
+    - c8in.metal-48xl
+    - c8in.metal-96xl
     - dl1.24xlarge
     - dl2q.24xlarge
     - f2.48xlarge
@@ -165,10 +173,14 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - m8i.96xlarge
     - m8i.metal-48xl
     - m8i.metal-96xl
+    - m8ib.48xlarge
+    - m8ib.96xlarge
     - m8id.48xlarge
     - m8id.96xlarge
     - m8id.metal-48xl
     - m8id.metal-96xl
+    - m8in.48xlarge
+    - m8in.96xlarge
     - p3dn.24xlarge
     - p4d.24xlarge
     - p4de.24xlarge
@@ -228,10 +240,14 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - r8i.96xlarge
     - r8i.metal-48xl
     - r8i.metal-96xl
+    - r8ib.48xlarge
+    - r8ib.96xlarge
     - r8id.48xlarge
     - r8id.96xlarge
     - r8id.metal-48xl
     - r8id.metal-96xl
+    - r8in.48xlarge
+    - r8in.96xlarge
     - trn1.32xlarge
     - trn1n.32xlarge
     - trn2-ac.24xlarge
