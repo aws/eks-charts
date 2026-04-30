@@ -1,0 +1,143 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "aws-dranet.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "aws-dranet.labels" . | nindent 4 }}
+    tier: node
+    app: {{ include "aws-dranet.name" . }}
+    k8s-app: {{ include "aws-dranet.name" . }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "aws-dranet.selectorLabels" . | nindent 6 }}
+  {{- with .Values.updateStrategy }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "aws-dranet.labels" . | nindent 8 }}
+        {{- include "aws-dranet.selectorLabels" . | nindent 8 }}
+        tier: node
+        k8s-app: {{ include "aws-dranet.name" . }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      priorityClassName: {{ .Values.priorityClassName | quote }}
+      hostNetwork: true
+      hostPID: false
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+      {{- with .Values.tolerations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "aws-dranet.serviceAccountName" . }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              {{- range .Values.supportedInstanceLabels.keys }}
+              - matchExpressions:
+                - key: {{ . }}
+                  operator: In
+                  values:
+                    {{- toYaml $.Values.supportedInstanceLabels.values | nindent 20 }}
+              {{- end }}
+                - key: eks.amazonaws.com/compute-type
+                  operator: NotIn
+                  values:
+                  - auto
+      containers:
+      - name: dranet
+        args:
+        - /dranet
+        - --v={{ .Values.verbosity }}
+        - --hostname-override=$(NODE_NAME)
+        - "--bind-address=:{{ .Values.healthPort }}"
+        - --cloud-provider-hint=AWS
+        {{- if .Values.filter }}
+        - --filter={{ .Values.filter }}
+        {{- end }}
+        {{- if not .Values.image.tag }}
+        {{- fail "image.tag is required" }}
+        {{- end }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        {{- with .Values.resources }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 10 }}
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.healthPort }}
+        volumeMounts:
+        - name: device-plugin
+          mountPath: /var/lib/kubelet/plugins
+        - name: plugin-registry
+          mountPath: /var/lib/kubelet/plugins_registry
+        - name: nri-plugin
+          mountPath: /var/run/nri
+        - name: netns
+          mountPath: /var/run/netns
+          mountPropagation: HostToContainer
+        - name: infiniband
+          mountPath: /dev/infiniband
+          mountPropagation: HostToContainer
+        - name: tmp
+          mountPath: /tmp
+        - name: dranet-run
+          mountPath: /var/run/dranet
+      volumes:
+      - name: device-plugin
+        hostPath:
+          path: /var/lib/kubelet/plugins
+          type: DirectoryOrCreate
+      - name: plugin-registry
+        hostPath:
+          path: /var/lib/kubelet/plugins_registry
+          type: DirectoryOrCreate
+      - name: nri-plugin
+        hostPath:
+          path: /var/run/nri
+          type: DirectoryOrCreate
+      - name: netns
+        hostPath:
+          path: /var/run/netns
+          type: DirectoryOrCreate
+      - name: infiniband
+        hostPath:
+          path: /dev/infiniband
+          type: DirectoryOrCreate
+      - name: tmp
+        emptyDir:
+          medium: Memory
+          sizeLimit: 10Mi
+      - name: dranet-run
+        hostPath:
+          path: /var/run/dranet
+          type: DirectoryOrCreate
