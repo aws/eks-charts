@@ -179,6 +179,10 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - m8id.96xlarge
     - m8id.metal-48xl
     - m8id.metal-96xl
+    - m8idb.48xlarge
+    - m8idb.96xlarge
+    - m8idn.48xlarge
+    - m8idn.96xlarge
     - m8in.48xlarge
     - m8in.96xlarge
     - p3dn.24xlarge
@@ -246,6 +250,10 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - r8id.96xlarge
     - r8id.metal-48xl
     - r8id.metal-96xl
+    - r8idb.48xlarge
+    - r8idb.96xlarge
+    - r8idn.48xlarge
+    - r8idn.96xlarge
     - r8in.48xlarge
     - r8in.96xlarge
     - trn1.32xlarge
