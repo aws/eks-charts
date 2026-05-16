@@ -41,3 +41,5 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `statsd.cloudwatch_namespace` | Optional custom Cloudwatch namespace for statsd metrics | |
 | `statsd.metrics_aggregation_interval` | Optional cutom metrics aggregation interval for statsd metrics | |
 | `statsd.metrics_collection_interval` | Optional custom metrics collection interval for statsd metrics | |
+| `xray.enabled` | Whether the cloudwatch agent should listen for traces from the X-Ray SDK	 | `false` |
+| `xray.port` | The port listening for X-Ray traces | `2000` |

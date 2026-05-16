@@ -16,6 +16,15 @@ data:
           }
         },
         "force_flush_interval": 5
+{{- if .Values.xray.enabled }}
+      },
+      "traces": {
+        "traces_collected": {
+          "xray": {
+            "bind_address": ":{{ .Values.xray.port -}}"
+          }
+        }
+{{- end }}
 {{- if .Values.statsd.enabled }}
       },
       "metrics": {
