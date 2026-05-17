@@ -1,5 +1,5 @@
 {{- if .Values.rbac.pspEnabled }}
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodSecurityPolicy
 metadata:
   name: {{ include "aws-for-fluent-bit.fullname" . }}
@@ -9,14 +9,11 @@ spec:
   requiredDropCapabilities:
     - ALL
   volumes:
-    - 'configMap'
-    - 'secret'
-    - 'hostPath'
-    - 'projected'
-  allowedHostPaths:
-    - pathPrefix: "/var/log"
-    - pathPrefix: "/var/lib/docker/containers"
-      readOnly: true
+    - configMap
+    - secret
+    - hostPath
+    - projected
+  hostNetwork: false
   hostIPC: false
   hostPID: false
   runAsUser:
@@ -36,4 +33,8 @@ spec:
       - min: 1
         max: 65535
   readOnlyRootFilesystem: false
+  allowedHostPaths:
+    - pathPrefix: "/var/log"
+    - pathPrefix: "/var/lib/docker/containers"
+      readOnly: true
 {{- end }}
