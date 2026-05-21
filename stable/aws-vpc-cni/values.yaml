@@ -8,12 +8,12 @@ nameOverride: aws-node
 
 init:
   image:
-    tag: v1.21.1
+    tag: v1.21.2
     domain: amazonaws.com
     region: us-west-2
     endpoint: ecr
     account: "602401143452"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     # Set to use custom image
     overrideRepository:
     # overrideRepository: "repo/org/image"
@@ -29,12 +29,12 @@ init:
 nodeAgent:
   enabled: true
   image:
-    tag: v1.3.1
+    tag: v1.3.5
     domain: amazonaws.com
     region: us-west-2
     endpoint: ecr
     account: "602401143452"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     # Set to use custom image
     overrideRepository:
     # overrideRepository: "repo/org/image"
@@ -52,16 +52,17 @@ nodeAgent:
   metricsBindAddr: "8162"
   healthProbeBindAddr: "8163"
   conntrackCacheCleanupPeriod: 300
+  conntrackCacheTableSize: 524288
   logLevel: "debug"
   resources: {}
 
 image:
-  tag: v1.21.1
+  tag: v1.21.2
   domain: amazonaws.com
   region: us-west-2
   endpoint: ecr
   account: "602401143452"
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Set to use custom image
   overrideRepository:
   # overrideRepository: "repo/org/image"
@@ -92,7 +93,7 @@ env:
   ENABLE_IPv4: "true"
   ENABLE_IPv6: "false"
   ENABLE_SUBNET_DISCOVERY: "true"
-  VPC_CNI_VERSION: "v1.21.1"
+  VPC_CNI_VERSION: "v1.21.2"
   NETWORK_POLICY_ENFORCING_MODE: "standard"
   ENABLE_IMDS_ONLY_MODE: "false"
   ENABLE_MULTI_NIC: "false"
