@@ -61,3 +61,16 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+The cni-metrics-helper image to use
+*/}}
+{{- define "cni-metrics-helper.image" -}}
+{{- if .Values.image.override -}}
+{{- .Values.image.override -}}
+{{- else if .Values.image.registry -}}
+{{- printf "%s:%s" .Values.image.registry .Values.image.tag -}}
+{{- else -}}
+{{- printf "%s.dkr.ecr.%s.%s/cni-metrics-helper:%s" .Values.image.account .Values.image.region .Values.image.domain .Values.image.tag -}}
+{{- end -}}
+{{- end }}
