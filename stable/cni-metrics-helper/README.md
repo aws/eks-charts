@@ -61,6 +61,8 @@ The following table lists the configurable parameters for this chart and their d
 | `affinity`                     | Map of node/pod affinities                                    | `{}`                                |
 | `fullnameOverride`             | Override the fullname of the chart                            | `cni-metrics-helper`                |
 | `image.tag`                    | Image tag                                                     | `v1.21.2`                           |
+| `image.registry`               | Image registry/repository path without the tag                | `nil`                               |
+| `image.override`               | Full image override                                           | `nil`                               |
 | `image.domain`                 | ECR repository domain                                         | `amazonaws.com`                     |
 | `image.region`                 | ECR repository region to use. Should match your cluster       | `us-west-2`                         |
 | `image.account`                | ECR repository account number                                 | `602401143452`                      |

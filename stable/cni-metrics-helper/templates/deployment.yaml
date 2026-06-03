@@ -40,7 +40,7 @@ spec:
         securityContext: {{ toYaml .Values.containerSecurityContext | nindent 10 }}
 {{- end }}
         name: cni-metrics-helper
-        image: "{{- if .Values.image.override }}{{- .Values.image.override }}{{- else }}{{- .Values.image.account }}.dkr.ecr.{{- .Values.image.region }}.{{- .Values.image.domain }}/cni-metrics-helper:{{- .Values.image.tag }}{{- end}}"
+        image: "{{ include "cni-metrics-helper.image" . }}"
 {{- if eq (get .Values.env "USE_PROMETHEUS") "true" }}
         ports:
         - containerPort: 61681
