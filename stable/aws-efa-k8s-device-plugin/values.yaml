@@ -91,6 +91,10 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - g6e.24xlarge
     - g6e.48xlarge
     - g6e.8xlarge
+    - g7.12xlarge
+    - g7.24xlarge
+    - g7.48xlarge
+    - g7.8xlarge
     - g7e.12xlarge
     - g7e.24xlarge
     - g7e.48xlarge
