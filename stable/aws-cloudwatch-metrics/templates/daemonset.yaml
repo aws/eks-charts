@@ -13,6 +13,10 @@ spec:
       labels:
         {{- include "aws-cloudwatch-metrics.selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       serviceAccountName: {{ include "aws-cloudwatch-metrics.serviceAccountName" . }}
       hostNetwork: {{ .Values.hostNetwork }}
       containers:
