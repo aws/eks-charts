@@ -23,6 +23,9 @@ data:
         Name              tail
         Tag               {{ .Values.input.tag }}
         Path              {{ .Values.input.path }}
+        {{- if .Values.input.pathKey }}
+        Path_Key          {{ .Values.input.pathKey }}
+        {{- end }}
         DB                {{ .Values.input.db }}
         {{- if .Values.input.parser }}
         Parser            {{ .Values.input.parser }}
