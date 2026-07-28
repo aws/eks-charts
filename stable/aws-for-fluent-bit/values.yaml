@@ -142,6 +142,7 @@ firehose:
   match: "*"
   region: "us-east-1"
   deliveryStream: "my-stream"
+  replaceDots:
   dataKeys:
   roleArn:
   endpoint:
