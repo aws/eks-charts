@@ -24,6 +24,12 @@ serviceAccount:
   # serviceAccount.name: The name of the service account to create or use
   name: ""
 
+priorityClass:
+  # priorityClass.create: Whether to create a priority class or not
+  create: false
+  # priorityClass.name:  The name of the priority class to create or use 
+  name: ""
+
 rbac:
   # rbac.create: Whether to create rbac resources or not
   create: true
@@ -33,3 +39,9 @@ webhookService:
   port: 443
   # webhookService.targetPort: Target port used by webhook service
   targetPort: 443
+
+webhookConfiguration:
+  # webhookConfiguration.failurePolicy: defines how errors from the admission webhook are handled
+  # Default failurePolicy in admissionregistration.k8s.io/v1beta1 is `Ignore`
+  # Default failurePolicy in admissionregistration.k8s.io/v1 is `Fail` 
+  failurePolicy:
