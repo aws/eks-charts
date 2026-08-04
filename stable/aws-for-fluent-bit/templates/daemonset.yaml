@@ -19,7 +19,8 @@ spec:
         {{- toYaml .Values.annotations | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "aws-for-fluent-bit.selectorLabels" . | nindent 8 }}
+        {{- $labels := merge (include "aws-for-fluent-bit.selectorLabels" . | fromYaml) (.Values.podLabels | default dict) }}
+        {{- toYaml $labels | nindent 8 }}
     spec:
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
