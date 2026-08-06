@@ -33,3 +33,12 @@ webhookService:
   port: 443
   # webhookService.targetPort: Target port used by webhook service
   targetPort: 443
+
+# nodeSelector: Node labels for pod assignment
+nodeSelector: {}
+
+# tolerations: Tolerations for pod assignment
+tolerations: []
+
+# affinity: Affinity for pod assignment
+affinity: {}
