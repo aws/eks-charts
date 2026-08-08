@@ -27,6 +27,12 @@ webhooks:
     sideEffects: None
     admissionReviewVersions:
     - v1beta1
+    objectSelector:
+      matchExpressions:
+      - key: app
+        operator: NotIn
+        values:
+        - {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}
 ---
 apiVersion: v1
 kind: Secret
