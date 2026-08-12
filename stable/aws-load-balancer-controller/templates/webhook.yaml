@@ -314,7 +314,7 @@ webhooks:
       name: {{ template "aws-load-balancer-controller.webhookService" . }}
       namespace: {{ $.Release.Namespace }}
       path: /validate-networking-v1-ingress
-  failurePolicy:  {{ $.Values.webhookConfig.ingressValdationFailurePolicy }}
+  failurePolicy:  {{ $.Values.webhookConfig.ingressValidationFailurePolicy | default (default "Fail" $.Values.webhookConfig.ingressValdationFailurePolicy) }}
   matchPolicy: Equivalent
   name: vingress.elbv2.k8s.aws
   {{- if .Values.webhookConfig.ingressValidationObjectSelector }}
