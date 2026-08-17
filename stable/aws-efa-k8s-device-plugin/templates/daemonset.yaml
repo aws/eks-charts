@@ -57,10 +57,6 @@ spec:
                   values:
                     {{- toYaml $.Values.supportedInstanceLabels.values | nindent 20 }}
               {{- end }}
-                - key: eks.amazonaws.com/compute-type
-                  operator: NotIn
-                  values:
-                  - auto
       hostNetwork: true
       containers:
         - image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}

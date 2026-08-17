@@ -1,6 +1,12 @@
 # AWS EFA Kubernetes Device Plugin
 This chart installs the AWS EFA Kubernetes Device Plugin daemonset
 
+The chart supports EFA-capable EKS Auto Mode nodes. Configure the EFA network
+interfaces on the Auto Mode NodeClass before deploying workloads that request
+`vpc.amazonaws.com/efa`. See [Manage EFA devices on Amazon
+EKS](https://docs.aws.amazon.com/eks/latest/userguide/device-management-efa.html)
+for the complete setup.
+
 ## Prerequisites
 - Helm v3
 
