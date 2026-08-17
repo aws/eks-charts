@@ -1,0 +1,18 @@
+# Artifact Hub repository metadata file
+#
+# This file claims ownership of the "aws" Helm charts repository on Artifact Hub
+# (https://artifacthub.io/packages/search?repo=aws), transferring it from the
+# Helm project admins to the AWS EKS team so that automated notifications reach
+# the correct owners.
+#
+# Ownership claim process:
+# https://artifacthub.io/docs/topics/repositories/#ownership-claim
+#
+# Only the `owners` section is required for the ownership claim. The email of the
+# user performing the claim in the Artifact Hub control panel must match one of
+# the emails listed below.
+owners:
+  - name: Jayanth Varavani
+    email: varavaj@amazon.com
+  - name: Christian DiRubbio
+    email: cdirubb@amazon.com
