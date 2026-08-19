@@ -3,6 +3,10 @@ kind: DaemonSet
 metadata:
   name: {{ include "aws-for-fluent-bit.fullname" . }}
   namespace: {{ include "aws-for-fluent-bit.namespace" . }}
+  {{- with .Values.daemonSetAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "aws-for-fluent-bit.labels" . | nindent 4 }}
 spec:
