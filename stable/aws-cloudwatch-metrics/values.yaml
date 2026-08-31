@@ -4,6 +4,7 @@ image:
   pullPolicy: IfNotPresent
 
 clusterName: cluster_name
+metricsCollectionInterval: 60
 
 enhancedContainerInsights:
   enabled: true
