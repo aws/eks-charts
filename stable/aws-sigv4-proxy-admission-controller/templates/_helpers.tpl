@@ -49,6 +49,13 @@ Create the name of the service account to use
 {{- end -}}
 
 {{/*
+Create the name of the priority class to use
+*/}}
+{{- define "aws-sigv4-proxy-admission-controller.priorityClassName" -}}
+  {{ default (include "aws-sigv4-proxy-admission-controller.fullname" .) .Values.priorityClass.name }}
+{{- end -}}
+
+{{/*
 Generate certificates for webhook
 */}}
 {{- define "aws-sigv4-proxy-admission-controller.gen-certs" -}}

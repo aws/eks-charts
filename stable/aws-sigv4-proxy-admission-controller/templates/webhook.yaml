@@ -13,6 +13,9 @@ metadata:
 {{ include "aws-sigv4-proxy-admission-controller.labels" . | indent 4 }}
 webhooks:
   - name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}.k8s.aws
+{{- if .Values.webhookConfiguration.failurePolicy }}
+    failurePolicy: {{ .Values.webhookConfiguration.failurePolicy }} 
+{{- end }}
     clientConfig:
       service:
         name: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-service
