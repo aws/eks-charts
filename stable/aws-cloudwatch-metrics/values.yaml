@@ -3,6 +3,8 @@ image:
   tag: 1.300032.2b361
   pullPolicy: IfNotPresent
 
+imagePullSecrets: []
+
 clusterName: cluster_name
 
 enhancedContainerInsights:
