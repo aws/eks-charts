@@ -8,6 +8,7 @@ metadata:
     {{- include "aws-for-fluent-bit.labels" . | nindent 4 }}
 data:
   {{- range $key, $value := .Values.luaScripts }}
-  {{ $key }}: {{ tpl $value $ | toYaml | nindent 4 }}
+  {{ $key }}: |
+{{ tpl $value $ | indent 4 }}
   {{- end }}
 {{- end }}
