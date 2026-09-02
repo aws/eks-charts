@@ -54,6 +54,7 @@ helm delete aws-for-fluent-bit --namespace kube-system
 | `filter.*` | Values for kubernetes filter | |
 | `filter.extraFilters` | Append to existing filter with value |
 | `additionalFilters` | Adding more filters with value |
+| `luaScripts` | Optional map of Lua script filename to content, mounted at `/fluent-bit/scripts/`. Empty default creates no extra ConfigMap or volume. Reference from extraFilters / custom fluent-bit config, e.g. `script /fluent-bit/scripts/helpers.lua`. | `{}` |
 | `cloudWatch.enabled` | Enable this to activate old golang plugin [details](https://github.com/aws/amazon-cloudwatch-logs-for-fluent-bit). For guidance on choosing go vs c plugin, please refer to [debugging guide](https://github.com/aws/aws-for-fluent-bit/blob/mainline/troubleshooting/debugging.md#aws-go-plugins-vs-aws-core-c-plugins) | `false` | ✔
 | `cloudWatch.match` | The log filter | `*` | ✔
 | `cloudWatch.region` | The AWS region for CloudWatch.  | `us-east-1` | ✔
