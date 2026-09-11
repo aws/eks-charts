@@ -1,4 +1,4 @@
-name: Update EFA Device Plugin Instance Types
+name: Update EFA Device Plugin Chart
 
 on:
   workflow_dispatch: {}
@@ -26,26 +26,66 @@ jobs:
           role-to-assume: ${{ secrets.UPDATE_CHARTS_AWS_ROLE_ARN }}
           role-duration-seconds: 900
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-      - name: Run ./hack/update-efa-instance-types.sh
+      - name: Install yq
         run: |
               YQ_VERSION=v4.52.4
               YQ_PLATFORM=linux_amd64
               wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_${YQ_PLATFORM} -O /usr/local/bin/yq &&\
                 chmod +x /usr/local/bin/yq
 
-              ./hack/update-efa-instance-types.sh
+      # Runs first, and the instance type refresh below is non-fatal, so a
+      # failure there cannot discard an image tag update.
+      - name: Run ./hack/update-efa-image-tag.sh
+        id: image-tag
+        run: ./hack/update-efa-image-tag.sh
+
+      # Restored below if the refresh fails part-way, so a partial instance list
+      # cannot ride along on the image tag update's version bump.
+      - name: Snapshot the chart
+        run: cp -a stable/aws-efa-k8s-device-plugin "${RUNNER_TEMP}/efa-chart"
+
+      - name: Run ./hack/update-efa-instance-types.sh
+        id: instance-types
+        continue-on-error: true
+        run: ./hack/update-efa-instance-types.sh
+
+      - name: Discard a partial instance type refresh
+        if: steps.instance-types.outcome == 'failure'
+        run: |
+              echo "::warning::instance type refresh failed; discarding its changes, so this PR carries the image tag update only"
+              rm -rf stable/aws-efa-k8s-device-plugin
+              cp -a "${RUNNER_TEMP}/efa-chart" stable/aws-efa-k8s-device-plugin
+
+      # PRs opened with GITHUB_TOKEN do not trigger ci.yaml, so check the
+      # rewritten chart here. helm lint cannot see git history, so the version
+      # increment is asserted separately.
+      - name: Ensure a chart edit carries a version bump
+        run: |
+              if ! git diff --quiet -- stable/aws-efa-k8s-device-plugin && \
+                 ! git diff -- stable/aws-efa-k8s-device-plugin/Chart.yaml | grep -q '^[-+]version:'; then
+                echo "::error::the chart was modified without a version increment"
+                exit 1
+              fi
+
+      - name: Lint the modified chart
+        run: helm lint stable/aws-efa-k8s-device-plugin
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # refs/tags/v7.0.9
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(efa-device-plugin): add latest EFA instance types"
-          title: "chore(efa-device-plugin): add latest EFA instance types"
+          commit-message: "chore(efa-device-plugin): update instance types and image tag"
+          title: "chore(efa-device-plugin): update instance types and image tag"
           body: |
-            This PR updates adds the latest EFA supported instance types to the EFA device plugin chart by running `./hack/update-efa-instance-types.sh`.
-            
+            This PR keeps the EFA device plugin chart current by running:
+
+            - `./hack/update-efa-image-tag.sh`, which points `image.tag` at the newest image tag available in every sampled region. A plugin version change bumps the chart's minor version and is called out below; a rebuild of the same version bumps the patch.
+            - `./hack/update-efa-instance-types.sh`, which refreshes the EFA supported instance types.
+
+            ${{ steps.image-tag.outputs.upgrade_note }}
+
             ## Testing
-            Please verify that the chart version is correctly bumped and no in-use instance types are removed.
+            Please verify that the chart version is bumped, that no in-use instance types are removed, and that `appVersion` and `image.tag` point at an intended plugin release.
           branch: automated/update-efa-instance-types
           base: master
           delete-branch: true
