@@ -283,6 +283,10 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - r8in.96xlarge
     - r8in.metal-48xl
     - r8in.metal-96xl
+    - r9g.48xlarge
+    - r9g.metal-48xl
+    - r9gd.48xlarge
+    - r9gd.metal-48xl
     - trn1.32xlarge
     - trn1n.32xlarge
     - trn2-ac.24xlarge
