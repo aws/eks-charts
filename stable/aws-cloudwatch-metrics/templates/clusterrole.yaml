@@ -22,3 +22,10 @@ rules:
   resources: ["configmaps"]
   resourceNames: ["cwagent-clusterleader"]
   verbs: ["get","update"]
+- apiGroups: ["discovery.k8s.io"]
+  resources: ["endpointslices"]
+  verbs: ["list", "watch" ]
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["list", "watch" ]
+  namespace: {{ .Release.Namespace }}
