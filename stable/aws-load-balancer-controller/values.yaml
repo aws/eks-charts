@@ -230,8 +230,12 @@ metricsBindAddr: ""
 webhookConfig:
   # disableIngressValidation disables the validation of resources of kind Ingress, false by default
   disableIngressValidation:
-  # whether or not to fail the ingress creation if the webhook fails
-  ingressValdationFailurePolicy: Fail
+  # whether or not to fail the ingress creation if the webhook fails (default "Fail")
+  ingressValidationFailurePolicy:
+  # Deprecated: use ingressValidationFailurePolicy instead. This misspelled key
+  # (missing the "i" in "Validation") is kept only so existing values files
+  # keep working; it is honored if set and ingressValidationFailurePolicy is not.
+  ingressValdationFailurePolicy:
   # limit ingress validation webhook to only validate ingresses matching the objectSelector
   ingressValidationObjectSelector:
     matchExpressions:
