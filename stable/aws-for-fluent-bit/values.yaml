@@ -333,6 +333,19 @@ env: []
 #       fieldRef:
 #         fieldPath: spec.nodeName
 
+# Optional Lua scripts mounted at /fluent-bit/scripts/
+# Reference them from extraFilters / custom fluent-bit config, e.g.:
+#   [FILTER]
+#       Name lua
+#       Match *
+#       script /fluent-bit/scripts/helpers.lua
+#       call my_filter
+luaScripts: {}
+# helpers.lua: |
+#   function my_filter(tag, timestamp, record)
+#     return 2, timestamp, record
+#   end
+
 volumes:
   - name: varlog
     hostPath:
