@@ -183,8 +183,8 @@ data:
         {{- if .Values.firehose.timeKeyFormat }}
         time_key_format {{ .Values.firehose.timeKeyFormat }}
         {{- end -}}
-        {{- if .Values.kinesis.extraOutputs }}
-{{ .Values.kinesis.extraOutputs | indent 8 }}
+        {{- if .Values.firehose.extraOutputs }}
+{{ .Values.firehose.extraOutputs | indent 8 }}
         {{- end }}
 {{- end }}
 
