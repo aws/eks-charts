@@ -140,7 +140,13 @@ spec:
         - --sync-period={{ .Values.syncPeriod }}
         {{- end }}
         {{- if .Values.watchNamespace }}
+        {{- if kindIs "slice" .Values.watchNamespace }}
+        {{- range .Values.watchNamespace }}
+        - --watch-namespace={{ . }}
+        {{- end }}
+        {{- else }}
         - --watch-namespace={{ .Values.watchNamespace }}
+        {{- end }}
         {{- end }}
         {{- if kindIs "bool" .Values.disableIngressClassAnnotation }}
         - --disable-ingress-class-annotation={{ .Values.disableIngressClassAnnotation }}
