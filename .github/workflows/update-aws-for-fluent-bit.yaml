@@ -1,0 +1,47 @@
+name: Update aws-for-fluent-bit chart
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 17 * * 1" # Every Monday at 09:00 PST
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-chart:
+    if: github.repository == 'aws/eks-charts'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # refs/tags/v4.1.7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run ./hack/update-aws-for-fluent-bit.sh
+        id: update
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+              YQ_VERSION=v4.52.4
+              YQ_PLATFORM=linux_amd64
+              wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_${YQ_PLATFORM} -O /usr/local/bin/yq &&\
+                chmod +x /usr/local/bin/yq
+
+              ./hack/update-aws-for-fluent-bit.sh
+
+      - name: Create Pull Request
+        if: steps.update.outputs.version != ''
+        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # refs/tags/v7.0.9
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "aws-for-fluent-bit: bump to AWS for Fluent Bit ${{ steps.update.outputs.version }}"
+          title: "aws-for-fluent-bit: bump to AWS for Fluent Bit ${{ steps.update.outputs.version }}"
+          body: |
+            This PR updates the aws-for-fluent-bit chart to the latest 3.x release of [aws/aws-for-fluent-bit](https://github.com/aws/aws-for-fluent-bit/releases/tag/v${{ steps.update.outputs.version }}) by running `./hack/update-aws-for-fluent-bit.sh`.
+
+            ## Testing
+            Please verify that the chart version is correctly bumped and the image tag exists in `public.ecr.aws/aws-observability/aws-for-fluent-bit`.
+          branch: automated/update-aws-for-fluent-bit
+          base: master
+          delete-branch: true
