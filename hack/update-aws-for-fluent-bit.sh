@@ -11,7 +11,7 @@ VALUES_FILE="${CHART_DIRECTORY}/values.yaml"
 
 # 2.x reached end of life on 2026-06-30; only track the 3.x line.
 LATEST=$(gh release list --repo aws/aws-for-fluent-bit --exclude-drafts --exclude-pre-releases --limit 50 --json tagName \
-  --jq '[.[].tagName | ltrimstr("v") | select(startswith("3."))][0]')
+  --jq '.[].tagName | ltrimstr("v") | select(startswith("3."))' | sort -V | tail -n 1)
 CURRENT=$(yq eval '.appVersion' "$CHART_FILE")
 
 if [[ -z "$LATEST" ]]; then
