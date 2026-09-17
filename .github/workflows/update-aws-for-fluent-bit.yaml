@@ -38,7 +38,7 @@ jobs:
           commit-message: "aws-for-fluent-bit: bump to AWS for Fluent Bit ${{ steps.update.outputs.version }}"
           title: "aws-for-fluent-bit: bump to AWS for Fluent Bit ${{ steps.update.outputs.version }}"
           body: |
-            This PR updates the aws-for-fluent-bit chart to the latest 3.x release of [aws/aws-for-fluent-bit](https://github.com/aws/aws-for-fluent-bit/releases/tag/v${{ steps.update.outputs.version }}) by running `./hack/update-aws-for-fluent-bit.sh`.
+            This PR updates the aws-for-fluent-bit chart to the latest release of [aws/aws-for-fluent-bit](https://github.com/aws/aws-for-fluent-bit/releases/tag/v${{ steps.update.outputs.version }}) by running `./hack/update-aws-for-fluent-bit.sh`.
 
             ## Testing
             Please verify that the chart version is correctly bumped and the image tag exists in `public.ecr.aws/aws-observability/aws-for-fluent-bit`.
