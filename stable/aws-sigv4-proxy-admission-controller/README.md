@@ -40,3 +40,6 @@ helm uninstall aws-sigv4-proxy-admission-controller --namespace <namespace>
 | `rbac.create` | Whether to create rbac resources or not | `true`
 | `webhookService.port` | Incoming port used by webhook service | `443`
 | `webhookService.targetPort` | Target port used by webhook service | `443`
+| `nodeSelector` | Node labels for pod assignment | `{}`
+| `tolerations` | Tolerations for pod assignment | `[]`
+| `affinity` | Affinity for pod assignment | `{}`

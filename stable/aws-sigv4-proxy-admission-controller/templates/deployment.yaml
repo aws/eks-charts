@@ -37,3 +37,15 @@ spec:
         - name: webhook-certs
           secret:
             secretName: {{ template "aws-sigv4-proxy-admission-controller.fullname" . }}-webhook-certs
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
