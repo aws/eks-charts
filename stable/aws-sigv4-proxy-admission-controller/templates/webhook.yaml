@@ -19,6 +19,11 @@ webhooks:
         namespace: {{ .Release.Namespace }}
         path: "/mutate"
       caBundle: {{ $tls.caCert }}
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: NotIn
+          values: [{{ .Release.Namespace }}]
     rules:
       - operations: [ "CREATE" ]
         apiGroups: ["apps", ""]
