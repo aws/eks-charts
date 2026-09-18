@@ -49,6 +49,15 @@ service:
   #   [PARSER]
   #       Name   logfmt
   #       Format logfmt
+  # multilineParsers: |
+  #  [MULTILINE_PARSER]
+  #    Name  multiline_logs
+  #    type  regex
+  #    flush_timeout 1000
+  #    # rules   |   state name   | regex pattern                   | next state name
+  #    # --------|----------------|--------------------------------------------------
+  #    rule  "start_state" "\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3} \[([^\]]*)\].*$"  "cont"
+  #    rule  "cont"  "^(?!\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3} \[([^\]]*)\]).*$" "cont"
 
 input:
   enabled: true
