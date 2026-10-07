@@ -5,6 +5,10 @@ metadata:
     {{- include "aws-for-fluent-bit.labels" . | nindent 4 }}
   name: {{ include "aws-for-fluent-bit.fullname" . }}
   namespace: {{ include "aws-for-fluent-bit.namespace" . }}
+  {{- with .Values.serviceAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   ports:
   - name: monitor-agent
