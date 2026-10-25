@@ -43,7 +43,7 @@ The following table lists the configurable parameters and their default values.
 | Parameter | Description | Default |
 |---|---|---|
 | `image.repository` | Container image repository | `602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/dranet` |
-| `image.tag` | Container image tag | `v1.2.0-eksbuild.33` |
+| `image.tag` | Container image tag | `v1.2.0-eksbuild.34` |
 | `image.pullPolicy` | Container image pull policy | `IfNotPresent` |
 | `securityContext` | Container security context | See `values.yaml` |
 | `resources.requests.cpu` | CPU request | `100m` |

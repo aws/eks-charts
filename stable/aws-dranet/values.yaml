@@ -1,6 +1,6 @@
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/dranet
-  tag: "v1.2.0-eksbuild.33"
+  tag: "v1.2.0-eksbuild.34"
   pullPolicy: IfNotPresent
 
 securityContext:
