@@ -1,8 +1,8 @@
 apiVersion: v2
 name: aws-dranet
 description: A Helm chart for the dranet network driver for AWS EC2 instances.
-version: 1.0.2
-appVersion: "v1.2.0-eksbuild.34"
+version: 1.0.3
+appVersion: "v1.2.0-eksbuild.39"
 home: https://github.com/aws/eks-charts
 icon: https://raw.githubusercontent.com/aws/eks-charts/master/docs/logo/aws.png
 sources:
