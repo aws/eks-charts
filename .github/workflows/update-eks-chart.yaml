@@ -1,9 +1,16 @@
-name: Update EFA Device Plugin Instance Types
+name: Update EFA Device Plugin Chart
 
 on:
   workflow_dispatch: {}
   schedule:
     - cron: "0 17 * * 1-5" # Every Mon-Friday at 09:00 PST
+
+# Both triggers force-push the same retained branch, so two overlapping runs
+# would race and one run's proposal would be lost. Queue rather than cancel, so a
+# manual dispatch cannot kill a scheduled run part-way through its rollbacks.
+concurrency:
+  group: update-efa-chart
+  cancel-in-progress: false
 
 permissions:
   id-token: write
@@ -15,37 +22,254 @@ jobs:
     environment: efa-updater
     if: github.repository == 'aws/eks-charts'
     runs-on: ubuntu-latest
+    env:
+      # A throttle costs both scripts something, differently: the image tag script
+      # abandons the run rather than guess, while the refresh hides the failed call
+      # and writes a short list that the step below then has to discard. Absorbing
+      # brief throttles here is cheaper than either. The attempt count is the part
+      # that changes behaviour; standard is already the CLI v2 default and is named
+      # only to record that it was chosen, since AWS documents adaptive mode as
+      # experimental and subject to change.
+      #
+      # Kept modest rather than maximal, because the two scripts share one 900 second
+      # session. A weekday with no new tag is about 19 calls between them, and a run
+      # that adopts one is about 31; the refresh is the larger half either way, at one
+      # per enabled region plus one to list the regions. The image tag script
+      # overtakes it as the chart falls further behind, at a dozen calls for a
+      # candidate walked to the end and about four for one rejected early. Standard
+      # backoff caps at 20 seconds a retry, so a large attempt budget would spend the
+      # session sleeping and then fail on an expired token rather than on the throttle
+      # that caused it, which is the more confusing failure to debug.
+      AWS_RETRY_MODE: standard
+      AWS_MAX_ATTEMPTS: 5
     steps:
       - name: Checkout repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # refs/tags/v4.1.7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@5579c002bb4778aa43395ef1df492868a9a1c83f # refs/tags/v4.0.2
-        with:
-          role-to-assume: ${{ secrets.UPDATE_CHARTS_AWS_ROLE_ARN }}
-          role-duration-seconds: 900
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-      - name: Run ./hack/update-efa-instance-types.sh
+      - name: Install yq
         run: |
               YQ_VERSION=v4.52.4
               YQ_PLATFORM=linux_amd64
               wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_${YQ_PLATFORM} -O /usr/local/bin/yq &&\
                 chmod +x /usr/local/bin/yq
 
-              ./hack/update-efa-instance-types.sh
+      # Reads the version out of the repo's own toolchain script so this lints
+      # with the same Helm as ci.yaml without a second copy of the version, and
+      # without pulling in the four other tools that script installs.
+      #
+      # Downloaded before any registry call or chart edit. Placed after them, a
+      # transient get.helm.sh failure would throw away a tag bump that had already
+      # been verified against four regions, and the next run would redo every call.
+      - name: Install the pinned Helm
+        run: |
+              HELM_VERSION=$(sed -n 's/^HELM_VERSION="\([^"]*\)".*$/\1/p' scripts/install-toolchain.sh)
+              if [ -z "$HELM_VERSION" ]; then
+                echo "::error::could not read HELM_VERSION from scripts/install-toolchain.sh"
+                exit 1
+              fi
+              echo "installing Helm ${HELM_VERSION}"
+              mkdir -p "${RUNNER_TEMP}/tools"
+              curl -fsSL "https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz" \
+                | tar xz -C "${RUNNER_TEMP}/tools" --strip-components=1 linux-amd64/helm
 
+      # Last of the setup steps, because the assumed session lasts 900 seconds and
+      # every second spent downloading a tool is a second the registry reads do not
+      # have.
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@5579c002bb4778aa43395ef1df492868a9a1c83f # refs/tags/v4.0.2
+        with:
+          role-to-assume: ${{ secrets.UPDATE_CHARTS_AWS_ROLE_ARN }}
+          role-duration-seconds: 900
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      # Both scripts are non-fatal and have their own rollback point, so neither
+      # can discard the other's work or withhold the pull request. Neither is
+      # silent either: the last step reddens the run if either did not complete.
+      - name: Checkpoint before the image tag update
+        run: cp -a stable/aws-efa-k8s-device-plugin "${RUNNER_TEMP}/before-image-tag"
+
+      - name: Run ./hack/update-efa-image-tag.sh
+        id: image-tag
+        continue-on-error: true
+        run: ./hack/update-efa-image-tag.sh
+
+      - name: Discard a failed image tag update
+        id: image-tag-check
+        if: steps.image-tag.outcome != 'success'
+        run: |
+              echo "::warning::image tag update failed; discarding its changes"
+              {
+                echo "discard_note<<NOTE_EOF"
+                echo "The image tag update failed and its changes were discarded, so this pull request does not touch \`image.tag\`. See the run log."
+                echo "NOTE_EOF"
+              } >>"$GITHUB_OUTPUT"
+              rm -rf stable/aws-efa-k8s-device-plugin
+              cp -a "${RUNNER_TEMP}/before-image-tag" stable/aws-efa-k8s-device-plugin
+
+      - name: Checkpoint before the instance type refresh
+        run: cp -a stable/aws-efa-k8s-device-plugin "${RUNNER_TEMP}/before-refresh"
+
+      - name: Run ./hack/update-efa-instance-types.sh
+        id: instance-types
+        continue-on-error: true
+        run: ./hack/update-efa-instance-types.sh
+
+      # The refresh reads AWS inside `mapfile < <(...)`, which hides a failed
+      # call, so it can report success having written a short list. Comparing the
+      # sets rather than the exit status alone covers both, and catches a refresh
+      # that drops one type while adding another.
+      - name: Discard an incomplete instance type refresh
+        id: refresh-check
+        env:
+          REFRESH_OUTCOME: ${{ steps.instance-types.outcome }}
+        run: |
+              restore() {
+                echo "::warning::${1}; discarding the refresh"
+                {
+                  echo "discard_note<<NOTE_EOF"
+                  echo "The instance type refresh was discarded (${1}), so this pull request does not touch the supported instance type list."
+                  echo "NOTE_EOF"
+                } >>"$GITHUB_OUTPUT"
+                rm -rf stable/aws-efa-k8s-device-plugin
+                cp -a "${RUNNER_TEMP}/before-refresh" stable/aws-efa-k8s-device-plugin
+                exit 0
+              }
+
+              if [ "$REFRESH_OUTCOME" != "success" ]; then
+                restore "instance type refresh failed"
+              fi
+
+              VALUES=stable/aws-efa-k8s-device-plugin/values.yaml
+              # Each yq is captured on its own rather than piped or run inside a
+              # process substitution: the default shell is `bash -e` without
+              # pipefail, so either would return the downstream status and hide a
+              # failed read, which is the same defect class this step exists to
+              # catch. The printf/sort pair below can stay in a substitution
+              # because neither can fail in a way that matters.
+              #
+              # A failed read restores rather than exiting: it says nothing about the
+              # image tag update, which by this point has completed and been verified,
+              # and aborting here would throw that away and open no pull request.
+              BEFORE_TYPES=$(yq eval '.supportedInstanceLabels.values[]' "${RUNNER_TEMP}/before-refresh/values.yaml") \
+                || restore "could not read the pre-refresh instance type list"
+              AFTER_TYPES=$(yq eval '.supportedInstanceLabels.values[]' "$VALUES") \
+                || restore "could not read the refreshed instance type list"
+
+              # Drop blanks so an empty list cannot register as a phantom member,
+              # and dedupe so a hand-added duplicate that the refresh collapses is
+              # not reported as a type disappearing.
+              REMOVED=$(comm -23 \
+                <(printf '%s\n' "$BEFORE_TYPES" | sed '/^$/d' | sort -u) \
+                <(printf '%s\n' "$AFTER_TYPES" | sed '/^$/d' | sort -u))
+              if [ -n "$REMOVED" ]; then
+                # Named individually up to a point, then counted. A refresh that
+                # collapses to the handful of hardcoded types drops nearly 300 names,
+                # which as one unwrapped line would overrun the annotation limit and
+                # land in a public pull request body as a wall of text.
+                REMOVED_COUNT=$(printf '%s\n' "$REMOVED" | wc -l)
+                REMOVED_LIST=$(printf '%s\n' "$REMOVED" | head -10 | tr '\n' ' ' | sed 's/ *$//')
+                if [ "$REMOVED_COUNT" -gt 10 ]; then
+                  REMOVED_LIST="${REMOVED_LIST} and $((REMOVED_COUNT - 10)) more"
+                fi
+                restore "${REMOVED_COUNT} instance type(s) disappeared from the refresh: ${REMOVED_LIST}"
+              fi
+
+      # Asked once, here, so the version guard and the pull request gate below
+      # cannot disagree about whether the chart changed. The two read it with
+      # different spellings because each fails closed in its own direction: the
+      # guard runs unless it is told nothing changed, the pull request step runs
+      # only when it is told something did.
+      - name: Detect chart changes
+        id: chart
+        run: |
+              # Captured before it is tested, because a command substitution inside
+              # `[` discards its exit status: a failed git status would otherwise
+              # read as "nothing changed" and end the run green with no pull
+              # request, which is the one direction this must not fail in.
+              STATUS=$(git status --porcelain -- stable/aws-efa-k8s-device-plugin) \
+                || { echo "::error::could not read the working tree state"; exit 1; }
+              if [ -n "$STATUS" ]; then
+                echo "changed=true" >>"$GITHUB_OUTPUT"
+              else
+                echo "changed=false" >>"$GITHUB_OUTPUT"
+              fi
+
+      # PRs opened with GITHUB_TOKEN do not trigger ci.yaml, so check the
+      # rewritten chart here. helm lint cannot see git history, so the version
+      # increment is asserted separately.
+      - name: Ensure a chart edit carries a version bump
+        if: steps.chart.outputs.changed != 'false'
+        run: |
+              if ! git diff -- stable/aws-efa-k8s-device-plugin/Chart.yaml | grep -q '^+version:'; then
+                echo "::error::the chart was modified without a version increment"
+                exit 1
+              fi
+
+      - name: Lint the modified chart
+        if: steps.chart.outputs.changed != 'false'
+        run: |
+              "${RUNNER_TEMP}/tools/helm" lint stable/aws-efa-k8s-device-plugin
+
+      # Only invoked when there is something to propose. A run recomputes its
+      # proposal from the same base with the same two scripts, so a clean tree is
+      # evidence the scripts could not reproduce what is already open, and that is
+      # indistinguishable from the input having genuinely gone away. Closing on
+      # that guess would drop a review that is still open, so it is not made.
+      # What this gives up: a pull request whose only content was an instance type
+      # AWS has since withdrawn is genuinely obsolete and now lingers for a human
+      # to close. delete-branch is pinned off below for the same reason, so
+      # relaxing this condition cannot re-arm closing on its own.
       - name: Create Pull Request
+        if: steps.chart.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # refs/tags/v7.0.9
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(efa-device-plugin): add latest EFA instance types"
-          title: "chore(efa-device-plugin): add latest EFA instance types"
+          commit-message: "chore(efa-device-plugin): update instance types and image tag"
+          title: "chore(efa-device-plugin): update instance types and image tag"
           body: |
-            This PR updates adds the latest EFA supported instance types to the EFA device plugin chart by running `./hack/update-efa-instance-types.sh`.
-            
+            This PR keeps the EFA device plugin chart current by running:
+
+            - `./hack/update-efa-image-tag.sh`, which points `image.tag` at the newest image tag available in every sampled region. A plugin version change bumps the chart's minor version and is called out below; a rebuild of the same version bumps the patch.
+            - `./hack/update-efa-instance-types.sh`, which refreshes the EFA supported instance types.
+
+            ${{ steps.image-tag.outputs.upgrade_note }}
+
+            ${{ steps.image-tag-check.outputs.discard_note }}
+
+            ${{ steps.refresh-check.outputs.discard_note }}
+
+            ${{ steps.image-tag.outputs.stall_note }}
+
+            ${{ steps.image-tag.outputs.caveat_note }}
+
             ## Testing
-            Please verify that the chart version is correctly bumped and no in-use instance types are removed.
+            Please verify that the chart version is bumped, that no in-use instance types are removed, and that `appVersion` and `image.tag` point at an intended plugin release.
+          add-paths: stable/aws-efa-k8s-device-plugin
           branch: automated/update-efa-instance-types
           base: master
-          delete-branch: true
+          # Off deliberately: the only thing it does is force-delete the branch
+          # when there is no diff, which closes the pull request. See above.
+          delete-branch: false
+
+      # Runs after the pull request so a failure here does not withhold whatever
+      # did succeed, while still leaving the run red for a human to look at. A
+      # discarded-but-non-failing refresh counts, and so does stall_note, the script's
+      # only input to this gate, which it writes only for a condition someone has to
+      # act on: a warning on a green scheduled run is not a signal anyone sees.
+      #
+      # Deliberately NOT every run that changed nothing, and the two excluded cases
+      # are not reported the same way. A tag passed over because its shape differs
+      # from the pin's goes to caveat_note, which appears in the pull request body on
+      # a run that also adopted something and has no reader at all on a run that did
+      # not. Replication lag is reported in the run log and nowhere else. Neither
+      # reddens the run, because both clear without anyone doing anything, and a red
+      # run every weekday for a condition that is already resolving is how people
+      # learn to ignore red runs.
+      - name: Fail if either update did not complete
+        if: >-
+          steps.image-tag.outcome != 'success' ||
+          steps.instance-types.outcome != 'success' ||
+          steps.refresh-check.outputs.discard_note != '' ||
+          steps.image-tag.outputs.stall_note != ''
+        run: exit 1
