@@ -6,13 +6,17 @@ metadata:
     {{- include "aws-cloudwatch-metrics.labels" . | nindent 4 }}
 data:
   cwagentconfig.json: |
+    {{- $metricsCollectionInterval := .Values.metricsCollectionInterval | default 60 | int }}
+    {{- if lt $metricsCollectionInterval 15 }}
+    {{- fail "metricsCollectionInterval allows you to specify how often the agent collects metrics. The default is 60 seconds. The default cadvisor collection interval in kubelet is 15 seconds, so don't set this value to less than 15 seconds." }}
+    {{- end }}
     {
       "logs": {
         "metrics_collected": {
           "kubernetes": {
             "cluster_name": "{{ .Values.clusterName }}",
             "enhanced_container_insights": {{ .Values.enhancedContainerInsights.enabled }},
-            "metrics_collection_interval": 60
+            "metrics_collection_interval": {{ $metricsCollectionInterval }}
           }
         },
         "force_flush_interval": 5
