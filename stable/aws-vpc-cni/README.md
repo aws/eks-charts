@@ -49,19 +49,19 @@ The following table lists the configurable parameters for this chart and their d
 | `branchENICooldown`     | Number of seconds that branch ENIs remain in cooldown   | `60`                                |
 | `fullnameOverride`      | Override the fullname of the chart                      | `aws-node`                          |
 | `image.tag`             | Image tag                                               | `v1.23.2`                           |
-| `image.domain`          | ECR repository domain                                   | `amazonaws.com`                     |
+| `image.domain`          | ECR repository domain. The default is replaced automatically for China and European Sovereign Cloud regions; custom domains are preserved | `amazonaws.com`                     |
 | `image.region`          | ECR repository region to use. Should match your cluster | `us-west-2`                         |
 | `image.endpoint`        | ECR repository endpoint to use.                         | `ecr`                               |
-| `image.account`         | ECR repository account number                           | `602401143452`                      |
+| `image.account`         | ECR repository account number. The default is replaced automatically when `image.region` has a dedicated EKS add-on registry | `602401143452`                      |
 | `image.pullPolicy`      | Container pull policy                                   | `IfNotPresent`                      |
 | `image.overrideRepository` | Repository override for the image (does not change the tag) | `nil`                        |
 | `image.override`        | A custom docker image to use                            | `nil`                               |
 | `imagePullSecrets`      | Docker registry pull secret                             | `[]`                                |
 | `init.image.tag`        | Image tag                                               | `v1.23.2`                           |
-| `init.image.domain`     | ECR repository domain                                   | `amazonaws.com`                     |
+| `init.image.domain`     | ECR repository domain. The default is replaced automatically for China and European Sovereign Cloud regions; custom domains are preserved | `amazonaws.com`                     |
 | `init.image.region`     | ECR repository region to use. Should match your cluster | `us-west-2`                         |
 | `init.image.endpoint`   | ECR repository endpoint to use.                         | `ecr`                               |
-| `init.image.account`    | ECR repository account number                           | `602401143452`                      |
+| `init.image.account`    | ECR repository account number. The default is replaced automatically when `init.image.region` has a dedicated EKS add-on registry | `602401143452`                      |
 | `init.image.pullPolicy` | Container pull policy                                   | `IfNotPresent`                      |
 | `init.image.overrideRepository` | Repository override for the image (does not change the tag) | `nil`                   |
 | `init.image.override`   | A custom docker image to use                            | `nil`                               |
@@ -72,10 +72,10 @@ The following table lists the configurable parameters for this chart and their d
 | `nameOverride`          | Override the name of the chart                          | `aws-node`                          |
 | `nodeAgent.enabled`     | If the Node Agent container should be created           | `true`                              |
 | `nodeAgent.image.tag`   | Image tag for Node Agent                                | `v1.4.3`                            |
-| `nodeAgent.image.domain`| ECR repository domain                                   | `amazonaws.com`                     |
+| `nodeAgent.image.domain`| ECR repository domain. The default is replaced automatically for China and European Sovereign Cloud regions; custom domains are preserved | `amazonaws.com`                     |
 | `nodeAgent.image.region`| ECR repository region to use. Should match your cluster | `us-west-2`                         |
 | `nodeAgent.image.endpoint`   | ECR repository endpoint to use.                    | `ecr`                               |
-| `nodeAgent.image.account`    | ECR repository account number                      | `602401143452`                      |
+| `nodeAgent.image.account`    | ECR repository account number. The default is replaced automatically when `nodeAgent.image.region` has a dedicated EKS add-on registry | `602401143452`                      |
 | `nodeAgent.image.pullPolicy` | Container pull policy                              | `IfNotPresent`                      |
 | `nodeAgent.image.overrideRepository` | Repository override for the image (does not change the tag) | `nil`              |
 | `nodeAgent.image.override`   | A custom docker image to use                       | `nil`                               |
