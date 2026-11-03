@@ -10,13 +10,13 @@ image:
   # image.repository: Repository of image to pull for deployment
   repository: public.ecr.aws/aws-observability/aws-sigv4-proxy-admission-controller
   # image.tag: Tag of image to pull from repository
-  tag: "1.0"
+  tag: "1.3"
   # image.pullPolicy: Policy of how to pull image
   pullPolicy: IfNotPresent
 
 env:
   # env.awsSigV4ProxyImage: Image URI of sidecar container for AWS SIGv4 Proxy
-  awsSigV4ProxyImage: public.ecr.aws/aws-observability/aws-sigv4-proxy:1.0
+  awsSigV4ProxyImage: public.ecr.aws/aws-observability/aws-sigv4-proxy:1.13.1
 
 serviceAccount:
   # serviceAccount.create: Whether to create a service account or not

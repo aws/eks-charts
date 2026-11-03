@@ -32,9 +32,9 @@ helm uninstall aws-sigv4-proxy-admission-controller --namespace <namespace>
 | `fullnameOverride` | Used to override the full name of the application | `""`
 | `replicaCount` | Number of replicas | `1`
 | `image.repository` | Repository of image to pull for deployment | `public.ecr.aws/aws-observability/aws-sigv4-proxy-admission-controller`
-| `image.tag` | Tag of image to pull from repository | `1.0`
+| `image.tag` | Tag of image to pull from repository | `1.3`
 | `image.pullPolicy` | Policy of how to pull image | `IfNotPresent`
-| `env.awsSigV4ProxyImage` | Image URI of sidecar container for AWS SIGv4 Proxy | `public.ecr.aws/aws-observability/aws-sigv4-proxy:1.0`
+| `env.awsSigV4ProxyImage` | Image URI of sidecar container for AWS SIGv4 Proxy | `public.ecr.aws/aws-observability/aws-sigv4-proxy:1.13.1`
 | `serviceAccount.create` | Whether to create a service account or not | `true`
 | `serviceAccount.name` | The name of the service account to create or use | `""`
 | `rbac.create` | Whether to create rbac resources or not | `true`
