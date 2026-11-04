@@ -10,6 +10,7 @@ ALL_TYPES=(
   "trn2-ac.24xlarge" "trn2u-ac.24xlarge" "trn2u.48xlarge"
   "trn3.48xlarge" "trn3-dev0.48xlarge" "trn3-dev1.48xlarge"
   "trn3p.48xlarge" "trn3pd98.48xlarge" "trn3s.48xlarge"
+  "trn3en.24xlarge"
 )
 
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
