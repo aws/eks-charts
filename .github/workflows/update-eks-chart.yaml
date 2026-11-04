@@ -1,4 +1,4 @@
-name: Update EFA Device Plugin Instance Types
+name: Update EFA Device Plugin and DRANET Instance Types
 
 on:
   workflow_dispatch: {}
@@ -39,13 +39,13 @@ jobs:
         uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # refs/tags/v7.0.9
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(efa-device-plugin): add latest EFA instance types"
-          title: "chore(efa-device-plugin): add latest EFA instance types"
+          commit-message: "chore(efa-device-plugin,dranet): add latest EFA instance types"
+          title: "chore(efa-device-plugin,dranet): add latest EFA instance types"
           body: |
-            This PR updates adds the latest EFA supported instance types to the EFA device plugin chart by running `./hack/update-efa-instance-types.sh`.
+            This PR adds the latest EFA supported instance types to the EFA device plugin and DRANET charts by running `./hack/update-efa-instance-types.sh`.
             
             ## Testing
-            Please verify that the chart version is correctly bumped and no in-use instance types are removed.
+            Please verify that the chart versions are correctly bumped and no in-use instance types are removed.
           branch: automated/update-efa-instance-types
           base: master
           delete-branch: true
