@@ -1,0 +1,14 @@
+{{- if gt (len .Values.luaScripts) 0 }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "aws-for-fluent-bit.fullname" . }}-luascripts
+  namespace: {{ include "aws-for-fluent-bit.namespace" . }}
+  labels:
+    {{- include "aws-for-fluent-bit.labels" . | nindent 4 }}
+data:
+  {{- range $key, $value := .Values.luaScripts }}
+  {{ $key }}: |
+{{ tpl $value $ | indent 4 }}
+  {{- end }}
+{{- end }}

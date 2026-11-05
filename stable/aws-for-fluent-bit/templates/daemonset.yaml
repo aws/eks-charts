@@ -15,6 +15,9 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- if gt (len .Values.luaScripts) 0 }}
+        checksum/luascripts: {{ include (print $.Template.BasePath "/configmap-luascripts.yaml") . | sha256sum }}
+        {{- end }}
       {{- if .Values.annotations }}
         {{- toYaml .Values.annotations | nindent 8 }}
       {{- end }}
@@ -54,6 +57,10 @@ spec:
           volumeMounts:
             - name: fluentbit-config
               mountPath: /fluent-bit/etc/
+            {{- if gt (len .Values.luaScripts) 0 }}
+            - name: luascripts
+              mountPath: /fluent-bit/scripts/
+            {{- end }}
             {{- if .Values.volumeMounts }}
             {{- toYaml .Values.volumeMounts | nindent 12 }}
             {{- end }}
@@ -71,6 +78,11 @@ spec:
         - name: fluentbit-config
           configMap:
             name: {{ include "aws-for-fluent-bit.fullname" . }}
+        {{- if gt (len .Values.luaScripts) 0 }}
+        - name: luascripts
+          configMap:
+            name: {{ include "aws-for-fluent-bit.fullname" . }}-luascripts
+        {{- end }}
         {{- if .Values.volumes }}
         {{- toYaml .Values.volumes | nindent 8 }}
         {{- end}}
