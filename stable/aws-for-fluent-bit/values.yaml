@@ -333,7 +333,7 @@ env: []
 #       fieldRef:
 #         fieldPath: spec.nodeName
 
-# Optional Lua scripts mounted at /fluent-bit/scripts/
+# Optional Lua scripts mounted at /fluent-bit/scripts/ (content is rendered verbatim, not through tpl)
 # Reference them from extraFilters / custom fluent-bit config, e.g.:
 #   [FILTER]
 #       Name lua

@@ -1,4 +1,4 @@
-{{- if gt (len .Values.luaScripts) 0 }}
+{{- if .Values.luaScripts }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,6 +9,6 @@ metadata:
 data:
   {{- range $key, $value := .Values.luaScripts }}
   {{ $key }}: |
-{{ tpl $value $ | indent 4 }}
+{{ $value | indent 4 }}
   {{- end }}
 {{- end }}
