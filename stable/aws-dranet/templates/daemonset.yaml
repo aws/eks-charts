@@ -6,7 +6,6 @@ metadata:
   labels:
     {{- include "aws-dranet.labels" . | nindent 4 }}
     tier: node
-    app: {{ include "aws-dranet.name" . }}
     k8s-app: {{ include "aws-dranet.name" . }}
 spec:
   selector:
@@ -24,7 +23,6 @@ spec:
       {{- end }}
       labels:
         {{- include "aws-dranet.labels" . | nindent 8 }}
-        {{- include "aws-dranet.selectorLabels" . | nindent 8 }}
         tier: node
         k8s-app: {{ include "aws-dranet.name" . }}
         {{- with .Values.podLabels }}
