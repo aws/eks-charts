@@ -20,8 +20,18 @@ if echo "${VERSION}" | grep -Eq "^v[0-9]+(\.[0-9]+){2}$"; then
     set -x
     git config pull.rebase false
     git checkout gh-pages
-    mv -n $PACKAGE_DIR/stable/*.tgz . || echo 'Ignoring mv failure'
-    helm repo index . --url https://aws.github.io/eks-charts
+    # Index only packages that are not published yet and merge the existing index into the result.
+    # Re-indexing the whole gh-pages directory would rebuild every entry and reset all "created"
+    # timestamps to the current time. Already published packages are never overwritten.
+    NEW_PACKAGES_DIR="$(mktemp -d)"
+    for pkg in "${PACKAGE_DIR}"/stable/*.tgz; do
+        if [[ -e "${pkg}" && ! -e "$(basename "${pkg}")" ]]; then
+            mv "${pkg}" "${NEW_PACKAGES_DIR}/"
+        fi
+    done
+    helm repo index "${NEW_PACKAGES_DIR}" --url https://aws.github.io/eks-charts --merge index.yaml
+    find "${NEW_PACKAGES_DIR}" -maxdepth 1 -name '*.tgz' -exec mv {} . \;
+    mv "${NEW_PACKAGES_DIR}/index.yaml" index.yaml
     git add .
     git commit -m "Publish stable charts ${VERSION}"
     git push origin gh-pages
