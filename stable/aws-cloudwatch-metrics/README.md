@@ -34,6 +34,7 @@ helm upgrade --install aws-cloudwatch-metrics \
 | `tolerations` | Optional deployment tolerations	 | {} |
 | `annotations` | Optional pod annotations	 | {} |
 | `containerdSockPath` | Path to containerd' socket | /run/containerd/containerd.sock |
+| `imagePullSecrets` | Secrets to authenticate with an image repository | [] |
 | `priorityClassName` | Optional priorityClassName	 | |
 | `statsd.enabled` | Whether the cloudwatch agent should listen for statsd metrics	 | `false` |
 | `statsd.port` | The port listening for statsd metrics | `8125` |
