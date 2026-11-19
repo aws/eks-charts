@@ -43,3 +43,7 @@ statsd:
   # cloudwatch_namespace:
   # metrics_aggregation_interval:
   # metrics_collection_interval:
+
+xray:
+  enabled: false
+  port: 2000
