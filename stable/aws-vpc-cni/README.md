@@ -15,6 +15,11 @@ First add the EKS repository to Helm:
 helm repo add eks https://aws.github.io/eks-charts
 ```
 
+Update Helm repo
+```shell
+helm repo update
+```
+
 To install the chart with the release name `aws-vpc-cni` and default configuration:
 
 ```shell
