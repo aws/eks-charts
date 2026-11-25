@@ -1,6 +1,6 @@
 image:
   repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/dranet
-  tag: "v1.2.0-eksbuild.39"
+  tag: "v1.2.0-eksbuild.50"
   pullPolicy: IfNotPresent
 
 securityContext:
@@ -267,6 +267,7 @@ supportedInstanceLabels: # EFA supported instances: https://docs.aws.amazon.com/
     - trn3.48xlarge
     - trn3-dev0.48xlarge
     - trn3-dev1.48xlarge
+    - trn3n.48xlarge
     - trn3p.48xlarge
     - trn3pd98.48xlarge
     - trn3s.48xlarge
