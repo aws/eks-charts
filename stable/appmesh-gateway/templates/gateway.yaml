@@ -8,8 +8,12 @@ metadata:
 {{ include "appmesh-gateway.labels" . | indent 4 }}
 spec:
   namespaceSelector:
+{{- if .Values.appmesh.namespaceSelector }}
+{{ toYaml .Values.appmesh.namespaceSelector | indent 4 }}
+{{- else }}
     matchLabels:
       appmesh.k8s.aws/sidecarInjectorWebhook: enabled
+{{- end }}
   podSelector:
     matchLabels:
       app.kubernetes.io/name: {{ template "appmesh-gateway.fullname" . }}

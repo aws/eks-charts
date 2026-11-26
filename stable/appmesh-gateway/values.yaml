@@ -26,6 +26,10 @@ appmesh:
   gateway: true
   # appmesh.preview: Whether to enable App Mesh Preview (us-west-2 only) or not
   preview: false
+  # appmesh.namespaceSelector: namespaces the VirtualGateway selects, as a Kubernetes label selector;
+  # when empty it selects namespaces labelled appmesh.k8s.aws/sidecarInjectorWebhook=enabled.
+  # Set a label unique to each release when several appmesh-gateway releases share a cluster
+  namespaceSelector: {}
 
 # resources: requests are set by default to enable HPA
 resources:
