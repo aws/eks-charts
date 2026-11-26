@@ -102,6 +102,7 @@ Parameter | Description | Default
 `service.externalTrafficPolicy` | when set to `Local` it preserves the client source IP  | `Cluster`
 `appmesh.gateway` | create a `VirtualGateway` object  | `true`
 `appmesh.preview` | enable App Mesh Preview (us-west-2 only)  | `false`
+`appmesh.namespaceSelector` | label selector for the namespaces the `VirtualGateway` selects; empty selects namespaces labelled `appmesh.k8s.aws/sidecarInjectorWebhook=enabled` | `{}`
 `resources.requests/cpu` | pod CPU request | `100m`
 `resources.requests/memory` | pod memory request | `64Mi`
 `hpa.enabled` | enabled CPU based auto-scaling | `false`
