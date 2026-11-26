@@ -23,6 +23,9 @@ containerSecurityContext: {}
 #   drop:
 #   - ALL
 
+# Time period for the pod to do a graceful shutdown
+terminationGracePeriodSeconds: 0
+
 rbac:
   # DEPRECATED: PodSecurityPolicy was removed in Kubernetes 1.25.
   # This setting has no effect on Kubernetes 1.25+.
